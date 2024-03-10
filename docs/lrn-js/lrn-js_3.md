@@ -70,4 +70,4 @@ Exercise 在变量 `size` 中储存 `str` 的长度。
 var str = "Hello World";
 
 var size =
-````
+```

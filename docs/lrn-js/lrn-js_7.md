@@ -129,4 +129,4 @@ var negate = function(func) {
 // 应该返回 -6
 // 因为 (5+1) * -1 = -6
 negate(add1)(5);
-````
+```
