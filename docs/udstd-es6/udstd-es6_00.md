@@ -1,7 +1,5 @@
 # 关于
 
-# 关于
-
 原书《Understanding ECMAScript 6》，作者 Nicholas C. Zakas ，[在线阅读地址](https://leanpub.com/understandinges6/read)。此外作者本人为此书也在 github 上设置了[专区](https://github.com/nzakas/understandinges6/)，发现问题可以到那里去提交 issue 。
 
 此书中文版暂时还未出版。而之前曾有 **oshotokill** 对本书进行了义务翻译（[阅读地址](https://www.gitbook.com/book/oshotokill/understandinges6-simplified-chinese/details)），但整体工作尚未完成，还欠缺三章：

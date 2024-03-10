@@ -1,6 +1,4 @@
-# 介紹
-
-# Learn Javascript
+# Javascript 学习手册
 
 这本书将教你 Javascript 编程的相关基础。不管你是菜鸟还是一个有经验的程序猿，这本书是为任何想学习 Javascript 编程的人而准备的。
 

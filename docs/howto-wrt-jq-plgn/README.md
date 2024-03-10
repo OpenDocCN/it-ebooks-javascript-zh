@@ -1,5 +1,3 @@
-# 介绍
-
 # 如何编写 jQuery 插件
 
 > 作者：[i5ting](https://github.com/i5ting)

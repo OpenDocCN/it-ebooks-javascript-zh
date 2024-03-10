@@ -1,6 +1,4 @@
-# 介绍
-
-# 可想造一个属于你自己的 jQuery 库?
+# 如何实现自己的 jQuery
 
 > 作者：[MeCKodo](https://github.com/MeCKodo)
 > 

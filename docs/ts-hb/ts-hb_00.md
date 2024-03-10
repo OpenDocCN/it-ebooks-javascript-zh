@@ -1,6 +1,4 @@
-# 介紹
-
-# TypeScript Handbook（中文版）
+# TypeScript 手册
 
 > 从前打心眼儿里讨厌编译成 JavaScript 的这类语言，像 Coffee，Dart 等。 但是在 15 年春节前后却爱上了 TypeScript。 同时非常喜欢的框架 Dojo，Angularjs 也宣布使用 TypeScript 做新版本的开发。 那么 TypeScript 究竟为何物？又有什么魅力呢？
 
