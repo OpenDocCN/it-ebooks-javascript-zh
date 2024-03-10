@@ -26,7 +26,7 @@ TypeScript 具有两种 JSX 模式：`preserve`和`react`。 这些模式只在�
 
 回想一下怎么写类型断言：
 
-```
+```js
 var foo = <foo>bar; 
 ```
 
@@ -34,7 +34,7 @@ var foo = <foo>bar;
 
 为了弥补`.tsx`里的这个功能，新加入了一个类型断言符号：`as`。 上面的例子可以很容易地使用`as`操作符改写：
 
-```
+```js
 var foo = bar as foo; 
 ```
 
@@ -53,7 +53,7 @@ TypeScript 使用[与 React 相同的规范](http://facebook.github.io/react/doc
 
 固有元素使用特殊的接口`JSX.IntrinsicElements`来查找。 默认地，如果这个接口没有指定，会全部通过，不对固有元素进行类型检查。 然而，如果接口存在，那么固有元素的名字需要在`JSX.IntrinsicElements`接口的属性里查找。 例如：
 
-```
+```js
 declare namespace JSX {
     interface IntrinsicElements {
         foo: any
@@ -68,7 +68,7 @@ declare namespace JSX {
 
 > 注意：你也可以在`JSX.IntrinsicElements`上指定一个用来捕获所有字符串索引：
 > 
-> ```
+> ```js
 > declare namespace JSX {
 >    interface IntrinsicElements {
 >        [elemName: string]: any;
@@ -80,7 +80,7 @@ declare namespace JSX {
 
 基于值的元素会简单的在它所在的作用域里按标识符查找。
 
-```
+```js
 import MyComponent from "./myComponent";
 
 <MyComponent />; // 正确
@@ -93,7 +93,7 @@ import MyComponent from "./myComponent";
 
 一旦建立起了类类型，实例类型就确定了，为类类型调用签名的返回值与构造签名的联合类型。 再次说明，在 ES6 类的情况下，实例类型为这个类的实例的类型，并且如果是工厂函数，实例类型为这个函数返回值类型。
 
-```
+```js
 class MyComponent {
   render() {}
 }
@@ -120,7 +120,7 @@ var myComponent = MyFactoryFunction();
 
 元素的实例类型很有趣，因为它必须赋值给`JSX.ElementClass`或抛出一个错误。 默认的`JSX.ElementClass`为`{}`，但是它可以被扩展用来限制 JSX 的类型以符合相应的接口。
 
-```
+```js
 declare namespace JSX JSX {
   interface ElementClass {
     render: any;
@@ -152,7 +152,7 @@ function NotAValidFactoryFunction() {
 
 对于固有元素，这是`JSX.IntrinsicElements`属性的类型。
 
-```
+```js
 declare namespace JSX {
   interface IntrinsicElements {
     foo: { bar?: boolean }
@@ -165,7 +165,7 @@ declare namespace JSX {
 
 对于基于值的元素，就稍微复杂些。 它取决于先前确定的在元素实例类型上的某个属性的类型。 至于该使用哪个属性来确定类型取决于`JSX.ElementAttributesProperty`。 它应该使用单一的属性来定义。 这个属性名之后会被使用。
 
-```
+```js
 declare namespace JSX {
   interface ElementAttributesProperty {
     props; // 指定用来使用的属性名
@@ -185,7 +185,7 @@ class MyComponent {
 
 元素属性类型用于的 JSX 里进行属性的类型检查。 支持可选属性和必须属性。
 
-```
+```js
 declare namespace JSX {
   interface IntrinsicElements {
     foo: { requiredProp: string; optionalProp?: number }
@@ -204,7 +204,7 @@ declare namespace JSX {
 
 延展操作符也可以使用：
 
-```
+```js
 var props = { requiredProp: 'bar' };
 <foo u0007b...propsu0007d="" class="hljs-interface">; // 正确
 
@@ -220,14 +220,14 @@ var badProps = {};
 
 JSX 允许你使用`{ }`标签来内嵌表达式。
 
-```
+```js
 var a = 
   {['foo', 'bar'].map(i => {i / 2})} 
 ```
 
 上面的代码产生一个错误，因为你不能用数字来除以一个字符串。 输出如下，若你使用了`preserve`选项：
 
-```
+```js
 var a = 
   {['foo', 'bar'].map(function (i) { return {i / 2}; })} 
 ```
@@ -236,7 +236,7 @@ var a =
 
 要想一起使用 JSX 和 React，你应该使用[React 类型定义](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/react)。 这些类型声明定义了`JSX`合适命名空间来使用 React。
 
-```
+```js
 /// <reference path="react.d.ts" />
 
 interface Props {

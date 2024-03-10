@@ -8,7 +8,7 @@
 
 属性`namespace`用于指定请求 URL 的前缀，比如如下适配器配置：
 
-```
+```js
 // app/adapters/application.js
 
 import JSONAPIAdapter from 'ember-data/adapters/json-api';
@@ -21,7 +21,7 @@ export default JSONAPIAdapter.extend({
 
 当客户端进入到路由`users`后会发送请求[`localhost:3000/api/v1/users`](http://localhost:3000/api/v1/users)，请求会自动加上前缀`api/v1`。客户端加了请求前缀，相对应的你的后台处理程序也要处理加了前缀的请求。比如我的演示用的后端处理：
 
-```
+```js
 // api/v1/user
 app.route("/api/v1/:type(users|user)")  
     .get(apiReqHandler)
@@ -42,7 +42,7 @@ app.route("/api/v1/:type(users|user)/:id")
 
 Ember 允许你自定义请求头，比如在请求头携带授权信息。请求头的信息可以是自定义的值也可以是从`session`获取的值。
 
-```
+```js
 // app/adapters/application.js
 
 import JSONAPIAdapter from 'ember-data/adapters/json-api';
@@ -65,7 +65,7 @@ export default JSONAPIAdapter.extend({
 
 在服务端获取请求头信息也很简单，直接使用`req.get('key')`获取。
 
-```
+```js
 app.use(function(req, res, next) {  
     // 获取客户端传递过来的请求头信息
     console.log('API_KEY == ' + req.get('API_KEY'));
@@ -81,7 +81,7 @@ app.use(function(req, res, next) {
 
 可以使用计算属性作为请求头属性，看下面的用法：
 
-```
+```js
 //app/adapters/application.js
 
 import JSONAPIAdapter from 'ember-data/adapters/json-api';
@@ -111,7 +111,7 @@ export default JSONAPIAdapter.extend({
 
 Ember 的模型属性如下：
 
-```
+```js
 // app/models/comment.js
 import Model from 'ember-data/model';  
 import attr from 'ember-data/attr';
@@ -123,7 +123,7 @@ export default Model.extend({
 
 但是服务端并没有返回同名的属性，服务端返回的属性名是`title`。也就是说，我如何才能把服务端返回的`title`这个值放到`renameAttr`上呢？ 解决的办法是在`attrs`中处理，请看下面的处理代码：
 
-```
+```js
 // app/serializers/application.js
 
 import JSONAPISerializer from 'ember-data/serializers/json-api';
@@ -148,7 +148,7 @@ export default JSONAPISerializer.extend({
 
 那么如何设置某个属性不需要从服务端获取回来呢？请看下面的代码：
 
-```
+```js
 // app/serializers/comment.js
 
 import JSONAPISerializer from 'ember-data/serializers/json-api';
@@ -175,7 +175,7 @@ export default JSONAPISerializer.extend({
 
 客户端发送的数据格式为：
 
-```
+```js
 {
   "data": {
     "attributes": {
@@ -191,7 +191,7 @@ export default JSONAPISerializer.extend({
 
 但是服务端接受的格式不一样，服务端接受的数据格式为：
 
-```
+```js
 {
   "data": {
     "attributes": {
@@ -209,7 +209,7 @@ export default JSONAPISerializer.extend({
 
 从数据格式上可以清楚看到，服务端接受的数据中属性`cost`是有`amount`和`currency`组合而成。Ember 提供了方法`serialize`格式化数据。请看下面的代码：
 
-```
+```js
 // app/serializers/application.js
 
 import JSONAPISerializer from 'ember-data/serializers/json-api';
@@ -237,7 +237,7 @@ export default JSONAPISerializer.extend({
 
 服务端返回的数据为：
 
-```
+```js
 {
   "data": {
     "attributes": {
@@ -255,7 +255,7 @@ export default JSONAPISerializer.extend({
 
 但是客户端接受的数据格式为：
 
-```
+```js
 {
   "data": {
     "attributes": {
@@ -271,7 +271,7 @@ export default JSONAPISerializer.extend({
 
 很显然，需要把服务端数据的复合`cost`属性拆分开，分别显示为`amount`和`currency`，Ember 提供了便捷的转换方法`normalizeResponse`。
 
-```
+```js
 normalizeResponse(store, primaryModelClass, payload, id, requestType) {  
     payload.data.attributes.amount = payload.data.attributes.cost.amount;
     payload.data.attributes.currency = payload.data.attributes.cost.currency;
@@ -288,7 +288,7 @@ normalizeResponse(store, primaryModelClass, payload, id, requestType) {
 
 Ember 默认会为每个模型增加一个属性`id`作为主键。如果你想修改这个主键的名字可以通过属性`primaryKey`指定。
 
-```
+```js
 // app/serializers/application.js
 
 import JSONAPISerializer from 'ember-data/serializers/json-api';
@@ -309,7 +309,7 @@ export default JSONAPISerializer.extend({
 
 通过使用方法`keyForAttribute`还可以设定模型属性命名方式，Ember 默认序列化后模型的属性命名规则是中划线分隔，比如模型的属性名为`lastName`那么序列化之后客户端接受的属性名为`last-name`，默认会把单词中划线分隔。但是如果你的服务端的属性是使用下划线分隔的则需要做处理。比如我服务端的实体类如下
 
-```
+```js
 var schema = mongoose.Schema({  
   name: {
     type: String
@@ -325,7 +325,7 @@ var schema = mongoose.Schema({
 
 注意属性`public_date`的命名方式，单词之间使用下划线分隔。但是 Ember 项目确实使用的是驼峰式命名。如下：
 
-```
+```js
 // app/models/comment.js
 import Model from 'ember-data/model';  
 import attr from 'ember-data/attr';  
@@ -350,7 +350,7 @@ export default Model.extend({
 
 格式化返回数据：
 
-```
+```js
 // app/serializers/application.js
 
 import JSONAPISerializer from 'ember-data/serializers/json-api';

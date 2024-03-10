@@ -16,14 +16,14 @@
 
 1.  用 ES6 的语法编写代码。
 
-    ```
+    ```js
     let q = 99;
     let myVariable = `${q} bottles of beer on the wall, ${q} bottles of beer.`;
     ```
 
 2.  用上面那段代码作为转译器的输入，经过处理后得到以下这段输出：
 
-    ```
+    ```js
     "use strict";
 
     var q = 99;
@@ -38,20 +38,20 @@
 
 你可以通过几种不同的方法在项目中使用 Babel，有一个命令行工具，在这个工具中可以使用如下形式的指令：
 
-```
+```js
 babel script.js --out-file script-compiled.js
 ```
 
 Babel 也提供支持在浏览器中使用的版本。你可以将 Babel 作为一个普通的库引入，然后将你的 ES6 代码放置在类型为`text/babel`的 script 标签中。
 
-```
+```js
 <script src="node_modules/babel-core/browser.js"></script>
 <script type="text/babel">
 // 你的 ES6 代码
 </script>
 ```
 
-```
+```js
 随着代码库爆炸式增长，你开始将所有代码划分为多个文件和文件夹，但是这些方法并不能随之扩展。到那时，你将需要一个构建工具以及一种将 Babel 与构建管道整合在一起的方法。
 ```
 
@@ -83,7 +83,7 @@ Broccoli 是一个用来快速构建项目的工具，你可以用它对文件�
 
 首先，我们要配置好 Broccoli 项目：
 
-```
+```js
 mkdir es6-fruits
 cd es6-fruits
 npm init
@@ -93,7 +93,7 @@ touch Brocfile.js
 
 现在我们安装`broccoli`和`broccoli-cli`
 
-```
+```js
 # 安装 broccoli 库
 npm install --save-dev broccoli
 # 命令行工具
@@ -104,14 +104,14 @@ npm install -g broccoli-cli
 
 创建 src 文件夹，在里面置入`fruits.js`文件。
 
-```
+```js
 mkdir src
 vim src/fruits.js
 ```
 
 用 ES6 语法在新文件中写一小段脚本。
 
-```
+```js
 let fruits = [
   {id: 100, name: '草莓'},
   {id: 101, name: '柚子'},
@@ -132,13 +132,13 @@ console.log(`List total: ${fruits.length}`);
 
 保存文件，尝试执行脚本。
 
-```
+```js
 node src/fruits.js
 ```
 
 目前这段代码不能正常运行，但是我们将会让它运行在 Node 与任何浏览器中。
 
-```
+```js
 let fruits = [
     ^^^^^^
 SyntaxError: Unexpected identifier
@@ -148,7 +148,7 @@ SyntaxError: Unexpected identifier
 
 现在，我们用 Broccoli 加载代码，然后用 Babel 处理它。编辑`Brocfile.js`文件并加入以下这段代码：
 
-```
+```js
 // 引入 babel 插件
 var babel = require('broccoli-babel-transpiler');
 
@@ -160,20 +160,20 @@ module.exports = fruits;
 
 注意我们引入了包裹在 Babel 库中的 Broccoli 插件`broccoli-babel-transpiler`，所以我们一定要安装它：
 
-```
+```js
  npm install --save-dev broccoli-babel-transpiler
 ```
 
 现在我们可以构建项目并执行脚本了：
 
-```
+```js
 broccoli build dist # 编译
 node dist/fruits.js # 执行 ES5
 ```
 
 输出结果看起来应当是这样的：
 
-```
+```js
 ID: 100 Name: 草莓
 ID: 101 Name: 柚子
 ID: 102 Name: 李子
@@ -190,7 +190,7 @@ List total: 3
 
 `src/index.html`
 
-```
+```js
 <!DOCTYPE html>
 <html>
   <head>
@@ -222,7 +222,7 @@ List total: 3
 
 `src/print-info.js`
 
-```
+```js
 function printInfo() {
   $('#info')
   .append('<p>用 Broccoli 和 Babel 构建的' +
@@ -233,7 +233,7 @@ $(printInfo);
 
 `src/print-colors.js`
 
-```
+```js
 // ES6 生成器
 function* hexRange(start, stop, step) {
   for (var i = start; i < stop; i += step) {
@@ -261,7 +261,7 @@ $(printColors);
 
 下一步是合并所有 JS 文件然后在网站中使用。最难的部分是编写 Brocfile 文件，这一次我们要安装 4 个插件：
 
-```
+```js
 npm install --save-dev broccoli-babel-transpiler
 npm install --save-dev broccoli-funnel
 npm install --save-dev broccoli-concat
@@ -270,7 +270,7 @@ npm install --save-dev broccoli-merge-trees
 
 把它们投入使用：
 
-```
+```js
 // Babel 转译器
 var babel = require('broccoli-babel-transpiler');
 // 过滤树（文件的子集）
@@ -311,13 +311,13 @@ module.exports = mergeTrees([index, appJs]);
 
 现在开始构建并执行我们的代码。
 
-```
+```js
 broccoli build dist
 ```
 
 这次你在 dist 文件夹中应该看到以下结构：
 
-```
+```js
 $> tree dist/
 dist/
 ├── index.html
@@ -327,7 +327,7 @@ dist/
 
 那是一个静态网站，你可以用任意服务器伺服来验证那段代码正常运行。举个例子：
 
-```
+```js
 cd dist/
 python -m SimpleHTTPServer
 # 访问 http://localhost:8000/

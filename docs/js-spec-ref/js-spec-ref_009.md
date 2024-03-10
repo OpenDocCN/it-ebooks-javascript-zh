@@ -12,7 +12,7 @@
 
 数组（array）是按次序排列的一组值，单个值称为元素，它们的位置都有编号（从 0 开始）。整个数组用方括号表示。
 
-```
+```js
 var arr = ['a', 'b', 'c'];
 ```
 
@@ -20,7 +20,7 @@ var arr = ['a', 'b', 'c'];
 
 除了在定义时赋值，数组也可以先定义后赋值。
 
-```
+```js
 var arr = [];
 
 arr[0] = 'a';
@@ -30,7 +30,7 @@ arr[2] = 'c';
 
 任意一种类型的数据，都可以放入数组。
 
-```
+```js
 var arr = [{a:1}, [1,2,3],function (){return true;}];
 
 arr[0] // Object {a: 1}
@@ -42,7 +42,7 @@ arr[2] // function (){return true;}
 
 如果数组的元素还是数组，就形成了多维数组。
 
-```
+```js
 var a = [[1,2],[3,4]];
 a[0][1] // 2
 a[1][1] // 4
@@ -52,7 +52,7 @@ a[1][1] // 4
 
 本质上，数组也属于对象，是字典结构（dictionary）的一个变种。
 
-```
+```js
 typeof [1,2,3] // "object"
 ```
 
@@ -60,7 +60,7 @@ typeof [1,2,3] // "object"
 
 数组的特殊性体现在，它的键默认是按次序排列的整数（0，1，2...），所以数组不用为每个元素指定键名，而对象的每个成员都必须指定键名。此外，对象以字符串来识别键名，非字符串的键名会被转为字符串，所以使用数值或字符串作为键名，都能读取数组的成员。
 
-```
+```js
 var arr = ['a', 'b', 'c'];
 
 arr['0'] // 'a'
@@ -71,7 +71,7 @@ arr[0] // 'a'
 
 需要注意的是，这一条在赋值时也成立，即如果一个值可以被转换为整数，则以该值为键名，等于以对应的整数为键名。
 
-```
+```js
 var a = [];
 
 a['1000'] = 'abc';
@@ -89,7 +89,7 @@ a[1] // 1
 
 数组的 length 属性，返回数组的成员数量。
 
-```
+```js
 ['a', 'b', 'c'].length // 3
 ```
 
@@ -97,7 +97,7 @@ JavaScript 使用一个 32 位整数，保存数组的元素个数。这意味�
 
 数组的 length 属性与对象的 length 属性有区别，只要是数组，就一定有 length 属性，而对象不一定有。而且，数组的 length 属性是一个动态的值，等于键名中的最大整数加上 1。
 
-```
+```js
 var arr = ['a', 'b'];
 arr.length // 2
 
@@ -115,7 +115,7 @@ arr.length // 1001
 
 length 属性是可写的。如果人为设置一个小于当前成员个数的值，该数组的成员会自动减少到 length 设置的值。
 
-```
+```js
 var arr = [ 'a', 'b', 'c' ];
 arr.length // 3
 
@@ -127,7 +127,7 @@ arr // ["a", "b"]
 
 将数组清空的一个有效方法，就是将 length 属性设为 0。
 
-```
+```js
 var arr = [ 'a', 'b', 'c' ];
 
 arr.length = 0;
@@ -136,7 +136,7 @@ arr // []
 
 如果人为设置 length 大于当前元素个数，则数组的成员数量会增加到这个值，新增的位置填入空元素。
 
-```
+```js
 var a = ['a'];
 
 a.length = 3;
@@ -147,7 +147,7 @@ a // ["a", undefined × 2]
 
 如果人为设置 length 为不合法的值，JavaScript 会报错。
 
-```
+```js
 // 设置负值
 [].length = -1
 // RangeError: Invalid array length
@@ -163,7 +163,7 @@ a // ["a", undefined × 2]
 
 值得注意的是，由于数组本质上是对象的一种，所以我们可以为数组添加属性，但是这不影响 length 属性的值。
 
-```
+```js
 var a = [];
 
 a["p"] = "abc";
@@ -179,7 +179,7 @@ a.length // 0
 
 当数组的某个位置是空元素（比如两个逗号之间没有任何值，或者值为 undefined），我们称该数组存在空位（hole）。
 
-```
+```js
 var a = [1,,1];
 a // [1, undefined, 1]
 a.length // 3
@@ -187,7 +187,7 @@ a.length // 3
 
 需要注意的是，如果最后一个元素后面有逗号，并不会产生空位。也就是说，有没有这个逗号，结果都是一样的。不过，IE 8 及以下版本不支持这条语法规则，会报错。
 
-```
+```js
 var a = [1,2,3,];
 
 a.length // 3
@@ -198,7 +198,7 @@ a // [1, 2, 3]
 
 使用 delete 命令删除一个值，会形成空位。
 
-```
+```js
 var a = [1,2,3];
 
 delete a[1];
@@ -207,7 +207,7 @@ a // [1, undefined, 3]
 
 需要注意的是，如果使用 delete 命令删除一个值，不影响 length 属性。
 
-```
+```js
 var a = [1,2,3];
 delete a[1];
 delete a[2];
@@ -219,7 +219,7 @@ a.length // 3
 
 空位通过空值生成，还是通过显式设为 undefined 生成，有一个细微的差别。如果通过空值生成，使用数组的 forEach 方法或者 for...in 结构进行遍历，空位就会被跳过。
 
-```
+```js
 var a = [,,,];
 
 a.forEach(function (x, i) { console.log(i+". "+x) })
@@ -231,7 +231,7 @@ for (var i in a){console.log(i)}
 
 如果空位是通过显式定义 undefined 生成，遍历的时候就不会被跳过。
 
-```
+```js
 var a = [undefined,undefined,undefined];
 
 a.forEach(function (x, i) { console.log(i+". "+x) });
@@ -249,7 +249,7 @@ for (var i in a){console.log(i)}
 
 检查某个键是否存在的运算符 in，适用于对象，也适用于数组。
 
-```
+```js
 2 in [ 'a', 'b', 'c' ]
 // true
 
@@ -259,7 +259,7 @@ for (var i in a){console.log(i)}
 
 使用 for-in 循环，可以遍历数组的所有元素。
 
-```
+```js
 var a = [1,2,3];
 
 for (var i in a){
@@ -272,7 +272,7 @@ for (var i in a){
 
 需要注意的是，for-in 会遍历数组所有的键，即使是非数字键。
 
-```
+```js
 var a = [1,2,3];
 a.foo = true;
 
@@ -289,7 +289,7 @@ for (var key in a) {
 
 另一种遍历的做法是用 for 循环或者 while 循环结合 length 属性。
 
-```
+```js
 var a = [1,2,3];
 for(var i = 0; i < a.length; i++){
     console.log(a[i]);
@@ -317,7 +317,7 @@ while (l--){
 
 除了直接使用方括号创建，数组还可以使用 JavaScript 内置的 Array 构造函数创建。
 
-```
+```js
 var a = new Array();
 a // []
 a.length // 0

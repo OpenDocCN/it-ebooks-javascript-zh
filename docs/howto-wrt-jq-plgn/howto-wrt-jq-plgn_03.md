@@ -8,7 +8,7 @@
 
 v1
 
-```
+```js
 <!doctype html>
 <html lang="en">
 <head>
@@ -79,7 +79,7 @@ v1
 
 曾经有一个小伙伴，写下来这样的代码
 
-```
+```js
 <ul id="tab_btn">
     <li class="lion">选项卡一</li>
     <li>选项卡二</li>
@@ -89,7 +89,7 @@ v1
 
 然后我在读 css 代码的时候，发现
 
-```
+```js
 .lion {
     ...
 } 
@@ -109,7 +109,7 @@ v2
 
 之前的 tab 骨架
 
-```
+```js
 <div id="tab">
     <ul id="tab_btn">
         <li class="on">选项卡一</li>
@@ -125,7 +125,7 @@ v2
 
 重构后的代码
 
-```
+```js
 <div id="tab">
     <div class="tab_header">
         <ul>
@@ -154,7 +154,7 @@ v2
 
 还有点小瑕疵，下面代码用了行内样式
 
-```
+```js
 <div class='tab_content_item'  style="display:block">
     我是第一个内容
 </div> 
@@ -162,7 +162,7 @@ v2
 
 修改如下
 
-```
+```js
 // html
 <div class='tab_content_item active'>
     我是第一个内容
@@ -180,7 +180,7 @@ v2
 
 结构改了，js 也一定做了修改，tab.js 具体内容如下：
 
-```
+```js
 ;$(function(){
     $('.tab_header li').on('mouseover', function (){
         $('.tab_header li').removeClass('active');

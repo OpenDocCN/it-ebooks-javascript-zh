@@ -11,7 +11,7 @@
 
 Browserify 是一个 node.js 模块，主要用于改写现有的 CommonJS 模块，使得浏览器端也可以使用这些模块。使用下面的命令，在全局环境下安装 Browserify。
 
-```
+```js
 $ npm install -g browserify
 ```
 
@@ -19,7 +19,7 @@ $ npm install -g browserify
 
 先看一个例子。假定有一个很简单的 CommonJS 模块文件 foo.js。
 
-```
+```js
 // foo.js
 
 module.exports = function(x) {
@@ -29,7 +29,7 @@ module.exports = function(x) {
 
 然后，还有一个 main.js 文件，用来加载 foo 模块。
 
-```
+```js
 // main.js
 
 var foo = require("./foo");
@@ -38,7 +38,7 @@ foo("Hi");
 
 使用 Browserify，将 main.js 转化为浏览器可以加载的脚本 compiled.js。
 
-```
+```js
 browserify main.js > compiled.js
 
 # 或者
@@ -52,7 +52,7 @@ browserify main.js -o compiled.js
 
 之所以转化后的文件叫做 compiled.js，是因为该文件不仅包括了 main.js，还包括了它所依赖的 foo.js。两者打包在一起，保证浏览器加载时的依赖关系。
 
-```
+```js
 <script src="compiled.js"></script>
 ```
 
@@ -60,13 +60,13 @@ browserify main.js -o compiled.js
 
 我们再看一个在服务器端的 backbone 模块转为客户端 backbone 模块的例子。先安装 backbone 和它所依赖的 jQuery 模块。
 
-```
+```js
 npm install backbone jquery
 ```
 
 然后，新建一个 main.js 文件。
 
-```
+```js
 // main.js
 
 var Backbone = require('backbone');
@@ -84,13 +84,13 @@ appView.render();
 
 接着，使用 browserify 将 main.js 转为 app.js。
 
-```
+```js
 browserify main.js -o app.js
 ```
 
 app.js 就可以直接插入 HTML 网页了。
 
-```
+```js
 <script src="app.js"></script>
 ```
 
@@ -102,7 +102,7 @@ Browserify 的主要作用是将 CommonJS 模块转为浏览器可以调用的�
 
 首先，新建一个项目目录，添加 package.json 文件。
 
-```
+```js
 {
   "name": "demo",
   "version": "1.0.0"
@@ -111,7 +111,7 @@ Browserify 的主要作用是将 CommonJS 模块转为浏览器可以调用的�
 
 接着，新建 index.html。
 
-```
+```js
 <!doctype html>
 <html>
 <head>
@@ -130,13 +130,13 @@ Browserify 的主要作用是将 CommonJS 模块转为浏览器可以调用的�
 
 然后，安装 jquery 和它的插件。
 
-```
+```js
 $ npm install --save jquery tipso
 ```
 
 接着，新建一个文件 entry.js。
 
-```
+```js
 global.jQuery = require('jquery');
 require('tipso');
 
@@ -149,7 +149,7 @@ jQuery(function(){
 
 最后，Browserify 打包。
 
-```
+```js
 $ browserify entry.js --debug > bundle.jsOA
 ```
 
@@ -159,13 +159,13 @@ $ browserify entry.js --debug > bundle.jsOA
 
 另外一个问题是，某些 jQuery 插件还有自带的 CSS 文件，这时可以安装 parcelify 模块。
 
-```
+```js
 $ npm install -g parcelify
 ```
 
 然后，在 package.json 中写入规则，声明 CSS 文件的位置。
 
-```
+```js
 "style": [
   "./node_modules/tipso/src/tipso.css"
 ]
@@ -173,13 +173,13 @@ $ npm install -g parcelify
 
 接着，运行 parcelify 进行 CSS 打包。
 
-```
+```js
 $ parcelify entry.js -c bundle.css
 ```
 
 最后，将打包后的 CSS 文件插入 index.html。
 
-```
+```js
 <link rel="stylesheet" href="bundle.css" />
 ```
 
@@ -187,13 +187,13 @@ $ parcelify entry.js -c bundle.css
 
 有时，我们只是希望将 node.js 的模块，移植到浏览器，使得浏览器端可以调用。这时，可以采用 browserify 的-r 参数（--require 的简写）。
 
-```
+```js
 browserify -r through -r ./my-file.js:my-module > bundle.js
 ```
 
 上面代码将 through 和 my-file.js（后面的冒号表示指定模块名为 my-module）都做成了模块，可以在其他 script 标签中调用。
 
-```
+```js
 <script src="bundle.js"></script>
 <script>
   var through = require('through');
@@ -210,7 +210,7 @@ Browserify 还可以实时生成脚本文件。
 
 下面是一个服务器端脚本，启动 Web 服务器之后，外部用户每次访问这个脚本，它的内容是实时生成的。
 
-```
+```js
 var browserify = require('browserify');
 var http = require('http');
 
@@ -231,7 +231,7 @@ http.createServer(function (req, res) {
 
 比如，网页中需要加载 app.js，它是从 main.js 转化过来的。
 
-```
+```js
 <!-- index.html -->
 
 <script src="app.js"></script>
@@ -239,7 +239,7 @@ http.createServer(function (req, res) {
 
 你可以在服务器端静态生成一个 app.js 文件，也可以让它动态生成。这就需要用 browserify-middleware 模块，服务器端脚本要像下面这样写。
 
-```
+```js
 var browserify = require('browserify-middleware');
 var express = require('express');
 var app = express();

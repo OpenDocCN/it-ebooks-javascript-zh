@@ -10,7 +10,7 @@
 
 在每次链式调用后返回 this（即@）对象
 
-```
+```js
 class CoffeeCup
     constructor:  ->
         @properties=
@@ -40,13 +40,13 @@ eveningCup.properties # => { strength: 'dark', cream: true, sugar: true }
 
 jQuery 库使用类似的手段从每一个相似的方法中返回选择符对象，并在后续方法中通过调整选择的范围修改该对象：
 
-```
+```js
     $('p').filter('.topic').first()
 ```
 
 对我们自己对象而言，一点点元编程就可以自动设置这个过程并明确声明返回 this 的意图。
 
-```
+```js
 addChainedAttributeAccessor = (obj, propertyAttr, attr) ->
     obj[attr] = (newValues...) ->
         if newValues.length == 0
@@ -83,7 +83,7 @@ earlgrey.sugar() # => true
 
 #### 类方法
 
-```
+```js
 class Songs
   @_titles: 0    # Although it's directly accessible, the leading _ defines it by convention as private property.
 
@@ -106,7 +106,7 @@ song.get_count()
 
 #### 实例方法
 
-```
+```js
 class Songs
   _titles: 0    # Although it's directly accessible, the leading _ defines it by convention as private property.
 
@@ -138,7 +138,7 @@ Coffeescript 会在对象本身中保存类方法（也叫静态方法），而�
 
 #### 类变量
 
-```
+```js
 class Zoo
   @MAX_ANIMALS: 50
   MAX_ZOOKEEPERS: 3
@@ -172,7 +172,7 @@ zoo.helpfulInfo()
 
 你必须在一个类的方法中才能定义实例变量（例如属性），在 constructor 结构中初始化你的默认值。
 
-```
+```js
 class Zoo
   constructor: ->
     @animals = [] # Here the instance variable is defined
@@ -197,7 +197,7 @@ otherZoo.animals
 
 不要试图在 constructor 外部添加变量（即使在 [elsewhere](http://arcturo.github.io/library/coffeescript/03_classes.html#content) 中提到了，由于潜在的 JavaScript 的原型概念，这不会像预期那样运行正确）。
 
-```
+```js
 class BadZoo
   animals: []           # Translates to BadZoo.prototype.animals = []; and is thus shared between instances
 
@@ -232,7 +232,7 @@ Coffeescript 会将类变量的值保存在类中而不是它定义的原型中�
 
 ### 解决方案
 
-```
+```js
 clone = (obj) ->
   if not obj? or typeof obj isnt 'object'
     return obj
@@ -277,7 +277,7 @@ console.log x.foo isnt y.foo, x.foo, y.foo
 
 下面是一个通过赋值来复制对象的例子：
 
-```
+```js
 x =
   foo: 'bar'
   bar: 'foo'
@@ -302,7 +302,7 @@ console.log x.foo isnt y.foo, x.foo, y.foo
 
 使用 mixOf 库函数，它会生成一个混合父类。
 
-```
+```js
 mixOf = (base, mixins...) ->
   class Mixed extends base
   for mixin in mixins by -1 #earlier mixins override later ones
@@ -347,7 +347,7 @@ earth.answer()
 
 使用存在判断运算符（existential operator）。
 
-```
+```js
 
     window.MY_NAMESPACE ?= {}
 ```
@@ -356,7 +356,7 @@ earth.answer()
 
 这行代码与下面的 JavaScript 代码等价：
 
-```
+```js
 
     window.MY_NAMESPACE = window.MY_NAMESPACE || {};
 ```
@@ -373,7 +373,7 @@ earth.answer()
 
 使用下面这个 type 函数
 
-```
+```js
 type = (obj) ->
     if obj == undefined or obj == null
       return String obj
@@ -396,6 +396,6 @@ type = (obj) ->
 
 需要注意的是，在某些情况下，只要使用鸭子类型检测及存在运算符就可以不必检测对象的类型了。例如，下面这行代码不会发生异常，它会在 myArray 的确是数组（或者一个带有 push 方法的类数组对象）的情况下向其中推入一个元素，否则什么也不做。
 
-```
+```js
     myArray?.push? myValue
 ```

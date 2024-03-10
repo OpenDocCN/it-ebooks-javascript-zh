@@ -49,7 +49,7 @@ Chrome 扩展的启动入口可以在浏览器的工具栏和地址栏中，用�
 
 首先新建一个名为 my_clock 的文件夹，在此文件夹中新建一个名为 manifest.json 的文件，内容如下：
 
-```
+```js
 {
     "manifest_version": 2,
     "name": "我的时钟",
@@ -77,7 +77,7 @@ Chrome 扩展的启动入口可以在浏览器的工具栏和地址栏中，用�
 
 接下来我们开始编写 popup.html。
 
-```
+```js
 <html>
 <head>
 <style>
@@ -113,7 +113,7 @@ div {
 
 下面来编写 my_clock.js 文件。
 
-```
+```js
 function my_clock(el){
     var today=new Date();
     var h=today.getHours();
@@ -166,7 +166,7 @@ JSON 包含两种结构：一种是`key:value`对的形式，名称和值之间�
 
 下面给出了一个 JSON 的例子：
 
-```
+```js
 {
     "name" : "Harry Potter",
     "author" : {
@@ -193,7 +193,7 @@ Chrome 扩展的 Manifest 必须包含`name`、`version`和`manifest_version`属
 
 其他常用的可选属性还有`browser_action`、`page_action`、`background`、`permissions`、`options_page`、`content_scripts`，所以我们可以保留一份 manifest.json 模板，当编写新的扩展时直接填入相应的属性值。如果我们需要的属性不在这个模板中，可以再去查阅官方文档，但我想这样的一份模板可以应对大部分的扩展了。
 
-```
+```js
 {
     "app": {
         "background": {
@@ -259,7 +259,7 @@ DOM 分为 3 个不同的部分，分别是核心 DOM、XML DOM 和 HTML DOM，�
 
 上图给出了 HTML DOM 的树状结构图，可以看到 HTML 文档都有一个`<html>`根元素。`<html>`根元素又有两个子元素，分别是`<head>`和`<body>`，所以已经最简单而完整的 HTML 文档如下所示：
 
-```
+```js
 <html>
     <head></head>
     <body></body>
@@ -270,7 +270,7 @@ DOM 分为 3 个不同的部分，分别是核心 DOM、XML DOM 和 HTML DOM，�
 
 这些元素可以包含一些属性，还可以包含子节点，子节点可以是元素也可以是文本。如：
 
-```
+```js
 <img src="images/dog.png" />
 <div>Hello World!</div> 
 ```
@@ -279,13 +279,13 @@ DOM 分为 3 个不同的部分，分别是核心 DOM、XML DOM 和 HTML DOM，�
 
 除了自闭标签，其他的标签必须成对出现，并且嵌套规则必须明确，这有点像我们小学时学习数学所使用的括号“`()`”和中括号“`[]`”。比如下面的嵌套方式是正确的：
 
-```
+```js
 <div><p>Hello World!</p></div> 
 ```
 
 但下面的例子是错误的：
 
-```
+```js
 <div><p></div></p>
 <div><p></div> 
 ```
@@ -294,7 +294,7 @@ DOM 分为 3 个不同的部分，分别是核心 DOM、XML DOM 和 HTML DOM，�
 
 有时元素还会拥有属性，比如下面的例子：
 
-```
+```js
 <input type="text" id="stu_name" value="Billy" /> 
 ```
 
@@ -308,7 +308,7 @@ DOM 分为 3 个不同的部分，分别是核心 DOM、XML DOM 和 HTML DOM，�
 
 JavaScript 可以通过`getAttribute`方法读取元素的属性，通过`setAttribute`方法添加或更改元素的属性，通过`removeAttribute`方法删除元素的属性。对于非自定义的属性，JavaScript 可以直接像读取对象属性那样读取或更改它们，比如：
 
-```
+```js
 var imgurl = document.getElementById('my_image').src;
 document.getElementById('my_another_image').src = imgurl;
 // var imgurl = document.getElementById('my_image').getAttribute('src');
@@ -317,7 +317,7 @@ document.getElementById('my_another_image').src = imgurl;
 
 CSS 的选择器基本分为三种，分别是`tagName`、`.className`和`#id`。如下面的例子：
 
-```
+```js
 p {
     width: 200px;
 }
@@ -333,7 +333,7 @@ p {
 
 分别定义了`p`标签元素宽度为 200 像素，类名为`postlist`的元素宽度为 150 像素，`id`为`footer`的元素宽度为 100 像素。这个样式表分别作用于以下元素：
 
-```
+```js
 <p></p>
 <div class="postlist"></div>
 <div id="footer"></div> 
@@ -341,7 +341,7 @@ p {
 
 CSS 选择器还可以通过元素属性进行定位，比如下面的例子可以作用于所有文本输入框：
 
-```
+```js
 input[type="text"] {
     font-size: 16px;
 } 

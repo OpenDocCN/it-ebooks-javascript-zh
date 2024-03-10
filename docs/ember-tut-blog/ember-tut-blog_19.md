@@ -3,7 +3,7 @@
 Ember 不仅提供了专门用于调试 Ember 程序的谷歌、火狐浏览器插件[Ember Inspector](https://github.com/emberjs/ember-inspector)( 安装插件可能需要翻墙，如果你也是一个程序员我想翻墙对于你来说应该不是什么难事！！！)，还提供了用于调试的`helper`。
 按照惯例，先做好准备工作，分别执行[Ember CLI](http://ember-cli.com/user-guide)命令创建`controller`、`route`和模板：
 
-```
+```js
 ember generate controller dev-helper  
 ember generate route dev-helper 
 ```
@@ -12,7 +12,7 @@ ember generate route dev-helper
 
 `{{log}}`可以把从`controller`、`route`类传递到页面上的值以日志的形式直接输出在浏览器的控制台上。下面代码在`controller`类添加测试数据。
 
-```
+```js
 // app/controllers/dev-helper.js
 
 import Ember from 'ember';
@@ -24,7 +24,7 @@ export default Ember.Controller.extend({
 
 我们可以在模板上直接显示字符串`testName`的值，也可以使用`{{log}}`助手以日志形式输出在控制台。当然你也可以直接使用`{{log 'xxx'}}`在控制台打印"xxxx"。第二点断点助手的示例中将为你演示`{{log 'xxx'}}`用法。
 
-```
+```js
 <!-- app/templates/dev-helper.hbs -->
 
 直接显示在页面上：{{testName}}
@@ -37,7 +37,7 @@ export default Ember.Controller.extend({
 
 当你需要调试的时候，你可以在模板上需要添加断点的地方添加这个助手，运行的时候会自动停在添加这个助手的地方。
 
-```
+```js
 {{log '这句话在断点前面'}}
 {{debugger}}
 <br>  
@@ -62,7 +62,7 @@ export default Ember.Controller.extend({
 
 首先重写`route`类的`model`回调，在里面添加测试数据。
 
-```
+```js
 //  app/routes/dev-helper.js
 
 import Ember from 'ember';
@@ -79,7 +79,7 @@ export default Ember.Route.extend({
 
 在模板的`each`助手中使用`{{debugger}}`助手。
 
-```
+```js
 {{#each model as |item|}}
     {{debugger}}
     <li>item</li>

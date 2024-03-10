@@ -40,7 +40,7 @@ V8 引擎将 Buffer 对象占用的内存，解释为一个整数数组，而不
 
 Buffer 作为构造函数，可以用 new 命令生成一个实例，它可以接受多种形式的参数。
 
-```
+```js
 // 参数是整数，指定分配多少个字节内存
 var hello = new Buffer(5);
 
@@ -65,7 +65,7 @@ var hello2 = new Buffer(hello1);
 
 Buffer.isEncoding 方法返回一个布尔值，表示 Buffer 实例是否为指定编码。
 
-```
+```js
 Buffer.isEncoding('utf8')
 // true
 ```
@@ -74,7 +74,7 @@ Buffer.isEncoding('utf8')
 
 Buffer.isBuffer 方法接受一个对象作为参数，返回一个布尔值，表示该对象是否为 Buffer 实例。
 
-```
+```js
 Buffer.isBuffer(Date) // false
 ```
 
@@ -82,7 +82,7 @@ Buffer.isBuffer(Date) // false
 
 Buffer.byteLength 方法返回字符串实际占据的字节长度，默认编码方式为 utf8。
 
-```
+```js
 Buffer.byteLength('Hello', 'utf8') // 5
 ```
 
@@ -90,7 +90,7 @@ Buffer.byteLength('Hello', 'utf8') // 5
 
 Buffer.concat 方法将一组 Buffer 对象合并为一个 Buffer 对象。
 
-```
+```js
 var i1 = new Buffer('Hello');
 var i2 = new Buffer(' ');
 var i3 = new Buffer('World');
@@ -102,7 +102,7 @@ Buffer.concat([i1, i2, i3]).toString()
 
 Buffer.concat 方法还可以接受第二个参数，指定合并后 Buffer 对象的总长度。
 
-```
+```js
 var i1 = new Buffer('Hello');
 var i2 = new Buffer(' ');
 var i3 = new Buffer('World');
@@ -118,7 +118,7 @@ Buffer.concat([i1, i2, i3], 10).toString()
 
 length 属性返回 Buffer 对象所占据的内存长度。注意，这个值与 Buffer 对象的内容无关。
 
-```
+```js
 buf = new Buffer(1234);
 buf.length // 1234
 
@@ -136,7 +136,7 @@ length 属性是可写的，但是这会导致未定义的行为，不建议使�
 
 write 方法可以向指定的 Buffer 对象写入数据。它的第一个参数是所写入的内容，第二个参数（可省略）是所写入的起始位置（从 0 开始），第三个参数（可省略）是编码方式，默认为 utf8。
 
-```
+```js
 var buf = new Buffer(5);
 buf.write('He');
 buf.write('l', 2);
@@ -149,7 +149,7 @@ console.log(buf.toString());
 
 slice 方法返回一个按照指定位置、从原对象切割出来的 Buffer 实例。它的两个参数分别为切割的起始位置和终止位置。
 
-```
+```js
 var buf = new Buffer('just some data');
 var chunk = buf.slice(4, 9);
 chunk.toString()
@@ -160,7 +160,7 @@ chunk.toString()
 
 toString 方法将 Buffer 对象，按照指定编码（默认为 utf8）转为字符串。
 
-```
+```js
 var hello = new Buffer('Hello');
 hello // <Buffer 48 65 6c 6c 6f>
 hello.toString() // "Hello"
@@ -168,7 +168,7 @@ hello.toString() // "Hello"
 
 toString 方法可以只返回指定位置内存的内容，它的第二个参数表示起始位置，第三个参数表示终止位置，两者都是从 0 开始计算。
 
-```
+```js
 var buf = new Buffer('just some data');
 console.log(buf.toString('ascii', 4, 9));
 // "some"
@@ -178,7 +178,7 @@ console.log(buf.toString('ascii', 4, 9));
 
 toJSON 方法将 Buffer 实例转为 JSON 对象。如果 JSON.stringify 方法调用 Buffer 实例，默认会先调用 toJSON 方法。
 
-```
+```js
 var buf = new Buffer('test');
 var json = JSON.stringify(buf);
 json // '[116,101,115,116]'

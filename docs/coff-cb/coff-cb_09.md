@@ -8,7 +8,7 @@
 
 ### 解决方案
 
-```
+```js
 $ ?= require 'jquery' # 由于 Node.js 的兼容性
 
 $(document).ready ->
@@ -33,7 +33,7 @@ $(document).ready ->
 
 jQuery 1.5 和更新版本都增加了一种新补充的 API ，用于处理不同的回调。
 
-```
+```js
 request = $.get '/'
     request.success (data) -> $('body').append "Successfully got the page again."
     request.error (jqXHR, textStatus, errorThrown) -> $('body').append "AJAX Error: ${textStatus}."
@@ -51,7 +51,7 @@ request = $.get '/'
 
 ### 解决方案
 
-```
+```js
 $ ->
   class Basket
     constructor: () ->
@@ -79,7 +79,7 @@ $ ->
 
 ### 解决方案
 
-```
+```js
  # 参考 jQuery
 
 $ = jQuery
@@ -115,7 +115,7 @@ $.fn.extend
 
 ### JavaScript
 
-```
+```js
 $("body").pluginName({
   debug: true
 });
@@ -123,7 +123,7 @@ $("body").pluginName({
 
 ### CoffeeScript
 
-```
+```js
 $("body").pluginName
   debug: true
 ```

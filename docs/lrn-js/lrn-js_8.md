@@ -14,7 +14,7 @@ There are two ways to create an `object` in JavaScript: 在 Javascript 中，有
 
 1.  字面上
 
-    ```
+    ```js
      var object = {};
        // 是的，简单是使用一对大括号！ 
     ```
@@ -23,7 +23,7 @@ There are two ways to create an `object` in JavaScript: 在 Javascript 中，有
 
 2.  面向对象
 
-    ```
+    ```js
      var object = new Object(); 
     ```
 
@@ -35,7 +35,7 @@ There are two ways to create an `object` in JavaScript: 在 Javascript 中，有
 
 对象的属性是一对的`propertyName(属性名)`: `propertyValue(属性值)`，**属性的名字只能是字符串**。如果不是字符串，将会转换为字符串。可以在创建对象或之后初始化属性。
 
-```
+```js
 var language = {
     name: 'JavaScript',
     isSupportedByBrowsers: true,
@@ -54,7 +54,7 @@ var language = {
 
 以下代码展示如何 **获取** 属性的值。
 
-```
+```js
 var variable = language.name;
  // 变量包含字符串"JavaScript"
     variable = language['name'];
@@ -65,7 +65,7 @@ var variable = language.name;
 
 以下代码展示如何**添加**一个新属性或**改变**一个存在的属性。
 
-```
+```js
 language.newProperty = 'new value';
  // 现在对象有一个新的属性。如果该属性已经存在，值将会被替换。
 language['newProperty'] = 'changed value';
@@ -78,7 +78,7 @@ language['newProperty'] = 'changed value';
 
 对象与原始值不同之处在于**对象可以改变**，而原始值不可改变。
 
-```
+```js
 var myPrimitive = "first value";
     myPrimitive = "another value";
  // myPrimitive 现在指向另一个字符串
@@ -93,7 +93,7 @@ var myObject = { key: "first value"};
 
 对象是**不可复制**的。它们的传递靠引用。
 
-```
+```js
 // 假设我有一个匹萨
 var myPizza = {slices: 5};
  // 然后我和你分析它
@@ -119,7 +119,7 @@ a = b = c = {};
 
 当 JavaScript 解释器（在浏览器中一个模块），试图找到一个属性，它要检索，如下面的代码：
 
-```
+```js
 var adult = {age: 26},
     retrievedProperty = adult.age;
  // 看上一行 
@@ -127,14 +127,14 @@ var adult = {age: 26},
 
 首先，解释器检查对象有的每个属性。例如，`adult`只有一个自己的属性 - `age`。但是，除此之外，实际上还有几个属性，这是继承自 Object.prototype。
 
-```
+```js
 var stringRepresentation = adult.toString();
  // 变量的值为 '[object Object]' 
 ```
 
 `toString` 是一个 Object.prototype 的属性, 这是继承。它有一个函数，返回值为一个对象的字符串。如果希望它返回一个更有意义的东西，那么你可以将其覆盖。简单的添加一个属性到 adult 对象。
 
-```
+```js
 adult.toString = function(){
     return "I'm "+this.age;
 } 
@@ -146,7 +146,7 @@ adult.toString = function(){
 
 要设置自己的对象为原型而不是默认的 Object.prototype，你可以调用以下的`Object.create`：
 
-```
+```js
 var child = Object.create(adult);
  /* 通过这种方式创建的对象可以让我们轻松替换默认的 Object.prototype 成我们想要的。在这里，child 的原型是 adult 对象。
  */
@@ -168,7 +168,7 @@ var stringRepresentation = child.toString();
 
 `销毁` 被用来从一个对象中 **删除一个属性** 。 从一个对象中删除一个属性就是将改属性从原型中移出：
 
-```
+```js
 var adult = {age:26},
     child = Object.create(adult);
     child.age = 8;
@@ -185,7 +185,7 @@ var prototypeAge = child.age;
 
 `for in` 语句可以遍历对象中所有的属性。枚举包括函数和原型属性。
 
-```
+```js
 var fruit = {
     apple: 2,
     orange:5,
@@ -212,7 +212,7 @@ sentence = sentence.substr(0,sentence.length-2)+'.';
 
 假设我们正在卡开发一个计数器模块：
 
-```
+```js
 var myCounter = {
     number : 0,
     plusPlus : function(){

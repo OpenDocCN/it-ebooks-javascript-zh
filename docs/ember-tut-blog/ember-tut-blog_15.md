@@ -6,7 +6,7 @@
 
 #### 1, 增加子路由
 
-```
+```js
 //  app/routers.js
 
 import Ember from 'ember';  
@@ -29,7 +29,7 @@ export default Router;
 
 #### 2, 在 route 初始化数据
 
-```
+```js
 //  app/routes/posts.js
 
 import Ember from 'ember';
@@ -45,7 +45,7 @@ export default Ember.Route.extend({
 
 #### 3，添加显示的模板
 
-```
+```js
 <!--  //  app/templates/posts.hbs  -->
 
 <div class="container">  
@@ -78,7 +78,7 @@ export default Ember.Route.extend({
 
 如果你没有测试数据，你还可直接把`link-to`助手的`post_id`写死，可以直接把数据的`id`值设置到`link-to`助手上。在模板文件的`ul`标签下一行增加如下代码，在`link-to`助手中指定`id`为`1`：
 
-```
+```js
 <!-- 增加一条直接指定 id 的数据 -->  
   <li class="list-group-item">
     {{#link-to 'posts.detail' 1}}增加一条直接指定 id 的数据{{/link-to}}
@@ -87,7 +87,7 @@ export default Ember.Route.extend({
 
 渲染之后的 HTML 代码如下:
 
-```
+```js
 <li class="list-group-item">  
 <a id="ember404" href="/posts/1" class="ember-view">增加一条直接指定 id 的数据  
 </a>  
@@ -102,7 +102,7 @@ export default Ember.Route.extend({
 
 #### 1\. 一个路由下有个多子路由
 
-```
+```js
 //  app/routers.js
 
 import Ember from 'ember';  
@@ -140,7 +140,7 @@ export default Router;
 
 如果是上述配置，渲染之后得到的路由格式`posts/detail/comments`。由于获取远程数据比较慢直接注释掉`posts.js`里的`model`回调方法，就直接使用写死 id 的方式。 注意：上述配置中，在路由`detail`下有 2 个子路由，一个是`comments`，一个是`comment`，并且这个是一个动态段。由此模板渲染之后应该是有 2 种形式的 URL。一种是`posts.detail.comments`（`posts/1/comments`），另一种是`posts.detail.comment`（`posts/1/2`）。如果能理解这个那`route`嵌套层次再多应该也能看明白了！
 
-```
+```js
 <!--  //  app/templates/posts.hbs  -->
 
 <div class="container">  
@@ -183,7 +183,7 @@ export default Router;
 
 上面演示了多个子路由的情况，下面接着介绍一个路由有多个层次，并且是有个多个动态段和非动态段组成的情况。 首先修改路由配置，把`comments`设置为`detail`的子路由。并且在`comments`下在设置一个动态段的子路由`comment_id`。
 
-```
+```js
 //  app/routers.js
 
 import Ember from 'ember';  
@@ -210,7 +210,7 @@ export default Router;
 
 模板使用路由的方式`posts.detail.comments.comment`。正常情况应该生成类似`posts/1/comments/2`这种格式的 URL。
 
-```
+```js
 <!--  //  app/templates/posts.hbs  -->
 
 <div class="container">  
@@ -237,7 +237,7 @@ export default Router;
 
 渲染之后得到的 HTML 如下：
 
-```
+```js
 <ul class="list-group">  
   <li class="list-group-item">
   <!-- 一共设置了 4 层路由 -->
@@ -249,7 +249,7 @@ export default Router;
 
 结果正如我们预想的组成了 4 层路由（`/posts/1/comment/2`）。 补充内容。 对于上述第二点多层路由嵌套的情况你还可以使用下面的方式设置路由和模板，并且可用同时设置了`/posts/1/comments`和`/posts/1/comments/2`。
 
-```
+```js
  this.route('posts', function() {
       //指定子路由，:post_id 会自动转换为数据的 id
       this.route('detail', {path: '/:post_id'}, function() {
@@ -263,7 +263,7 @@ export default Router;
   }); 
 ```
 
-```
+```js
 <!--  //  app/templates/posts.hbs  -->
 
 <div class="container">  
@@ -305,7 +305,7 @@ export default Router;
 
 `handlebars`允许你直接在`link-to`助手增加额外的属性，经过模板渲染之后`a`标签就有了增加的额外属性了。 比如你可用为`a`标签增加 CSS 的`class`。
 
-```
+```js
 {{link-to "show text info" 'posts.detail' 1 class="btn btn-primary"}}
 
 {{#link-to "posts.detail" 1 class="btn btn-primary"}}show text info{{/link-to}} 
@@ -313,7 +313,7 @@ export default Router;
 
 上述两种写法都是可以的，渲染的结果也是一样的。渲染之后的 HTML 为：
 
-```
+```js
 <a id="ember434" href="/posts/1" class="btn btn-primary ember-view">show text info</a> 
 ```
 

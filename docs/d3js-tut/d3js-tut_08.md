@@ -25,7 +25,7 @@
 
 显然，这里面没有**坐标轴 <axis>**这种元素。如果有的话，我们可以采用类似以下的方式定义：</axis>
 
-```
+```js
 <axis x1="" x2="" ...></axis>
 ```
 
@@ -33,7 +33,7 @@
 
 因此，我们需要用其他元素来组合成坐标轴，最终使其变为类似以下的形式：
 
-```
+```js
 <g>
 <!-- 第一个刻度 -->
 <g>
@@ -59,7 +59,7 @@
 
 上一章提到了比例尺的概念，要生成坐标轴，需要用到比例尺，它们二者经常是一起使用的。下面，在上一章的数据和比例尺的基础上，添加一个坐标轴的组件。
 
-```
+```js
 //数据
 var dataset = [ 2.5 , 2.1 , 1.7 , 1.3 , 0.9 ];
 //定义比例尺
@@ -88,7 +88,7 @@ var axis = d3.svg.axis()
 
 定义了坐标轴之后，只需要在 SVG 中添加一个分组元素 <g>，再将坐标轴的其他元素添加到这个 <g>里即可。代码如下：</g></g>
 
-```
+```js
 svg.append("g")
    .call(axis);
 ```
@@ -97,7 +97,7 @@ svg.append("g")
 
 在 D3 中，call() 的参数是一个函数。调用之后，将当前的选择集作为参数传递给此函数。也就是说，以下两段代码是相等的。
 
-```
+```js
 function foo(selection) {
   selection
       .attr("name1", "value1")
@@ -108,19 +108,19 @@ foo(d3.selectAll("div"))
 
 和
 
-```
+```js
 d3.selectAll("div").call(foo);
 ```
 
 因此，
 
-```
+```js
 svg.append("g").call(axis);
 ```
 
 与
 
-```
+```js
 axis(svg.append(g));
 ```
 
@@ -128,7 +128,7 @@ axis(svg.append(g));
 
 默认的坐标轴样式不太美观，下面提供一个常见的样式：
 
-```
+```js
 <style>
 .axis path,
 .axis line{
@@ -150,7 +150,7 @@ axis(svg.append(g));
 
 通常在添加元素的时候就一并设定，写成如下形式：
 
-```
+```js
 svg.append("g")
   .attr("class","axis")
   .attr("transform","translate(20,130)")

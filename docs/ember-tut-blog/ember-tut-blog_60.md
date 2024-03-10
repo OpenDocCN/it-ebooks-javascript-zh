@@ -24,7 +24,7 @@ Ember 所推崇是“约定由于配置”，所有 Ember 默认了很多规则�
 
 使用[Ember CLI](https://ember-cli.com/user-guide)创建一个普通的 Ember 项目，命令如下：
 
-```
+```js
 ember new ember-adapter-serializer  
 cd ember-adapter-serializer  
 ember s 
@@ -38,7 +38,7 @@ ember s
 
 创建命令如下：
 
-```
+```js
 ember g route users  
 ember g model user
 
@@ -71,7 +71,7 @@ ember g model comment
 
 #### user
 
-```
+```js
 // app/models/user.js
 
 import Model from 'ember-data/model';  
@@ -91,7 +91,7 @@ export default Model.extend({
 
 #### post
 
-```
+```js
 // app/models/post.js
 import Model from 'ember-data/model';  
 import attr from 'ember-data/attr';  
@@ -109,7 +109,7 @@ export default Model.extend({
 
 #### comment
 
-```
+```js
 // app/models/comment.js
 import Model from 'ember-data/model';  
 import attr from 'ember-data/attr';  
@@ -126,7 +126,7 @@ export default Model.extend({
 
 #### tag
 
-```
+```js
 // app/models/tag.js
 import Model from 'ember-data/model';  
 import attr from 'ember-data/attr';  
@@ -146,7 +146,7 @@ export default Model.extend({
 
 #### 列表模板
 
-```
+```js
 {{! app/templates/users/list.hbs 用户列表}}
 <div class="row">  
     <div class="col-md-1 col-sx-11 col-md-offset-11 col-sx-offset-11">
@@ -199,7 +199,7 @@ export default Model.extend({
 
 #### 列表路由配置
 
-```
+```js
 import Ember from 'ember';
 
 export default Ember.Route.extend({  
@@ -221,13 +221,13 @@ export default Ember.Route.extend({
 
 那么如何让 Ember 项目链接到我的后端服务呢？？很简单，只需要重写适配器的一个属性即可。下面使用 Ember CLI 名称创建一个适配器。
 
-```
+```js
 ember g adapter application 
 ```
 
 适配器创建完毕之后，我们直接在适配器中接入自己的后端服务。代码如下：
 
-```
+```js
 // app/adapters/application.js
 
 import JSONAPIAdapter from 'ember-data/adapters/json-api';
@@ -239,7 +239,7 @@ export default JSONAPIAdapter.extend({
 
 `http://localhost:3000`是 adapter-serializer-server 启动后提供服务的 url。项目启动完毕后可以看到浏览器控制台的错误消失了！并且在“NetWork”标签下可以看到有一个请求`http://localhost:3000/users`点击这个请求，查看请求的“Response”可以看到返回的数据，比如下面的数据格式：
 
-```
+```js
 {
     "links": {
         "self": "http://localhost:3000/users"
@@ -338,7 +338,7 @@ export default JSONAPIAdapter.extend({
 
 #### user 模板
 
-```
+```js
 {{! app/templates/users/new.hbs  新增 user}}
 <form>  
   {{user-form model=model}}
@@ -350,7 +350,7 @@ export default JSONAPIAdapter.extend({
 
 直接在`model`回调中返回一个空的实例对象。方便保存。
 
-```
+```js
 // app/routes/users/new.js
 
 import Ember from 'ember';
@@ -373,7 +373,7 @@ export default Ember.Route.extend({
 
 #### user 模板
 
-```
+```js
 {{! app/templates/users/edit.hbs  修改 user}}
 <form>  
   {{user-form model=model}}
@@ -386,7 +386,7 @@ export default Ember.Route.extend({
 
 在修改的方法中先调用`findRecord`方法查询出被修改的数据，然后更新修改的属性，再调用`save`方法保存修改的内容。
 
-```
+```js
 // app/routes/users/edit.js
 
 import Ember from 'ember';
@@ -413,13 +413,13 @@ export default Ember.Route.extend({
 
 由于新增、修改 user 模板都用到供一个表单，提取到一个组件中。
 
-```
+```js
 ember g component user-form 
 ```
 
 文件代码就不贴出来了，有需要请点击[查看 github 代码](https://github.com/ubuntuvim/ember-adapter-serializer/blob/master/app/templates/components/user-form.hbs)。然后在组件类中初始化了一个日期控件[bootstrap-datepicker](http://www.bootcdn.cn/bootstrap-datepicker/)，插件直接在`app/index.html`中引入了，下面是组件类代码：
 
-```
+```js
 // app/components/user-form.js
 
 import Ember from 'ember';
@@ -445,13 +445,13 @@ user 列表、新增 user、修改 user 界面效果如下截图：
 
 如果你认真看前面的第一个截图你会发现列表上显示的时间格式不友好，不是我们所习惯看的时间格式，那么如何处理呢？格式化时间的方式有很多，可以自定义[Ember helper](https://guides.emberjs.com/v2.5.0/templates/writing-helpers/)格式化时间，也可以定义模型`user`的属性`birth`为`date`类型，在此我特意定义为了`string`是为了演示 serializer 的使用。我们可以在自定义的 serializer 中格式化返回的数据。下面首先创建 serializer。
 
-```
+```js
 ember g serializer application 
 ```
 
 在序列化器中调用响应请求的方法`normalizeResponse`格式化返回的数据。代码如下：
 
-```
+```js
 // app/serializers/application.js
 
 import JSONAPISerializer from 'ember-data/serializers/json-api';

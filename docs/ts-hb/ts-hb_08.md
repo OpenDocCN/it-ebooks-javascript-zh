@@ -8,7 +8,7 @@
 
 下面的代码演示了如何在 TypeScript 里使用混入。 后面我们还会解释这段代码是怎么工作的。
 
-```
+```js
 // Disposable Mixin
 class Disposable {
     isDisposed: boolean;
@@ -68,7 +68,7 @@ function applyMixins(derivedCtor: any, baseCtors: any[]) {
 
 代码里首先定义了两个类，它们将做为 mixins。 可以看到每个类都只定义了一个特定的行为或功能。 稍后我们使用它们来创建一个新类，同时具有这两种功能。
 
-```
+```js
 // Disposable Mixin
 class Disposable {
     isDisposed: boolean;
@@ -92,7 +92,7 @@ class Activatable {
 
 下面创建一个类，结合了这两个 mixins。 下面来看一下具体是怎么操作的：
 
-```
+```js
 class SmartObject implements Disposable, Activatable { 
 ```
 
@@ -100,7 +100,7 @@ class SmartObject implements Disposable, Activatable {
 
 我们可以这么做来达到目的，为将要 mixin 进来的属性方法创建出占位属性。 这告诉编译器这些成员在运行时是可用的。 这样就能使用 mixin 带来的便利，虽说需要提前定义一些占位属性。
 
-```
+```js
 // Disposable
 isDisposed: boolean = false;
 dispose: () => void;
@@ -112,13 +112,13 @@ deactivate: () => void;
 
 最后，把 mixins 混入定义的类，完成全部实现部分。
 
-```
+```js
 applyMixins(SmartObject, [Disposable, Activatable]); 
 ```
 
 最后，创建这个帮助函数，帮我们做混入操作。 它会遍历 mixins 上的所有属性，并复制到目标上去，把之前的占位属性替换成真正的实现代码。
 
-```
+```js
 function applyMixins(derivedCtor: any, baseCtors: any[]) {
     baseCtors.forEach(baseCtor => {
         Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
@@ -160,7 +160,7 @@ Typescript 中的声明会创建以下三种实体之一：命名空间，类型
 
 最简单最常见的就是合并接口，声明合并的种类是：接口合并。 从根本上说，合并的机制是把各自声明里的成员放进一个同名的单一接口里。
 
-```
+```js
 interface Box {
     height: number;
     width: number;
@@ -181,7 +181,7 @@ let box: Box = {height: 5, width: 6, scale: 10};
 
 如下例所示：
 
-```
+```js
 interface Document {
     createElement(tagName: any): Element;
 }
@@ -197,7 +197,7 @@ interface Document {
 
 这三个接口合并成一个声明。 注意每组接口里的声明顺序保持不变，只是靠后的接口会出现在它前面的接口声明之前。
 
-```
+```js
 interface Document {
     createElement(tagName: "div"): HTMLDivElement;
     createElement(tagName: "span"): HTMLSpanElement;
@@ -217,7 +217,7 @@ interface Document {
 
 `Animals`声明合并示例：
 
-```
+```js
 namespace Animals {
     export class Zebra { }
 }
@@ -230,7 +230,7 @@ namespace Animals {
 
 等同于：
 
-```
+```js
 namespace Animals {
     export interface Legged { numberOfLegs: number; }
 
@@ -243,7 +243,7 @@ namespace Animals {
 
 下例提供了更清晰的说明：
 
-```
+```js
 namespace Animal {
     let haveMuscles = true;
 
@@ -267,7 +267,7 @@ namespace Animal {
 
 首先，尝试将命名空间和类合并。 这让我们可以定义内部类。
 
-```
+```js
 class Album {
     label: Album.AlbumLabel;
 }
@@ -280,7 +280,7 @@ namespace Album {
 
 除了内部类的模式，你在 JavaScript 里，创建一个函数稍后扩展它增加一些属性也是很常见的。 Typescript 使用声明合并来达到这个目的并保证类型安全。
 
-```
+```js
 function buildLabel(name: string): string {
     return buildLabel.prefix + name + buildLabel.suffix;
 }
@@ -295,7 +295,7 @@ alert(buildLabel("Sam Smith"));
 
 相似的，命名空间可以用来扩展枚举型：
 
-```
+```js
 enum Color {
     red = 1,
     green = 2,
@@ -334,7 +334,7 @@ namespace Color {
 
 TypeScript 里，在有些没有明确指出类型的地方，类型推论会帮助提供类型。如下面的例子
 
-```
+```js
 let x = 3; 
 ```
 
@@ -346,7 +346,7 @@ let x = 3;
 
 当需要从几个表达式中推断类型时候，会使用这些表达式的类型来推断出一个最合适的通用类型。例如，
 
-```
+```js
 let x = [0, 1, null]; 
 ```
 
@@ -354,13 +354,13 @@ let x = [0, 1, null];
 
 由于最终的通用类型取自候选类型，有些时候候选类型共享相同的通用类型，但是却没有一个类型能做为所有候选类型的类型。例如：
 
-```
+```js
 let zoo = [new Rhino(), new Elephant(), new Snake()]; 
 ```
 
 这里，我们想让 zoo 被推断为`Animal[]`类型，但是这个数组里没有对象是`Animal`类型的，因此不能推断出这个结果。 为了更正，当候选类型不能使用的时候我们需要明确的指出类型：
 
-```
+```js
 let zoo: Animal[] = [new Rhino(), new Elephant(), new Snake()]; 
 ```
 
@@ -370,7 +370,7 @@ let zoo: Animal[] = [new Rhino(), new Elephant(), new Snake()];
 
 TypeScript 类型推论也可能按照相反的方向进行。 这被叫做“按上下文归类”。按上下文归类会发生在表达式的类型与所处的位置相关时。比如：
 
-```
+```js
 window.onmousedown = function(mouseEvent) {
     console.log(mouseEvent.buton);  //<- Error
 }; 
@@ -380,7 +380,7 @@ window.onmousedown = function(mouseEvent) {
 
 如果上下文类型表达式包含了明确的类型信息，上下文的类型被忽略。 重写上面的例子：
 
-```
+```js
 window.onmousedown = function(mouseEvent: any) {
     console.log(mouseEvent.buton);  //<- Now, no error is given
 }; 
@@ -390,7 +390,7 @@ window.onmousedown = function(mouseEvent: any) {
 
 上下文归类会在很多情况下使用到。 通常包含函数的参数，赋值表达式的右边，类型断言，对象成员和数组字面量和返回值语句。 上下文类型也会做为最佳通用类型的候选类型。比如：
 
-```
+```js
 function createZoo(): Animal[] {
     return [new Rhino(), new Elephant(), new Snake()];
 } 
@@ -404,7 +404,7 @@ function createZoo(): Animal[] {
 
 TypeScript 里的类型兼容性是基于结构子类型的。 结构类型是一种只使用其成员来描述类型的方式。 它正好与名义（nominal）类型形成对比。（译者注：在基于名义类型的类型系统中，数据类型的兼容性或等价性是通过明确的声明和/或类型的名称来决定的。这与结构性类型系统不同，它是基于类型的组成结构，且不要求明确地声明。） 看下面的例子：
 
-```
+```js
 interface Named {
     name: string;
 }
@@ -430,7 +430,7 @@ TypeScript 的类型系统允许某些在编译阶段无法确认其安全性的
 
 TypeScript 结构化类型系统的基本规则是，如果`x`要兼容`y`，那么`y`至少具有与`x`相同的属性。比如：
 
-```
+```js
 interface Named {
     name: string;
 }
@@ -445,7 +445,7 @@ x = y;
 
 检查函数参数时使用相同的规则：
 
-```
+```js
 function greet(n: Named) {
     alert('Hello, ' + n.name);
 }
@@ -460,7 +460,7 @@ greet(y); // OK
 
 比较原始类型和对象类型时是容易理解的，问题是如何判断两个函数是兼容的。 让我们以两个函数开始，它们仅有参数列表不同：
 
-```
+```js
 let x = (a: number) => 0;
 let y = (b: number, s: string) => 0;
 
@@ -474,7 +474,7 @@ x = y; // Error
 
 你可能会疑惑为什么允许`忽略`参数，像例子`y = x`中那样。 原因是忽略额外的参数在 JavaScript 里是很常见的。 例如，`Array#forEach`给回调函数传 3 个参数：数组元素，索引和整个数组。 尽管如此，传入一个只使用第一个参数的回调函数也是很有用的：
 
-```
+```js
 let items = [1, 2, 3];
 
 // Don't force these extra arguments
@@ -486,7 +486,7 @@ items.forEach((item) => console.log(item));
 
 下面来看看如何处理返回值类型，创建两个仅是返回值类型不同的函数：
 
-```
+```js
 let x = () => ({name: 'Alice'});
 let y = () => ({name: 'Alice', location: 'Seattle'});
 
@@ -500,7 +500,7 @@ y = x; // Error because x() lacks a location property
 
 当比较函数参数类型时，只有当源函数参数能够赋值给目标函数或者反过来时才能赋值成功。 这是不稳定的，因为调用者可能传入了一个具有更精确类型信息的函数，但是调用这个传入的函数的时候却使用了不是那么精确的类型信息。 实际上，这极少会发生错误，并且能够实现很多 JavaScript 里的常见模式。例如：
 
-```
+```js
 enum EventType { Mouse, Keyboard }
 
 interface Event { timestamp: number; }
@@ -532,7 +532,7 @@ listenEvent(EventType.Mouse, (e: number) => console.log(e));
 
 有一个好的例子，常见的函数接收一个回调函数并用对于程序员来说是可预知的参数但对类型系统来说是不确定的参数来调用：
 
-```
+```js
 function invokeLater(args: any[], callback: (...args: any[]) => void) {
     /* ... Invoke callback with 'args' ... */
 }
@@ -552,7 +552,7 @@ invokeLater([1, 2], (x?, y?) => console.log(x + ', ' + y));
 
 枚举类型与数字类型兼容，并且数字类型与枚举类型兼容。不同枚举类型之间是不兼容的。比如，
 
-```
+```js
 enum Status { Ready, Waiting };
 enum Color { Red, Blue, Green };
 
@@ -564,7 +564,7 @@ status = Color.Green;  //error
 
 类与对象字面量和接口差不多，但有一点不同：类有静态部分和实例部分的类型。 比较两个类类型的对象时，只有实例的成员会被比较。 静态成员和构造函数不在比较的范围内。
 
-```
+```js
 class Animal {
     feet: number;
     constructor(name: string, numFeet: number) { }
@@ -590,7 +590,7 @@ s = a;  //OK
 
 因为 TypeScript 是结构性的类型系统，类型参数只影响使用其做为类型一部分的结果类型。比如，
 
-```
+```js
 interface Empty<T> {
 }
 let x: Empty<number>;
@@ -601,7 +601,7 @@ x = y;  // okay, y matches structure of x
 
 上面代码里，`x`和`y`是兼容的，因为它们的结构使用类型参数时并没有什么不同。 把这个例子改变一下，增加一个成员，就能看出是如何工作的了：
 
-```
+```js
 interface NotEmpty<T> {
     data: T;
 }
@@ -617,7 +617,7 @@ x = y;  // error, x and y are not compatible
 
 比如，
 
-```
+```js
 let identity = function<T>(x: T): T {
     // ...
 }
@@ -663,20 +663,20 @@ identity = reverse;  // Okay because (x: any)=>any matches (y: any)=>any
 
 #### 匿名类型 var
 
-```
+```js
 declare let MyPoint: { x: number; y: number; }; 
 ```
 
 #### 接口类型 var
 
-```
+```js
 interface SomePoint { x: number; y: number; }
 declare let MyPoint: SomePoint; 
 ```
 
 从使用者角度来讲，它们是相同的，但是 SomePoint 类型能够通过接口合并来扩展：
 
-```
+```js
 interface SomePoint { z: number; }
 MyPoint.z = 4; // OK 
 ```
@@ -693,7 +693,7 @@ TypeScript 的类会创建出两个类型：实例类型，定义了类型的实
 
 #### 标准版
 
-```
+```js
 class A {
     static st: string;
     inst: number;
@@ -703,7 +703,7 @@ class A {
 
 #### 分解版
 
-```
+```js
 interface A_Static {
     new(m: any): A_Instance;
     st: string;
@@ -733,7 +733,7 @@ declare let A: A_Static;
 
 #### 应用示例
 
-```
+```js
 animalFactory.create("dog");
 animalFactory.create("giraffe", { name: "ronald" });
 animalFactory.create("panda", { name: "bob", height: 400 });
@@ -743,7 +743,7 @@ animalFactory.create("cat", { height: 32 });
 
 #### 类型声明
 
-```
+```js
 namespace animalFactory {
     interface AnimalOptions {
         name: string;
@@ -758,14 +758,14 @@ namespace animalFactory {
 
 #### 应用示例
 
-```
+```js
 zooKeeper.workSchedule = "morning";
 zooKeeper(giraffeCage); 
 ```
 
 #### 类型声明
 
-```
+```js
 // Note: Function must precede namespace
 function zooKeeper(cage: AnimalCage);
 namespace zooKeeper {
@@ -777,7 +777,7 @@ namespace zooKeeper {
 
 #### 应用示例
 
-```
+```js
 let w = widget(32, 16);
 let y = new widget("sprocket");
 // w and y are both widgets
@@ -787,7 +787,7 @@ y.sprock();
 
 #### 类型声明
 
-```
+```js
 interface Widget {
     sprock(): void;
 }
@@ -804,7 +804,7 @@ declare let widget: WidgetFactory;
 
 #### 应用示例
 
-```
+```js
 // Either
 import x = require('zoo');
 x.open();
@@ -814,7 +814,7 @@ zoo.open();
 
 #### 类型声明
 
-```
+```js
 declare namespace zoo {
   function open(): void;
 }
@@ -828,7 +828,7 @@ declare module "zoo" {
 
 #### 应用示例
 
-```
+```js
 // Super-chainable library for eagles
 import Eagle = require('./eagle');
 
@@ -844,7 +844,7 @@ eddie.kind = 'golden';
 
 #### 类型声明
 
-```
+```js
 interface Eagle {
     (kind: string): Eagle;
     new (kind: string): Eagle;
@@ -862,7 +862,7 @@ export = Eagle;
 
 #### Usage
 
-```
+```js
 // Common pattern for node modules (e.g. rimraf, debug, request, etc.)
 import sayHello = require('say-hello');
 sayHello('Travis'); 
@@ -870,7 +870,7 @@ sayHello('Travis');
 
 #### Typing
 
-```
+```js
 declare module 'say-hello' {
   function sayHello(name: string): void;
   export = sayHello;
@@ -881,13 +881,13 @@ declare module 'say-hello' {
 
 #### 应用示例
 
-```
+```js
 addLater(3, 4, x => console.log('x = ' + x)); 
 ```
 
 #### 类型声明
 
-```
+```js
 // Note: 'void' return type is preferred here
 function addLater(x: number, y: number, (sum: number) => void): void; 
 ```
@@ -904,7 +904,7 @@ function addLater(x: number, y: number, (sum: number) => void): void;
 
 `for..of`会遍历可迭代的对象，调用对象上的`Symbol.iterator`方法。 下面是在数组上使用`for..of`的简单例子：
 
-```
+```js
 let someArray = [1, "string", false];
 
 for (let entry of someArray) {
@@ -918,7 +918,7 @@ for (let entry of someArray) {
 
 下面的例子展示了两者之间的区别：
 
-```
+```js
 let list = [4, 5, 6];
 
 for (let i in list) {
@@ -931,7 +931,7 @@ for (let i of list) {
 
 另一个区别是`for..in`可以操作任何对象；它提供了查看对象属性的一种方法。 但是`for..of`关注于迭代对象的值。内置对象`Map`和`Set`已经实现了`Symbol.iterator`方法，让我们可以访问它们保存的值。
 
-```
+```js
 let pets = new Set(["Cat", "Dog", "Hamster"]);
 pets["species"] = "mammals";
 
@@ -952,7 +952,7 @@ for (let pet of pets) {
 
 编译器会生成一个简单的`for`循环做为`for..of`循环，比如：
 
-```
+```js
 let numbers = [1, 2, 3];
 for (let num of numbers) {
     console.log(num);
@@ -961,7 +961,7 @@ for (let num of numbers) {
 
 生成的代码为：
 
-```
+```js
 var numbers = [1, 2, 3];
 for (var _i = 0; _i < numbers.length; _i++) {
     var num = numbers[_i];

@@ -8,14 +8,14 @@
 
 下面使用[Ember CLI](http://ember-cli.com/user-guide)命令创建两个路由：
 
-```
+```js
 ember generate route about  
 ember generate route favorites 
 ```
 
 命令执行完之后你可在你的项目目录`app/routes`下面看到已经创建好的两个路由文件已经`app/templates`下面路由对应的模板文件。 此时在`app/router.js`的`map`方法中已经存在了刚刚创建的路由配置。这个是[Ember CLI](http://ember-cli.com/user-guide)自动为你创建了。
 
-```
+```js
 // app/router.js
 
 import Ember from 'ember';  
@@ -35,14 +35,14 @@ export default Router;
 
 现在分别修改`app/templates`下面的两个模板文件如下：
 
-```
+```js
 <!-- app/templates/about.hbs -->
 
 这个是 about 模板！<br>
 {{outlet}} 
 ```
 
-```
+```js
 <!-- app/templates/favorites.hbs -->
 
 这个是 favorites 模板！<br>
@@ -55,7 +55,7 @@ export default Router;
 
 如果你觉得`favorites`这个路由名字太长是否可以修改成其他名字呢？答案是肯定的，你只要修改`router.js`中`map`方法的配置即可。
 
-```
+```js
 Router.map(function() {  
   this.route('about');
   // 注意：访问的 URL 可以写 favs 但是项目中如果是使用 route 的地方仍然是使用 favorites
@@ -69,14 +69,14 @@ Router.map(function() {
 
 在 handlebars 模板中可以使用`{{link-to}}`助手在不同的路由间切换，使用时需要在`link-to`助手内指定路由名称。比如下面的代码使用`link-to`助手实现在`about`和`favs`两个路由间切换。 为了页面能美观一点引入[bootstrap](http://www.bootcss.com/)，使用[npm](https://www.npmjs.com/)命令安装：`bower install bootstrap`，如果安装成功你可以在 bower_components 目录下看到[bootstrap](http://www.bootcss.com/)相关的文件。安装成功之后引入到项目中，修改`chapter3_routes/ember-cli-build.js`。在`return`语句前加入如下两行代码(作用就是引入[bootstrap](http://www.bootcss.com/)框架)：
 
-```
+```js
 app.import("bower_components/bootstrap/dist/css/bootstrap.css");  
 app.import("bower_components/bootstrap/dist/js/bootstrap.js"); 
 ```
 
 修改`application.hbs`，增加一个导航菜单。
 
-```
+```js
 <!-- //app/templates/application.hbs -->
 
 <nav class="navbar navbar-inverse navbar-fixed-top">  
@@ -111,7 +111,7 @@ app.import("bower_components/bootstrap/dist/js/bootstrap.js");
 1.  [ember-cli-and-content-security-policy-cs](https://blog.justinbull.ca/ember-cli-and-content-security-policy-csp/)
 2.  [`www.w3.org/TR/2015/CR-CSP2-20150721/`](https://www.w3.org/TR/2015/CR-CSP2-20150721/)
 
-```
+```js
 , contentSecurityPolicy: {
       'default-src': "'none'",
       'script-src': "'self' 'unsafe-inline' 'unsafe-eval' use.typekit.net connect.facebook.net maps.googleapis.com maps.gstatic.com",
@@ -147,7 +147,7 @@ app.import("bower_components/bootstrap/dist/js/bootstrap.js");
 
 比如下面的两种路由设置是等价的。
 
-```
+```js
 //  app/router.js
 // ……
 
@@ -160,7 +160,7 @@ Router.map(function() {
 export default Router; 
 ```
 
-```
+```js
 //  app/router.js
 // ……
 
@@ -178,7 +178,7 @@ export default Router;
 
 对于路由嵌套的情况也是如此。
 
-```
+```js
 //  app/router.js
 //  ……
 Router.map(function() {
@@ -192,7 +192,7 @@ Router.map(function() {
 export default Router; 
 ```
 
-```
+```js
 //  app/router.js
 
 //  ……
@@ -217,7 +217,7 @@ export default Router;
 当用户访问`/posts`时实际进入的路由是`posts.index`对应的模板是`posts/index.hbs`，但是实际中我并没有创建这个模板，因为 Ember 默认把这个模板渲染到`posts.hbs`的`{{outlet}}`上。由于这个模板不存在也就相当于什么都没做。当然你也可以创建这个模板。
 使用命令：`ember generate template posts/index`然后在这个模板中添加以下显示的内容：
 
-```
+```js
 <!-- app/templates/posts/index.hbs  -->
 
 <h2>这里是/posts/index.hbs。。。</h2> 
@@ -237,7 +237,7 @@ export default Router;
 
 动态段以`:`开头，并且后面接着`model`的`id`属性。
 
-```
+```js
 //  app/router.js
 
 //  ……
@@ -262,7 +262,7 @@ export default Router;
 
 Ember 也同样运行你使用`*`作为 URL 通配符。有了通配符你可以设置多个 URL 访问同一个路由。
 
-```
+```js
 this.route('about', { path: '/*wildcard' }); 
 ```
 
@@ -272,7 +272,7 @@ this.route('about', { path: '/*wildcard' });
 
 在有路由嵌套的情况下，一般情况我们访问 URL 的格式都是`父路由名/子路由名`，Ember 提供了一个`resetNamespace:true`选项可以用户重置子路由的命名空间，使用这个设置的路由可以直接这样访问`/子路由名`，不需要写父路由名。
 
-```
+```js
 this.route('posts', function() {  
     this.route('post', { path: '/:post_id'});
     this.route('comments', { resetNamespace: true}, function() {

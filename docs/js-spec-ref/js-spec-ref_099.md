@@ -19,7 +19,7 @@ CommonJS 是服务器模块的规范，Node.js 采用了这个规范。
 
 根据 CommonJS 规范，一个单独的文件就是一个模块。每一个模块都是一个单独的作用域，也就是说，在一个文件定义的变量（还包括函数和类），都是私有的，对其他文件是不可见的。
 
-```
+```js
 var x = 5;
 var addX = function(value) {
   return value + x;
@@ -30,7 +30,7 @@ var addX = function(value) {
 
 如果想在多个文件分享变量，必须定义为 global 对象的属性。
 
-```
+```js
 global.warning = true;
 ```
 
@@ -38,7 +38,7 @@ global.warning = true;
 
 CommonJS 规定，每个文件的对外接口是 module.exports 对象。这个对象的所有属性和方法，都可以被其他文件导入。
 
-```
+```js
 var x = 5;
 var addX = function(value) {
   return value + x;
@@ -51,7 +51,7 @@ module.exports.addX = addX;
 
 require 方法用于在其他文件加载这个接口，具体用法参见《Require 命令》的部分。
 
-```
+```js
 var example = require('./example.js');
 
 console.log(example.x); // 5
@@ -70,7 +70,7 @@ console.log(addX(1)); // 6
 
 下面是一个示例文件，最后一行输出 module 变量。
 
-```
+```js
 // example.js
 var jquery = require('jquery');
 exports.$ = jquery;
@@ -79,7 +79,7 @@ console.log(module);
 
 执行这个文件，命令行会输出如下信息。
 
-```
+```js
 { id: '.',
   exports: { '/div>: [Function] },
   parent: null,
@@ -105,7 +105,7 @@ console.log(module);
 
 module.exports 属性表示当前模块对外输出的接口，其他文件加载该模块，实际上就是读取 module.exports 变量。
 
-```
+```js
 var EventEmitter = require('events').EventEmitter;
 module.exports = new EventEmitter();
 
@@ -116,7 +116,7 @@ setTimeout(function() {
 
 上面模块会在加载后 1 秒后，发出 ready 事件。其他文件监听该事件，可以写成下面这样。
 
-```
+```js
 var a = require('./a');
 a.on('ready', function() {
   console.log('module a is ready');
@@ -127,13 +127,13 @@ a.on('ready', function() {
 
 为了方便，Node 为每个模块提供一个 exports 变量，指向 module.exports。这等同在每个模块头部，有一行这样的命令。
 
-```
+```js
 var exports = module.exports;
 ```
 
 造成的结果是，在对外输出模块接口时，可以向 exports 对象添加方法。
 
-```
+```js
 exports.area = function (r) {
   return Math.PI * r * r;
 };
@@ -145,7 +145,7 @@ exports.circumference = function (r) {
 
 注意，不能直接将 exports 变量指向一个函数。因为这样等于切断了 exports 与 module.exports 的联系。
 
-```
+```js
 exports = function (x){ console.log(x);};
 ```
 
@@ -153,7 +153,7 @@ exports = function (x){ console.log(x);};
 
 下面的写法也是无效的。
 
-```
+```js
 exports.hello = function() {
   return 'hello';
 };
@@ -165,7 +165,7 @@ module.exports = 'Hello world';
 
 如果一个模块的对外接口，就是一个函数或对象时，不能使用 exports 输出，只能使用 module.exports 输出。
 
-```
+```js
 module.exports = function (x){ console.log(x);};
 ```
 
@@ -177,7 +177,7 @@ CommonJS 规范加载模块是同步的，也就是说，只有加载完成，�
 
 AMD 规范使用 define 方法定义模块，下面就是一个例子：
 
-```
+```js
 define(['package/lib'], function(lib){
   function foo(){
     lib.log('hello world!');
@@ -191,7 +191,7 @@ define(['package/lib'], function(lib){
 
 AMD 规范允许输出的模块兼容 CommonJS 规范，这时 define 方法需要写成下面这样：
 
-```
+```js
 define(function (require, exports, module){
   var someModule = require("someModule");
   var anotherModule = require("anotherModule");
@@ -214,7 +214,7 @@ Node.js 使用 CommonJS 模块规范，内置的 require 命令用于加载模�
 
 require 命令的基本功能是，读入并执行一个 JavaScript 文件，然后返回该模块的 exports 对象。如果没有发现指定模块，会报错。
 
-```
+```js
 // example.js
 var invisible = function () {
   console.log("invisible");
@@ -229,7 +229,7 @@ exports.say = function () {
 
 运行下面的命令，可以输出 exports 对象。
 
-```
+```js
 var example = require('./example.js');
 example
 // {
@@ -240,7 +240,7 @@ example
 
 如果模块输出的是一个函数，那就不能定义在 exports 对象上面，而要定义在`module.exports`变量上面。
 
-```
+```js
 module.exports = function () {
   console.log("hello world")
 }
@@ -273,13 +273,13 @@ require 命令接受模块名作为参数。
 
 举例来说，下面是一行普通的 require 命令语句。
 
-```
+```js
 var utils = require( "utils" );
 ```
 
 Node 寻找 utils 脚本的顺序是，首先寻找核心模块，然后是全局安装模块，接着是项目安装的模块。
 
-```
+```js
 [
   '/usr/local/lib/node',
   '~/.node_modules',
@@ -297,7 +297,7 @@ Node 寻找 utils 脚本的顺序是，首先寻找核心模块，然后是全�
 
 第一次加载某个模块时，Node 会缓存该模块。以后再加载该模块，就直接从缓存取出该模块的 exports 属性。
 
-```
+```js
 require('./example.js');
 require('./example.js').message = "hello";
 require('./example.js').message
@@ -314,7 +314,7 @@ require('./example.js').message
 
 如果发生模块的循环加载，即 A 加载 B，B 又加载 A，则 B 将加载 A 的不完整版本。
 
-```
+```js
 // a.js
 exports.x = 'a1';
 console.log('a.js ', require('./b.js').x);
@@ -332,7 +332,7 @@ console.log('main.js ', require('./b.js').x);
 
 上面代码是三个 JavaScript 文件。其中，a.js 加载了 b.js，而 b.js 又加载 a.js。这时，Node 返回 a.js 的不完整版本，所以执行结果如下。
 
-```
+```js
 $ node main.js
 b.js  a1
 a.js  b2
@@ -342,7 +342,7 @@ main.js  b2
 
 修改 main.js，再次加载 a.js 和 b.js。
 
-```
+```js
 // main.js
 console.log('main.js ', require('./a.js').x);
 console.log('main.js ', require('./b.js').x);
@@ -352,7 +352,7 @@ console.log('main.js ', require('./b.js').x);
 
 执行上面代码，结果如下。
 
-```
+```js
 $ node main.js
 b.js  a1
 a.js  b2
@@ -368,7 +368,7 @@ main.js  b2
 
 正常的脚本调用时，require.main 属性指向模块本身。
 
-```
+```js
 require.main === module
 // true
 ```

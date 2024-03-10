@@ -10,7 +10,7 @@
 
 举个例子：
 
-```
+```js
 var hello = "Hello";
 var world = "World";
 
@@ -30,14 +30,14 @@ var message = hello + " " + world;
 
 *   单行注释用 `//`:
 
-```
+```js
 // 这是注释，将被解释器忽略
 var a = "this is a variable defined in a statement"; 
 ```
 
 *   多行注释用 `/*`开始，用`*/`结尾:
 
-```
+```js
 /*
 这是多行注释，
 将被解释器忽略
@@ -47,7 +47,7 @@ var a = "this is a variable defined in a statement";
 
 Exercise 将作者的话变成注释
 
-```
+```js
 Mark me as a comment
 or I'll throw an error
 ```
@@ -58,39 +58,39 @@ or I'll throw an error
 
 真正理解编程的第一步是回顾代数知识。如果你记得上学时曾学的代数，起初应该如下。
 
-```
+```js
 3 + 5 = 8 
 ```
 
 你开始执行含有未知数的计算，如下 x 代表未知数：
 
-```
+```js
 3 + x = 8 
 ```
 
 通过移项可以计算出 x：
 
-```
+```js
 x = 8 - 3
 -> x = 5 
 ```
 
 当你引入不止一个更灵活的的条件 -- 你正在使用变量:
 
-```
+```js
 x + y = 8 
 ```
 
 你可以改变 x 和 y 的值，表达式依然成立:
 
-```
+```js
 x = 4
 y = 4 
 ```
 
 或
 
-```
+```js
 x = 3
 y = 5 
 ```
@@ -99,7 +99,7 @@ y = 5
 
 我们来看看这是如何在 Javascript 中工作的，以下代码定义了两个变量，计算两个之和将其保存在第三个变量中。
 
-```
+```js
 var x = 5;
 var y = 6;
 var result = x + y; 
@@ -133,7 +133,7 @@ Exercise 用关键词 `var` 创建一个名为 `a` 的变量. `# 等式
 
 举个例子，假设:
 
-```
+```js
 var foo = 42;
 var bar = 42;
 var baz = "42";

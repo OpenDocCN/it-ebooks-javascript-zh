@@ -10,7 +10,7 @@
 
 **本文会使用[Ember CLI](http://www.ember-cli.com/user-guide/)名称创建项目和项目所需的文件，更多有关 Ember CLI 的命令请自行到官网学习。**
 
-```
+```js
 ember new chapter8_simple_auth  
 cd chapter8_simple_auth  
 ember server 
@@ -27,7 +27,7 @@ ember server
 1.  修改 bower.json
       修改后此文件主要的代码如下：
 
-```
+```js
 {
   "dependencies": {
     "ember": "2.0.0-beta.3"
@@ -64,7 +64,7 @@ ember server
 
 ##### 首页模板文件
 
-```
+```js
 {{! app/templates/application.hbs }}
 
 <h2 id="title">This is my first auth proj</h2>
@@ -88,7 +88,7 @@ ember server
 
   使用 Ember CLI 创建两个组件：`login-form`和`get-quotes`。
 
-```
+```js
 ember g component login-form  
 ember g component get-quotes 
 ```
@@ -97,7 +97,7 @@ ember g component get-quotes
 
 **login-form.js**
 
-```
+```js
 // app/components/login-form.js
 
 import Ember from 'ember';
@@ -120,7 +120,7 @@ export default Ember.Component.extend({
 
 **login-form.hbs**
 
-```
+```js
 {{! app/templates/login-form.hbs }}
 
 <form {{action 'authenticate' on='submit'}}>  
@@ -145,7 +145,7 @@ export default Ember.Component.extend({
 
 **get-quotes.js**
 
-```
+```js
 // app/components/get-quotes.js
 
 import Ember from 'ember';
@@ -181,13 +181,13 @@ export default Ember.Component.extend({
 
   这两个页面比较简单，直接调用组件。为什么我没有直接把组件代码放在这两个页面呢？？我们知道 Ember2.0 之后官方不推荐使用控制器，控制器的作用在弱化，组件变得越来越重要。   既然我们项目使用的是 Ember2.0 版本那就必须要用组件去替代控制器实现某些逻辑的判断。
 
-```
+```js
 {{! app/templates/login.hbs }}
 
 {{login-form}} 
 ```
 
-```
+```js
 {{! app/templates/protected.hbs }}
 
 {{get-quotes}} 
@@ -197,7 +197,7 @@ export default Ember.Component.extend({
 
   我们直接把登陆使用的用户名和密码提示出来，为了测试方便嘛，再者项目还没有注册功能。
 
-```
+```js
 {{! app/templates/index.hbs }}
 
 {{#unless session.isAuthenticated}}
@@ -213,7 +213,7 @@ export default Ember.Component.extend({
 
 ##### 路由配置
 
-```
+```js
 ember g route login  
 ember g route protected  
 ember g route application 
@@ -223,7 +223,7 @@ ember g route application
 
 **application.js**
 
-```
+```js
 // app/routes/application.js
 
 import Ember from 'ember';
@@ -243,7 +243,7 @@ export default Ember.Route.extend(ApplicationRouteMixin, {
 
 **protected.js**
 
-```
+```js
 // app/routes/protected.js
 
 import Ember from 'ember';
@@ -259,7 +259,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
 **login.js**
 
-```
+```js
 // app/routes/login.js
 
 import Ember from 'ember';
@@ -281,7 +281,7 @@ export default Ember.Route.extend({
 
 **login.js**
 
-```
+```js
 // app/controllers/login.js
 
 import Ember from 'ember';
@@ -300,7 +300,7 @@ export default Ember.Controller.extend(LoginControllerMixin, {
 
 **授权者类 authorizer/custom.js**
 
-```
+```js
 // app/authenrizers/custom.js
 
 import Ember from 'ember';  
@@ -322,7 +322,7 @@ export default Base.extend({
 
 **验证器类 authenticators/custom.js**
 
-```
+```js
 //  app/authenticators/custom.js
 
 import Ember from 'ember';  
@@ -377,7 +377,7 @@ export default Base.extend({
 
   到此项目的主要代码都已实现了，下面为了项目能正常运行还需要修改项目的配置文件`config/environment.js`。
 
-```
+```js
 /* jshint node: true */
 
 module.exports = function(environment) {  

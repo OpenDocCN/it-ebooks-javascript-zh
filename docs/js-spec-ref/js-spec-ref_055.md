@@ -11,7 +11,7 @@
 
 所谓“表单验证”，指的是检查用户提供的数据是否符合要求，比如 Email 地址的格式。HTML 5 原生支持表单验证，不需要 JavaScript。
 
-```
+```js
 <input type="date" >
 ```
 
@@ -19,7 +19,7 @@
 
 但有时，原生的表单验证不完全符合需要，而且出错信息无法指定样式。这时，可能需要使用表单对象的 noValidate 属性，将原生的表单验证关闭。
 
-```
+```js
 var form = document.getElementById("myform");
 form.noValidate = true;
 
@@ -30,7 +30,7 @@ form.onsubmit = validateForm;
 
 此外，还可以只针对单个的 input 输入框，关闭表单验证。
 
-```
+```js
 form.field.willValidate = false;
 ```
 
@@ -38,7 +38,7 @@ form.field.willValidate = false;
 
 麻烦的地方在于，即使 willValidate 属性为 true，也不足以表示浏览器支持所有种类的表单验证。比如，Firefox 29 不支持 date 类型的输入框，会自动将其改为 text 类型，而此时它的 willValidate 属性为 true。为了解决这个问题，必须确认 input 输入框的类型（type）未被浏览器改变。
 
-```
+```js
 if (field.nodeName === "INPUT" && field.type !== field.getAttribute("type")) {
     // 浏览器不支持该种表单验证，需自行部署 JavaScript 验证
 }

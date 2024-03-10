@@ -39,7 +39,7 @@ navigator.getUserMedia 方法目前主要用于，在浏览器中获取音频（
 
 下面的代码用于检查浏览器是否支持 getUserMedia 方法。
 
-```
+```js
 navigator.getUserMedia  = navigator.getUserMedia ||
                           navigator.webkitGetUserMedia ||
                           navigator.mozGetUserMedia ||
@@ -56,7 +56,7 @@ Chrome 21, Opera 18 和 Firefox 17，支持该方法。目前，IE 还不支持�
 
 getUserMedia 方法接受三个参数。
 
-```
+```js
 navigator.getUserMedia({
     video: true, 
     audio: true
@@ -67,7 +67,7 @@ getUserMedia 的第一个参数是一个对象，表示要获取哪些多媒体�
 
 下面是一个例子。
 
-```
+```js
 var constraints = {video: true};
 
 function onSuccess(stream) {
@@ -98,13 +98,13 @@ onError 回调函数接受一个 Error 对象作为参数。Error 对象的 code
 
 首先，需要先在网页上放置一个 video 元素。图像就展示在这个元素中。
 
-```
+```js
 <video id="webcam"></video>
 ```
 
 然后，用代码获取这个元素。
 
-```
+```js
 function onSuccess(stream) {
     var video = document.getElementById('webcam');
 }
@@ -112,7 +112,7 @@ function onSuccess(stream) {
 
 接着，将这个元素的 src 属性绑定数据流，摄影头拍摄的图像就可以显示了。
 
-```
+```js
 function onSuccess(stream) {
     var video = document.getElementById('webcam');
     if (window.URL) {
@@ -136,7 +136,7 @@ if (navigator.getUserMedia) {
 
 获取摄像头的主要用途之一，是让用户使用摄影头为自己拍照。Canvas API 有一个 ctx.drawImage(video, 0, 0)方法，可以将视频的一个帧转为 canvas 元素。这使得截屏变得非常容易。
 
-```
+```js
 <video autoplay></video>
 <img src="">
 <canvas style="display:none;"></canvas>
@@ -169,7 +169,7 @@ if (navigator.getUserMedia) {
 
 通过浏览器捕获声音，需要借助 Web Audio API。
 
-```
+```js
 window.AudioContext = window.AudioContext ||
                       window.webkitAudioContext;
 
@@ -187,7 +187,7 @@ navigator.getUserMedia({audio:true}, onSuccess);
 
 getUserMedia 方法的第一个参数，除了指定捕获对象之外，还可以指定一些限制条件，比如限定只能录制高清（或者 VGA 标准）的视频。
 
-```
+```js
 var hdConstraints = {
   video: {
     mandatory: {
@@ -215,7 +215,7 @@ navigator.getUserMedia(vgaConstraints, onSuccess, onError);
 
 如果本机有多个摄像头/麦克风，这时就需要使用 MediaStreamTrack.getSources 方法指定，到底使用哪一个摄像头/麦克风。
 
-```
+```js
 MediaStreamTrack.getSources(function(sourceInfos) {
   var audioSource = null;
   var videoSource = null;
@@ -269,7 +269,7 @@ WebRTC 协议没有规定与服务器的通信方式，因此可以采用各种�
 
 下面是一个示例。
 
-```
+```js
 var signalingChannel = createSignalingChannel();
 var pc;
 var configuration = ...;
@@ -325,7 +325,7 @@ RTCDataChannel 的作用是在点对点之间，传播任意数据。它的 API 
 
 下面是一个示例。
 
-```
+```js
 var pc = new webkitRTCPeerConnection(servers,
   {optional: [{RtpDataChannels: true}]});
 
@@ -352,7 +352,7 @@ Chrome 25、Opera 18 和 Firefox 22 支持 RTCDataChannel。
 
 下面是 SimpleWebRTC 的示例。
 
-```
+```js
 var webrtc = new WebRTC({
   localVideoEl: 'localVideo',
   remoteVideosEl: 'remoteVideos',
@@ -366,7 +366,7 @@ webrtc.on('readyToCall', function () {
 
 下面是 PeerJS 的示例。
 
-```
+```js
 var peer = new Peer('someid', {key: 'apikey'});
 peer.on('connection', function(conn) {
   conn.on('data', function(data){

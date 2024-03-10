@@ -4,7 +4,7 @@
 
 使用枚举我们可以定义一些有名字的数字常量。 枚举通过`enum`关键字来定义。
 
-```
+```js
 enum Direction {
     Up = 1,
     Down,
@@ -25,7 +25,7 @@ enum Direction {
 
 所有其它情况的枚举成员被当作是需要计算得出的值。
 
-```
+```js
 enum FileAccess {
     // constant members
     None,
@@ -39,7 +39,7 @@ enum FileAccess {
 
 枚举是在运行时真正存在的一个对象。 其中一个原因是因为这样可以从枚举值到枚举名进行反向映射。
 
-```
+```js
 enum Enum {
     A
 }
@@ -49,7 +49,7 @@ let nameOfA = Enum[Enum.A]; // "A"
 
 编译成：
 
-```
+```js
 var Enum;
 (function (Enum) {
     Enum[Enum["A"] = 0] = "A";
@@ -60,7 +60,7 @@ var nameOfA = Enum[Enum.A]; // "A"
 
 生成的代码中，枚举类型被编译成一个对象，它包含双向映射（`name` -> `value`）和（`value` -> `name`）。 引用枚举成员总会生成一次属性访问并且永远不会内联。 在大多数情况下这是很好的并且正确的解决方案。 然而有时候需求却比较严格。 当访问枚举值时，为了避免生成多余的代码和间接引用，可以使用常数枚举。 常数枚举是在`enum`关键字前使用`const`修饰符。
 
-```
+```js
 const enum Enum {
     A = 1,
     B = A * 2
@@ -69,7 +69,7 @@ const enum Enum {
 
 常数枚举只能使用常数枚举表达式并且不同于常规的枚举的是它们在编译阶段会被删除。 常数枚举成员在使用的地方被内联进来。 这是因为常数枚举不可能有计算成员。
 
-```
+```js
 const enum Directions {
     Up,
     Down,
@@ -82,7 +82,7 @@ let directions = [Directions.Up, Directions.Down, Directions.Left, Directions.Ri
 
 生成后的代码为：
 
-```
+```js
 var directions = [0 /* Up */, 1 /* Down */, 2 /* Left */, 3 /* Right */]; 
 ```
 
@@ -90,7 +90,7 @@ var directions = [0 /* Up */, 1 /* Down */, 2 /* Left */, 3 /* Right */];
 
 外部枚举用来描述已经存在的枚举类型的形状。
 
-```
+```js
 declare enum Enum {
     A = 1,
     B,
@@ -114,7 +114,7 @@ declare enum Enum {
 
 一直以来我们都是通过`var`关键字定义 JavaScript 变量。
 
-```
+```js
 var a = 10; 
 ```
 
@@ -122,7 +122,7 @@ var a = 10;
 
 我们也可以在函数内部定义变量：
 
-```
+```js
 function f() {
     var message = "Hello, world!";
 
@@ -132,7 +132,7 @@ function f() {
 
 并且我们也可以在其它函数内部访问相同的变量。
 
-```
+```js
 function f() {
     var a = 10;
     return function g() {
@@ -147,7 +147,7 @@ g(); // returns 11;
 
 上面的例子里，`g`可以获取到`f`函数里定义的`a`变量。 每当`g`被调用时，它都可以访问到`f`里的`a`变量。 即使当`g`在`f`已经执行完后才被调用，它仍然可以访问及修改`a`。
 
-```
+```js
 function f() {
     var a = 1;
 
@@ -169,7 +169,7 @@ f(); // returns 2
 
 对于熟悉其它语言的人来说，`var`声明有些奇怪的作用域规则。 看下面的例子：
 
-```
+```js
 function f(shouldInitialize: boolean) {
     if (shouldInitialize) {
         var x = 10;
@@ -186,7 +186,7 @@ f(false); // returns 'undefined'
 
 这些作用域规则可能会引发一些错误。 其中之一就是，多次声明同一个变量并不会报错：
 
-```
+```js
 function sumMatrix(matrix: number[][]) {
     var sum = 0;
     for (var i = 0; i < matrix.length; i++) {
@@ -206,7 +206,7 @@ function sumMatrix(matrix: number[][]) {
 
 快速的猜一下下面的代码会返回什么：
 
-```
+```js
 for (var i = 0; i < 10; i++) {
     setTimeout(function() {console.log(i); }, 100 * i);
 } 
@@ -216,7 +216,7 @@ for (var i = 0; i < 10; i++) {
 
 好吧，看一下结果：
 
-```
+```js
 10
 10
 10
@@ -231,7 +231,7 @@ for (var i = 0; i < 10; i++) {
 
 很多 JavaScript 程序员对这种行为已经很熟悉了，但如果你很不解，你并不是一个人。 大多数人期望输出结果是这样：
 
-```
+```js
 0
 1
 2
@@ -252,7 +252,7 @@ for (var i = 0; i < 10; i++) {
 
 一个通常的解决方法是使用立即执行的函数表达式（IIFE）来捕获每次迭代时`i`的值：
 
-```
+```js
 for (var i = 0; i < 10; i++) {
     // capture the current state of 'i'
     // by invoking a function with its current value
@@ -268,7 +268,7 @@ for (var i = 0; i < 10; i++) {
 
 现在你已经知道了`var`存在一些问题，这恰好说明了为什么用`let`语句来声明变量。 除了名字不同外，`let`与`var`的写法一致。
 
-```
+```js
 let hello = "Hello!"; 
 ```
 
@@ -278,7 +278,7 @@ let hello = "Hello!";
 
 当用`let`声明一个变量，它使用的是*词法作用域*或*块作用域*。 不同于使用`var`声明的变量那样可以在包含它们的函数外访问，块作用域变量在包含它们的块或`for`循环之外是不能访问的。
 
-```
+```js
 function f(input: boolean) {
     let a = 100;
 
@@ -297,7 +297,7 @@ function f(input: boolean) {
 
 在`catch`语句里声明的变量也具有同样的作用域规则。
 
-```
+```js
 try {
     throw "oh no!";
 }
@@ -311,14 +311,14 @@ console.log(e);
 
 拥有块级作用域的变量的另一个特点是，它们不能在被声明之前读或写。 虽然这些变量始终“存在”于它们的作用域里，但在直到声明它的代码之前的区域都属于*时间死区*。 它只是用来说明我们不能在`let`语句之前访问它们，幸运的是 TypeScript 可以告诉我们这些信息。
 
-```
+```js
 a++; // illegal to use 'a' before it's declared;
 let a; 
 ```
 
 注意一点，我们仍然可以在一个拥有块作用域变量被声明前*获取*它。 只是我们不能在变量声明前去调用那个函数。 如果生成代码目标为 ES2015，现代的运行时会抛出一个错误；然而，现今 TypeScript 是不会报错的。
 
-```
+```js
 function foo() {
     // okay to capture 'a'
     return a;
@@ -337,7 +337,7 @@ let a;
 
 我们提过使用`var`声明时，它不在乎你声明多少次；你只会得到 1 个。
 
-```
+```js
 function f(x) {
     var x;
     var x;
@@ -350,14 +350,14 @@ function f(x) {
 
 在上面的例子里，所有`x`的声明实际上都引用一个*相同*的`x`，并且这是完全有效的代码。 这经常会成为 bug 的来源。 好的是，`let`声明就不会这么宽松了。
 
-```
+```js
 let x = 10;
 let x = 20; // 错误，不能在 1 个作用域里多次声明`x` 
 ```
 
 并不是要求两个均是块级作用域的声明 TypeScript 才会给出一个错误的警告。
 
-```
+```js
 function f(x) {
     let x = 100; // error: interferes with parameter declaration
 }
@@ -370,7 +370,7 @@ function g() {
 
 并不是说块级作用域变量不能在函数作用域内声明。 而是块级作用域变量需要在不用的块里声明。
 
-```
+```js
 function f(condition, x) {
     if (condition) {
         let x = 100;
@@ -386,7 +386,7 @@ f(true, 0);  // returns 100
 
 在一个嵌套作用域里引入一个新名字的行为称做*屏蔽*。 它是一把双刃剑，它可能会不小心地引入新问题，同时也可能会解决一些错误。 例如，假设我们现在用`let`重写之前的`sumMatrix`函数。
 
-```
+```js
 function sumMatrix(matrix: number[][]) {
     let sum = 0;
     for (let i = 0; i < matrix.length; i++) {
@@ -408,7 +408,7 @@ function sumMatrix(matrix: number[][]) {
 
 在我们最初谈及获取用`var`声明的变量时，我们简略地探究了一下在获取到了变量之后它的行为是怎样的。 直观地讲，每次进入一个作用域时，它创建了一个变量的*环境*。 就算作用域内代码已经执行完毕，这个环境仍然是存在的。
 
-```
+```js
 function theCityThatAlwaysSleeps() {
     let getCity;
 
@@ -429,7 +429,7 @@ function theCityThatAlwaysSleeps() {
 
 当`let`声明出现在循环体里时拥有完全不同的行为。 不仅是在循环里引入了一个新的变量环境，而是针对*每次迭代*都会创建这样一个新作用域。 这就是我们在使用立即执行的函数表达式时做的事，所以在`setTimeout`例子里我们仅使用`let`声明就可以了。
 
-```
+```js
 for (let i = 0; i < 10 ; i++) {
     setTimeout(function() {console.log(i); }, 100 * i);
 } 
@@ -437,7 +437,7 @@ for (let i = 0; i < 10 ; i++) {
 
 会输出与预料一致的结果：
 
-```
+```js
 0
 1
 2
@@ -454,7 +454,7 @@ for (let i = 0; i < 10 ; i++) {
 
 `const` 声明是声明变量的另一种方式。
 
-```
+```js
 const numLivesForCat = 9; 
 ```
 
@@ -462,7 +462,7 @@ const numLivesForCat = 9;
 
 这很好理解，它们引用的值是*不可变的*。
 
-```
+```js
 const numLivesForCat = 9;
 const kitty = {
     name: "Aurora",

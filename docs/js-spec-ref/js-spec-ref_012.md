@@ -36,7 +36,7 @@ JavaScript 是一种动态类型语言，变量是没有类型的，可以随时
 
 *   null：转成 0。
 
-```
+```js
 Number("324") // 324
 
 Number("324abc") // NaN
@@ -52,7 +52,7 @@ Number(null) // 0
 
 Number 函数将字符串转为数值，要比 parseInt 函数严格很多。基本上，只要有一个字符无法转成数值，整个字符串就会被转为 NaN。
 
-```
+```js
 parseInt('011') // 9
 parseInt('42 cats') // 42
 parseInt('0xcafebabe') // 3405691582
@@ -66,7 +66,7 @@ Number('0xcafebabe') // 3405691582
 
 Number 函数会自动过滤一个字符串前导和后缀的空格。
 
-```
+```js
 Number('\t\v\r12.34\n ')
 ```
 
@@ -80,14 +80,14 @@ Number('\t\v\r12.34\n ')
 
 3.  如果 toString 方法返回的是复合类型的值，则报错。
 
-```
+```js
 Number({a:1})
 // NaN
 ```
 
 上面代码等同于
 
-```
+```js
 if (typeof {a:1}.valueOf() === 'object'){
     Number({a:1}.toString());
 } else {
@@ -99,7 +99,7 @@ if (typeof {a:1}.valueOf() === 'object'){
 
 如果 toString 方法返回的不是原始类型的值，结果就会报错。
 
-```
+```js
 var obj = {
     valueOf: function () {
             console.log("valueOf");
@@ -119,7 +119,7 @@ Number(obj)
 
 从上面的例子可以看出，valueOf 和 toString 方法，都是可以自定义的。
 
-```
+```js
 Number({valueOf:function (){return 2;}})
 // 2
 
@@ -148,7 +148,7 @@ Number({valueOf:function (){return 2;},toString:function(){return 3;}})
 
 *   null：转为“null”。
 
-```
+```js
 String(123) // "123"
 
 String("abc") // "abc"
@@ -172,21 +172,21 @@ String(null) // "null"
 
 String 方法的这种过程正好与 Number 方法相反。
 
-```
+```js
 String({a:1})
 // "[object Object]"
 ```
 
 上面代码相当于下面这样。
 
-```
+```js
 String({a:1}.toString())
 // "[object Object]"
 ```
 
 如果 toString 方法和 valueOf 方法，返回的都不是原始类型的值，则 String 方法报错。
 
-```
+```js
 var obj = {
     valueOf: function () {
             console.log("valueOf");
@@ -204,7 +204,7 @@ String(obj)
 
 下面是一个自定义 toString 方法的例子。
 
-```
+```js
 String({toString:function(){return 3;}})
 // "3"
 
@@ -232,7 +232,7 @@ String({valueOf:function (){return 2;},toString:function(){return 3;}})
 *   NaN
 *   ''（空字符串）
 
-```
+```js
 Boolean(undefined) // false
 
 Boolean(null) // false
@@ -248,14 +248,14 @@ Boolean('') // false
 
 所有对象的布尔值都是 true，甚至连 false 对应的布尔对象也是 true。
 
-```
+```js
 Boolean(new Boolean(false))
 // true
 ```
 
 请注意，空对象{}和空数组[]也会被转成 true。
 
-```
+```js
 Boolean([]) // true
 
 Boolean({}) // true
@@ -284,7 +284,7 @@ Boolean({}) // true
 *   NaN
 *   ''（空字符串）
 
-```
+```js
 if (!undefined && !null && !0 && !NaN && !''){
     console.log('true');
 }
@@ -297,7 +297,7 @@ if (!undefined && !null && !0 && !NaN && !''){
 
 字符串的自动转换，主要发生在加法运算时。当一个值为字符串，另一个值为非字符串，则后者转为字符串。
 
-```
+```js
 '5' + 1 // '51'
 '5' + true // "5true"
 '5' + false // "5false"
@@ -314,7 +314,7 @@ if (!undefined && !null && !0 && !NaN && !''){
 
 除了加法运算符有可能把运算子转为字符串，其他运算符都会把两侧的运算子自动转成数值。
 
-```
+```js
 '5' - '2' // 3
 '5' * '2' // 10
 true - 1  // 0
@@ -327,7 +327,7 @@ false/'5' // 0
 
 上面都是二元算术运算符的例子，JavaScript 的两个一元算术运算符——正号和负号——也会把运算子自动转为数值。
 
-```
+```js
 +'abc' // NaN
 -'abc' // NaN
 +true // 1
@@ -354,7 +354,7 @@ false/'5' // 0
 
 这种情况下，执行加法运算，布尔值转为数值（true 为 1，false 为 0）。
 
-```
+```js
 true + 5 // 6
 
 true + true // 2
@@ -364,14 +364,14 @@ true + true // 2
 
 运算子之中存在对象（或者准确地说，存在非原始类型的值），则先调用该对象的 valueOf 方法。如果返回结果为原始类型的值，则运用上面两条规则；否则继续调用该对象的 toString 方法，对其返回值运用上面两条规则。
 
-```
+```js
 1 + [1,2]
 // "11,2"
 ```
 
 上面代码的运行顺序是，先调用[1,2].valueOf()，结果还是数组[1,2]本身，则继续调用[1,2].toString()，结果字符串“1,2”，所以最终结果为字符串“11,2”。
 
-```
+```js
 1 + {a:1}
 // "1[object Object]"
 ```
@@ -380,42 +380,42 @@ true + true // 2
 
 有趣的是，如果更换上面代码的运算次序，就会得到不同的值。
 
-```
+```js
 {a:1} + 1
 // 1
 ```
 
 原来此时，JavaScript 引擎不将{a:1}视为对象，而是视为一个代码块，这个代码块没有返回值，所以被忽略。因此上面的代码，实际上等同于 {a:1};+1 ，所以最终结果就是 1。为了避免这种情况，需要对{a:1}加上括号。
 
-```
+```js
 ({a:1})+1
 "[object Object]1"
 ```
 
 将{a:1}放置在括号之中，由于 JavaScript 引擎预期括号之中是一个值，所以不把它当作代码块处理，而是当作对象处理，所以最终结果为“[object Object]1”。
 
-```
+```js
 1 + {valueOf:function(){return 2;}}
 // 3
 ```
 
 上面代码的 valueOf 方法返回数值 2，所以最终结果为 3。
 
-```
+```js
 1 + {valueOf:function(){return {};}}
 // "1[object Object]"
 ```
 
 上面代码的 valueOf 方法返回一个空对象，则继续调用 toString 方法，所以最终结果是“1[object Object]”。
 
-```
+```js
 1 + {valueOf:function(){return {};}, toString:function(){return 2;}}
 // 3
 ```
 
 上面代码的 toString 方法返回数值 2（不是字符串），则最终结果就是数值 3。
 
-```
+```js
 1 + {valueOf:function(){return {};}, toString:function(){return {};}}
 // TypeError: Cannot convert object to primitive value
 ```
@@ -428,7 +428,7 @@ true + true // 2
 
 （1）空数组 + 空数组
 
-```
+```js
 [] + []
 // ""
 ```
@@ -437,7 +437,7 @@ true + true // 2
 
 （2）空数组 + 空对象
 
-```
+```js
 [] + {}
 // "[object Object]"
 ```
@@ -446,14 +446,14 @@ true + true // 2
 
 （3）空对象 + 空数组
 
-```
+```js
 {} + []
 // 0
 ```
 
 JavaScript 引擎将空对象视为一个空的代码块，加以忽略。因此，整个表达式就变成“+ []”，等于对空数组求正值，因此结果就是 0。转化过程如下：
 
-```
+```js
 + []
 // Number([])
 // Number([].toString())
@@ -463,21 +463,21 @@ JavaScript 引擎将空对象视为一个空的代码块，加以忽略。因此
 
 如果 JavaScript 不把前面的空对象视为代码块，则结果为字符串“[object Object]”。
 
-```
+```js
 ({}) + []
 // "[object Object]"
 ```
 
 （4）空对象 + 空对象
 
-```
+```js
 {} + {}
 // NaN
 ```
 
 JavaScript 同样将第一个空对象视为一个空代码块，整个表达式就变成“+ {}”。这时，后一个空对象的 ValueOf 方法得到本身，再调用 toSting 方法，得到字符串“[object Object]”，然后再将这个字符串转成数值，得到 NaN。所以，最后的结果就是 NaN。转化过程如下：
 
-```
+```js
 + {}
 // Number({})
 // Number({}.toString())
@@ -486,7 +486,7 @@ JavaScript 同样将第一个空对象视为一个空代码块，整个表达式
 
 如果，第一个空对象不被 JavaScript 视为空代码块，就会得到“[object Object][object Object]”的结果。
 
-```
+```js
 ({}) + {}
 // "[object Object][object Object]"
 
@@ -503,7 +503,7 @@ a
 
 需要指出的是，对于第三和第四种情况，Node.js 的运行结果不同于浏览器环境。
 
-```
+```js
 {} + {}
 // "[object Object][object Object]"
 
@@ -513,7 +513,7 @@ a
 
 可以看到，Node.js 没有把第一个空对象视为代码块。原因是 Node.js 的命令行环境，内部执行机制大概是下面的样子：
 
-```
+```js
 eval.call(this,"(function(){return {} + {}}).call(this)")
 ```
 

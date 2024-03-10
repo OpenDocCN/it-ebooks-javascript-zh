@@ -11,7 +11,7 @@
 
 它最早是由 Google 提出的，目的是让用户直接进行语音搜索，即对着麦克风说出你所要搜索的词，搜索结果就自动出现。Google 首先部署的是 input 元素的 speech 属性（加上浏览器前缀 x-webkit）。
 
-```
+```js
 <input id="query" type="search" class="k-input k-textbox" 
  x-webkit-speech speech />
 ```
@@ -26,7 +26,7 @@
 
 这个 API 部署在 SpeechRecognition 对象之上。
 
-```
+```js
 var SpeechRecognition = window.SpeechRecognition || 
                         window.webkitSpeechRecognition || 
                         window.mozSpeechRecognition || 
@@ -38,7 +38,7 @@ var SpeechRecognition = window.SpeechRecognition ||
 
 确定浏览器支持以后，新建一个 SpeechRecognition 的实例对象。
 
-```
+```js
 if (SpeechRecognition) {       
   var recognition = new SpeechRecognition();
   recognition.maxAlternatives = 5;
@@ -51,7 +51,7 @@ maxAlternatives 属性等于 5，表示最多返回 5 个语音匹配结果。
 
 目前，该 API 部署了 11 个事件。下面对其中的 3 个定义回调函数（假定 speak 是语音输入框）。
 
-```
+```js
 var speak = $('#speak');
 
 recognition.onaudiostart = function() {
@@ -71,7 +71,7 @@ recognition.onerror = function() {
 
 如果得到与语音匹配的值，则会触发 result 事件。
 
-```
+```js
 recognition.onresult = function(event) { 
 
   if (event.results.length > 0) { 

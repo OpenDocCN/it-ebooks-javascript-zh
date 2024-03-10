@@ -10,7 +10,7 @@ Chrome 提供了 downloads API，扩展可以通过此 API 管理浏览器的下
 
 扩展使用`downloads`接口需要在 Manifest 文件中声明`downloads`权限：
 
-```
+```js
 "permissions": [
     "downloads"
 ] 
@@ -18,13 +18,13 @@ Chrome 提供了 downloads API，扩展可以通过此 API 管理浏览器的下
 
 创建下载可以通过`downloads`中的`download`方法实现。`download`方法包含两个参数，第一个是有关下载的属性对象，包括 URL、保存位置、文件名等信息，第二个是创建成功后的回调函数。
 
-```
+```js
 chrome.downloads.download(options, callback); 
 ```
 
 其中`options`的完整结构如下：
 
-```
+```js
 {
     url: 下载文件的 url,
     filename: 保存的文件名,
@@ -48,7 +48,7 @@ chrome.downloads.download(options, callback);
 
 首先创建 manifest.json。
 
-```
+```js
 {
     "manifest_version": 2,
     "name": "Save all images",
@@ -68,7 +68,7 @@ chrome.downloads.download(options, callback);
 
 下面编写 background.js 文件，这个文件用来创建右键菜单，并在用户点击菜单后向当前标签页注入脚本，最后还要完成下载的行为。
 
-```
+```js
 chrome.runtime.onInstalled.addListener(function(){
     chrome.contextMenus.create({
         'id':'saveall',
@@ -96,7 +96,7 @@ chrome.contextMenus.onClicked.addListener(function(info, tab){
 
 最后来编写注入脚本，main.js。
 
-```
+```js
 [].map.call(document.getElementsByTagName('img'), function(img){
     return img.src;
 }); 
@@ -117,7 +117,7 @@ Chrome 提供了较为完整的方法供扩展程序分析、阻断及更改网�
 
 要对网络请求进行操作，需要在 Manifest 中声明`webRequest`权限以及相关被操作的 URL。如需要阻止网络请求，需要声明`webRequestBlocking`权限。
 
-```
+```js
 "permissions": [
     "webRequest",
     "webRequestBlocking",
@@ -131,7 +131,7 @@ Chrome 提供了较为完整的方法供扩展程序分析、阻断及更改网�
 
 下面的代码阻断了所有向 bad.example.com 的连接：
 
-```
+```js
 chrome.webRequest.onBeforeRequest.addListener(
     function(details){
         return {cancel: true};
@@ -149,7 +149,7 @@ chrome.webRequest.onBeforeRequest.addListener(
 
 而下面的代码则将所有连接中的`User-Agent`信息都删除了：
 
-```
+```js
 chrome.webRequest.onBeforeSendHeaders.addListener(
     function(details){
         for(var i=0, headerLen=details.requestHeaders.length; i<headerLen; ++i){
@@ -176,7 +176,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 
 下面的代码将所有访问 www.google.com.hk 的请求重定向到了 www.google.com：
 
-```
+```js
 chrome.webRequest.onBeforeRequest.addListener(
     function(details){
         return {redirectUrl: details.url.replace( "www.google.com.hk", "www.google.com")};
@@ -204,7 +204,7 @@ chrome.webRequest.onBeforeRequest.addListener(
 
 Chrome 浏览器提供了代理设置管理接口，这样可以让扩展来做到更加智能的代理设置。要让扩展使用代理接口，需要声明`proxy`权限：
 
-```
+```js
 "permissions": [
     "proxy"
 ] 
@@ -216,7 +216,7 @@ Chrome 浏览器提供了代理设置管理接口，这样可以让扩展来做�
 
 `rules`属性和`pacScript`属性都是可选的，`rules`指定了不同的协议通过不同的代理，比如：
 
-```
+```js
 var config = {
     mode: "fixed_servers",
     rules: {
@@ -250,7 +250,7 @@ chrome.proxy.settings.set(
 
 通过`chrome.proxy.settings.get`方法可以获取到浏览器当前的代理设置：
 
-```
+```js
 chrome.proxy.settings.get(
     {},
     function(config) {
@@ -263,7 +263,7 @@ chrome.proxy.settings.get(
 
 SwitchySharp 的完整代码可以通过[`code.google.com/p/switchysharp`](https://code.google.com/p/switchysharp)获取到，其中代理设置核心的代码为 assets/scripts/plugin.js，可以通过[`code.google.com/p/switchysharp/source/browse/assets/scripts/plugin.js`](https://code.google.com/p/switchysharp/source/browse/assets/scripts/plugin.js)在线查看此文件。
 
-```
+```js
 var ProxyPlugin = {};
 ProxyPlugin.memoryPath = memoryPath;
 ProxyPlugin.proxyMode = Settings.getValue('proxyMode', 'direct');
@@ -278,7 +278,7 @@ SwitchySharp 首先声明了一个`ProxyPlugin`对象，此对象用来储存代
 
 `mute`属性用来记录代理是否正在设置当中，如果不是，则此属性值为`false`，如果代理设置正在被更改，则此值为`ture`，用来避免设置冲突。最后`_proxy`属性用来获取 Chrome 中代理设置的方法，为了做到最大限度兼容，SwitchySharp 对代理接口依然处于实验性阶段版本的 Chrome 进行了优化：
 
-```
+```js
 if (chrome.experimental !== undefined && chrome.experimental.proxy !== undefined)
     ProxyPlugin._proxy = chrome.experimental.proxy;
 else if (chrome.proxy !== undefined)
@@ -289,7 +289,7 @@ else
 
 `ProxyPlugin`的`updateProxy`方法用来更新代理设置选项，这个方法在开始就先判断`mute`的值是否为真，也就是判断此时代理设置是否正在被更改，如果是则退出避免设置冲突。
 
-```
+```js
 ProxyPlugin._parseProxy = function (str) {
     if (str) {
         var proxy = {scheme:'http', host:'', port:80};
@@ -321,7 +321,7 @@ ProxyPlugin._parseProxy = function (str) {
 
 `_parseProxy`方法用来解析声明多种代理的规则字符串，此方法将字符串转化为用于`fixed_servers`模式下的`rules`对象。
 
-```
+```js
 ProxyPlugin.setProxy = function (proxyMode, proxyString, proxyExceptions, proxyConfigUrl) {
     ...
     switch (proxyMode) {
@@ -350,7 +350,7 @@ ProxyPlugin.setProxy = function (proxyMode, proxyString, proxyExceptions, proxyC
 
 Chrome 提供了获取系统 CPU、内存和存储设备的信息，要获取这些信息，需要在 Manifest 中分别声明如下权限：
 
-```
+```js
 "permissions": [
     "system.cpu",
     "system.memory",
@@ -360,7 +360,7 @@ Chrome 提供了获取系统 CPU、内存和存储设备的信息，要获取这
 
 三个接口都提供了`getInfo`方法以获取信息：
 
-```
+```js
 chrome.system.cpu.getInfo(function(info){
     console.log(info);
 });
@@ -382,7 +382,7 @@ CPU 的信息包括`numOfProcessors`、`archName`、`modelName`、`features`和`
 
 `system.storage`还提供了获取指定设备剩余空间和移除移动磁盘的方法¹：
 
-```
+```js
 chrome.system.storage.getAvailableCapacity(deviceId, function(info){
     console.log(info.availableCapacity);
 });
@@ -396,7 +396,7 @@ chrome.system.storage.ejectDevice(deviceId, function(result){
 
 `chome.system.storage.onAttached`和`chome.system.storage.onDetached`事件分别用于监听可移动设备的插入和移除。
 
-```
+```js
 chrome.system.storage.onAttached.addListener(function(info){
     console.log(info);
 });

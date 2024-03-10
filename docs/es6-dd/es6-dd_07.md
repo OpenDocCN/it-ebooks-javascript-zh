@@ -6,7 +6,7 @@
 
 箭头符号在 JavaScript 诞生时就已经存在，当初第一个 JavaScript 教程曾建议在 HTML 注释内包裹行内脚本，这样可以避免不支持 JS 的浏览器误将 JS 代码显示为文本。你会写这样的代码：
 
-```
+```js
  <script language="javascript">
     <!--
       document.bgColor = "brown";  // red
@@ -24,7 +24,7 @@
 
 你一定感到陌生的是，只有当箭头在行首时才会注释当前行。这是因为在其它上下文中，`-->`是一个 JS 运算符：“趋向于”运算符！
 
-```
+```js
  function countdown(n) {
       while (n --> 0)  // "n goes to zero"
         alert(n);
@@ -51,13 +51,13 @@ JavaScript 中有一个有趣的特性，无论何时，当你需要一个函数
 
 举个例子，假设你尝试告诉浏览器用户点击一个特定按钮后的行为，你会这样写：
 
-```
+```js
  $("#confetti-btn").click(
 ```
 
 jQuery 的`.click()`方法接受一个参数：一个函数。没问题，你可以在这里输入一个函数：
 
-```
+```js
  $("#confetti-btn").click(function (event) {
       playTrumpet();
       fireConfettiCannon();
@@ -70,7 +70,7 @@ jQuery 的`.click()`方法接受一个参数：一个函数。没问题，你可
 
 令人伤感的是，随后在所有我提及的语言中，只有 JavaScript 的 lambda 的语法最终变得冗长乏味。
 
-```
+```js
  // 六种语言中的简单函数示例
     function (a) { return a > 0; } // JS
     [](int a) { return a > 0; }  // C++
@@ -84,7 +84,7 @@ jQuery 的`.click()`方法接受一个参数：一个函数。没问题，你可
 
 ES6 中引入了一种编写函数的新语法
 
-```
+```js
  // ES5
     var selected = allJobs.filter(function (job) {
       return job.isSelected();
@@ -99,7 +99,7 @@ ES6 中引入了一种编写函数的新语法
 
 如果要写一个接受多重参数（也可能没有参数，或者是[不定参数、默认参数](http://www.infoq.com/cn/articles/es6-in-depth-rest-parameters-and-defaults)、[参数解构](http://www.infoq.com/cn/articles/es6-in-depth-destructuring)）的函数，你需要用小括号包裹参数 list。
 
-```
+```js
  // ES5
     var total = values.reduce(function (a, b) {
       return a + b;
@@ -114,7 +114,7 @@ ES6 中引入了一种编写函数的新语法
 
 那么不是非常函数化的情况又如何呢？除表达式外，箭头函数还可以包含一个块语句。回想一下我们之前的示例：
 
-```
+```js
  // ES5
     $("#confetti-btn").click(function (event) {
       playTrumpet();
@@ -124,7 +124,7 @@ ES6 中引入了一种编写函数的新语法
 
 这是它们在 ES6 中看起来的样子：
 
-```
+```js
  // ES6
     $("#confetti-btn").click(event => {
       playTrumpet();
@@ -138,7 +138,7 @@ ES6 中引入了一种编写函数的新语法
 
 *小提示：当使用箭头函数创建普通对象时，你总是需要将对象包裹在小括号里。*
 
-```
+```js
  // 为与你玩耍的每一个小狗创建一个新的空对象
     var chewToys = puppies.map(puppy => {});   // 这样写会报 Bug！
     var chewToys = puppies.map(puppy => ({})); //
@@ -160,7 +160,7 @@ JavaScript 中的`this`是如何工作的？它的值从哪里获取？[这些�
 
 这个问题经常出现的其中一个原因是，无论是否需要，`function`函数总会自动接收一个`this`值。你是否写过这样的 hack 代码：
 
-```
+```js
  {
       ...
       addAll: function addAll(pieces) {
@@ -180,7 +180,7 @@ JavaScript 中的`this`是如何工作的？它的值从哪里获取？[这些�
 *   通过`object.method()`语法调用的方法使用非箭头函数定义，这些函数需要从调用者的作用域中获取一个有意义的`this`值。
 *   其它情况全都使用箭头函数。
 
-```
+```js
  // ES6
     {
       ...
@@ -195,7 +195,7 @@ JavaScript 中的`this`是如何工作的？它的值从哪里获取？[这些�
 
 超赞的是，在 ES6 中你可以用更简洁的方式编写对象字面量中的方法，所以上面这段代码可以简化成：
 
-```
+```js
  // ES6 的方法语法
     {
       ...
@@ -226,13 +226,13 @@ JavaScript 中的`this`是如何工作的？它的值从哪里获取？[这些�
 
 这是用 Church 的 lambda 标记写出来的数学家风格的“程序”示例：
 
-```
+```js
  fix = λf.(λx.f(λv.x(x)(v)))(λx.f(λv.x(x)(v)))
 ```
 
 等效的 JavaScript 函数是这样的：
 
-```
+```js
  var fix = f => (x => f(v => x(x)(v)))
                    (x => f(v => x(x)(v)));
 ```

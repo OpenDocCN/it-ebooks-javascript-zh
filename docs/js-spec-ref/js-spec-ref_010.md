@@ -35,7 +35,7 @@
 
 函数就是使用 function 命令命名的代码区块，便于反复调用。
 
-```
+```js
 function print(){
   // ...
 }
@@ -47,7 +47,7 @@ function print(){
 
 除了用 function 命令声明函数，还可以采用变量赋值的写法。
 
-```
+```js
 var print = function (){
   // ...
 };
@@ -57,7 +57,7 @@ var print = function (){
 
 采用函数表达式声明函数时，function 命令后面不带有函数名。如果加上函数名，该函数名只在函数体内部有效，在函数体外部无效。
 
-```
+```js
 var print = function x(){
   console.log(typeof x);
 };
@@ -71,7 +71,7 @@ print()
 
 上面代码在函数表达式中，加入了函数名 x。这个 x 只在函数体内部可用，指代函数表达式本身，其他地方都不可用。这种写法的用处有两个，一是可以在函数体内部调用自身，二是方便除错（除错工具显示函数调用栈时，将显示函数名，而不再显示这里是一个匿名函数）。因此，需要时，可以采用下面的形式声明函数。
 
-```
+```js
 var f = function f(){};
 ```
 
@@ -81,7 +81,7 @@ var f = function f(){};
 
 还有第三种声明函数的方式：通过 Function 构造函数声明。
 
-```
+```js
 var add = new Function("x","y","return (x+y)");
 // 相当于定义了如下函数
 // function add(x, y) {
@@ -91,7 +91,7 @@ var add = new Function("x","y","return (x+y)");
 
 在上面代码中，Function 对象接受若干个参数，除了最后一个参数是 add 函数的“函数体”，其他参数都是 add 函数的参数。如果只有一个参数，该参数就是函数体。
 
-```
+```js
 var foo = new Function('return "hello world"');
 // 相当于定义了如下函数
 // function foo() {
@@ -107,7 +107,7 @@ Function 构造函数可以不使用 new 命令，返回结果完全一样。
 
 如果多次采用 function 命令，重复声明同一个函数，则后面的声明会覆盖前面的声明。
 
-```
+```js
 function f(){
   console.log(1);
 }
@@ -127,7 +127,7 @@ f() // 2
 
 调用函数时，要使用圆括号运算符。圆括号之中，可以加入函数的参数。
 
-```
+```js
 function add(x,y) {
   return x+y;
 }
@@ -139,7 +139,7 @@ add(1,1) // 2
 
 函数可以调用自身，这就是递归（recursion）。下面就是使用递归，计算斐波那契数列的代码。
 
-```
+```js
 function fib(num) {
   if (num > 2) {
     return fib(num - 2) + fib(num - 1);
@@ -156,7 +156,7 @@ fib(6)
 
 JavaScript 的函数与其他数据类型处于同等地位，可以使用其他数据类型的地方就能使用函数。比如，可以把函数赋值给变量和对象的属性，也可以当作参数传入其他函数，或者作为函数的结果返回。这表示函数与其他数据类型的地方是平等，所以又称函数为第一等公民。
 
-```
+```js
 function add(x,y){
   return x+y;
 }
@@ -176,14 +176,14 @@ a(add)(1,1)
 
 JavaScript 引擎将函数名视同变量名，所以采用 function 命令声明函数时，整个函数会被提升到代码头部。所以，下面的代码不会报错。
 
-```
+```js
 f();
 function f(){}
 ```
 
 表面上，上面代码好像在声明之前就调用了函数 f。但是实际上，由于“变量提升”，函数 f 被提升到了代码头部，也就是在调用之前已经声明了。但是，如果采用赋值语句定义函数，JavaScript 就会报错。
 
-```
+```js
 f();
 var f = function (){};
 // TypeError: undefined is not a function
@@ -191,7 +191,7 @@ var f = function (){};
 
 上面的代码等同于
 
-```
+```js
 var f;
 f();
 f = function (){};
@@ -199,7 +199,7 @@ f = function (){};
 
 当调用 f 的时候，f 只是被声明，还没有被赋值，等于 undefined，所以会报错。因此，如果同时采用 function 命令和赋值语句声明同一个函数，最后总是采用赋值语句的定义。
 
-```
+```js
 var f = function() {
   console.log ('1');
 }
@@ -216,7 +216,7 @@ f()
 
 根据 ECMAScript 的规范，不得在非函数的代码块中声明函数，最常见的情况就是 if 和 try 语句。
 
-```
+```js
 if (foo) {
   function x() { return; }
 }
@@ -232,7 +232,7 @@ try {
 
 但是由于存在函数名的提升，所以在条件语句中声明函数是无效的，这是非常容易出错的地方。
 
-```
+```js
 if (false){
   function f(){}
 }
@@ -243,7 +243,7 @@ f()
 
 由于函数 f 的声明被提升到了 if 语句的前面，导致 if 语句无效，所以上面的代码不会报错。要达到在条件语句中定义函数的目的，只有使用函数表达式。
 
-```
+```js
 if (false){
   var f = function (){};
 }
@@ -258,7 +258,7 @@ f()
 
 name 属性返回紧跟在 function 关键字之后的那个函数名。
 
-```
+```js
 function f1() {}
 f1.name // 'f1'
 
@@ -275,7 +275,7 @@ f3.name // 'myName'
 
 length 属性返回函数定义中参数的个数。
 
-```
+```js
 function f(a,b) {}
 
 f.length
@@ -290,7 +290,7 @@ length 属性提供了一种机制，判断定义时和调用时参数的差异�
 
 函数的 toString 方法返回函数的源码。
 
-```
+```js
 function f() {
   a();
   b();
@@ -313,7 +313,7 @@ f.toString()
 
 在函数外部声明的变量就是全局变量（global variable），它可以在函数内部读取。
 
-```
+```js
 var v = 1;
 
 function f(){
@@ -328,7 +328,7 @@ f()
 
 在函数内部定义的变量，外部无法读取，称为“局部变量”（local variable）。
 
-```
+```js
 function f(){
    var v = 1;
 }
@@ -339,7 +339,7 @@ v
 
 函数内部定义的变量，会在该作用域内覆盖同名全局变量。
 
-```
+```js
 var v = 1;
 
 function f(){
@@ -358,7 +358,7 @@ v
 
 与全局作用域一样，函数作用域内部也会产生“变量提升”现象。var 命令声明的变量，不管在什么位置，变量声明都会被提升到函数体的头部。
 
-```
+```js
 function foo(x) {
     if (x > 100) {
          var tmp = x - 100;
@@ -368,7 +368,7 @@ function foo(x) {
 
 上面的代码等同于
 
-```
+```js
 function foo(x) {
   var tmp;
   if (x > 100) {
@@ -381,7 +381,7 @@ function foo(x) {
 
 函数本身也是一个值，也有自己的作用域。它的作用域绑定其声明时所在的作用域。
 
-```
+```js
 var a = 1;
 var x = function (){
   console.log(a);
@@ -399,7 +399,7 @@ f() // 1
 
 很容易犯错的一点是，如果函数 A 调用函数 B，却没考虑到函数 B 不会引用函数 A 的内部变量。
 
-```
+```js
 var x = function (){
   console.log(a);
 };
@@ -421,7 +421,7 @@ y(x)
 
 函数运行的时候，有时需要提供外部数据，不同的外部数据会得到不同的结果，这种外部数据就叫参数。
 
-```
+```js
 function square(x){
     return x*x;
 }
@@ -436,7 +436,7 @@ square(3) // 9
 
 参数不是必需的，Javascript 语言允许省略参数。
 
-```
+```js
 function f(a,b){
     return a;
 }
@@ -452,7 +452,7 @@ f.length // 2
 
 但是，没有办法只省略靠前的参数，而保留靠后的参数。如果一定要省略靠前的参数，只有显式传入 undefined。
 
-```
+```js
 function f(a,b){
     return a;
 }
@@ -465,7 +465,7 @@ f(undefined,1) // undefined
 
 通过下面的方法，可以为函数的参数设置默认值。
 
-```
+```js
 function f(a){
     a = a || 1;
     return a;
@@ -481,7 +481,7 @@ f(0) // 1
 
 为了避免这个问题，可以采用下面更精确的写法。
 
-```
+```js
 function f(a){
     (a !== undefined && a != null)?(a = a):(a = 1);
     return a;
@@ -495,7 +495,7 @@ f(0) // 0
 
 JavaScript 的函数参数传递方式是传值传递（passes by value），这意味着，在函数体内修改参数值，不会影响到函数外部。
 
-```
+```js
 // 修改原始类型的参数值
 var p = 2; 
 
@@ -521,7 +521,7 @@ o // [1, 2, 3]
 
 需要十分注意的是，虽然参数本身是传值传递，但是对于复合类型的变量来说，属性值是传址传递（pass by reference），也就是说，属性值是通过地址读取的。所以在函数体内修改复合类型变量的属性值，会影响到函数外部。
 
-```
+```js
 // 修改对象的属性值
 var o = { p:1 };
 
@@ -547,7 +547,7 @@ a // [4,2,3]
 
 某些情况下，如果需要对某个变量达到传址传递的效果，可以将它写成全局对象的属性。
 
-```
+```js
 var a = 1;
 
 function f(p){
@@ -565,7 +565,7 @@ a // 2
 
 如果有同名的参数，则取最后出现的那个值。
 
-```
+```js
 function f(a, a){
     console.log(a);
 }
@@ -576,7 +576,7 @@ f(1,2)
 
 上面的函数 f 有两个参数，且参数名都是 a。取值的时候，以后面的 a 为准。即使后面的 a 没有值或被省略，也是以其为准。
 
-```
+```js
 function f(a, a){
     console.log(a);
 }
@@ -587,7 +587,7 @@ f(1)
 
 调用函数 f 的时候，没有提供第二个参数，a 的取值就变成了 undefined。这时，如果要获得第一个 a 的值，可以使用 arguments 对象。
 
-```
+```js
 function f(a, a){
     console.log(arguments[0]);
 }
@@ -604,7 +604,7 @@ f(1)
 
 arguments 对象包含了函数运行时的所有参数，arguments[0]就是第一个参数，arguments[1]就是第二个参数，依次类推。这个对象只有在函数体内部，才可以使用。
 
-```
+```js
 var f = function(one) {
   console.log(arguments[0]);
   console.log(arguments[1]);
@@ -619,7 +619,7 @@ f(1, 2, 3)
 
 arguments 对象除了可以读取参数，还可以为参数赋值（严格模式不允许这种用法）。
 
-```
+```js
 var f = function(a,b) {
   arguments[0] = 3;
   arguments[1] = 2;
@@ -632,7 +632,7 @@ f(1, 1)
 
 可以通过 arguments 对象的 length 属性，判断函数调用时到底带几个参数。
 
-```
+```js
 function f(){
     return arguments.length;
 }
@@ -648,7 +648,7 @@ f() // 0
 
 但是，有时 arguments 可以像数组一样，用在某些只用于数组的方法。比如，用在 apply 方法中，或使用 concat 方法完成数组合并。
 
-```
+```js
 // 用于 apply 方法
 myfunction.apply(obj, arguments).
 
@@ -658,7 +658,7 @@ Array.prototype.concat.apply([1,2,3], arguments)
 
 要让 arguments 对象使用数组方法，真正的解决方法是将 arguments 转为真正的数组。下面是两种常用的转换方法：slice 方法和逐一填入新数组。
 
-```
+```js
 var args = Array.prototype.slice.call(arguments);
 
 // or 
@@ -673,7 +673,7 @@ for(var i = 0; i < arguments.length; i++) {
 
 arguments 对象带有一个 callee 属性，返回它所对应的原函数。
 
-```
+```js
 var f = function(one) {
   console.log(arguments.callee === f);
 }
@@ -688,7 +688,7 @@ f()
 
 闭包（closure）就是定义在函数体内部的函数。更理论性的表达是，闭包是函数与其生成时所在的作用域对象（scope object）的一种结合。
 
-```
+```js
 function f() {
     var c = function (){}; 
 }
@@ -698,7 +698,7 @@ function f() {
 
 闭包的特点在于，在函数外部可以读取函数的内部变量。
 
-```
+```js
 function f() {
     var v = 1;
 
@@ -719,7 +719,7 @@ o();
 
 闭包不仅可以读取函数内部变量，还可以使得内部变量记住上一次调用时的运算结果。
 
-```
+```js
 function createIncrementor(start) {
         return function () { 
             return start++;
@@ -741,7 +741,7 @@ inc() // 7
 
 有时，我们需要在定义函数之后，立即调用该函数。这时，你不能在函数的定义之后加上圆括号，这会产生语法错误。
 
-```
+```js
 function(){ /* code */ }();
 // SyntaxError: Unexpected token (
 ```
@@ -750,7 +750,7 @@ function(){ /* code */ }();
 
 解决方法就是让引擎知道，圆括号前面的部分不是函数定义语句，而是一个表达式，可以对此进行运算。你可以这样写：
 
-```
+```js
 (function(){ /* code */ }()); 
 
 // 或者
@@ -764,7 +764,7 @@ function(){ /* code */ }();
 
 推而广之，任何让解释器以表达式来处理函数定义的方法，都能产生同样的效果，比如下面三种写法。
 
-```
+```js
 var i = function(){ return 10; }();
 
 true && function(){ /* code */ }();
@@ -774,7 +774,7 @@ true && function(){ /* code */ }();
 
 甚至像这样写
 
-```
+```js
 !function(){ /* code */ }();
 
 ~function(){ /* code */ }();
@@ -786,7 +786,7 @@ true && function(){ /* code */ }();
 
 new 关键字也能达到这个效果。
 
-```
+```js
 new function(){ /* code */ }
 
 new function(){ /* code */ }() // 只有传递参数时，才需要最后那个圆括号。
@@ -794,7 +794,7 @@ new function(){ /* code */ }() // 只有传递参数时，才需要最后那个�
 
 通常情况下，只对匿名函数使用这种“立即执行的函数表达式”。它的目的有两个：一是不必为函数命名，避免了污染全局变量；二是 IIFE 内部形成了一个单独的作用域，可以封装一些外部无法读取的私有变量。
 
-```
+```js
 // 写法一
 var tmp = newData;
 processData(tmp);
@@ -814,7 +814,7 @@ storeData(tmp);
 
 eval 命令的作用是，将字符串当作语句执行。
 
-```
+```js
 eval('var a = 1;');
 
 a // 1
@@ -824,13 +824,13 @@ a // 1
 
 放在 eval 中的字符串，应该有独自存在的意义，不能用来与 eval 以外的命令配合使用。举例来说，下面的代码将会报错。
 
-```
+```js
 eval('return;');
 ```
 
 由于 eval 没有自己的作用域，都在当前作用域内执行，因此可能会修改其他外部变量的值，造成安全问题。
 
-```
+```js
 var a = 1;
 eval('a = 2');
 
@@ -841,7 +841,7 @@ a // 2
 
 ECMAScript 5 将 eval 的使用分成两种情况，像上面这样的调用，就叫做“直接使用”，这种情况下 eval 的作用域就是当前作用域（即全局作用域或函数作用域）。另一种情况是，eval 不是直接调用，而是“间接调用”，此时 eval 的作用域总是全局作用域。
 
-```
+```js
 var a = 1;
 
 function f(){
@@ -857,7 +857,7 @@ f() // 1
 
 eval 的间接调用的形式五花八门，只要不是直接调用，几乎都属于间接调用。
 
-```
+```js
 eval.call(null, '...')
 window.eval('...')
 (1, eval)('...')
@@ -879,7 +879,7 @@ eval('eval')('...')
 
 与 eval 作用类似的还有 Function 构造函数。利用它生成一个函数，然后调用该函数，也能将字符串当作命令执行。
 
-```
+```js
 var jsonp = 'foo({"id":42})';
 
 var f = new Function( "foo", jsonp );

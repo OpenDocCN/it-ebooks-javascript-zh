@@ -21,7 +21,7 @@
 
 遍历数组元素使用`forEach`方法。
 
-```
+```js
 var arr = ['chen', 'ubuntuvm', '1527254027@qq.com', 'i2cao.xyz', 'ubuntuvim.xyz'];  
 arr.forEach(function(item, index) {  
   console.log(index+1 + ", " +item);
@@ -30,7 +30,7 @@ arr.forEach(function(item, index) {
 
 #### 2，获取数组首尾元素
 
-```
+```js
 //  获取头尾的元素，直接调用 Ember 封装好的 firstObject 和 lastObject 方法即可
 console.log('The firstItem is ' + arr.get('firstObject'));  // output> chen  
 console.log('The lastItem is ' + arr.get('lastObject'));  //output> ubuntuvim.xyz 
@@ -38,7 +38,7 @@ console.log('The lastItem is ' + arr.get('lastObject'));  //output> ubuntuvim.xy
 
 #### 3，map 方法
 
-```
+```js
 //  map 方法，转换数组，并且可以在回调函数里添加自己的逻辑
 //  map 方法会新建一个数组，并且返回被转换数组的元素
 var arrMap = arr.map(function(item) {  
@@ -52,7 +52,7 @@ console.log('-----------------------------------------------');
 
 #### 4，mapBy 方法
 
-```
+```js
 // mapBy 方法：返回对象属性的集合，
 // 当你的数组元素是一个对象的时候，你可以根据对象的属性名获取对应值
 var obj1 = Ember.Object.create({  
@@ -85,7 +85,7 @@ console.log('-----------------------------------------------');
 
 #### 5，filter 方法
 
-```
+```js
 //  filter 过滤器方法，过滤普通数组元素
 //  filter 方法可以跟你指定的条件过滤掉不匹配的数据，比如下面的代码：过滤了元素大于 4 的元素
 var nums = [1, 2, 3, 4, 5];  
@@ -104,7 +104,7 @@ console.log('-----------------------------------------------');
 
 #### 6，filterBy 方法
 
-```
+```js
 //  如果你想根据对象的某个属性过滤数组你需要用 filterBy 方法，比如下面的代码根据 isDone 这个对象属性过滤
 var o1 = Ember.Object.create({  
   name: 'u1',
@@ -140,7 +140,7 @@ console.log('-----------------------------------------------');
 
 #### 7，every、some 方法
 
-```
+```js
 // every、some 方法
 // every 用于判断数组的所有元素是否符合条件，如果所有元素都符合指定的判断条件则返回 true，否则返回 false
 // some 用于判断数组的所有元素只要有一个元素符合条件就返回 true，否则返回 false
@@ -170,7 +170,7 @@ console.log('some = ' + some);
 
 #### 8，isEvery、isAny 方法
 
-```
+```js
 //  与 every、some 类似的方法还有 isEvery、isAny 
 console.log('isEvery = ' + people.isEvery('isHappy', true));  //  全部都为 true，返回结果才是 true  
 console.log('isAny = ' + people.isAny('isHappy', true));  //只要有一个为 true，返回结果就是 true 

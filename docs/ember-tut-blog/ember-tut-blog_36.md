@@ -5,14 +5,14 @@
 1，简单事件处理
 准备工作，使用[Ember CLI](http://ember-cli.com/user-guide)创建演示所需文件：
 
-```
+```js
 ember g component handle-events  
 ember g route component-route 
 ```
 
 生成的组件模板不做任何修改。
 
-```
+```js
 <!--  app/components/handle-events.hbs -->
 
 {{yield}} 
@@ -20,7 +20,7 @@ ember g route component-route
 
 注意看组件类的实现：
 
-```
+```js
 //  app/components/handle-events.js
 
 import Ember from 'ember';
@@ -43,7 +43,7 @@ export default Ember.Component.extend({
 
 调用组件的模板如下：
 
-```
+```js
 <!--  app/templates/component-route.hbs  -->
 
 {{#handle-events}}
@@ -59,13 +59,13 @@ export default Ember.Component.extend({
 
 某些情况下，你的组件需要支持拖放事件。比如组件可能要发送一个`id`到`drop`事件中。
 
-```
+```js
 {{drop-target action=”didDrop”}} 
 ```
 
 你可以定义组件的事件处理器去管理`drop`事件。如果有需要可以通过返回`false`防止事件冒泡。
 
-```
+```js
 //  app/components/drop-target.js
 
 import Ember from 'ember';

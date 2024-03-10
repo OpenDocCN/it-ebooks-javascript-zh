@@ -21,7 +21,7 @@
 
 ### 1.5.2\. 支持 tab 触发事件选项
 
-```
+```js
 ;(function($) { 
 
     $.fn.tab = function(options) {
@@ -56,7 +56,7 @@
 
 首先看一下 plugin_second/jQuery.tab.html 它没有任何变化
 
-```
+```js
 <script>
     $(function(){
         $('.tab').tab();
@@ -70,7 +70,7 @@
 
 看一下 plugin_second/jQuery.tab_more.html，第一个 tab 只能点击，第二个 tab 只能鼠标划过
 
-```
+```js
 <script>
     $(function(){
         $('.tab_click').tab({
@@ -99,7 +99,7 @@ jquery_plugin/plugin_three
 
 这就是普通配置项的例子，配置项的值是 js 支持的类型
 
-```
+```js
 ;(function($) { 
 
     $.fn.tab = function(options) {
@@ -143,21 +143,21 @@ jquery_plugin/plugin_three
 
 1.  增加了 change 配置项
 
-```
+```js
 ``` 
-```
+```js
 
 //定义默认 $.fn.tab.defaults = { ...... change: function(index){ console.log('current index = ' + index); } };
 
 ```
-``` 
+```js 
 ```
 
 1.  在插件内部调用了此回调函数
 
-```
+```js
 ``` 
-```
+```js
 
 return this.each(function() { var obj = $(this);
 
@@ -168,7 +168,7 @@ return this.each(function() { var obj = $(this);
         opts.change($(this).index());
     })      
 });
-``` 
+```js 
 ```
 
 ### 1.5.9\. 回调函数最需要注意的问题
@@ -192,7 +192,7 @@ jquery_plugin/plugin_four
 
 plugin_4
 
-```
+```js
 ;(function($) { 
 
     /**
@@ -265,7 +265,7 @@ plugin_4
 
 ### 1.5.12\. 将插件核心逻辑，抽象成公共函数
 
-```
+```js
 return this.each(function() {
     var obj = $(this);
 
@@ -279,7 +279,7 @@ return this.each(function() {
 
 ### 1.5.13\. 将大的公共函数拆解成 n 个私有函数
 
-```
+```js
 /**
  * 公共函数: 初始化 tab 出发事件
  */
@@ -314,7 +314,7 @@ function _init_ccc_with_config(opts) {
 
 函数注释
 
-```
+```js
 /**
  * 私有函数
  */
@@ -325,7 +325,7 @@ function _init_aaa_with_config(opts) {
 
 函数内注释
 
-```
+```js
 // 调用私有函数
 _init_ccc_with_config(opts); 
 ```

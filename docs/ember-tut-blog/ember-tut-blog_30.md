@@ -8,7 +8,7 @@
 
 [Ember](http://emberjs.com/)的路由处理异步逻辑的方式是使用[Promise](http://liubin.org/promises-book/)。简而言之，[Promise](http://liubin.org/promises-book/)就是一个表示最终结果的对象。这个对象可能是`fulfill`（成功获取最终结果）也可能是`reject`（获取结果失败）。为了获取这个最终值，或者是处理[Promise](http://liubin.org/promises-book/)失败的情况都可以使用`then`方法，这个方法接受两个可选的回调方法，一个是[Promise](http://liubin.org/promises-book/)获取结果成功时执行，一个是[Promise](http://liubin.org/promises-book/)获取结果失败时执行。如果 promises 获取结果成功那么获取到的结果将作为成功时执行的回调方法的参数。相反的，如果[Promise](http://liubin.org/promises-book/)获取结果失败，那么最终结果（失败的原因）将作为[Promise](http://liubin.org/promises-book/)失败时执行的回调方法的参数。比如下面的代码段，当[Promise](http://liubin.org/promises-book/)获取结果成功时执行`fulfill`回调，否则执行`reject`回调方法。
 
-```
+```js
 //  app/routes/promises.js
 
 import Ember from 'ember';
@@ -44,7 +44,7 @@ export default Ember.Route.extend({
 
 promises 的强大之处不仅仅如此，promises 还可以以链的形式执行多个`then`方法，每个 then 方法都会根据 promises 的结果执行`fulfill`或者`reject`回调。
 
-```
+```js
 //  app/routes/promises.js
 
 import Ember from 'ember';
@@ -82,7 +82,7 @@ export default Ember.Route.extend({
 
 在前的文章已经使用过`Ember.$.getJSON('https://api.github.com/repos/emberjs/ember.js/pulls');`获取数据，是可以成功获取数据的。所以 promises 获取结果成功，应该执行的是获取成功对应的回调方法。浏览器控制台打印结果如下：
 
-```
+```js
 fetchPhotoOfUsers  
 applyInstagramFilters  
 uploadThrendyPhotAlbum  
@@ -91,7 +91,7 @@ displaySuccessMessage
 
 但是如果我把`Ember.$.getJSON('https://api.github.com/repos/emberjs/ember.js/pulls');`改成一个不存在的 URL，比如改成`Ember.$.getJSON('https://www.my-example.com');`执行代码之后控制台会提示出`404`错误，并且打印'handleErrors'。说明 promises 获取结果失败，执行了 then 里的 reject 回调。为了验证每个回调的`reject`方法再修改修改代码，如下：
 
-```
+```js
 //  app/routes/promises.js
 
 import Ember from 'ember';
@@ -152,7 +152,7 @@ export default Ember.Route.extend({
 
 传递到每个路由的`setupController`回调的值都是 promises 返回`fulfill`时的值。如下代码：
 
-```
+```js
 //  app/routes/tardy.js
 
 import Ember from 'ember';
@@ -184,7 +184,7 @@ export default Ember.Route.extend({
 
 你可以自定义处理出错信息的逻辑，只要在`route`的`actions`哈希对象中配置即可。当 promises 获取结果失败的默认情况下会执行一个名为`error`的处理事件，否则会执行你自定义的处理事件。
 
-```
+```js
 //  app/routes/promises-ret-reject.js
 
 import Ember from 'ember';
@@ -217,7 +217,7 @@ export default Ember.Route.extend({
 
 在前面第 3 点介绍了 promises 获取结果失败时会终止路由转换，但是如果`model`返回是一个 promises 链呢？程序能到就这样死了！！！显然是不行的，做法是把 model 回调中返回的`reject`转换为`fulfill`。这样就可以继续执行或者切换到下一个路由了！
 
-```
+```js
 //  app/routes/funky.js
 
 import Ember from 'ember';
@@ -235,7 +235,7 @@ export default Ember.Route.extend({
 
 为了验证`model`回调的结果，直接在模板上显示`msg`。
 
-```
+```js
 <!--  app/templates/funky.hbs  -->
 
 funky 模板  

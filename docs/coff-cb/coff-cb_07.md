@@ -10,7 +10,7 @@
 
 使用一个命名函数：
 
-```
+```js
 debounce: (func, threshold, execAsap) ->
   timeout = null
   (args...) ->
@@ -50,14 +50,14 @@ someOtherHandler: (e) ->
 
 另一个方法是使用 do 表示法，如下：
 
-```
+```js
 notify = -> alert "Hello, user!"
 do notify if condition
 ```
 
 编译成 JavaScript 则可表示为：
 
-```
+```js
 var notify;
 notify = function() {
     return alert("Hello, user!");
@@ -85,7 +85,7 @@ if (condition) {
 
 使用一个命名函数：
 
-```
+```js
 ping = ->
     console.log "Pinged"
     setTimeout ping, 1000
@@ -93,7 +93,7 @@ ping = ->
 
 若为未命名函数，则使用 @arguments.callee@：
 
-```
+```js
 delay = 1000
 
 setTimeout((->
@@ -116,7 +116,7 @@ setTimeout((->
 
 使用 *splat* 。
 
-```
+```js
 loadTruck = (firstDibs, secondDibs, tooSlow...) ->
     truck:
         driversSeat: firstDibs
@@ -132,7 +132,7 @@ loadTruck("Amanda", "Joel", "Bob", "Mary", "Phillip")
 
 使用尾部参数：
 
-```
+```js
 loadTruck = (firstDibs, secondDibs, tooSlow..., leftAtHome) ->
     truck:
         driversSeat: firstDibs

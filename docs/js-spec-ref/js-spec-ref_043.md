@@ -10,7 +10,7 @@
 
 浏览器窗口有一个 history 对象，用来保存浏览历史。比如，该窗口先后访问了三个地址，那么 history 对象就包括三项，length 属性等于 3。
 
-```
+```js
 history.length // 3
 ```
 
@@ -20,7 +20,7 @@ history 对象提供了一系列方法，允许在浏览历史之间移动。
 *   forward()：移动到下一个访问页面，等同于浏览器的前进键。
 *   go()：接受一个整数作为参数，移动到该整数指定的页面，比如 go(1)相当于 forward()，go(-1)相当于 back()。
 
-```
+```js
 history.back();
 history.forward();
 history.go(-2);
@@ -30,7 +30,7 @@ history.go(-2);
 
 以下命令相当于刷新当前页面。
 
-```
+```js
 history.go(0);
 ```
 
@@ -38,7 +38,7 @@ history.go(0);
 
 HTML5 为 history 对象添加了两个新方法，history.pushState() 和 history.replaceState()，用来在浏览历史中添加和修改记录。所有主流浏览器都支持该方法（包括 IE10）。
 
-```
+```js
 if (!!(window.history && history.pushState)){
   // 支持 History API
 } else {
@@ -56,7 +56,7 @@ history.pushState 方法接受三个参数，依次为：
 
 假定当前网址是`example.com/1.html`，我们使用 pushState 方法在浏览记录（history 对象）中添加一个新记录。
 
-```
+```js
 var stateObj = { foo: "bar" };
 
 history.pushState(stateObj, "page 2", "2.html");
@@ -68,7 +68,7 @@ history.pushState(stateObj, "page 2", "2.html");
 
 如果 pushState 的 url 参数，设置了一个当前网页的#号值（即 hash），并不会触发 hashchange 事件。如果设置了一个非同域的网址，则会报错。
 
-```
+```js
 // 报错
 history.pushState(null, null, 'https://twitter.com/hello');
 ```
@@ -77,7 +77,7 @@ history.pushState(null, null, 'https://twitter.com/hello');
 
 history.replaceState 方法的参数与 pushState 方法一模一样，区别是它修改浏览历史中当前页面的值。假定当前网页是 example.com/example.html。
 
-```
+```js
 history.pushState({page: 1}, "title 1", "?page=1");
 history.pushState({page: 2}, "title 2", "?page=2");
 history.replaceState({page: 3}, "title 3", "?page=3");
@@ -90,7 +90,7 @@ history.go(2);  // url 显示为 http://example.com/example.html?page=3
 
 history.state 属性保存当前页面的 state 对象。
 
-```
+```js
 history.pushState({page: 1}, "title 1", "?page=1");
 
 history.state
@@ -103,7 +103,7 @@ history.state
 
 使用的时候，可以为 popstate 事件指定回调函数。这个回调函数的参数是一个 event 事件对象，它的 state 属性指向 pushState 和 replaceState 方法为当前 url 所提供的状态对象（即这两个方法的第一个参数）。
 
-```
+```js
 window.onpopstate = function(event) {
   console.log("location: " + document.location);
   console.log("state: " + JSON.stringify(event.state));
@@ -121,7 +121,7 @@ window.addEventListener('popstate', function(event) {
 
 这个 state 对象也可以直接通过 history 对象读取。
 
-```
+```js
 var currentState = history.state;
 ```
 

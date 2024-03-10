@@ -11,7 +11,7 @@ Performance API 用于精确度量、控制、增强浏览器的性能表现。�
 
 比如，为了得到脚本运行的准确耗时，需要一个高精度时间戳。传统的做法是使用 Date 对象的 getTime 方法。
 
-```
+```js
 var start = new Date().getTime();
 
 // do something here
@@ -31,7 +31,7 @@ console.log("任务运行时间：" + latency);
 
 performance 对象的 timing 属性指向一个对象，它包含了各种与浏览器性能有关的时间数据，提供浏览器处理网页各个阶段的耗时。比如，performance.timing.navigationStart 就是浏览器处理当前网页的启动时间。
 
-```
+```js
 Date.now() - performance.timing.navigationStart
 // 13260687
 ```
@@ -40,7 +40,7 @@ Date.now() - performance.timing.navigationStart
 
 下面是另一个例子。
 
-```
+```js
 var t = performance.timing;
 var pageloadtime = t.loadEventStart - t.navigationStart;
 var dns = t.domainLookupEnd - t.domainLookupStart;
@@ -96,7 +96,7 @@ performance.timing 对象包含以下属性（全部为只读）：
 
 根据上面这些属性，可以计算出网页加载各个阶段的耗时。比如，网页加载整个过程的耗时的计算方法如下：
 
-```
+```js
 var t = performance.timing; 
 var pageLoadTime = t.loadEventEnd - t.navigationStart;
 ```
@@ -105,7 +105,7 @@ var pageLoadTime = t.loadEventEnd - t.navigationStart;
 
 performance.now 方法返回当前网页自从 performance.timing.navigationStart 到当前时间之间的微秒数（毫秒的千分之一）。也就是说，它的精度可以达到 100 万分之一秒。
 
-```
+```js
 performance.now() 
 // 23493457.476999998
 
@@ -117,7 +117,7 @@ Date.now() - (performance.timing.navigationStart + performance.now())
 
 通过两次调用 performance.now 方法，可以得到间隔的准确时间，用来衡量某种操作的耗时。
 
-```
+```js
 var start = performance.now();
 doTasks();
 var end = performance.now();
@@ -129,13 +129,13 @@ console.log('耗时：' + (end - start) + '微秒。');
 
 mark 方法用于为相应的视点做标记。
 
-```
+```js
 window.performance.mark('mark_fully_loaded');
 ```
 
 clearMarks 方法用于清除标记，如果不加参数，就表示清除所有标记。
 
-```
+```js
 window.peformance.clearMarks('mark_fully_loaded');
 
 window.performance.clearMarks();
@@ -147,7 +147,7 @@ window.performance.clearMarks();
 
 由于该方法与浏览器处理网页的过程相关，所以只能在浏览器中使用。
 
-```
+```js
 window.performance.getEntries()[0]
 
 // PerformanceResourceTiming { 

@@ -24,7 +24,7 @@
 
 类型化数组是建立在 ArrayBuffer 对象的基础上的。它的作用是，分配一段可以存放数据的连续内存区域。
 
-```
+```js
 var buf = new ArrayBuffer(32);
 ```
 
@@ -32,7 +32,7 @@ var buf = new ArrayBuffer(32);
 
 ArrayBuffer 对象的 byteLength 属性，返回所分配的内存区域的字节长度。
 
-```
+```js
 var buffer = new ArrayBuffer(32);
 buffer.byteLength
 // 32
@@ -40,7 +40,7 @@ buffer.byteLength
 
 如果要分配的内存区域很大，有可能分配失败（因为没有那么多的连续空余内存），所以有必要检查是否分配成功。
 
-```
+```js
 if (buffer.byteLength === n) {
   // 成功
 } else {
@@ -50,7 +50,7 @@ if (buffer.byteLength === n) {
 
 ArrayBuffer 对象有一个 slice 方法，允许将内存区域的一部分，拷贝生成一个新的 ArrayBuffer 对象。
 
-```
+```js
 var buffer = new ArrayBuffer(8);
 var newBuffer = buffer.slice(0,3);
 ```
@@ -78,7 +78,7 @@ ArrayBuffer 作为内存区域，可以存放多种类型的数据。不同数�
 
 每一种视图都有一个 BYTES_PER_ELEMENT 常数，表示这种数据类型占据的字节数。
 
-```
+```js
 Int8Array.BYTES_PER_ELEMENT // 1
 Uint8Array.BYTES_PER_ELEMENT // 1
 Int16Array.BYTES_PER_ELEMENT // 2
@@ -95,7 +95,7 @@ Float64Array.BYTES_PER_ELEMENT // 8
 
 同一个 ArrayBuffer 对象之上，可以根据不同的数据类型，建立多个视图。
 
-```
+```js
 // 创建一个 8 字节的 ArrayBuffer
 var b = new ArrayBuffer(8);
 
@@ -121,7 +121,7 @@ var v3 = new Int16Array(b, 2, 2);
 
 视图还可以不通过 ArrayBuffer 对象，直接分配内存而生成。
 
-```
+```js
 var f64a = new Float64Array(8);
 f64a[0] = 10;
 f64a[1] = 20;
@@ -134,7 +134,7 @@ f64a[2] = f64a[0] + f64a[1];
 
 将一个数据类型符合要求的普通数组，传入构造函数，也能直接生成视图。
 
-```
+```js
 var typedArray = new Uint8Array( [ 1, 2, 3, 4 ] );
 ```
 
@@ -142,7 +142,7 @@ var typedArray = new Uint8Array( [ 1, 2, 3, 4 ] );
 
 视图数组也可以转换回普通数组。
 
-```
+```js
 var normalArray = Array.apply( [], typedArray );
 ```
 
@@ -154,7 +154,7 @@ var normalArray = Array.apply( [], typedArray );
 
 普通数组的操作方法和属性，对类型化数组完全适用。
 
-```
+```js
 var buffer = new ArrayBuffer(16);
 
 var int32View = new Int32Array(buffer);
@@ -168,7 +168,7 @@ for (var i=0; i<int32View.length; i++) {
 
 如果在这段数据上接着建立一个 16 位整数的视图，则可以读出完全不一样的结果。
 
-```
+```js
 var int16View = new Int16Array(buffer);
 
 for (var i=0; i<int16View.length; i++) {
@@ -192,7 +192,7 @@ for (var i=0; i<int16View.length; i++) {
 
 下面是另一个例子。
 
-```
+```js
 // 假定某段 buffer 包含如下字节 [0x02, 0x01, 0x03, 0x07]
 // 计算机采用小端字节序
 var uInt16View = new Uint16Array(buffer);
@@ -214,7 +214,7 @@ uInt16View[1] = 0x0210; // 字节变为[0x05, 0xFF, 0x10, 0x02]
 
 类型化数组的 buffer 属性，返回整段内存区域对应的 ArrayBuffer 对象。该属性为只读属性。
 
-```
+```js
 var a = new Float32Array(64);
 var b = new Uint8Array(a.buffer);
 ```
@@ -225,7 +225,7 @@ var b = new Uint8Array(a.buffer);
 
 byteLength 属性返回类型化数组占据的内存长度，单位为字节。byteOffset 属性返回类型化数组从底层 ArrayBuffer 对象的哪个字节开始。这两个属性都是只读属性。
 
-```
+```js
 var b = new ArrayBuffer(8);
 
 var v1 = new Int32Array(b);
@@ -243,7 +243,7 @@ v3.byteOffset // 2
 
 注意将 byteLength 属性和 length 属性区分，前者是字节长度，后者是成员长度。
 
-```
+```js
 var a = new Int16Array(8);
 
 a.length // 8
@@ -254,7 +254,7 @@ a.byteLength // 16
 
 类型化数组的 set 方法用于复制数组，也就是将一段内容完全复制到另一段内存。
 
-```
+```js
 var a = new Uint8Array(8);
 var b = new Uint8Array(8);
 
@@ -263,7 +263,7 @@ b.set(a);
 
 上面代码复制 a 数组的内容到 b 数组，它是整段内存的复制，比一个个拷贝成员的那种复制快得多。set 方法还可以接受第二个参数，表示从 b 对象哪一个成员开始复制 a 对象。
 
-```
+```js
 var a = new Uint16Array(8);
 var b = new Uint16Array(10);
 
@@ -276,7 +276,7 @@ b.set(a,2)
 
 subarray 方法是对于类型化数组的一部分，再建立一个新的视图。
 
-```
+```js
 var a = new Uint16Array(8);
 var b = a.subarray(2,3);
 
@@ -290,7 +290,7 @@ subarray 方法的第一个参数是起始的成员序号，第二个参数是�
 
 ArrayBuffer 转为字符串，或者字符串转为 ArrayBuffer，有一个前提，即字符串的编码方法是确定的。假定字符串采用 UTF-16 编码（JavaScript 的内部编码方式），可以自己编写转换函数。
 
-```
+```js
 // ArrayBuffer 转为字符串，参数为 ArrayBuffer 对象
 function ab2str(buf) {
    return String.fromCharCode.apply(null, new Uint16Array(buf));
@@ -311,7 +311,7 @@ function str2ab(str) {
 
 由于视图的构造函数可以指定起始位置和长度，所以在同一段内存之中，可以依次存放不同类型的数据，这叫做“复合视图”。
 
-```
+```js
 var buffer = new ArrayBuffer(24);
 
 var idView = new Uint32Array(buffer, 0, 1);
@@ -327,7 +327,7 @@ var amountDueView = new Float32Array(buffer, 20, 1);
 
 这种数据结构可以用如下的 C 语言描述：
 
-```
+```js
 struct someStruct {
   unsigned long id;
   char username[16];
@@ -343,13 +343,13 @@ DataView 视图提供更多操作选项，而且支持设定字节序。本来�
 
 DataView 本身也是构造函数，接受一个 ArrayBuffer 对象作为参数，生成视图。
 
-```
+```js
 DataView(ArrayBuffer buffer [, 字节起始位置 [, 长度]]);
 ```
 
 下面是一个实例。
 
-```
+```js
 var buffer = new ArrayBuffer(24);
 
 var dv = new DataView(buffer);
@@ -368,7 +368,7 @@ DataView 视图提供以下方法读取内存：
 
 这一系列 get 方法的参数都是一个字节序号，表示从哪个字节开始读取。
 
-```
+```js
 var buffer = new ArrayBuffer(24);
 var dv = new DataView(buffer);
 
@@ -386,7 +386,7 @@ var v3 = dv.getUint16(3);
 
 如果一次读取两个或两个以上字节，就必须明确数据的存储方式，到底是小端字节序还是大端字节序。默认情况下，DataView 的 get 方法使用大端字节序解读数据，如果需要使用小端字节序解读，必须在 get 方法的第二个参数指定 true。
 
-```
+```js
 // 小端字节序
 var v1 = dv.getUint16(1, true);
 
@@ -410,7 +410,7 @@ DataView 视图提供以下方法写入内存：
 
 这一系列 set 方法，接受两个参数，第一个参数是字节序号，表示从哪个字节开始写入，第二个参数为写入的数据。对于那些写入两个或两个以上字节的方法，需要指定第三个参数，false 或者 undefined 表示使用大端字节序写入，true 表示使用小端字节序写入。
 
-```
+```js
 // 在第 1 个字节，以大端字节序写入值为 25 的 32 位整数
 dv.setInt32(0, 25, false); 
 
@@ -423,7 +423,7 @@ dv.setFloat32(8, 2.5, true);
 
 如果不确定正在使用的计算机的字节序，可以采用下面的判断方式。
 
-```
+```js
 var littleEndian = (function() {
   var buffer = new ArrayBuffer(2);
   new DataView(buffer).setInt16(0, 256, true);
@@ -439,13 +439,13 @@ var littleEndian = (function() {
 
 传统上，服务器通过 Ajax 操作只能返回文本数据。XMLHttpRequest 第二版允许服务器返回二进制数据，这时分成两种情况。如果明确知道返回的二进制数据类型，可以把返回类型（responseType）设为 arraybuffer；如果不知道，就设为 blob。
 
-```
+```js
 xhr.responseType = 'arraybuffer';
 ```
 
 如果知道传回来的是 32 位整数，可以像下面这样处理。
 
-```
+```js
 xhr.onreadystatechange = function () {
 if (req.readyState === 4 ) {
     var arrayResponse = xhr.response;
@@ -462,7 +462,7 @@ if (req.readyState === 4 ) {
 
 网页 Canvas 元素输出的二进制像素数据，就是类型化数组。
 
-```
+```js
 var canvas = document.getElementById('myCanvas');
 var ctx = canvas.getContext('2d');
 
@@ -474,13 +474,13 @@ var typedArray = imageData.data;
 
 举例来说，如果把像素的颜色值设为 Uint8Array 类型，那么乘以一个 gamma 值的时候，就必须这样计算：
 
-```
+```js
 u8[i] = Math.min(255, Math.max(0, u8[i] * gamma));
 ```
 
 因为 Uint8Array 类型对于大于 255 的运算结果（比如 0xFF+1），会自动变为 0x00，所以图像处理必须要像上面这样算。这样做很麻烦，而且影响性能。如果将颜色值设为 Uint8ClampedArray 类型，计算就简化许多。
 
-```
+```js
 pixels[i] *= gamma;
 ```
 
@@ -490,13 +490,13 @@ Uint8ClampedArray 类型确保将小于 0 的值设为 0，将大于 255 的值�
 
 如果知道一个文件的二进制数据类型，也可以将这个文件读取为类型化数组。
 
-```
+```js
 reader.readAsArrayBuffer(file);
 ```
 
 下面以处理 bmp 文件为例。假定 file 变量是一个指向 bmp 文件的文件对象，首先读取文件。
 
-```
+```js
 var reader = new FileReader();
 reader.addEventListener("load", processimage, false); 
 reader.readAsArrayBuffer(file);
@@ -504,7 +504,7 @@ reader.readAsArrayBuffer(file);
 
 然后，定义处理图像的回调函数：先在二进制数据之上建立一个 DataView 视图，再建立一个 bitmap 对象，用于存放处理后的数据，最后将图像展示在 canvas 元素之中。
 
-```
+```js
 function processimage(e) { 
  var buffer = e.target.result; 
  var datav = new DataView(buffer); 
@@ -515,7 +515,7 @@ function processimage(e) {
 
 具体处理图像数据时，先处理 bmp 的文件头。具体每个文件头的格式和定义，请参阅有关资料。
 
-```
+```js
 bitmap.fileheader = {}; 
 bitmap.fileheader.bfType = datav.getUint16(0, true); 
 bitmap.fileheader.bfSize = datav.getUint32(2, true); 
@@ -526,7 +526,7 @@ bitmap.fileheader.bfOffBits = datav.getUint32(10, true);
 
 接着处理图像元信息部分。
 
-```
+```js
 bitmap.infoheader = {};
 bitmap.infoheader.biSize = datav.getUint32(14, true);
 bitmap.infoheader.biWidth = datav.getUint32(18, true); 
@@ -543,7 +543,7 @@ bitmap.infoheader.biClrImportant = datav.getUint32(50, true);
 
 最后处理图像本身的像素信息。
 
-```
+```js
 var start = bitmap.fileheader.bfOffBits;
 bitmap.pixels = new Uint8Array(buffer, start);
 ```

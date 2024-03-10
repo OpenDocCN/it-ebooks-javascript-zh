@@ -6,7 +6,7 @@
 
 在某个子模板中使用 jQuery 方法为某个元素增加了单击的监听事件，比如下面的代码：
 
-```
+```js
 $(function() {
     $("#elemId").click(function() {
         // 处理
@@ -18,7 +18,7 @@ $(function() {
 
 可见通过`link-to`进入的页面并不会重新加载页面，那么如何解决呢？在`2.0`版本之前很容就能解决这个问题——直接把 js 代码放到子模板最后就行了，但是`2.0`版本之后不支持直接使用`script`标签了！但是要解决这个问题也仍然是很简单的，可以使用组件实现。下面创建一个组件专门用于插入 JavaScript 代码到模板中。
 
-```
+```js
 // app/components/script-tag.js
 
 import Ember from 'ember';
@@ -34,7 +34,7 @@ export default Ember.Component.extend({
 
 有了组件之后调用就组件插入 JavaScript 代码就很方便了，并且`2.0`版本及更高版本也是支持的。下面请看如何调用：
 
-```
+```js
 <div class="container">
 
 </div>  
@@ -56,7 +56,7 @@ $(function() {
 
 #### 模板
 
-```
+```js
 测试如何在进入本模板的时候加载 js 代码。
 
 <h1>第一种方式是把 JavaScript 脚本放到一个组件中加载</h1>  
@@ -73,7 +73,7 @@ $(function() {
 
 ### 把触发事件的代码放在`app/index.html`
 
-```
+```js
 <!DOCTYPE html>  
 <html>  
   <head>
@@ -112,7 +112,7 @@ $(function() {
 
 #### 在主模板增加一个进入子模板的链接
 
-```
+```js
 {{! app/templates/application.hbs }}
 {{#link-to 'script'}}
 进入子路由 script
@@ -121,20 +121,20 @@ $(function() {
 
 等待项目重启完毕，点击首页的链接进入子模板`app/templates/script.hbs`。然后点击按钮，可以发现并没有触发 JavaScript 事件。手动刷新页面，再点击按钮，可以看到 JavaScript 事件被触发了！这是本文一开始就说的问题。现在我们把`index.html`里的 JavaScript 代码移动到组件中。但是方法`didInsertElement()`是在组件类中才有的，所以我们需要创建一个组件。
 
-```
+```js
 ember g component script-tag2 
 ```
 
 组件创建完毕之后我们把原来子模板`script.hbs`的代码移动到组件模板`app/templates/components/script-tag2.hbs`中，然后子啊子模板`script.hbs`中调用组件。
 
-```
+```js
 {{! app/templates/script.hbs}}
 {{script-tag2}} 
 ```
 
 **关键的部分**如何在组件类中触发 JavaScript 事件呢？ 直接把放在`index.html`中的 JavaScript 代码移动到方法`didInsertElement()`中，然后去掉外层的`$(function(){})`。然后修改成 ember 的方式调用`Ember.$`，当然直接使用`$("#xxx")`的方式也是可以的。
 
-```
+```js
 // app/components/script-tag2.js
 
 import Ember from 'ember';

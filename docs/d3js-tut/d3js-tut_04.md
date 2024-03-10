@@ -17,7 +17,7 @@
 
 例如，选择集的常见用法如下。
 
-```
+```js
 var body = d3.select("body"); //选择文档中的 body 元素
 var p1 = body.select("p");      //选择 body 中的第一个 p 元素
 var p = body.selectAll("p");    //选择 body 中的所有 p 元素
@@ -40,7 +40,7 @@ D3 中是通过以下两个函数来绑定数据的：
 
 假设现在有三个段落元素如下。
 
-```
+```js
 <p>Apple</p>
 <p>Pear</p>
 <p>Banana</p>
@@ -50,7 +50,7 @@ D3 中是通过以下两个函数来绑定数据的：
 
 假设有一字符串 China，要将此字符串分别与三个段落元素绑定，代码如下：
 
-```
+```js
 var str = "China";
 
 var body = d3.select("body");
@@ -65,7 +65,7 @@ p.text(function(d, i){
 
 绑定数据后，使用此数据来修改三个段落元素的内容，其结果如下：
 
-```
+```js
 第 0 个元素绑定的数据是 China
 
 第 1 个元素绑定的数据是 China
@@ -84,7 +84,7 @@ p.text(function(d, i){
 
 有一个数组，接下来要分别将数组的各元素绑定到三个段落元素上。
 
-```
+```js
 var dataset = ["I like dog","I like cat","I like snake"];
 ```
 
@@ -96,7 +96,7 @@ var dataset = ["I like dog","I like cat","I like snake"];
 
 调用 data() 绑定数据，并替换三个段落元素的字符串为被绑定的字符串，代码如下：
 
-```
+```js
 var body = d3.select("body");
 var p = body.selectAll("p");
 
@@ -116,7 +116,7 @@ p.data(dataset)
 
 结果自然是三个段落的文字分别变成了数组的三个字符串。
 
-```
+```js
 I like dog
 
 I like cat

@@ -12,7 +12,7 @@
 
 通常来说，你很可能这样访问数组中的前三个元素：
 
-```
+```js
  var first = someArray[0];
     var second = someArray[1];
     var third = someArray[2];
@@ -20,7 +20,7 @@
 
 如果使用解构赋值的特性，将会使等效的代码变得更加简洁并且可读性更高：
 
-```
+```js
  var [first, second, third] = someArray;
 ```
 
@@ -30,13 +30,13 @@ SpiderMonkey（Firefox 的 JavaScript 引擎）已经支持解构的大部分功
 
 以上是数组解构赋值的一个简单示例，其语法的一般形式为：
 
-```
+```js
  [ variable1, variable2, ..., variableN ] = array;
 ```
 
 这将为 variable1 到 variableN 的变量赋予数组中相应元素项的值。如果你想在赋值的同时声明变量，可在赋值语句前加入`var`、`let`或`const`关键字，例如：
 
-```
+```js
  var [ variable1, variable2, ..., variableN ] = array;
     let [ variable1, variable2, ..., variableN ] = array;
     const [ variable1, variable2, ..., variableN ] = array;
@@ -44,7 +44,7 @@ SpiderMonkey（Firefox 的 JavaScript 引擎）已经支持解构的大部分功
 
 事实上，用`变量`来描述并不恰当，因为你可以对任意深度的嵌套数组进行解构：
 
-```
+```js
  var [foo, [[bar], baz]] = [1, [[2], 3]];
     console.log(foo);
     // 1
@@ -56,7 +56,7 @@ SpiderMonkey（Firefox 的 JavaScript 引擎）已经支持解构的大部分功
 
 此外，你可以在对应位留空来跳过被解构数组中的某些元素：
 
-```
+```js
  var [,,third] = ["foo", "bar", "baz"];
     console.log(third);
     // "baz"
@@ -64,7 +64,7 @@ SpiderMonkey（Firefox 的 JavaScript 引擎）已经支持解构的大部分功
 
 而且你还可以通过“[不定参数](http://www.infoq.com/cn/articles/es6-in-depth-rest-parameters-and-defaults)”模式捕获数组中的所有尾随元素：
 
-```
+```js
  var [head, ...tail] = [1, 2, 3, 4];
     console.log(tail);
     // [2, 3, 4]
@@ -72,7 +72,7 @@ SpiderMonkey（Firefox 的 JavaScript 引擎）已经支持解构的大部分功
 
 当访问空数组或越界访问数组时，对其解构与对其索引的行为一致，最终得到的结果都是：`undefined`。
 
-```
+```js
  console.log([][0]);
     // undefined
     var [missing] = [];
@@ -82,7 +82,7 @@ SpiderMonkey（Firefox 的 JavaScript 引擎）已经支持解构的大部分功
 
 请注意，数组解构赋值的模式同样适用于任意迭代器：
 
-```
+```js
  function* fibs() {
       var a = 0;
       var b = 1;
@@ -100,7 +100,7 @@ SpiderMonkey（Firefox 的 JavaScript 引擎）已经支持解构的大部分功
 
 通过解构对象，你可以把它的每个属性与不同的变量绑定，首先指定被绑定的属性，然后紧跟一个要解构的变量。
 
-```
+```js
  var robotA = { name: "Bender" };
     var robotB = { name: "Flexo" };
     var { name: nameA } = robotA;
@@ -113,7 +113,7 @@ SpiderMonkey（Firefox 的 JavaScript 引擎）已经支持解构的大部分功
 
 当属性名与变量名一致时，可以通过一种实用的句法简写：
 
-```
+```js
  var { foo, bar } = { foo: "lorem", bar: "ipsum" };
     console.log(foo);
     // "lorem"
@@ -123,7 +123,7 @@ SpiderMonkey（Firefox 的 JavaScript 引擎）已经支持解构的大部分功
 
 与数组解构一样，你可以随意嵌套并进一步组合对象解构：
 
-```
+```js
  var complicatedObj = {
       arrayProp: [
         "Zapp",
@@ -139,7 +139,7 @@ SpiderMonkey（Firefox 的 JavaScript 引擎）已经支持解构的大部分功
 
 当你解构一个未定义的属性时，得到的值为`undefined`：
 
-```
+```js
  var { missing } = {};
     console.log(missing);
     // undefined
@@ -147,14 +147,14 @@ SpiderMonkey（Firefox 的 JavaScript 引擎）已经支持解构的大部分功
 
 请注意，当你解构对象并赋值给变量时，如果你已经声明或不打算声明这些变量（亦即赋值语句前没有`let`、`const`或`var`关键字），你应该注意这样一个潜在的语法错误：
 
-```
+```js
  { blowUp } = { blowUp: 10 };
     // Syntax error 语法错误
 ```
 
 为什么会出错？这是因为 JavaScript 语法通知解析引擎将任何以{开始的语句解析为一个块语句（例如，`{console}`是一个合法块语句）。解决方案是将整个表达式用一对小括号包裹：
 
-```
+```js
  ({ safe } = {});
     // No errors 没有语法错误
 ```
@@ -163,14 +163,14 @@ SpiderMonkey（Firefox 的 JavaScript 引擎）已经支持解构的大部分功
 
 当你尝试解构`null`或`undefined`时，你会得到一个类型错误：
 
-```
+```js
  var {blowUp} = null;
     // TypeError: null has no properties（null 没有属性）
 ```
 
 然而，你可以解构其它原始类型，例如：`布尔值`、`数值`、`字符串`，但是你将得到`undefined`：
 
-```
+```js
  var {wtf} = NaN;
     console.log(wtf);
     // undefined
@@ -182,7 +182,7 @@ SpiderMonkey（Firefox 的 JavaScript 引擎）已经支持解构的大部分功
 
 当你要解构的属性未定义时你可以提供一个默认值：
 
-```
+```js
  var [missing = true] = [];
     console.log(missing);
     // true
@@ -202,7 +202,7 @@ SpiderMonkey（Firefox 的 JavaScript 引擎）已经支持解构的大部分功
 
 作 为开发者，我们需要实现设计良好的 API，通常的做法是为函数为函数设计一个对象作为参数，然后将不同的实际参数作为对象属性，以避免让 API 使用者记住 多个参数的使用顺序。我们可以使用解构特性来避免这种问题，当我们想要引用它的其中一个属性时，大可不必反复使用这种单一参数对象。
 
-```
+```js
  function removeBreakpoint({ url, line, column }) {
       // ...
     }
@@ -214,7 +214,7 @@ SpiderMonkey（Firefox 的 JavaScript 引擎）已经支持解构的大部分功
 
 延伸一下之前的示例，我们同样可以给需要解构的对象属性赋予默认值。当我们构造一个提供配置的对象，并且需要这个对象的属性携带默认值时，解构特性就派上用场了。举个例子，jQuery 的`ajax`函数使用一个配置对象作为它的第二参数，我们可以这样重写函数定义：
 
-```
+```js
  jQuery.ajax = function (url, {
       async = true,
       beforeSend = noop,
@@ -236,7 +236,7 @@ SpiderMonkey（Firefox 的 JavaScript 引擎）已经支持解构的大部分功
 
 ECMAScript 6 中定义了一个[迭代器协议](https://hacks.mozilla.org/2015/04/es6-in-depth-iterators-and-the-for-of-loop/)，我们在《[深入浅出 ES6（二）：迭代器和 for-of 循环](http://www.infoq.com/cn/articles/es6-in-depth-iterators-and-the-for-of-loop)》中已经详细解析过。当你迭代[Maps](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)（ES6 标准库中新加入的一种对象）后，你可以得到一系列形如`[key, value]`的键值对，我们可将这些键值对解构，更轻松地访问键和值：
 
-```
+```js
  var map = new Map();
     map.set(window, "the global");
     map.set(document, "the document");
@@ -249,7 +249,7 @@ ECMAScript 6 中定义了一个[迭代器协议](https://hacks.mozilla.org/2015/
 
 只遍历键：
 
-```
+```js
  for (var [key] of map) {
       // ...
     }
@@ -257,7 +257,7 @@ ECMAScript 6 中定义了一个[迭代器协议](https://hacks.mozilla.org/2015/
 
 或只遍历值：
 
-```
+```js
  for (var [,value] of map) {
       // ...
     }
@@ -267,7 +267,7 @@ ECMAScript 6 中定义了一个[迭代器协议](https://hacks.mozilla.org/2015/
 
 JavaScript 语言中尚未整合多重返回值的特性，但是无须多此一举，因为你自己就可以返回一个数组并将结果解构：
 
-```
+```js
  function returnMultipleValues() {
       return [1, 2];
     }
@@ -276,7 +276,7 @@ JavaScript 语言中尚未整合多重返回值的特性，但是无须多此一
 
 或者，你可以用一个对象作为容器并为返回值命名：
 
-```
+```js
  function returnMultipleValues() {
       return {
         foo: 1,
@@ -288,7 +288,7 @@ JavaScript 语言中尚未整合多重返回值的特性，但是无须多此一
 
 这两个模式都比额外保存一个临时变量要好得多。
 
-```
+```js
  function returnMultipleValues() {
       return {
         foo: 1,
@@ -302,7 +302,7 @@ JavaScript 语言中尚未整合多重返回值的特性，但是无须多此一
 
 或者使用 CPS 变换：
 
-```
+```js
  function returnMultipleValues(k) {
       k(1, 2);
     }
@@ -313,7 +313,7 @@ JavaScript 语言中尚未整合多重返回值的特性，但是无须多此一
 
 你是否尚未使用 ES6 模块？还用着 CommonJS 的模块呢吧！没问题，当我们导入 CommonJS 模块 X 时，很可能在模块 X 中导出了许多你根本没打算用的函数。通过解构，你可以显式定义模块的一部分来拆分使用，同时还不会污染你的命名空间：
 
-```
+```js
  const { SourceMapConsumer, SourceNode } = require("source-map");
 ```
 

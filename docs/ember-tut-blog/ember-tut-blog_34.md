@@ -2,14 +2,14 @@
 
 准备工作：
 
-```
+```js
 ember g route wrapping-content-in-component-route  
 ember g component wrapping-content-in-component 
 ```
 
 有些情况下，你需要定义一个包裹其他模板提供的数据的组件。比如下面的例子：
 
-```
+```js
 <!--  app/templates/components/wrapping-content-in-component.hbs  -->
 
 <h1>{{title}}</h1>  
@@ -18,7 +18,7 @@ ember g component wrapping-content-in-component
 
 上述代码定义了一个普通的组件。
 
-```
+```js
 <!--  app/templates/wrapping-content-in-component-route.hbs  -->
 
 {{wrapping-content-in-component title=model.title body=model.body}} 
@@ -28,7 +28,7 @@ ember g component wrapping-content-in-component
 
 下面在`route`中增加一些测试数据。
 
-```
+```js
 //  app/routes/wrapping-content-in-component-route.js
 
 import Ember from 'ember';
@@ -52,7 +52,7 @@ export default Ember.Route.extend({
 
 稍加改造前面的例子，这时候不只是传递一个简单的数据，而是传入一个包含 HTML 标签的简单模板。
 
-```
+```js
 <!--  app/templates/components/wrapping-content-in-component.hbs  -->
 
 <h1>{{title}}</h1>  
@@ -64,7 +64,7 @@ export default Ember.Route.extend({
 
 下面是调用组件的模板。
 
-```
+```js
 <!--  app/templates/wrapping-content-in-component-route.hbs  -->
 
 {{!wrapping-content-in-component title=model.title body=model.body}}

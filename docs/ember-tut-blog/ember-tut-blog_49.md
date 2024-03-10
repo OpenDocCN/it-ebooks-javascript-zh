@@ -4,7 +4,7 @@
 
 一个很常见的例子是分页。通常会像下面的代码设置分页：
 
-```
+```js
 let result = this.store.query(‘post’, {  
   limit: 10,
   offset: 0
@@ -13,7 +13,7 @@ let result = this.store.query(‘post’, {
 
 设置了每页显示数据为 10 条，但是你不知道总条数，又怎么知道一共有多少页呢？这时候元数据就派上用场了。
 
-```
+```js
 {
   "post": {
     "id": 1,

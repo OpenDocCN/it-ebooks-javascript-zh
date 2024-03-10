@@ -35,7 +35,7 @@
 
 生成命令的格式如下：
 
-```
+```js
 java -jar compiler.jar \ 
 　　--js script.js \
 　　--create_source_map ./script-min.js.map \
@@ -54,13 +54,13 @@ java -jar compiler.jar \
 
 启用 Source map 的方法很简单，只要在转换后的代码头部或尾部，加上一行就可以了。
 
-```
+```js
 //# sourceMappingURL=/path/to/file.js.map
 ```
 
 或者
 
-```
+```js
 /*# sourceMappingURL=/path/to/file.js.map */
 ```
 
@@ -70,7 +70,7 @@ map 文件可以放在网络上，也可以放在本地文件系统。
 
 打开 Source map 文件，它大概是这个样子：
 
-```
+```js
 　　{
 　　　　version : 3,
 　　　　file: "out.js",
@@ -102,7 +102,7 @@ map 文件可以放在网络上，也可以放在本地文件系统。
 
 举例来说，假定 mappings 属性的内容如下：
 
-```
+```js
 mappings:"AAAAA,BBBBB;CCCCC"
 ```
 
@@ -130,7 +130,7 @@ VLQ 编码是变长的。如果（整）数值在-15 到+15 之间（含两个�
 
 这 6 个位中的右边最后一位（最低位）的含义，取决于这 6 个位是否是某个数值的 VLQ 编码的第一个字符。如果是的，这个位代表"符号"（sign），0 为正，1 为负（Source map 的符号固定为 0）；如果不是，这个位没有特殊含义，被算作数值的一部分。
 
-```
+```js
 Continuation
 |　　　　　Sign
 |　　　　　|

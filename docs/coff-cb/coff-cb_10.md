@@ -12,7 +12,7 @@
 
 通过一个按钮来打开一个简单的测试 HTML 页面。
 
-```
+```js
 <!DOCTYPE HTML>
 <html lang="en-US">
 <head>
@@ -30,7 +30,7 @@
 
 当单击该按钮时，我们想给服务器发送 Ajax 请求以获取一些数据。对于该例子，我们使用一个 JSON 小文件。
 
-```
+```js
 // data.json
 {
   message: "Hello World"
@@ -39,7 +39,7 @@
 
 然后，创建 CoffeeScript 文件来保存页面逻辑。此文件中的代码创建了一个函数，当点击加载数据按钮时将会调用该函数。
 
-```
+```js
 1 # XMLHttpRequest.coffee
 2 loadDataFromServer = ->
 3   req = new XMLHttpRequest()
@@ -82,7 +82,7 @@
 
 如果你的应用需要使用旧版本的 Internet Explorer ，你需确保 XMLHttpRequest 对象存在。为此，你可以在创建 XMLHttpRequest 实例之前输入以下代码。
 
-```
+```js
 if (typeof @XMLHttpRequest == "undefined")
   console.log 'XMLHttpRequest is undefined'
   @XMLHttpRequest = ->

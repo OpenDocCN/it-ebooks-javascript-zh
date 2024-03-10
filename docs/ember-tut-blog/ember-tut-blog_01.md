@@ -10,7 +10,7 @@ Ember JS 还扩展了`String`属性的特性，提供了一系列特有的处理
 
 开始之前先做好准备工作，首先创建一个 HTML 文件，并引入 Ember JS 所必须的文件（后面会介绍一种更加简单的方法去搭建`EmberJS`的项目方法，当然如果你有时间也可以提前去了解，这种方式是使用[`Ember CLI`](http://www.ember-cli.com/user-guide/)搭建`EmberJS`的项目）。
 
-```
+```js
 <!doctype html>  
 <html>  
   <head>
@@ -39,7 +39,7 @@ Ember JS 还扩展了`String`属性的特性，提供了一系列特有的处理
 
 下面定义一个`Person`类，定义方式如下：
 
-```
+```js
 Person = Ember.Object.extend({  
   say(thing) {
     alert(name);
@@ -53,7 +53,7 @@ Person = Ember.Object.extend({
 
 在子类重写父类的方法，并在方法里调用`_super()`方法来调用父类中对应的方法触发父类方法的行为。
 
-```
+```js
 Person = Ember.Object.extend({  
 
   say(thing) {
@@ -88,7 +88,7 @@ yehuda.say("Yes"); // alerts "Yehuda Katz says: Yes, sir!"
 
 要获取一个类的实例只需要调用类的`create()`方法即可。
 
-```
+```js
 Person = Ember.Object.extend({  
     show() {
         console.log("My name is " + this.get('name'));
@@ -112,7 +112,7 @@ person2.show();  // My name is undefined
 
 **在`create()`方法内定义计算属性**，运行后会直接报如下图的报错信息。
 
-```
+```js
 Person = Ember.Object.create({  
     show() {
         console.log("My name is " + this.get('name'));
@@ -129,7 +129,7 @@ Person = Ember.Object.create({
 
 前面提过，我们在类继承的时候到底类是怎么初始化，这节就介绍类的初始化，`Ember`定义了一个`init()`方法，此方法在类被实例化的时候自动调用。
 
-```
+```js
 Parent = Ember.Object.extend({  
     init() {
         console.log("parent init...");
@@ -175,7 +175,7 @@ child.others();
 
 `Ember`建议访问类的属性使用`get、set`方法。如果你直接使用`obj.prop`这种方式访问也是可以得到类的属性值，但是如果你不是使用访问器操作的就会导致很多问题：计算属性不能被重新计算、无法察觉对象属性的变化、模板也不能自动更新。
 
-```
+```js
 Person = Ember.Object.extend({  
     name: 'ubuntuvim'
 });

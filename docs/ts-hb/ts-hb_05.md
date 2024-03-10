@@ -22,7 +22,7 @@ TypeScript 与 ECMAScript 2015 一样，任何包含顶级`import`或者`export`
 
 ##### Validation.ts
 
-```
+```js
 export interface StringValidator {
     isAcceptable(s: string): boolean;
 } 
@@ -30,7 +30,7 @@ export interface StringValidator {
 
 ##### ZipCodeValidator.ts
 
-```
+```js
 export const numberRegexp = /^[0-9]+$/;
 
 export class ZipCodeValidator implements StringValidator {
@@ -44,7 +44,7 @@ export class ZipCodeValidator implements StringValidator {
 
 导出语句很便利，因为我们可能需要对导出的部分重命名，所以上面的例子可以这样改写：
 
-```
+```js
 class ZipCodeValidator implements StringValidator {
     isAcceptable(s: string) {
         return s.length === 5 && numberRegexp.test(s);
@@ -60,7 +60,7 @@ export { ZipCodeValidator as mainValidator };
 
 ##### ParseIntBasedZipCodeValidator.ts
 
-```
+```js
 export class ParseIntBasedZipCodeValidator {
     isAcceptable(s: string) {
         return s.length === 5 && parseInt(s).toString() === s;
@@ -75,7 +75,7 @@ export {ZipCodeValidator as RegExpBasedZipCodeValidator} from "./ZipCodeValidato
 
 ##### AllValidators.ts
 
-```
+```js
 export * from "./StringValidator"; // exports interface StringValidator
 export * from "./LettersOnlyValidator"; // exports class LettersOnlyValidator
 export * from "./ZipCodeValidator";  // exports class ZipCodeValidator 
@@ -87,7 +87,7 @@ export * from "./ZipCodeValidator";  // exports class ZipCodeValidator
 
 ## 导入一个模块中的某个导出内容
 
-```
+```js
 import { ZipCodeValidator } from "./ZipCodeValidator";
 
 let myValidator = new ZipCodeValidator(); 
@@ -95,14 +95,14 @@ let myValidator = new ZipCodeValidator();
 
 可以对导入内容重命名
 
-```
+```js
 import { ZipCodeValidator as ZCV } from "./ZipCodeValidator";
 let myValidator = new ZCV(); 
 ```
 
 ## 将整个模块导入到一个变量，并通过它来访问模块的导出部分
 
-```
+```js
 import * as validator from "./ZipCodeValidator";
 let myValidator = new validator.ZipCodeValidator(); 
 ```
@@ -111,7 +111,7 @@ let myValidator = new validator.ZipCodeValidator();
 
 尽管不推荐这么做，一些模块会设置一些全局状态供其它模块使用。 这些模块可能没有任何的导出或用户根本就不关注它的导出。 使用下面的方法来导入这类模块：
 
-```
+```js
 import "./my-module.js"; 
 ```
 
@@ -123,14 +123,14 @@ import "./my-module.js";
 
 ##### JQuery.d.ts
 
-```
+```js
 declare let $: JQuery;
 export default $; 
 ```
 
 ##### App.ts
 
-```
+```js
 import $ from "JQuery";
 
 $("button.continue").html( "Next Step..." ); 
@@ -140,7 +140,7 @@ $("button.continue").html( "Next Step..." );
 
 ##### ZipCodeValidator.ts
 
-```
+```js
 export default class ZipCodeValidator {
     static numberRegexp = /^[0-9]+$/;
     isAcceptable(s: string) {
@@ -151,7 +151,7 @@ export default class ZipCodeValidator {
 
 ##### Test.ts
 
-```
+```js
 import validator from "./ZipCodeValidator";
 
 let validator = new validator(); 
@@ -161,7 +161,7 @@ let validator = new validator();
 
 ##### StaticZipCodeValidator.ts
 
-```
+```js
 const numberRegexp = /^[0-9]+$/;
 
 export default function (s: string) {
@@ -171,7 +171,7 @@ export default function (s: string) {
 
 ##### Test.ts
 
-```
+```js
 import validate from "./StaticZipCodeValidator";
 
 let strings = ["Hello", "98052", "101"];
@@ -186,13 +186,13 @@ strings.forEach(s => {
 
 ##### OneTwoThree.ts
 
-```
+```js
 export default "123"; 
 ```
 
 ##### Log.ts
 
-```
+```js
 import num from "./OneTwoThree";
 
 console.log(num); // "123" 
@@ -210,7 +210,7 @@ CommonJS 和 AMD 都有一个`exports`对象的概念，它包含了一个模块
 
 ##### ZipCodeValidator.ts
 
-```
+```js
 let numberRegexp = /^[0-9]+$/;
 class ZipCodeValidator {
     isAcceptable(s: string) {
@@ -222,7 +222,7 @@ export = ZipCodeValidator;
 
 ##### Test.ts
 
-```
+```js
 import zip = require("./ZipCodeValidator");
 
 // Some samples to try
@@ -245,14 +245,14 @@ strings.forEach(s => {
 
 ##### SimpleModule.ts
 
-```
+```js
 import m = require("mod");
 export let t = m.something + 1; 
 ```
 
 ##### AMD / RequireJS SimpleModule.js
 
-```
+```js
 define(["require", "exports", "./mod"], function (require, exports, mod_1) {
     exports.t = mod_1.something + 1;
 }); 
@@ -260,14 +260,14 @@ define(["require", "exports", "./mod"], function (require, exports, mod_1) {
 
 ##### CommonJS / Node SimpleModule.js
 
-```
+```js
 let mod_1 = require("./mod");
 exports.t = mod_1.something + 1; 
 ```
 
 ##### UMD SimpleModule.js
 
-```
+```js
 (function (factory) {
     if (typeof module === "object" && typeof module.exports === "object") {
         let v = factory(require, exports); if (v !== undefined) module.exports = v;
@@ -283,7 +283,7 @@ exports.t = mod_1.something + 1;
 
 ##### System SimpleModule.js
 
-```
+```js
 System.register(["./mod"], function(exports_1) {
     let mod_1;
     let t;
@@ -301,7 +301,7 @@ System.register(["./mod"], function(exports_1) {
 
 ##### Native ECMAScript 2015 modules SimpleModule.js
 
-```
+```js
 import { something } from "./mod";
 export let t = something + 1; 
 ```
@@ -312,7 +312,7 @@ export let t = something + 1;
 
 为了编译，我们必需要在命令行上指定一个模块目标。对于 Node.js 来说，使用`--module commonjs`； 对于 Require.js 来说，使用``--module amd`。比如：
 
-```
+```js
 tsc --module commonjs Test.ts 
 ```
 
@@ -320,7 +320,7 @@ tsc --module commonjs Test.ts
 
 ##### Validation.ts
 
-```
+```js
 export interface StringValidator {
     isAcceptable(s: string): boolean;
 } 
@@ -328,7 +328,7 @@ export interface StringValidator {
 
 ##### LettersOnlyValidator.ts
 
-```
+```js
 import { StringValidator } from "./Validation";
 
 const lettersRegexp = /^[A-Za-z]+$/;
@@ -342,7 +342,7 @@ export class LettersOnlyValidator implements StringValidator {
 
 ##### ZipCodeValidator.ts
 
-```
+```js
 import { StringValidator } from "./Validation";
 
 const numberRegexp = /^[0-9]+$/;
@@ -356,7 +356,7 @@ export class ZipCodeValidator implements StringValidator {
 
 ##### Test.ts
 
-```
+```js
 import { StringValidator } from "./Validation";
 import { ZipCodeValidator } from "./ZipCodeValidator";
 import { LettersOnlyValidator } from "./LettersOnlyValidator";
@@ -389,7 +389,7 @@ strings.forEach(s => {
 
 ##### 示例：Node.js 里的动态模块加载
 
-```
+```js
 declare function require(moduleName: string): any;
 
 import { ZipCodeValidator as Zip } from "./ZipCodeValidator";
@@ -403,7 +403,7 @@ if (needZipValidation) {
 
 ##### 示例：require.js 里的动态模块加载
 
-```
+```js
 declare function require(moduleNames: string[], onLoad: (...args: any[]) => void): void;
 
 import { ZipCodeValidator as Zip } from "./ZipCodeValidator";
@@ -418,7 +418,7 @@ if (needZipValidation) {
 
 ##### 示例：System.js 里的动态模块加载
 
-```
+```js
 declare let System: any;
 
 import { ZipCodeValidator as Zip } from "./ZipCodeValidator";
@@ -443,7 +443,7 @@ if (needZipValidation) {
 
 ##### node.d.ts (simplified excerpt)
 
-```
+```js
 declare module "url" {
     export interface Url {
         protocol?: string;
@@ -463,7 +463,7 @@ declare module "path" {
 
 现在我们可以`/// <reference>` `node.d.ts`并且使用`import url = require("url");`加载模块。
 
-```
+```js
 /// <reference path="node.d.ts"/>
 import * as URL from "url";
 let myUrl = URL.parse("http://www.typescriptlang.org"); 
@@ -485,7 +485,7 @@ let myUrl = URL.parse("http://www.typescriptlang.org");
 
 #### MyClass.ts
 
-```
+```js
 export default class SomeType {
   constructor() { ... }
 } 
@@ -493,13 +493,13 @@ export default class SomeType {
 
 #### MyFunc.ts
 
-```
+```js
 export default function getThing() { return 'thing'; } 
 ```
 
 #### Consumer.ts
 
-```
+```js
 import t from "./MyClass";
 import f from "./MyFunc";
 let x = new t();
@@ -512,7 +512,7 @@ console.log(f());
 
 #### MyThings.ts
 
-```
+```js
 export class SomeType { /* ... */ }
 export function someFunc() { /* ... */ } 
 ```
@@ -523,7 +523,7 @@ export function someFunc() { /* ... */ }
 
 #### Consumer.ts
 
-```
+```js
 import { SomeType, SomeFunc } from "./MyThings";
 let x = new SomeType();
 let y = someFunc(); 
@@ -533,7 +533,7 @@ let y = someFunc();
 
 #### MyLargeModule.ts
 
-```
+```js
 export class Dog { ... }
 export class Cat { ... }
 export class Tree { ... }
@@ -542,7 +542,7 @@ export class Flower { ... }
 
 #### Consumer.ts
 
-```
+```js
 import * as myLargeModule from "./MyLargeModule.ts";
 let x = new myLargeModule.Dog(); 
 ```
@@ -555,7 +555,7 @@ let x = new myLargeModule.Dog();
 
 #### Calculator.ts
 
-```
+```js
 export class Calculator {
     private current = 0;
     private memory = 0;
@@ -633,7 +633,7 @@ export function test(c: Calculator, input: string) {
 
 #### TestCalculator.ts
 
-```
+```js
 import { Calculator, test } from "./Calculator";
 
 let c = new Calculator();
@@ -644,7 +644,7 @@ test(c, "1+2*33/11="); // prints 9
 
 #### ProgrammerCalculator.ts
 
-```
+```js
 import { Calculator } from "./Calculator";
 
 class ProgrammerCalculator extends Calculator {
@@ -675,7 +675,7 @@ export { test } from "./Calculator";
 
 #### TestProgrammerCalculator.ts
 
-```
+```js
 import { Calculator, test } from "./ProgrammerCalculator";
 
 let c = new Calculator(2);

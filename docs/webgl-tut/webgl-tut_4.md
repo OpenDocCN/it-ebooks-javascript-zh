@@ -10,7 +10,7 @@
 
 我们需要做的第一件事就是改变顶点着色来处理三维，这里是旧的着色。
 
-```
+```js
 <script id="2d-vertex-shader" type="x-shader/x-vertex">
 attribute vec2 a_position;
 
@@ -25,7 +25,7 @@ void main() {
 
 下面是新的
 
-```
+```js
 <script id="3d-vertex-shader" type="x-shader/x-vertex">
 attribute vec4 a_position;
 
@@ -42,7 +42,7 @@ void main() {
 
 然后我们需要提供三维数据。
 
-```
+```js
  ...
 
   gl.vertexAttribPointer(positionLocation, 3, gl.FLOAT, false, 0, 0);
@@ -85,7 +85,7 @@ function setGeometry(gl) {
 
 这是 maketranslation，makerotation 和 makescale 的二维（前面的）版本
 
-```
+```js
 function makeTranslation(tx, ty) {
   return [
     1, 0, 0,
@@ -115,7 +115,7 @@ function makeScale(sx, sy) {
 
 这是更新的三维版本。
 
-```
+```js
 function makeTranslation(tx, ty, tz) {
   return [
      1,  0,  0,  0,
@@ -206,7 +206,7 @@ p align="center"> newZ = y * -s + z * c;
 
 我们还需要更新投影函数。这是旧的
 
-```
+```js
 function make2DProjection(width, height) {
   // Note: This matrix flips the Y axis so 0 is at the top.
   return [
@@ -219,7 +219,7 @@ function make2DProjection(width, height) {
 
 它从像素转换到剪辑空间。作为我们扩展到三维的第一次尝试，让我们试一下
 
-```
+```js
 function make2DProjection(width, height, depth) {
   // Note: This matrix flips the Y axis so 0 is at the top.
   return [
@@ -235,7 +235,7 @@ function make2DProjection(width, height, depth) {
 
 最后，我们需要更新计算矩阵的代码。
 
-```
+```js
  // Compute the matrices
   var projectionMatrix =
       make2DProjection(canvas.clientWidth, canvas.clientHeight, 400);
@@ -265,7 +265,7 @@ function make2DProjection(width, height, depth) {
 
 我们必须画更多的顶点，因此
 
-```
+```js
  // Draw the geometry.
     gl.drawArrays(gl.TRIANGLES, 0, 16 * 6); 
 ```
@@ -278,7 +278,7 @@ function make2DProjection(width, height, depth) {
 
 这里是新的顶点着色
 
-```
+```js
 <script id="3d-vertex-shader" type="x-shader/x-vertex">
 attribute vec4 a_position;
 attribute vec4 a_color;
@@ -299,7 +299,7 @@ void main() {
 
 我们需要在片段着色器中使用颜色
 
-```
+```js
 <script id="3d-vertex-shader" type="x-shader/x-fragment">
 precision mediump float;
 
@@ -314,7 +314,7 @@ void main() {
 
 我们需要查找提供颜色的 location，然后设置另一个缓冲和属性给它的颜色。
 
-```
+```js
  ...
   var colorLocation = gl.getAttribLocation(program, "a_color");
 
@@ -366,7 +366,7 @@ function setColors(gl) {
 
 WebGL 也只有向前或向后画三角形的能力。我们可以使用这个功能
 
-```
+```js
  gl.enable(gl.CULL_FACE); 
 ```
 
@@ -380,7 +380,7 @@ CULL_FACE 打开后，这是我们得到的
 
 嘿！所有的三角形都去哪儿了？事实证明，它们中的许多都面朝着错误的方向。旋转它，当你看向另一边是你会看到他们出现了。幸运的是这很容易解决。我们只看哪一个是朝后的，并且交换 2 个顶点。例如，如果一个一个朝后的三角形是
 
-```
+```js
  1,   2,   3,
           40,  50,  60,
          700, 800, 900, 
@@ -388,7 +388,7 @@ CULL_FACE 打开后，这是我们得到的
 
 我们只是翻转最后两个顶点以使它朝前。
 
-```
+```js
  1,   2,   3,
          700, 800, 900,
           40,  50,  60, 
@@ -406,13 +406,13 @@ CULL_FACE 打开后，这是我们得到的
 
 我们可以打开这个功能就像打开 culling 一样简单，用下面语句
 
-```
+```js
  gl.enable(gl.DEPTH_TEST); 
 ```
 
 我们还需要在我们开始绘画之前清除深度缓冲回到 1.0。
 
-```
+```js
  // Draw the scene.
   function drawScene() {
     // Clear the canvas AND the depth buffer.
@@ -438,7 +438,7 @@ CULL_FACE 打开后，这是我们得到的
 
 可以这样想：如果你有一条从（10，15）到 (20,15) 的线段，10 个单位长。在我们目前的样本中，它将绘制 10 像素长。但是如果我们除以 Z，例如例子中如果是 Z 是 1
 
-```
+```js
 10 / 1 = 10
 20 / 1 = 20
 abs(10-20) = 10
@@ -446,7 +446,7 @@ abs(10-20) = 10
 
 这将是 10 像素，如果 Z 是 2，则有
 
-```
+```js
 10 / 2 = 5
 20 / 2 = 10
 abs(5 - 10) = 5
@@ -454,7 +454,7 @@ abs(5 - 10) = 5
 
 5 像素长。如果 Z = 3，则有
 
-```
+```js
 10 / 3 = 3.333
 20 / 3 = 6.666
 abs(3.333 - 6.666) = 3.333
@@ -464,7 +464,7 @@ abs(3.333 - 6.666) = 3.333
 
 让我们尝试一下。首先让我们在乘以我们的 “fudgefactor” 后改变顶点着色器除以 Z 。
 
-```
+```js
 <script id="2d-vertex-shader" type="x-shader/x-vertex">
 ...
 uniform float u_fudgeFactor;
@@ -486,7 +486,7 @@ void main() {
 
 我们也需要更新代码，让我们设置 fudgeFactor。
 
-```
+```js
  ...
   var fudgeLocation = gl.getUniformLocation(program, "u_fudgeFactor");
 
@@ -514,7 +514,7 @@ WebGL 在我们的顶点着色器中把 X，Y，Z，W 值分配给 **gl_Position
 
 我们可以证明通过改变着色这很容易实现，而不是自己做除法，在 **gl_Position.w** 中加 **zToDivideBy** 。
 
-```
+```js
 <script id="2d-vertex-shader" type="x-shader/x-vertex">
 ...
 uniform float u_fudgeFactor;
@@ -540,7 +540,7 @@ void main() {
 
 矩阵如下
 
-```
+```js
 1, 0, 0, 0,
 0, 1, 0, 0,
 0, 0, 1, 1,
@@ -549,7 +549,7 @@ void main() {
 
 将复制 z 到 w.你可以看看这些列如下
 
-```
+```js
 x_out = x_in * 1 +
         y_in * 0 +
         z_in * 0 +
@@ -573,7 +573,7 @@ w_out = x_in * 0 +
 
 简化后如下
 
-```
+```js
 x_out = x_in;
 y_out = y_in;
 z_out = z_in;
@@ -582,7 +582,7 @@ w_out = z_in;
 
 我们可以加 1 我们之前用的这个矩阵，因为我们知道 w_in 总是 1.0。
 
-```
+```js
 1, 0, 0, 0,
 0, 1, 0, 0,
 0, 0, 1, 1,
@@ -591,7 +591,7 @@ w_out = z_in;
 
 这将改变 W 计算如下
 
-```
+```js
 w_out = x_in * 0 +
         y_in * 0 +
         z_in * 1 +
@@ -600,13 +600,13 @@ w_out = x_in * 0 +
 
 因为我们知道 w_in = 1.0 所以就有
 
-```
+```js
 w_out = z_in + 1;
 ```
 
 最后我们可以将 fudgeFactor 加到矩阵，矩阵如下
 
-```
+```js
 1, 0, 0, 0,
 0, 1, 0, 0,
 0, 0, 1, fudgeFactor,
@@ -615,7 +615,7 @@ w_out = z_in + 1;
 
 这意味着
 
-```
+```js
 w_out = x_in * 0 +
         y_in * 0 +
         z_in * fudgeFactor +
@@ -624,7 +624,7 @@ w_out = x_in * 0 +
 
 简化后如下
 
-```
+```js
 w_out = z_in * fudgeFactor + 1;
 ```
 
@@ -632,7 +632,7 @@ w_out = z_in * fudgeFactor + 1;
 
 首先让我们放回顶点着色器。这很简单
 
-```
+```js
 <script id="2d-vertex-shader" type="x-shader/x-vertex">
 uniform mat4 u_matrix;
 
@@ -646,7 +646,7 @@ void main() {
 
 接下来让我们做一个函数使 Z - > W 矩阵。
 
-```
+```js
 function makeZToWMatrix(fudgeFactor) {
   return [
     1, 0, 0, 0,
@@ -659,7 +659,7 @@ function makeZToWMatrix(fudgeFactor) {
 
 我们将更改代码，以使用它。
 
-```
+```js
  ...
     // Compute the matrices
     var zToWMatrix =
@@ -696,7 +696,7 @@ function makeZToWMatrix(fudgeFactor) {
 
 这里有一个函数来生成矩阵。
 
-```
+```js
 function makePerspective(fieldOfViewInRadians, aspect, near, far) {
   var f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewInRadians);
   var rangeInv = 1.0 / (near - far);
@@ -724,7 +724,7 @@ function makePerspective(fieldOfViewInRadians, aspect, near, far) {
 
 现在，要想使用它，我们只需要用对 makePerspective 的调用取代对 make2DProjection 旧的调用
 
-```
+```js
  var aspect = canvas.clientWidth / canvas.clientHeight;
     var projectionMatrix =
         makePerspective(fieldOfViewRadians, aspect, 1, 2000);
@@ -772,7 +772,7 @@ function makePerspective(fieldOfViewInRadians, aspect, near, far) {
 
 下面是实现代码。
 
-```
+```js
  var numFs = 5;
   var radius = 200;
 
@@ -803,7 +803,7 @@ function makePerspective(fieldOfViewInRadians, aspect, near, far) {
 
 就在我们计算出我们的投影矩阵之后，我们就可以计算出一个就像上面的图表中显示的那样围绕 ‘F’ 旋转的摄像机。
 
-```
+```js
  // Compute the camera's matrix
   var cameraMatrix = makeTranslation(0, 0, radius * 1.5);
   cameraMatrix = matrixMultiply(
@@ -812,14 +812,14 @@ function makePerspective(fieldOfViewInRadians, aspect, near, far) {
 
 然后，我们根据相机矩阵计算“视图矩阵”。“视图矩阵”是将一切物体移动到摄像机相反的位置，这有效地使摄像机相对于一切物体就像在原点（0,0,0）。
 
-```
+```js
  // Make a view matrix from the camera matrix.
   var viewMatrix = makeInverse(cameraMatrix); 
 ```
 
 最后我们需要应用视图矩阵来计算每个 ‘F’ 的矩阵
 
-```
+```js
  // Multiply the matrices.
     var matrix = translationMatrix;
     matrix = matrixMultiply(matrix, viewMatrix);  // <=-- added
@@ -836,7 +836,7 @@ function makePerspective(fieldOfViewInRadians, aspect, near, far) {
 
 首先，我们需要知道我们想要摄像机在什么位置。我们将称之为 **CameraPosition**。然后我们需要了解我们看过去或瞄准的物体的位置。我们将把它称为 **target**。如果我们将 **CameraPosition** 减去 **target** 我们将得到一个向量，它指向从摄像头获取目标的方向。让我们称它为 **zAxis**。因为我们知道摄像机指向 -Z 方向，我们可以从另一方向做减法 **cameraPosition - target**。我们将结果规范化，并直接复制到 **z** 区域矩阵。
 
-```
+```js
 +----+----+----+----+
 |    |    |    |    |
 +----+----+----+----+
@@ -864,7 +864,7 @@ function makePerspective(fieldOfViewInRadians, aspect, near, far) {
 
 现在我们所要做的就是将 3 个轴插入一个矩阵。这使得矩阵可以指向物体，从 **cameraPosition** 指向 **target**。我们只需要添加 **position**
 
-```
+```js
 +----+----+----+----+
 | Xx | Xy | Xz |  0 |  <- x axis
 +----+----+----+----+
@@ -878,7 +878,7 @@ function makePerspective(fieldOfViewInRadians, aspect, near, far) {
 
 下面是用来计算 2 个向量的交叉乘积的代码。
 
-```
+```js
 function cross(a, b) {
   return [a[1] * b[2] - a[2] * b[1],
           a[2] * b[0] - a[0] * b[2],
@@ -888,7 +888,7 @@ function cross(a, b) {
 
 这是减去两个向量的代码。
 
-```
+```js
 function subtractVectors(a, b) {
   return [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
 } 
@@ -896,7 +896,7 @@ function subtractVectors(a, b) {
 
 这里是规范化一个向量（使其成为一个单位向量）的代码。
 
-```
+```js
 function normalize(v) {
   var length = Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
   // make sure we don't divide by 0.
@@ -910,7 +910,7 @@ function normalize(v) {
 
 下面是计算一个 "lookAt" 矩阵的代码。
 
-```
+```js
 function makeLookAt(cameraPosition, target, up) {
   var zAxis = normalize(
       subtractVectors(cameraPosition, target));
@@ -930,7 +930,7 @@ function makeLookAt(cameraPosition, target, up) {
 
 这是我们如何使用它来使相机随着我们移动它指向在一个特定的 ‘F’ 的。
 
-```
+```js
  ...
 
   // Compute the position of the first F

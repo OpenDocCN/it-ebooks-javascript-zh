@@ -6,7 +6,7 @@
 
   执行使用[Ember CLI](http://www.ember-cli.com/user-guide/)命令创建。
 
-```
+```js
 ember new search  
 cd search  
 ember server 
@@ -18,7 +18,7 @@ ember server
 
   仍然是使用 Ember CLI 命令创建。
 
-```
+```js
 ember g route post  
 ember g controller posts  
 ember g model post 
@@ -28,7 +28,7 @@ ember g model post
 
 #### 1，定义 model
 
-```
+```js
 import DS from 'ember-data';
 
 export default DS.Model.extend({  
@@ -40,7 +40,7 @@ export default DS.Model.extend({
 
 #### 2， 在路由`post`的`model`回调中增加测试数据。
 
-```
+```js
 //  app/routes/posts.js
 
 import Ember from 'ember';
@@ -82,7 +82,7 @@ export default Ember.Route.extend({
 
 在`route`增加测试数据后，我直接在模板中遍历显示这些数据，此时仅仅是显示，还没增加查询功能。
 
-```
+```js
 <!-- app/templates/posts.hbs -->  
 <ul>  
     {{#each model as |item|}}
@@ -97,7 +97,7 @@ export default Ember.Route.extend({
 
 下面增加查询功能，首先在 controller 类中增加两个计算属性，一个用来接受查询参数，一个用户显示结果。
 
-```
+```js
 //  app/controllers/posts.js
 
 import Ember from 'ember';
@@ -128,7 +128,7 @@ export default Ember.Controller.extend({
 
 然后修改显示数据模板文件，并增加一个查询输入框。
 
-```
+```js
 <!-- app/templates/posts.hbs -->  
 {{input type="text" value=queryValue placeholder="search..."}}
 <br><hr>  
@@ -146,7 +146,7 @@ export default Ember.Controller.extend({
 
 当你在查询框输入要查询的内容时，显示的信息会根据的你输入的内容动态发生变化。 比如输入：h 那么界面显示的数据有：
 
-```
+```js
 hello world!  
 http://www.ddlisting.com  
 这个是包含有字母 h 的数据 

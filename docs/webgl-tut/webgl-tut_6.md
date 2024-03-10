@@ -10,7 +10,7 @@
 
 例如：先构造一个容器，把画布和一些 HTML 元素重叠放置在容器内部。
 
-```
+```js
 <div class="container">
   <canvas id="canvas" width="400" height="300"></canvas>
   <div id="overlay">
@@ -22,7 +22,7 @@
 
 接下来设置 CSS，以达到画布和 HTML 重叠的目的。
 
-```
+```js
 .container {
 position: relative;
 }
@@ -35,7 +35,7 @@ top: 10px;
 
 现在按照初始化和创建时间查找这些元素，或者查找你想要改变的区域。
 
-```
+```js
 // look up the elements we want to affect
 var timeElement = document.getElementById("time");
 var angleElement = document.getElementById("angle");
@@ -51,7 +51,7 @@ angleElement.appendChild(angleNode);
 
 最后在渲染时更新节点。
 
-```
+```js
 function drawScene() {
 ...
 
@@ -72,7 +72,7 @@ timeNode.nodeValue = clock.toFixed(2);   // 2 decimal places
 
 注意为了我想改变的部分，我是如何把 spans 置入特殊的 div 内的。在这里我做一个假设，这比只使用 div 而没有 spans 速度要快，类似的有：
 
-```
+```js
 timeNode.value = "Time " + clock.toFixed(2); 
 ```
 
@@ -88,7 +88,7 @@ timeNode.value = "Time " + clock.toFixed(2);
 
 在本例中，我们将再次构造一个画布容器和另一个活动的 HTML 容器。
 
-```
+```js
 <div class="container">
   <canvas id="canvas" width="400" height="300"></canvas>
   <div id="divcontainer"></div>
@@ -97,7 +97,7 @@ timeNode.value = "Time " + clock.toFixed(2);
 
 我们将设置 CSS
 
-```
+```js
 .container {
 position: relative;
 overflow: none;
@@ -127,7 +127,7 @@ position: absolute;
 
 现在我们需要查找 div 容器，创建一个 div，将 div 附加到容器。
 
-```
+```js
 // look up the divcontainer
 var divContainerElement = document.getElementById("divcontainer");
 
@@ -147,7 +147,7 @@ divContainerElement.appendChild(div);
 
 现在，我们可以通过设置它的风格定位 div。
 
-```
+```js
 div.style.left = Math.floor(x) + "px";
 div.style.top  = Math.floor(y) + "px";
 textNode.nodeValue = clock.toFixed(2); 
@@ -161,7 +161,7 @@ textNode.nodeValue = clock.toFixed(2);
 
 通过这个例子我们学习了如何使用模型，如何复制它们，以及如何应用一个投影模型将他们转换成 clipspace。然后我们讨论着色器的内容，它在本地空间复制模型，并将其转换成 clipspace。我们也可以在 JavaScript 中做所有的这些。然后我们可以增加 clipspace(-1 到 +1) 到像素和使用 div 位置。
 
-```
+```js
 gl.drawArrays(...);
 
 // We just got through computing a matrix to draw our
@@ -209,7 +209,7 @@ wahlah，我们 div 的左上角和 F 的右上角完全符合。
 
 和前边其他的例子类似，让我们来构造一个容器，但这一次我们将在其中放置两个画布。
 
-```
+```js
 <div class="container">
   <canvas id="canvas" width="400" height="300"></canvas>
   <canvas id="text" width="400" height="300"></canvas>
@@ -218,7 +218,7 @@ wahlah，我们 div 的左上角和 F 的右上角完全符合。
 
 接下来设置 CSS，以使画布和 HTML 重叠
 
-```
+```js
 .container {
 position: relative;
 }
@@ -233,7 +233,7 @@ z-index: 10;
 
 现在按照初始化时间查找文本画布，并为之创建一个 2D 上下文。
 
-```
+```js
 // look up the text canvas.
 var textCanvas = document.getElementById("text");
 
@@ -243,7 +243,7 @@ var ctx = textCanvas.getContext("2d");
 
 当绘图时，就像 WebGL，我们需要清除 2d 画布的每一帧。
 
-```
+```js
 function drawScene() {
 ...
 
@@ -253,7 +253,7 @@ ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
 然后我们就调用 **fillText** 绘制文本
 
-```
+```js
 ctx.fillText(someMsg, pixelX, pixelY); 
 ```
 
@@ -265,7 +265,7 @@ ctx.fillText(someMsg, pixelX, pixelY);
 
 使用 canvas2d 的另一个原因是用它很容易绘制其他的事物。例如让我们来添加一个箭头：
 
-```
+```js
 // draw an arrow and text.
 
 // save all the canvas settings
@@ -315,7 +315,7 @@ ctx.restore();
 
 我们来看上一篇文章的例子，在其中添加一个函数：用文本填补一个 2D 画布。
 
-```
+```js
 var textCtx = document.createElement("canvas").getContext("2d");
 
 // Puts text in center of canvas.
@@ -336,7 +336,7 @@ function makeTextCanvas(text, width, height) {
 
 现在，让我们创建一个“F”和四元组单元。
 
-```
+```js
 // Create data for 'F'
 var fBufferInfo = primitives.create3DFBufferInfo(gl);
 // Create a unit quad for the 'text'
@@ -347,7 +347,7 @@ var textBufferInfo = primitives.createPlaneBufferInfo(gl, 1, 1, 1, 1, makeXRotat
 
 接下来创建 2 个着色器：
 
-```
+```js
 // setup GLSL programs
 var fProgramInfo = createProgramInfo(gl, ["3d-vertex-shader", "3d-fragment-shader"]);
 var textProgramInfo = createProgramInfo(gl, ["text-vertex-shader", "text-fragment-shader"]); 
@@ -355,7 +355,7 @@ var textProgramInfo = createProgramInfo(gl, ["text-vertex-shader", "text-fragmen
 
 创建我们的文本纹理：
 
-```
+```js
 // create text texture.
 var textCanvas = makeTextCanvas("Hello!", 100, 26);
 var textWidth  = textCanvas.width;
@@ -371,7 +371,7 @@ gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 
 为“F”和文本设置 uniforms：
 
-```
+```js
 var fUniforms = {
   u_matrix: makeIdentity(),
 };
@@ -384,7 +384,7 @@ var textUniforms = {
 
 当我们计算 F 的矩阵时，保存 F 的矩阵视图：
 
-```
+```js
 var matrix = makeIdentity();
 matrix = matrixMultiply(matrix, preTranslationMatrix);
 matrix = matrixMultiply(matrix, scaleMatrix);
@@ -399,7 +399,7 @@ matrix = matrixMultiply(matrix, projectionMatrix);
 
 像这样绘制 F：
 
-```
+```js
 gl.useProgram(fProgramInfo.program);
 
 setBuffersAndAttributes(gl, fProgramInfo.attribSetters, fBufferInfo);
@@ -413,7 +413,7 @@ gl.drawElements(gl.TRIANGLES, fBufferInfo.numElements, gl.UNSIGNED_SHORT, 0);
 
 文本中我们只需要知道 F 的原点位置，我们还需要测量和单元四元组相匹配的纹理尺寸。最后，我们需要多种投影矩阵。
 
-```
+```js
 // scale the F to the size we need it.
 // use just the view position of the 'F' for the text
 var textMatrix = makeIdentity();
@@ -426,7 +426,7 @@ textMatrix = matrixMultiply(textMatrix, projectionMatrix);
 
 然后渲染文本
 
-```
+```js
 // setup to draw the text.
 gl.useProgram(textProgramInfo.program);
 
@@ -445,20 +445,20 @@ gl.drawElements(gl.TRIANGLES, textBufferInfo.numElements, gl.UNSIGNED_SHORT, 0);
 
 你会发现有时候我们文本的一部分遮盖了我们 Fs 的一部分。这是因为我们绘制一个四元组。画布的默认颜色是透明的黑色(0,0,0,0)和我们在四元组中使用这种颜色绘制。我们也可以混合像素。
 
-```
+```js
 gl.enable(gl.BLEND);
 gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA); 
 ```
 
 根据混合函数，将源像素(这个颜色取自片段着色器)和 目的像素(画布颜色)结合在一起。在混合函数中，我们为源像素设置：SRC_ALPHA，为目的像素设置：ONE_MINUS_SRC_ALPHA。
 
-```
+```js
 result = dest * (1 - src_alpha) + src * src_alpha 
 ```
 
 举个例子，如果目的像素是绿色的 0,1,0,1 和源像素是红色的 1,0,0,1，如下：
 
-```
+```js
 src = [1, 0, 0, 1]
 dst = [0, 1, 0, 1]
 src_alpha = src[3]  // this is 1
@@ -473,7 +473,7 @@ result = src
 
 对于纹理的部分内容，使用透明的黑色 0,0,0,0
 
-```
+```js
 src = [0, 0, 0, 0]
 dst = [0, 1, 0, 1]
 src_alpha = src[3]  // this is 0
@@ -502,13 +502,13 @@ result = dst
 
 让我们先单独绘制透明材料(文本)中不透明材料(Fs)的部分。首先，我们要声明一些来记录文本的位置。
 
-```
+```js
 var textPositions = []; 
 ```
 
 在循环中渲染记录位置的 Fs
 
-```
+```js
 matrix = matrixMultiply(matrix, viewMatrix);
 var fViewMatrix = copyMatrix(matrix);  // remember the view matrix for the text
 textPositions.push([matrix[12], matrix[13], matrix[14]]);  // remember the position for the text 
@@ -516,14 +516,14 @@ textPositions.push([matrix[12], matrix[13], matrix[14]]);  // remember the posit
 
 在我们绘制 “F”s 之前，我们禁用混合并打开写深度缓冲
 
-```
+```js
 gl.disable(gl.BLEND);
 gl.depthMask(true); 
 ```
 
 绘制文本时，我们将打开混合并关掉写作深度缓冲
 
-```
+```js
 gl.enable(gl.BLEND);
 gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 gl.depthMask(false); 
@@ -531,7 +531,7 @@ gl.depthMask(false);
 
 然后在我们保存的所有位置绘制文本
 
-```
+```js
 textPositions.forEach(function(pos) {
   // draw the text
   // scale the F to the size we need it.
@@ -564,7 +564,7 @@ textPositions.forEach(function(pos) {
 
 你也可以使之向 cameara 移动。在这里我们这样做只是为了好玩。因为 “pos” 是在坐标系中，意味着它是相对于眼(在坐标系中即：0,0,0)。所以如果我们使之标准化，我们可以得到一个单位向量，这个向量的指向是从原点到某一点，我们可以乘一定数值将文本特定数量的单位靠近或远离眼。
 
-```
+```js
 // because pos is in view space that means it's a vector from the eye to
 // some position. So translate along that vector back toward the eye some distance
 var fromEye = normalize(pos);
@@ -591,7 +591,7 @@ textMatrix = matrixMultiply(textMatrix, projectionMatrix);
 
 为了解决这个问题，使 WebGL 不会 unpremultiply：
 
-```
+```js
 gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true); 
 ```
 
@@ -599,7 +599,7 @@ gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
 
 我们还需要改变混合函数
 
-```
+```js
 gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA); 
 ```
@@ -612,7 +612,7 @@ gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
 
 如果你想保持文本在一种固定大小，但仍然正确？那么，如果你还记得[透视文章](http://webglfundamentals.org/webgl/lessons/webgl-3d-perspective.html)中透视矩阵以 **-Z** 调整我们的对象使其在距离上更小。所以，我们可以以 **-Z** 倍数调整以达到我们想要的规模作为补偿。
 
-```
+```js
 ...
 // because pos is in view space that means it's a vector from the eye to
 // some position. So translate along that vector back toward the eye some distance
@@ -635,7 +635,7 @@ textMatrix = matrixMultiply(textMatrix, projectionMatrix);
 
 如果你想在每个 F 中绘制不同文本，你应该为每个 F 构造一个新纹理，为每个 F 更新文本模式。
 
-```
+```js
 // create text textures, one for each F
 var textTextures = [
   "anna",   // 0
@@ -675,7 +675,7 @@ height: textHeight,
 
 然后在呈现时选择一个纹理
 
-```
+```js
 textPositions.forEach(function(pos, ndx) {
 
   +// select a texture
@@ -689,7 +689,7 @@ textPositions.forEach(function(pos, ndx) {
 
 并在绘制前为纹理设置统一结构
 
-```
+```js
 textUniforms.u_texture = tex.texture; 
 ```
 
@@ -699,7 +699,7 @@ textUniforms.u_texture = tex.texture;
 
 首先我们改变文本材质，通过复合一个颜色
 
-```
+```js
 varying vec2 v_texcoord;
 
 uniform sampler2D u_texture;
@@ -712,13 +712,13 @@ void main() {
 
 当我们绘制文本到画布上时使用白色
 
-```
+```js
 textCtx.fillStyle = "white"; 
 ```
 
 然后我们添加一些其他颜色
 
-```
+```js
 // colors, 1 for each F
 var colors = [
   [0.0, 0.0, 0.0, 1], // 0
@@ -742,7 +742,7 @@ var colors = [
 
 在绘制时选择一个颜色
 
-```
+```js
 // set color uniform
 textUniforms.u_color = colors[ndx]; 
 ```
@@ -759,7 +759,7 @@ textUniforms.u_color = colors[ndx];
 
 比方说你想呈现大量的文本，这需要经常改变 UI 之类的事物。前一篇文章给出的最后一个例子中，一个明显的解决方案是给每个字母加纹理。我们来尝试一下改变上一个例子。
 
-```
+```js
 var names = [
   "anna",   // 0
   "colin",  // 1
@@ -813,7 +813,7 @@ var textTextures = [
 
 相对于为每个名字呈现一个四元组，我们将为每个名字的每个字母呈现一个四元组。
 
-```
+```js
 // setup to draw the text.
 // Because every letter uses the same attributes and the same progarm
 // we only need to do this once.
@@ -868,7 +868,7 @@ gl.drawElements(gl.TRIANGLES, textBufferInfo.numElements, gl.UNSIGNED_SHORT, 0);
 
 下面的代码构造了字符的纹理图谱。
 
-```
+```js
 function makeGlyphCanvas(ctx, maxWidthOfTexture, heightOfLetters, baseLine, padding, letters) {
   var rows = 1;  // number of rows of glyphs
   var x = 0; // x position in texture to draw next glyph
@@ -918,7 +918,7 @@ var t = ctx.fillText(letter, glyphInfo.x, glyphInfo.y + baseLine);
 
 现在我们试试看：
 
-```
+```js
 var ctx = document.createElement("canvas").getContext("2d");
 ctx.font = "20px sans-serif";
 ctx.fillStyle = "white";
@@ -944,7 +944,7 @@ letters);
 
 给定一个字符串，来建立顶点：
 
-```
+```js
 function makeVerticesForString(fontInfo, s) {
   var len = s.length;
   var numVertices = len * 6;
@@ -1015,7 +1015,7 @@ numVertices: offset / 2,
 
 为了使用它，我们手动创建一个 bufferInfo。([如果你已经不记得了，可以查看前面的文章：bufferInfo 是什么](http://webglfundamentals.org/webgl/lessons/webgl-drawing-multiple-things))。
 
-```
+```js
 // Maunally create a bufferInfo
 var textBufferInfo = {
   attribs: {
@@ -1028,7 +1028,7 @@ a_texcoord: { buffer: gl.createBuffer(), numComponents: 2, },
 
 使用 bufferInfo 中的字符创建画布的 fontInfo 和纹理：
 
-```
+```js
 var ctx = document.createElement("canvas").getContext("2d");
 ctx.font = "20px sans-serif";
 ctx.fillStyle = "white";
@@ -1056,7 +1056,7 @@ var fontInfo = {
 
 然后渲染我们将更新缓冲的文本。我们也可以构成动态的文本：
 
-```
+```js
 textPositions.forEach(function(pos, ndx) {
 
   var name = names[ndx];

@@ -50,7 +50,7 @@
 
 构造函数是一个正常的函数，但是它的特征和用法与普通函数不一样。下面就是一个构造函数：
 
-```
+```js
 var Vehicle = function() {
   this.price = 1000;
 };
@@ -64,7 +64,7 @@ var Vehicle = function() {
 
 new 命令的作用，就是执行构造函数，返回一个实例对象。
 
-```
+```js
 var Vehicle = function (){
   this.price = 1000;
 };
@@ -77,7 +77,7 @@ v.price // 1000
 
 使用 new 命令时，根据需要，构造函数也可以接受参数。
 
-```
+```js
 var Vehicle = function (p){
   this.price = p;
 };
@@ -87,7 +87,7 @@ var v = new Vehicle(500);
 
 new 命令本身就可以执行构造函数，所以后面的构造函数可以带括号，也可以不带括号。下面两行代码是等价的。
 
-```
+```js
 var v = new Vehicle();
 var v = new Vehicle;
 ```
@@ -96,7 +96,7 @@ var v = new Vehicle;
 
 这种情况下，构造函数就变成了普通函数，并不会生成实例对象。而且由于下面会说到的原因，this 这时代表全局对象，将造成一些意想不到的结果。
 
-```
+```js
 var Vehicle = function (){
   this.price = 1000;
 };
@@ -113,7 +113,7 @@ price
 
 因此，应该非常小心，避免出现不使用 new 命令、直接调用构造函数的情况。为了保证构造函数必须与 new 命令一起使用，一个解决办法是，在构造函数内部使用严格模式，即第一行加上`use strict`。
 
-```
+```js
 function Fubar(foo, bar){
   "use strict";
 
@@ -129,7 +129,7 @@ Fubar()
 
 另一个解决办法，是在构造函数内部判断是否使用 new 命令，如果发现没有使用，则直接返回一个实例对象。
 
-```
+```js
 function Fubar(foo, bar){
   if (!(this instanceof Fubar)) {
     return new Fubar(foo, bar);
@@ -151,7 +151,7 @@ Fubar(1, 2)._foo // 1
 
 构造函数之所以叫“构造函数”，就是说这个函数的目的，就是操作上下文对象（即 this 对象），将其“构造”为需要的样子。如果构造函数的 return 语句返回的是对象，new 命令会返回 return 语句指定的对象；否则，就会不管 return 语句，返回构造后的上下文对象。
 
-```
+```js
 var Vehicle = function (){
   this.price = 1000;
   return 1000;
@@ -165,7 +165,7 @@ var Vehicle = function (){
 
 但是，如果 return 语句返回的是一个跟 this 无关的新对象，new 命令会返回这个新对象，而不是 this 对象。这一点需要特别引起注意。
 
-```
+```js
 var Vehicle = function (){
   this.price = 1000;
   return { price: 2000 };
@@ -179,7 +179,7 @@ var Vehicle = function (){
 
 new 命令简化的内部流程，可以用下面的代码表示。
 
-```
+```js
 function _new(/* constructor, param, ... */) {
   var args = [].slice.call(arguments);
   var constructor = args.shift();
@@ -195,7 +195,7 @@ var actor = _new(Person, "张三", 28);
 
 instanceof 运算符用来确定一个对象是否为某个构造函数的实例。
 
-```
+```js
 var v = new Vehicle();
 
 v instanceof Vehicle
@@ -204,7 +204,7 @@ v instanceof Vehicle
 
 instanceof 运算符的左边放置对象，右边放置构造函数。在 JavaScript 之中，只要是对象，就有对应的构造函数。因此，instanceof 运算符可以用来判断值的类型。
 
-```
+```js
 [1, 2, 3] instanceof Array // true
 
 ({}) instanceof Object // true
@@ -214,7 +214,7 @@ instanceof 运算符的左边放置对象，右边放置构造函数。在 JavaS
 
 需要注意的是，由于原始类型的值不是对象，所以不能使用 instanceof 运算符判断类型。
 
-```
+```js
 "" instanceof String // false
 1 instanceof Number // false
 ```
@@ -223,7 +223,7 @@ instanceof 运算符的左边放置对象，右边放置构造函数。在 JavaS
 
 如果存在继承关系，也就是某个对象可能是多个构造函数的实例，那么 instanceof 运算符对这些构造函数都返回 true。
 
-```
+```js
 var a = [];
 
 a instanceof Array // true
@@ -234,7 +234,7 @@ a instanceof Object // true
 
 利用 instanceof 运算符，还可以巧妙地解决，调用构造函数时，忘了加 new 命令的问题。
 
-```
+```js
 function Fubar (foo, bar) {
   if (this instanceof Fubar) {
     this._foo = foo;
@@ -256,7 +256,7 @@ function Fubar (foo, bar) {
 
 举例来说，有一个函数 f，它同时充当 a 对象和 b 对象的方法。JavaScript 允许函数 f 的运行环境动态切换，即一会属于 a 对象，一会属于 b 对象，这就要靠 this 关键字来办到。
 
-```
+```js
 function f(){ console.log(this.x); };
 
 var a = {x:'a'};
@@ -283,7 +283,7 @@ this 的使用可以分成以下几个场合。
 
 在全局环境使用 this，它指的就是顶层对象 window。
 
-```
+```js
 this === window // true 
 
 function f() {
@@ -297,7 +297,7 @@ function f() {
 
 构造函数中的 this，指的是实例对象。
 
-```
+```js
 var O = function(p) {
     this.p = p;
 };
@@ -309,7 +309,7 @@ O.prototype.m = function() {
 
 上面代码定义了一个构造函数 O。由于 this 指向实例对象，所以在构造函数内部定义 this.p，就相当于定义实例对象有一个 p 属性；然后 m 方法可以返回这个 p 属性。
 
-```
+```js
 var o = new O("Hello World!");
 
 o.p // "Hello World!"
@@ -320,7 +320,7 @@ o.m() // "Hello World!"
 
 当 a 对象的方法被赋予 b 对象，该方法就变成了普通函数，其中的 this 就从指向 a 对象变成了指向 b 对象。这就是 this 取决于运行时所在的对象的含义，所以要特别小心。如果将某个对象的方法赋值给另一个对象，会改变 this 的指向。
 
-```
+```js
 var o1 = new Object();
 o1.m = 1;
 o1.f = function (){ console.log(this.m);};
@@ -338,7 +338,7 @@ o2.f() // 2
 
 如果不想改变 this 的指向，可以将 o2.f 改写成下面这样。
 
-```
+```js
 o2.f = function (){ o1.f() };
 
 o2.f() // 1
@@ -348,7 +348,7 @@ o2.f() // 1
 
 有时，某个方法位于多层对象的内部，这时如果为了简化书写，把该方法赋值给一个变量，往往会得到意想不到的结果。
 
-```
+```js
 var a = {
         b : {
             m : function() {
@@ -364,7 +364,7 @@ hello() // undefined
 
 上面代码表示，m 属于多层对象内部的一个方法。为求简写，将其赋值给 hello 变量，结果调用时，this 指向了全局对象。为了避免这个问题，可以只将 m 所在的对象赋值给 hello，这样调用时，this 的指向就不会变。
 
-```
+```js
 var hello = a.b;
 hello.m() // Hello
 ```
@@ -373,7 +373,7 @@ hello.m() // Hello
 
 在 Node.js 中，this 的指向又分成两种情况。全局环境中，this 指向全局对象 global；模块环境中，this 指向 module.exports。
 
-```
+```js
 // 全局环境
 this === global // true
 
@@ -387,7 +387,7 @@ this === module.exports // true
 
 由于 this 的指向是不确定的，所以切勿在函数中包含多层的 this。
 
-```
+```js
 var o = {
     f1: function() {
         console.log(this); 
@@ -404,7 +404,7 @@ o.f1()
 
 上面代码包含两层 this，结果运行后，第一层指向该对象，第二层指向全局对象。一个解决方法是在第二层改用一个指向外层 this 的变量。
 
-```
+```js
 var o = {
     f1: function() {
         console.log(this); 
@@ -426,7 +426,7 @@ o.f1()
 
 数组的 map 和 foreach 方法，允许提供一个函数作为参数。这个函数内部不应该使用 this。
 
-```
+```js
 var o = {
     v: 'hello',
     p: [ 'a1', 'a2' ],
@@ -446,7 +446,7 @@ o.f()
 
 解决这个问题的一种方法，是使用中间变量。
 
-```
+```js
 var o = {
     v: 'hello',
     p: [ 'a1', 'a2' ],
@@ -465,7 +465,7 @@ o.f()
 
 另一种方法是将 this 当作 foreach 方法的第二个参数，固定它的运行环境。
 
-```
+```js
 var o = {
   v: 'hello',
     p: [ 'a1', 'a2' ],
@@ -485,7 +485,7 @@ o.f()
 
 回调函数中的 this 往往会改变指向，最好避免使用。
 
-```
+```js
 var o = new Object();
 
 o.f = function (){
@@ -499,7 +499,7 @@ o.f() // true
 
 但是，如果将 f 方法指定给某个按钮的 click 事件，this 的指向就变了。
 
-```
+```js
 $("#button").on("click", o.f);
 ```
 
@@ -515,7 +515,7 @@ this 的动态切换，固然为 JavaScript 创造了巨大的灵活性，但也
 
 函数的 call 方法，可以指定该函数内部 this 的指向（即函数执行时所在的作用域），然后在所指定的作用域中，调用该函数。
 
-```
+```js
 var o = {};
 
 var f = function (){
@@ -530,7 +530,7 @@ f.call(o) === o // true
 
 再看一个例子。
 
-```
+```js
 var n = 123;
 var o = { n : 456 };
 
@@ -549,13 +549,13 @@ a.call(o) // 456
 
 call 方法的完整使用格式如下。
 
-```
+```js
 func.call(thisValue, arg1, arg2, ...)
 ```
 
 它的第一个参数就是 this 所要指向的那个对象，后面的参数则是函数调用时所需的参数。
 
-```
+```js
 function add(a,b) {
   return a+b;
 }
@@ -567,7 +567,7 @@ add.call(this,1,2) // 3
 
 call 方法的一个应用是调用对象的原生方法。
 
-```
+```js
 var obj = {};
 obj.hasOwnProperty('toString') // false
 
@@ -585,7 +585,7 @@ Object.prototype.hasOwnProperty.call(obj, 'toString') // false
 
 apply 方法的作用与 call 方法类似，也是改变 this 指向，然后再调用该函数。唯一的区别就是，它接收一个数组作为函数执行时的参数，使用格式如下。
 
-```
+```js
 func.apply(thisValue, [arg1, arg2, ...])
 ```
 
@@ -593,7 +593,7 @@ apply 方法的第一个参数也是 this 所要指向的那个对象，如果�
 
 请看下面的例子。
 
-```
+```js
 function f(x,y){
   console.log(x+y);
 }
@@ -610,7 +610,7 @@ f.apply(null,[1,1]) // 2
 
 JavaScript 不提供找出数组最大元素的函数。结合使用 apply 方法和 Math.max 方法，就可以返回数组的最大元素。
 
-```
+```js
 var a = [10, 2, 4, 15, 9];
 
 Math.max.apply(null, a)
@@ -621,14 +621,14 @@ Math.max.apply(null, a)
 
 通过 apply 方法，利用 Array 构造函数将数组的空元素变成 undefined。
 
-```
+```js
 Array.apply(null, ["a",,"b"])
 // [ 'a', undefined, 'b' ]
 ```
 
 空元素与 undefined 的差别在于，数组的 foreach 方法会跳过空元素，但是不会跳过 undefined。因此，遍历内部元素的时候，会得到不同的结果。
 
-```
+```js
 var a = ["a",,"b"];
 
 function print(i) {
@@ -649,7 +649,7 @@ Array.apply(null,a).forEach(print)
 
 另外，利用数组对象的 slice 方法，可以将一个类似数组的对象（比如 arguments 对象）转为真正的数组。
 
-```
+```js
 Array.prototype.slice.apply({0:1,length:1})
 // [1]
 
@@ -669,7 +669,7 @@ Array.prototype.slice.apply({length:1})
 
 上一节按钮点击事件的例子，可以改写成
 
-```
+```js
 var o = new Object();
 
 o.f = function (){
@@ -690,13 +690,13 @@ $("#button").on("click", f);
 
 bind 方法用于将函数体内的 this 绑定到某个对象，然后返回一个新函数。它的使用格式如下。
 
-```
+```js
 func.bind(thisValue, arg1, arg2,...)
 ```
 
 下面是一个例子。
 
-```
+```js
 var o1 = new Object();
 o1.p = 123;
 o1.m = function (){
@@ -719,7 +719,7 @@ o2.m() // 123
 
 bind 比 call 方法和 apply 方法更进一步的是，除了绑定 this 以外，还可以绑定原函数的参数。
 
-```
+```js
 var add = function (x,y) {
   return x*this.m + y*this.n;
 }
@@ -739,7 +739,7 @@ newAdd(5)
 
 如果 bind 方法的第一个参数是 null 或 undefined，等于将 this 绑定到全局对象，函数运行时 this 指向全局对象（在浏览器中为 window）。
 
-```
+```js
 function add(x,y) { return x+y; }
 
 var plus5 = add.bind(null, 5);
@@ -755,19 +755,19 @@ bind 方法有一些使用注意点。
 
 bind 方法每运行一次，就返回一个新函数，这会产生一些问题。比如，监听事件的时候，不能写成下面这样。
 
-```
+```js
 element.addEventListener('click', o.m.bind(o));
 ```
 
 上面代码表示，click 事件绑定 bind 方法生成的一个匿名函数。这样会导致无法取消绑定，所以，下面的代码是无效的。
 
-```
+```js
 element.removeEventListener('click', o.m.bind(o));
 ```
 
 正确的方法是写成下面这样：
 
-```
+```js
 var listener = o.m.bind(o);
 element.addEventListener('click', listener);
 //  ...
@@ -778,7 +778,7 @@ element.removeEventListener('click', listener);
 
 对于那些不支持 bind 方法的老式浏览器，可以自行定义 bind 方法。
 
-```
+```js
 if(!('bind' in Function.prototype)){
     Function.prototype.bind = function(){
         var fn = this;
@@ -795,7 +795,7 @@ if(!('bind' in Function.prototype)){
 
 除了用 bind 方法绑定函数运行时所在的对象，还可以使用 jQuery 的$.proxy 方法，它与 bind 方法的作用基本相同。
 
-```
+```js
 $("#button").on("click", $.proxy(o.f, o));
 ```
 
@@ -805,7 +805,7 @@ $("#button").on("click", $.proxy(o.f, o));
 
 利用 bind 方法，可以改写一些 JavaScript 原生方法的使用形式，以数组的 slice 方法为例。
 
-```
+```js
 [1,2,3].slice(0,1) 
 // [1]
 
@@ -819,7 +819,7 @@ Array.prototype.slice.call([1,2,3], 0, 1)
 
 call 方法实质上是调用 Function.prototype.call 方法，因此上面的表达式可以用 bind 方法改写。
 
-```
+```js
 var slice = Function.prototype.call.bind(Array.prototype.slice);
 
 slice([1, 2, 3], 0, 1) // [1]
@@ -827,7 +827,7 @@ slice([1, 2, 3], 0, 1) // [1]
 
 可以看到，利用 bind 方法，将[1, 2, 3].slice(0, 1)变成了 slice([1, 2, 3], 0, 1)的形式。这种形式的改变还可以用于其他数组方法。
 
-```
+```js
 var push = Function.prototype.call.bind(Array.prototype.push);
 var pop = Function.prototype.call.bind(Array.prototype.pop);
 
@@ -841,7 +841,7 @@ a // [1, 2, 3]
 
 如果再进一步，将 Function.prototype.call 方法绑定到 Function.prototype.bind 对象，就意味着 bind 的调用形式也可以被改写。
 
-```
+```js
 function f(){
     console.log(this.v);
 }

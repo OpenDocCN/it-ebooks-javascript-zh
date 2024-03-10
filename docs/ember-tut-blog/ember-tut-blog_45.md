@@ -4,7 +4,7 @@ store 提供了统一的获取数据的接口。包括创建新记录、修改�
 
 为了演示这些方法的使用我们结合 firebase，关于 firebase 与 Ember 的整合前面的文章已经介绍，就不过多介绍了。 做好准备工作：
 
-```
+```js
 ember g route articles  
 ember g route articles/article 
 ```
@@ -13,7 +13,7 @@ ember g route articles/article
 
 首先配置`route`，修改子路由增加一个动态段`article_id`，有关动态的介绍请看[Dynamic Segments](https://guides.emberjs.com/v2.5.0/routing/defining-your-routes/#toc_dynamic-segments)。
 
-```
+```js
 //  app/router.js
 
 //  其他代码略写，
@@ -28,7 +28,7 @@ Router.map(function() {
 
 下面是路由代码，这段代码直接调用 Store 的 find 方法，返回所有数据。
 
-```
+```js
 //  app/routes/articles.js
 import Ember from 'ember';
 
@@ -42,7 +42,7 @@ export default Ember.Route.extend({
 
 为了界面看起来舒服点我引入了[bootstrap](http://www.bootcss.com)框架。引入的方式：`bower install bootstrap`安装插件。然后修改`ember-cli-build.js`，在`return`之前引入 bootstrap：
 
-```
+```js
 app.import("bower_components/bootstrap/dist/js/bootstrap.js");  
 app.import("bower_components/bootstrap/dist/css/bootstrap.css"); 
 ```
@@ -51,7 +51,7 @@ app.import("bower_components/bootstrap/dist/css/bootstrap.css");
 
 下面是显示数据的模板`articles.hbs`。
 
-```
+```js
 <!--  app/templates/articles.hbs  -->
 
 <div class="container">  
@@ -82,7 +82,7 @@ app.import("bower_components/bootstrap/dist/css/bootstrap.css");
 
 但是右侧是空白的，下面点击任何一条数据，可以看到右侧什么都不显示！ 下面在子模板中增加显示数据的代码：
 
-```
+```js
 <!--  app/templates/articles/article.hbs  -->
 
 <h1>{{model.title}}</h1>  
@@ -93,7 +93,7 @@ app.import("bower_components/bootstrap/dist/css/bootstrap.css");
 
 在点击左侧的数据，右侧可以显示对应的数据了！但是这个怎么就显示出来了呢？？其实[Ember](http://emberjs.com)自动根据动态段过滤了，当然你也可以显示使用`findRecord`方法过滤。
 
-```
+```js
 //  app/routes/articles/article.js
 
 import Ember from 'ember';
@@ -116,7 +116,7 @@ export default Ember.Route.extend({
 
 下面分别修改`articles.js`和`article.js`这两个路由。使用`peekRecord()`和`peekAll()`方法测试效果。
 
-```
+```js
 //  app/routes/articles.js
 
 import Ember from 'ember';
@@ -133,7 +133,7 @@ export default Ember.Route.extend({
 
 由于没有发送请求，我也没有把数据存储到本地，所以这个调用什么数据都没有。
 
-```
+```js
 //  app/routes/articles/article.js
 
 import Ember from 'ember';
@@ -154,7 +154,7 @@ export default Ember.Route.extend({
 
 项目中经常会遇到根据某个值查询出一组匹配的数据。此时返回的数据就不是只有一条了，那么 Ember 有是怎么去实现的呢？
 
-```
+```js
 //  app/routes/articles.js
 
 import Ember from 'ember';
@@ -177,7 +177,7 @@ export default Ember.Route.extend({
 
 查询`category`为`Java`的数据。如果你只想精确查询到某一条数据可以使用`queryRecord()`方法。如下：
 
-```
+```js
 this.store.queryRecord('article', { filter: { id: ' -JzyT-VLEWdF6zY3CefO' } }).then(function(item) {  
     //  对匹配的数据做处理
 }); 

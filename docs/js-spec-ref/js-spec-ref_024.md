@@ -28,7 +28,7 @@ JSON 格式（JavaScript Object Notation 的缩写）是一种用于数据交换
 
 以下是合格的 JSON 值。
 
-```
+```js
 ["one", "two", "three"]
 
 { "one": 1, "two": 2, "three": 3 }
@@ -40,7 +40,7 @@ JSON 格式（JavaScript Object Notation 的缩写）是一种用于数据交换
 
 以下是不合格的 JSON 值。
 
-```
+```js
 { name: "张三", 'age': 32 }  // 属性名必须使用双引号
 
 [32, 64, 128, 0xFFF] // 不能使用十六进制值
@@ -65,7 +65,7 @@ ES5 新增了 JSON 对象，用来处理 JSON 格式数据。它有两个方法�
 
 JSON.stringify 方法用于将一个值转为字符串。该字符串符合 JSON 格式，并且可以被 JSON.parse 方法还原。
 
-```
+```js
 JSON.stringify("abc") // '"abc"'
 JSON.stringify(1) // "1"
 JSON.stringify(false) // "false"
@@ -83,7 +83,7 @@ JSON.stringify({ name: "张三" })
 
 如果原始对象中，有一个成员的值是 undefined、函数或 XML 对象，这个成员会被省略。如果数组的成员是 undefined、函数或 XML 对象，则这些值被转成 null。
 
-```
+```js
 JSON.stringify({
     f: function(){},
     a: [ function(){}, undefined ]
@@ -95,13 +95,13 @@ JSON.stringify({
 
 正则对象会被转成空对象。
 
-```
+```js
 JSON.stringify(/foo/) // "{}"
 ```
 
 JSON.stringify 方法会忽略对象的不可遍历属性。
 
-```
+```js
 var obj = {};
 Object.defineProperties(obj, {
   'foo': {
@@ -121,7 +121,7 @@ JSON.stringify(obj); // {"foo":1}
 
 JSON.stringify 方法还可以接受一个数组参数，指定需要转成字符串的属性。
 
-```
+```js
 JSON.stringify({ a:1, b:2 }, ['a'])
 // '{"a":1}'
 ```
@@ -130,7 +130,7 @@ JSON.stringify({ a:1, b:2 }, ['a'])
 
 JSON.stringify 方法还可以接受一个函数作为参数，用来更改默认的字符串化的行为。
 
-```
+```js
 function f(key, value) {
   if (typeof value === "number") {
     value = 2 * value;
@@ -146,7 +146,7 @@ JSON.stringify({ a:1, b:2 }, f)
 
 注意，这个处理函数是递归处理所有的键。
 
-```
+```js
 var o = {a: {b:1}};
 
 function f(key, value) {
@@ -165,7 +165,7 @@ JSON.stringify(o, f)
 
 递归处理中，每一次处理的对象，都是前一次返回的值。
 
-```
+```js
 var o = {a: 1};
 
 function f(key, value){
@@ -183,7 +183,7 @@ JSON.stringify(o,f)
 
 如果处理函数返回 undefined 或没有返回值，则该属性会被忽略。
 
-```
+```js
 function f(key, value) {
   if (typeof(value) == "string") {
     return undefined;
@@ -199,7 +199,7 @@ JSON.stringify({ a:"abc", b:123 }, f)
 
 JSON.stringify 还可以接受第三个参数，用于增加返回的 JSON 字符串的可读性。如果是数字，表示每个属性前面添加的空格（最多不超过 10 个）；如果是字符串（不超过 10 个字符），则该字符串会添加在每行前面。
 
-```
+```js
 JSON.stringify({ p1:1, p2:2 }, null, 2);
 // "{
   "p1": 1,
@@ -215,7 +215,7 @@ JSON.stringify({ p1:1, p2:2 }, null, "|-");
 
 如果 JSON.stringify 方法处理的对象，包含一个 toJSON 方法，则它会使用这个方法得到一个值，然后再将这个值转成字符串，而忽略其他成员。
 
-```
+```js
 JSON.stringify({
   toJSON: function() {
     return "Cool"
@@ -235,14 +235,14 @@ var json = JSON.stringify({x: o});
 
 Date 对象就部署了一个自己的 toJSON 方法。
 
-```
+```js
 JSON.stringify(new Date("2011-07-29"))
 // "2011-07-29T00:00:00.000Z"
 ```
 
 toJSON 方法的一个应用是，可以将正则对象自动转为字符串。
 
-```
+```js
 RegExp.prototype.toJSON = RegExp.prototype.toString;
 
 JSON.stringify(/foo/)
@@ -255,7 +255,7 @@ JSON.stringify(/foo/)
 
 JSON.parse 方法用于将 JSON 字符串转化成对象。
 
-```
+```js
 JSON.parse('{}') // {}
 JSON.parse('true') // true
 JSON.parse('"foo"') // "foo"
@@ -268,7 +268,7 @@ o.name // 张三
 
 如果传入的字符串不是有效的 JSON 格式，JSON.parse 方法将报错。
 
-```
+```js
 JSON.parse("'String'") // illegal single quotes
 // SyntaxError: Unexpected token ILLEGAL
 ```
@@ -279,7 +279,7 @@ JSON.parse("'String'") // illegal single quotes
 
 JSON.parse 方法可以接受一个处理函数，用法与 JSON.stringify 方法类似。
 
-```
+```js
 function f(key, value) {
   if ( key === ""){
       return value;

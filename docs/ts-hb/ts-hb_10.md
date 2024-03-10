@@ -10,13 +10,13 @@
 
 **命令行**:
 
-```
+```js
 tsc --target ES5 --experimentalDecorators 
 ```
 
 **tsconfig.json**:
 
-```
+```js
 {
     "compilerOptions": {
         "target": "ES5",
@@ -31,7 +31,7 @@ tsc --target ES5 --experimentalDecorators
 
 例如，有一个`@sealed`装饰器，我们会这样定义`sealed`函数：
 
-```
+```js
 function sealed(target) {
     // do something with "target" ...
 } 
@@ -45,7 +45,7 @@ function sealed(target) {
 
 我们可以通过下面的方式来写一个装饰器工厂
 
-```
+```js
 function color(value: string) { // 这是一个装饰器工厂
     return function (target) { //  这是装饰器
         // do something with "target" and "value"...
@@ -61,13 +61,13 @@ function color(value: string) { // 这是一个装饰器工厂
 
 *   写在同一行上：
 
-    ```
+    ```js
     @f @g x 
     ```
 
 *   写在多行上：
 
-    ```
+    ```js
     @f
     @g
     x 
@@ -82,7 +82,7 @@ function color(value: string) { // 这是一个装饰器工厂
 
 如果我们使用装饰器工厂的话，可以通过下面的例子来观察它们求值的顺序：
 
-```
+```js
 function f() {
     console.log("f(): evaluated");
     return function (target, propertyKey: string, descriptor: PropertyDescriptor) {
@@ -106,7 +106,7 @@ class C {
 
 在控制台里会打印出如下结果：
 
-```
+```js
 f(): evaluated
 g(): evaluated
 g(): called
@@ -134,7 +134,7 @@ f(): called
 
 下面是使用类装饰器(`@sealed`)的例子，应用到`Greeter`类：
 
-```
+```js
 @sealed
 class Greeter {
     greeting: string;
@@ -149,7 +149,7 @@ class Greeter {
 
 我们可以这样定义`@sealed`装饰器
 
-```
+```js
 function sealed(constructor: Function) {
     Object.seal(constructor);
     Object.seal(constructor.prototype);
@@ -176,7 +176,7 @@ function sealed(constructor: Function) {
 
 下面是一个方法装饰器（`@enumerable`）的例子，应用于`Greeter`类的方法上：
 
-```
+```js
 class Greeter {
     greeting: string;
     constructor(message: string) {
@@ -192,7 +192,7 @@ class Greeter {
 
 我们可以用下面的函数声明来定义`@enumerable`装饰器：
 
-```
+```js
 function enumerable(value: boolean) {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
         descriptor.enumerable = value;
@@ -222,7 +222,7 @@ function enumerable(value: boolean) {
 
 下面是使用了访问符装饰器（`@configurable`）的例子，应用于`Point`类的成员上：
 
-```
+```js
 class Point {
     private _x: number;
     private _y: number;
@@ -241,7 +241,7 @@ class Point {
 
 我们可以通过如下函数声明来定义`@configurable`装饰器：
 
-```
+```js
 function configurable(value: boolean) {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
         descriptor.configurable = value;
@@ -268,7 +268,7 @@ function configurable(value: boolean) {
 
 我们可以用它来记录这个属性的元数据，如下例所示：
 
-```
+```js
 class Greeter {
     @format("Hello, %s")
     greeting: string;
@@ -285,7 +285,7 @@ class Greeter {
 
 然后定义`@format`装饰器和`getFormat`函数：
 
-```
+```js
 import "reflect-metadata";
 
 const formatMetadataKey = Symbol("format");
@@ -319,7 +319,7 @@ function getFormat(target: any, propertyKey: string) {
 
 下例定义了参数装饰器（`@required`）并应用于`Greeter`类方法的一个参数：
 
-```
+```js
 class Greeter {
     greeting: string;
 
@@ -336,7 +336,7 @@ class Greeter {
 
 然后我们使用下面的函数定义 `@required` 和 `@validate` 装饰器：
 
-```
+```js
 import "reflect-metadata";
 
 const requiredMetadataKey = Symbol("required");
@@ -374,7 +374,7 @@ function validate(target: any, propertyName: string, descriptor: TypedPropertyDe
 
 你可以通过 npm 安装这个库：
 
-```
+```js
 npm i reflect-metadata --save 
 ```
 
@@ -382,13 +382,13 @@ TypeScript 支持为带有装饰器的声明生成元数据。 你需要在命�
 
 **Command Line**:
 
-```
+```js
 tsc --target ES5 --experimentalDecorators --emitDecoratorMetadata 
 ```
 
 **tsconfig.json**:
 
-```
+```js
 {
     "compilerOptions": {
         "target": "ES5",
@@ -402,7 +402,7 @@ tsc --target ES5 --experimentalDecorators --emitDecoratorMetadata
 
 如下例所示：
 
-```
+```js
 import "reflect-metadata";
 
 class Point {
@@ -436,7 +436,7 @@ function validate<T>(target: any, propertyKey: string, descriptor: TypedProperty
 
 TypeScript 编译器可以通过`@Reflect.metadata`装饰器注入设计阶段的类型信息。 你可以认为它相当于下面的 TypeScript：
 
-```
+```js
 class Line {
     private _p0: Point;
     private _p1: Point;

@@ -4,14 +4,14 @@
 
 为了测试新建两个模型类。
 
-```
+```js
 ember g model post  
 ember g model comment 
 ```
 
 ## 1，创建关系记录
 
-```
+```js
 //  app/models/post.js
 
 import DS from 'ember-data';
@@ -31,7 +31,7 @@ export default DS.Model.extend({
 
 设置关联，关系的维护放在多的一方`comment`上。
 
-```
+```js
 let post = this.store.peekRecord('post', 1);  
 let comment = this.store.createRecord('comment', {  
   post: post
@@ -43,7 +43,7 @@ comment.save();
 
 当然啦，你可以在从`post`上设置关联关系。比如下面的代码：
 
-```
+```js
 let post = this.store.peekRecord('post', 1);  
 let comment = this.store.createRecord('comment', {  
     //  设置属性值
@@ -59,7 +59,7 @@ comment.save();
 
 更新关联关系与创建关联关系几乎是一样的。也是首先获取需要关联的模型在设置它们的关联关系。
 
-```
+```js
 let post = this.store.peekRecord('post', 100);  
 let comment = this.store.peekRecord('comment', 1);  
 comment.set('psot', post);  //  重新设置 comment 与 post 的关系  
@@ -70,7 +70,7 @@ comment.save();  //  保存关联的关系
 
 如果是从`post`方更新，那么你可以像下面的代码这样：
 
-```
+```js
 let post = this.store.peekRecord('post', 100);  
 let comment this.store.peekRecord('comment', 1);  
 post.get('comments').pushObject(comment);  // 设置关联  
@@ -81,7 +81,7 @@ post.save();  //  保存关联
 
 既然有新增关系自然也会有删除关联关系。 如果要移除两个模型的关联关系，只需要把关联的属性值设置为`null`就可以了。
 
-```
+```js
 let comment = this.store.peekRecord('comment', 1);  
 comment.set('post', null);  //解除关联关系  
 comment.save(); 
@@ -89,7 +89,7 @@ comment.save();
 
 当然你也可以从一的一方移除关联关系。
 
-```
+```js
 let post = this.store.peekRecord('post', 1);  
 let comment = this.store.peekRecord('comment', 1);  
 post.get('comments').removeObject(comment);  // 从关联数组中移除 comment  

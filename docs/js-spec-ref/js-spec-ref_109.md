@@ -16,7 +16,7 @@
 
 Http 模块主要用于搭建 HTTP 服务。使用 Node.js 搭建 HTTP 服务器非常简单。
 
-```
+```js
 var http = require('http');
 
 http.createServer(function (request, response){
@@ -33,7 +33,7 @@ ceateServer 方法接受一个函数作为参数，该函数的 request 参数�
 
 将上面这几行代码保存成文件 app.js，然后用 node 调用这个文件，服务器就开始运行了。
 
-```
+```js
 $ node app.js
 ```
 
@@ -41,7 +41,7 @@ $ node app.js
 
 上面的例子是当场生成网页，也可以事前写好网页，存在文件中，然后利用 fs 模块读取网页文件，将其返回。
 
-```
+```js
 var http = require('http');
 var fs = require('fs');
 
@@ -57,7 +57,7 @@ console.log('Server running on port 8080.');
 
 下面的修改则是根据不同网址的请求，显示不同的内容，已经相当于做出一个网站的雏形了。
 
-```
+```js
 var http = require("http");
 
 http.createServer(function(req, res) {
@@ -93,7 +93,7 @@ http.createServer(function(req, res) {
 
 当客户端采用 POST 方法发送数据时，服务器端可以对 data 和 end 两个事件，设立监听函数。
 
-```
+```js
 var http = require('http');
 
 http.createServer(function (req, res) {
@@ -116,7 +116,7 @@ data 事件会在数据接收过程中，每收到一段数据就触发一次，
 
 对上面代码稍加修改，就可以做出文件上传的功能。
 
-```
+```js
 "use strict";
 
 var http = require('http');
@@ -150,7 +150,7 @@ http.createServer(function (request, response) {
 
 get 方法用于发出 get 请求。
 
-```
+```js
 function getTestPersonaLoginCredentials(callback) {
   return http.get({
     host: 'personatestuser.org',
@@ -177,7 +177,7 @@ function getTestPersonaLoginCredentials(callback) {
 
 request 方法用于发出 HTTP 请求，它的使用格式如下。
 
-```
+```js
 http.request(options[, callback])
 ```
 
@@ -207,7 +207,7 @@ request 方法的 callback 参数是可选的，在 response 事件发生时触�
 
 下面是发送 POST 请求的一个例子。
 
-```
+```js
 var postData = querystring.stringify({
   'msg' : 'Hello World!'
 });
@@ -251,7 +251,7 @@ req.end();
 
 自制 SSL 证书需要 OpenSSL，具体命令如下。
 
-```
+```js
 openssl genrsa -out key.pem
 openssl req -new -key key.pem -out csr.pem
 openssl x509 -req -days 9999 -in csr.pem -signkey key.pem -out cert.pem
@@ -262,7 +262,7 @@ rm csr.pem
 
 Node.js 提供一个 https 模块，专门用于处理加密访问。
 
-```
+```js
 var https = require('https');
 var fs = require('fs');
 
@@ -279,7 +279,7 @@ var a = https.createServer(options, function (req, res) {
 
 上面代码显示，HTTPs 服务器与 HTTP 服务器的最大区别，就是 createServer 方法多了一个 options 参数。运行以后，就可以测试是否能够正常访问。
 
-```
+```js
 curl -k https://localhost:8000
 ```
 

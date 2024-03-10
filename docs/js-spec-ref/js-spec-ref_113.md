@@ -10,7 +10,7 @@ net 模块用于底层的网络通信。
 
 下面代码打开一个服务器端 Socket 接口，用来接受客户端的数据。
 
-```
+```js
 var serverPort = 9099;
 var net = require('net');
 var server = net.createServer(function(client) {
@@ -49,7 +49,7 @@ server.listen(serverPort, function() {
 
 客户端 Socket 接口用来向服务器发送数据。
 
-```
+```js
 var serverPort = 9099;
 var server = 'localhost';
 var net = require('net');
@@ -82,7 +82,7 @@ client.on('end', function() {
 
 DNS 模块用于解析域名。resolve4 方法用于 IPv4 环境，resolve6 方法用于 IPv6 环境，lookup 方法在以上两种环境都可以使用，返回 IP 地址（address）和当前环境（IPv4 或 IPv6）。
 
-```
+```js
 var dns = require('dns');
 
 dns.resolve4('www.pecollege.net', function (err, addresses) {

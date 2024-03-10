@@ -16,7 +16,7 @@
 
 最简单的条件判断是 if 语句，语法是 `if(condition){ do this … }` 。条件判断为真，才执行分支中的代码。举个字符串的例子：
 
-```
+```js
 var country = 'France';
 var weather;
 var food;
@@ -49,7 +49,7 @@ var message = 'this is ' + country + ', the weather is ' +
 
 Exercise 填写 `name` 的值，验证条件判断。
 
-```
+```js
 var name =
 
 if (name === "John") {
@@ -63,7 +63,7 @@ if (name === "John") {
 
 当第一个条件语句不成立时， `else` 语句将被执行。如果你想要在特殊条件下才返回一个值，这非常有效：
 
-```
+```js
 var umbrellaMandatory;
 
 if(country === 'England'){
@@ -75,7 +75,7 @@ if(country === 'England'){
 
 `else` 语句可以和另一个 `if` 语句结合。改造一下上面的例子：
 
-```
+```js
 if(country === 'England') {
     ...
 } else if(country === 'France') {
@@ -87,7 +87,7 @@ if(country === 'England') {
 
 Exercise 填写 `name` 的值，验证 `else` 语句。
 
-```
+```js
 var name =
 
 if (name === "John") {
@@ -103,7 +103,7 @@ if (name === "John") {
 
 把焦点放在条件判断部分：
 
-```
+```js
 if (country === "France") {
     ...
 } 
@@ -122,7 +122,7 @@ if (country === "France") {
 
 Exercise 添加一种条件判断，如果 `x` 比 5 大，使变量 `a` 赋值为 10。
 
-```
+```js
 var x = 6;
 var a = 0;
 ```
@@ -131,7 +131,7 @@ var a = 0;
 
 为了避免 if-else 麻烦，可以利用一种简单的逻辑比较。
 
-```
+```js
 var topper = (marks > 85) ? "YES" : "NO"; 
 ```
 
@@ -147,7 +147,7 @@ var topper = (marks > 85) ? "YES" : "NO";
 
 比如你想要测试 x 的值是否在 10 到 20 之间，你可以用上述的方法：
 
-```
+```js
 if(x > 10 && x < 20) {
     ...
 } 
@@ -155,7 +155,7 @@ if(x > 10 && x < 20) {
 
 如果你想要确认 country 是 “England” 或 “Germany”：
 
-```
+```js
 if(country === 'England' || country === 'Germany') {
     ...
 } 
@@ -165,7 +165,7 @@ if(country === 'England' || country === 'Germany') {
 
 Exercise 填写两个条件让仅当 name 为 `"John"` ，country 为 `"England"`，`primaryCategory` 才等于 `"E/J"` ，仅当 name 为 `"John"` 或 country 为 `"England"`， `secondaryCategory` 才等于 `"E/J"` 。
 
-```
+```js
 var name = "John";
 var country = "England";
 var primaryCategory, secondaryCategory;

@@ -33,7 +33,7 @@ Array 是 JavaScript 的内置对象，同时也是一个构造函数，可以�
 
 *   多个参数时，这些参数都是新数组的成员。
 
-```
+```js
 var a1 = new Array();
 var a2 = new Array(1);
 var a3 = new Array('abc');
@@ -55,7 +55,7 @@ a5 // [1, 2]
 
 Array.isArray 方法用来判断一个值是否为数组。它可以弥补 typeof 运算符的不足。
 
-```
+```js
 var a = [1,2,3];
 
 typeof a // "object"
@@ -73,7 +73,7 @@ Array.isArray(a) // true
 
 valueOf 方法返回数组本身。
 
-```
+```js
 var a = [1,2,3];
 
 a.valueOf()
@@ -82,7 +82,7 @@ a.valueOf()
 
 toString 方法返回数组的字符串形式。
 
-```
+```js
 var a = [1,2,3];
 
 a.toString()
@@ -98,7 +98,7 @@ a.toString()
 
 push 方法用于在数组的末端添加一个或多个元素，并返回添加后的数组的长度。
 
-```
+```js
 var a = [];
 
 a.push(1) // 1
@@ -111,7 +111,7 @@ a // [1, "a", true, {}]
 
 如果需要合并两个数组，可以这样写。
 
-```
+```js
 var a = [1,2,3];
 var b = [4,5,6];
 
@@ -128,7 +128,7 @@ a
 
 push 方法还可以用于向对象添加元素，添加后的对象变成“类似数组的”对象，即新加入元素的键对应数组的索引，并且对象有一个 length 属性。
 
-```
+```js
 var a = { a: 1 };
 
 [].push.call(a, 2);
@@ -142,7 +142,7 @@ a
 
 pop 方法用于删除数组的最后一个元素，并返回该元素。
 
-```
+```js
 var a = ['a', 'b', 'c'];
 
 a.pop() // 'c'
@@ -151,7 +151,7 @@ a // ['a', 'b']
 
 对空数组使用 pop 方法，不会报错，而是返回 undefined。
 
-```
+```js
 [].pop() // undefined
 ```
 
@@ -159,7 +159,7 @@ a // ['a', 'b']
 
 join 方法以参数作为分隔符，将所有数组成员组成一个字符串返回。如果不提供参数，默认用逗号分隔。
 
-```
+```js
 var a = [1,2,3,4];
 
 a.join() // "1,2,3,4"
@@ -169,14 +169,14 @@ a.join("|") // "1|2|3|4"
 
 通过函数的 call 方法，join 方法（即 Array.prototype.join）也可以用于字符串。
 
-```
+```js
 Array.prototype.join.call('hello', '-')
 // "h-e-l-l-o"
 ```
 
 concat 方法将新数组的成员，添加到原数组的尾部，然后返回一个新数组，常用于连接多个数组。
 
-```
+```js
 ["hello"].concat(["world"])
 // ["hello", "world"]
 
@@ -188,7 +188,7 @@ concat 方法将新数组的成员，添加到原数组的尾部，然后返回�
 
 如果不提供参数，concat 方法返回当前数组的一个浅拷贝。所谓“浅拷贝”，指的是如果数组成员包括复合类型的值（比如对象），则新数组拷贝的是该值的引用。
 
-```
+```js
 var o = {a:1};
 var oldArray = [o];
 
@@ -202,7 +202,7 @@ newArray[0].a // 2
 
 concat 方法也可以用于将对象合并为数组，但是必须借助 call 方法。
 
-```
+```js
 [].concat.call({ a: 1 }, [2])
 // [{a:1}, 2]
 
@@ -215,7 +215,7 @@ concat 方法也可以用于将对象合并为数组，但是必须借助 call �
 
 shift 方法用于删除数组的第一个元素，并返回该元素。
 
-```
+```js
 var a = ['a', 'b', 'c'];
 
 a.shift() // 'a'
@@ -224,7 +224,7 @@ a // ['b', 'c']
 
 shift 方法可以遍历并清空一个数组。
 
-```
+```js
 var list = [1,2,3,4,5,6,7,8,9,10];
 
 var item;
@@ -238,7 +238,7 @@ list // []
 
 unshift 方法用于在数组的第一个位置添加元素，并返回添加新元素后的数组长度。
 
-```
+```js
 var a = ['a', 'b', 'c'];
 
 a.unshift('x'); // 4
@@ -249,7 +249,7 @@ a // ['x', 'a', 'b', 'c']
 
 reverse 方法用于颠倒数组中元素的顺序，使用这个方法以后，返回改变后的原数组。
 
-```
+```js
 var a = ['a', 'b', 'c'];
 
 a.reverse() // ["c", "b", "a"] 
@@ -260,7 +260,7 @@ a // ["c", "b", "a"]
 
 slice 方法返回指定位置的数组成员组成的新数组，原数组不变。它的第一个参数为起始位置（从 0 开始），第二个参数为终止位置（但该位置的元素本身不包括在内）。如果省略第二个参数，则一直返回到原数组的最后一个成员。
 
-```
+```js
 var a = ["a","b","c"];
 
 a.slice(1,2) // ["b"]
@@ -276,7 +276,7 @@ a.slice(2, 1) // []
 
 slice 方法的一个重要应用，是将类似数组的对象转为真正的数组。
 
-```
+```js
 Array.prototype.slice.call({ 0: 'a', 1: 'b', length: 2 })
 // ['a', 'b']
 
@@ -293,7 +293,7 @@ splice 方法用于删除元素，并可以在被删除的位置添加入新的�
 
 splice 的第一个参数是删除的起始位置，第二个参数是被删除的元素个数。如果后面还有更多的参数，则表示这些就是要被插入数组的新元素。
 
-```
+```js
 var a = ["a","b","c","d","e","f"];
 
 a.splice(4,2)
@@ -305,7 +305,7 @@ a
 
 上面代码从原数组位置 4 开始，删除了两个数组成员。
 
-```
+```js
 var a = ["a","b","c","d","e","f"];
 
 a.splice(4,2,1,2)
@@ -319,7 +319,7 @@ a
 
 如果只是单纯地插入元素，splice 方法的第二个参数可以设为 0。
 
-```
+```js
 var a = [1,1,1];
 
 a.splice(1,0,2)
@@ -331,7 +331,7 @@ a
 
 如果只提供第一个参数，则实际上等同于将原数组在指定位置拆分成两个数组。
 
-```
+```js
 var a = [1,2,3,4];
 
 a.splice(2)
@@ -345,7 +345,7 @@ a
 
 sort 方法对数组元素进行排序，默认是按照字典顺序排序。排序后，原数组将被改变。
 
-```
+```js
 ["d","c","b","a"].sort()
 // ["a", "b", "c", "d"]
 
@@ -363,7 +363,7 @@ sort 方法对数组元素进行排序，默认是按照字典顺序排序。排
 
 如果想让 sort 方法按照大小排序，可以传入一个函数作为参数，表示按照自定义方法进行排序。该函数本身又接受两个参数，表示进行比较的两个元素。如果返回值大于 0，表示第一个元素排在第二个元素后面；其他情况下，都是第一个元素排在第二个元素前面。
 
-```
+```js
 [10111,1101,111].sort(function (a,b){
   return a-b;
 })
@@ -397,7 +397,7 @@ ECMAScript 5 新增了 9 个数组实例的方法，分别是 map、forEach、fi
 
 map 方法对数组的所有成员依次调用一个函数，根据函数结果返回一个新数组。
 
-```
+```js
 var numbers = [1, 2, 3];
 
 numbers.map(function(n){ return n+1 });
@@ -411,7 +411,7 @@ numbers
 
 只要数组的成员可以被索引到，map 方法就不会跳过它。
 
-```
+```js
 var f = function(n){ return n+1 };
 
 [1, undefined, 2].map(f) // [2, NaN, 3]
@@ -423,7 +423,7 @@ var f = function(n){ return n+1 };
 
 map 方法的回调函数依次接受三个参数，分别是当前的数组成员、当前成员的位置和数组本身。
 
-```
+```js
 [1, 2, 3].map(function(elem, index, arr){
   return elem * elem;
 });
@@ -432,7 +432,7 @@ map 方法的回调函数依次接受三个参数，分别是当前的数组成�
 
 有时，我们需要对字符串的每个字符进行遍历。这时可以通过函数的 call 方法，将 map 方法用于字符串。
 
-```
+```js
 var upper = function (x) { return x.toUpperCase() };
 
 [].map.call('abc', upper)
@@ -449,7 +449,7 @@ map 方法还可以接受第二个参数，表示回调函数执行时 this 所�
 
 数组实例的 forEach 方法与 map 方法很相似，也是遍历数组的所有成员，执行某种操作，但是 forEach 方法没有返回值。如果需要有返回值，一般使用 map 方法，如果只是单纯操作数据，一般使用 forEach 方法。
 
-```
+```js
 function log(element, index, array) {
   console.log('[' + index + '] = ' + element);
 }
@@ -464,7 +464,7 @@ function log(element, index, array) {
 
 forEach 方法会跳过数组的空位。
 
-```
+```js
 var log = function(n){ console.log(n + 1) };
 
 [1, undefined, 2].forEach(log)
@@ -486,7 +486,7 @@ var log = function(n){ console.log(n + 1) };
 
 forEach 方法也可以接受第二个参数，用来绑定回调函数的 this 关键字。
 
-```
+```js
 var out = [];
 
 [1, 2, 3].map(function(elem, index, arr){
@@ -502,7 +502,7 @@ out // [1, 4, 9]
 
 filter 方法依次对所有数组成员调用一个测试函数，返回结果为 true 的成员组成一个新数组返回。
 
-```
+```js
 [1, 2, 3, 4, 5].filter(function (elem){
   return (elem > 3);
 })
@@ -513,7 +513,7 @@ filter 方法依次对所有数组成员调用一个测试函数，返回结果�
 
 filter 方法的测试函数可以接受三个参数，第一个参数是当前数组成员的值，这是必需的，后两个参数是可选的，分别是当前数组成员的位置和整个数组。
 
-```
+```js
 [1, 2, 3, 4, 5].filter(function(elem, index, arr){
   return index % 2 === 0;
 });
@@ -524,7 +524,7 @@ filter 方法的测试函数可以接受三个参数，第一个参数是当前�
 
 filter 方法还可以接受第二个参数，指定测试函数所在的上下文对象（即 this 对象）。
 
-```
+```js
 var Obj = function () {
   this.MAX = 3;
 };
@@ -548,7 +548,7 @@ arr.filter(myFilter, new Obj())
 
 some 方法对所有元素调用一个测试函数，只要有一个元素通过该测试，就返回 true，否则返回 false。
 
-```
+```js
 [1, 2, 3, 4, 5].some(function(elem, index, arr){
     return elem >= 3;
 });
@@ -559,7 +559,7 @@ some 方法对所有元素调用一个测试函数，只要有一个元素通过
 
 every 方法对所有元素调用一个测试函数，只有所有元素通过该测试，才返回 true，否则返回 false。
 
-```
+```js
 [1, 2, 3, 4, 5].every(function(elem, index, arr){
     return elem >= 3;
 });
@@ -583,7 +583,7 @@ reduce 方法的第一个参数是一个处理函数。该函数接受四个参�
 
 这四个参数之中，只有前两个是必须的，后两个则是可选的。
 
-```
+```js
 [1, 2, 3, 4, 5].reduce(function(x, y){
     return x+y;
 });
@@ -594,7 +594,7 @@ reduce 方法的第一个参数是一个处理函数。该函数接受四个参�
 
 利用 reduce 方法，可以写一个数组求和的 sum 方法。
 
-```
+```js
 Array.prototype.sum = function (){
     return this.reduce(function (partial, value){
         return partial + value;
@@ -607,7 +607,7 @@ Array.prototype.sum = function (){
 
 如果要对累计变量指定初值，可以把它放在 reduce 方法的第二个参数。
 
-```
+```js
 [1, 2, 3, 4, 5].reduce(function(x, y){
   return x+y;
 }, 10);
@@ -618,7 +618,7 @@ Array.prototype.sum = function (){
 
 由于 reduce 方法依次处理每个元素，所以实际上还可以用它来搜索某个元素。比如，下面代码是找出长度最长的数组元素。
 
-```
+```js
 function findLongest(entries) {
   return entries.reduce(function (longest, entry) {
     return entry.length > longest.length ? entry : longest;
@@ -632,7 +632,7 @@ ECMAScript 5 新增的 9 个方法之中，有 2 个与函数式编程无关，�
 
 indexOf 方法返回给定元素在数组中第一次出现的位置，如果没有出现则返回-1。
 
-```
+```js
 var a = ['a','b','c'];
 
 a.indexOf('b')
@@ -644,7 +644,7 @@ a.indexOf('y')
 
 indexOf 方法还可以接受第二个参数，表示搜索的开始位置。
 
-```
+```js
 ['a','b','c'].indexOf('a', 1)
 // -1
 ```
@@ -653,7 +653,7 @@ indexOf 方法还可以接受第二个参数，表示搜索的开始位置。
 
 lastIndexOf 方法返回给定元素在数组中最后一次出现的位置，如果没有出现则返回-1。
 
-```
+```js
 var a = [2, 5, 9, 2];
 
 a.lastIndexOf(2)
@@ -665,7 +665,7 @@ a.lastIndexOf(7)
 
 注意，如果数组中包含 NaN，这两个方法不适用。
 
-```
+```js
 [NaN].indexOf(NaN) // -1
 [NaN].lastIndexOf(NaN) // -1
 ```
@@ -676,7 +676,7 @@ a.lastIndexOf(7)
 
 上面这些数组方法之中，有不少返回的还是数组，所以可以链式使用。
 
-```
+```js
 var users = [{name:"tom", email:"tom@example.com"},
              {name:"peter", email:"peter@example.com"}];
 

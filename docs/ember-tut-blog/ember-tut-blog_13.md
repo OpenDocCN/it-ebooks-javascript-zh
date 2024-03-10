@@ -6,7 +6,7 @@
 `ember generate component store-categories`
 执行上述命令得到下面的 3 个文件：
 
-```
+```js
 app/components/store-categories.js  
 app/templates/components/store-categories.hbs  
 tests/integration/components/store-categories-test.js 
@@ -18,7 +18,7 @@ tests/integration/components/store-categories-test.js
 
 #### 在组件中增加测试数据
 
-```
+```js
 // app/components/store-categories.js
 import Ember from 'ember';
 
@@ -38,7 +38,7 @@ export default Ember.Component.extend({
 
 有了测试数据之后我们怎么去使用`each-in`标签遍历出数组的键呢？
 
-```
+```js
 <!-- // app/templates/components/store-categories.hbs -->  
 <ul>  
   {{#each-in categories as |category products|}}
@@ -57,7 +57,7 @@ export default Ember.Component.extend({
 
 为了显示效果，在`application.hbs`中调用这个组件，组件的调用非常简单，直接使用`{{组件名}}`方式调用。
 
-```
+```js
 <!-- //app/templates/application.hbs -->  
 {{store-categories}} 
 ```
@@ -70,7 +70,7 @@ export default Ember.Component.extend({
 
 **`{{each-in}}`表达式不会根据属性值变化而自动更新。**上述示例中，如果你给属性`categories`增加一个元素值，模板上显示的数据不会自动更新。为了演示这个特性在组件中增加一个触发属性变化的按钮，首先需要在组件类`app/components/store-categories.js`中增加一个`action`方法（有关 action 会在后面的章节介绍，暂时把他看做是一个普通的 js 函数），然后在`app/templates/components/store-categories.hbs`中增加一个触发的按钮。
 
-```
+```js
 import Ember from 'ember';
 
 export default Ember.Component.extend({  
@@ -96,7 +96,7 @@ export default Ember.Component.extend({
 }); 
 ```
 
-```
+```js
 <!-- // templates/components/store-categories.hbs -->
 
 <ul>  
@@ -120,7 +120,7 @@ export default Ember.Component.extend({
 
 空数组处理与表达式`{{each}}`一样，同样是判断属性不是`null`、`undefined`、`[]`就显示出数据，否则执行`else`部分。
 
-```
+```js
 {{#each-in people as |name person|}}
   Hello, {{name}}! You are {{person.age}} years old.
 {{else}}

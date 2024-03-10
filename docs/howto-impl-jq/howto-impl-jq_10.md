@@ -22,7 +22,7 @@
 
 接下来是代码部分
 
-```
+```js
 Kodo.Events = []; //事件绑定存放的事件
 Kodo.guid = 0; //事件绑定的唯一标识
 
@@ -86,7 +86,7 @@ function bind(dom, type, guid) {
 
 理解了这个后要解除事件绑定，那就非常简单了。同样根据 guid 查找到对应的方法数组，delete 即可
 
-```
+```js
 off: function(type, selector) {
     if (arguments.length == 0) {
         //如果没传参数，清空所有事件

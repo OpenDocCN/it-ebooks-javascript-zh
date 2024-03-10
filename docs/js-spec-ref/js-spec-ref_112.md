@@ -6,7 +6,7 @@ os 模块用于与硬件设备通信。
 
 下面例子列出当前系列的所有 IP 地址。
 
-```
+```js
 var os = require('os');
 var interfaces = os.networkInterfaces();
 

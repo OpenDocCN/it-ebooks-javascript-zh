@@ -12,7 +12,7 @@
 
 假设在 body 中有三个段落元素：
 
-```
+```js
 <p>Apple</p>
 <p>Pear</p>
 <p>Banana</p>
@@ -24,7 +24,7 @@
 
 使用 select ，参数传入 p 即可，如此返回的是第一个 p 元素。
 
-```
+```js
 t("p");
 p1.style("color","red");
 ```
@@ -39,7 +39,7 @@ p1.style("color","red");
 
 使用 selectAll 选择 body 中所有的 p 元素。
 
-```
+```js
 var p = body.selectAll("p");
 p.style("color","red");
 ```
@@ -58,7 +58,7 @@ Pear
 
 然后，使用 select 选择元素，注意参数中 id 名称前要加 # 号。
 
-```
+```js
 var p2 = body.select("#myid");
 p2.style("color","red");
 ```
@@ -73,14 +73,14 @@ p2.style("color","red");
 
 给后两个元素添加 class，
 
-```
+```js
 <p class="myclass">Pear</p>
 <p class="myclass">Banana</p>
 ```
 
 由于需要选择多个元素，要用 selectAll。注意参数，class 名称前要加一个点。
 
-```
+```js
 var p = body.selectAll(".myclass");
 p.style("color","red");
 ```
@@ -106,14 +106,14 @@ p.style("color","red");
 
 ###  append()
 
-```
+```js
 body.append("p")
     .text("append p element");
 ```
 
 在 body 的末尾添加一个 p 元素，结果为：
 
-```
+```js
 Apple
 Pear
 Banana
@@ -124,14 +124,14 @@ append p element
 
 在 body 中 id 为 myid 的元素前添加一个段落元素。
 
-```
+```js
 body.insert("p","#myid")
   .text("insert p element");
 ```
 
 已经指定了 Pear 段落的 id 为 myid，因此结果如下。
 
-```
+```js
 Apple
 insert p element
 Pear
@@ -142,7 +142,7 @@ Banana
 
 删除一个元素时，对于选择的元素，使用 remove 即可，例如：
 
-```
+```js
 var p = body.select("#myid");
 p.remove();
 ```

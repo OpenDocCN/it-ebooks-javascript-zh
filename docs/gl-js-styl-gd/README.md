@@ -6,7 +6,7 @@
 
 修订版: 2.9
 
-```
+```js
 Aaron Whyte
 Bob Jervis
 Dan Pupius

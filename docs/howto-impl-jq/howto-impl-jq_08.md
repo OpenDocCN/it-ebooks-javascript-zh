@@ -6,7 +6,7 @@
 
 新增 html,text,append,before,after,remove
 
-```
+```js
 html: function (value) {
     if (value === undefined && this[0].nodeType === 1) {
         return this[0].innerHTML;
@@ -54,7 +54,7 @@ text: function (val) {
 
 所以我们写一个这样的方法吧!
 
-```
+```js
 function domAppend(elm, type, str) {  //实现 append、after、before 操作
     elm.insertAdjacentHTML(type, str);
 } 
@@ -62,7 +62,7 @@ function domAppend(elm, type, str) {  //实现 append、after、before 操作
 
 然后只需要传对应参数就好了!如此简单
 
-```
+```js
 append: function (str) {
     for (var i = 0; i < this.length; i++) {
         domAppend(this[i], 'beforeend', str);
@@ -85,7 +85,7 @@ after: function (str) {
 
 接着是 remove 方法,在这我只做删除自身节点,就没继续拓展了.大家可以自行完善
 
-```
+```js
 remove: function () { //只能删除自身
     for (var i = 0; i < this.length; i++) {
         this[i].parentNode.removeChild(this[i]);

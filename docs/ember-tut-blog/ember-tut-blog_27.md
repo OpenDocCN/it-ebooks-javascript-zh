@@ -10,14 +10,14 @@
 
 为了验证这个特性我们需要创建好测试所需的文件。
 
-```
+```js
 ember g controller form  
 ember g route form 
 ```
 
 首先在`controller`增加测试数据。
 
-```
+```js
 //  app/controllers/form.js
 
 import Ember from 'ember';
@@ -30,7 +30,7 @@ export default Ember.Controller.extend({
 
 再创建一个模拟用户填写信息的模板。
 
-```
+```js
 <form>  
   <div class="form-group">
     <label for="exampleInputEmail1">FirstName</label>
@@ -49,7 +49,7 @@ export default Ember.Controller.extend({
 
 关键部分来了，我们在路由里添加`willTransition`方法。
 
-```
+```js
 //  app/routes/form.js
 
 import Ember from 'ember';
@@ -80,7 +80,7 @@ export default Ember.Route.extend({
 
 ### 2，在 beforeModel、model、afterModel 回调中阻止路由转换
 
-```
+```js
 beforeModel(transition) {  
     if (new Date() > new Date('January 1, 1980')) {
       alert('Sorry, you need a time machine to enter this route.');
@@ -95,7 +95,7 @@ beforeModel(transition) {
 
 对于使用`abort`方法终止的路由可以调用`retry`方法重新激活。一个很典型的例子就是登陆。如果登陆成功就转到首页，否则跳转回登陆页面。 文件准备工作：
 
-```
+```js
 ember g controller auth  
 ember g route auth  
 ember g controller login  
@@ -104,7 +104,7 @@ ember g route login
 
 下面是演示用到的代码。
 
-```
+```js
 //  app/controllers/login.js
 
 import Ember from 'ember';
@@ -127,7 +127,7 @@ export default Ember.Controller.extend({
 }); 
 ```
 
-```
+```js
 //  app/controllers/auth.js
 
 import Ember from 'ember';
@@ -137,7 +137,7 @@ export default Ember.Controller.extend({
 }); 
 ```
 
-```
+```js
 //  app/routes/auth.js
 
 import Ember from 'ember';
@@ -155,7 +155,7 @@ export default Ember.Route.extend({
 }); 
 ```
 
-```
+```js
 <!--  //app/templates/login.hbs -->
 
 这个是登陆页面 

@@ -23,7 +23,7 @@ Koa 是一个类似于 Express 的 Web 开发框架，开发人员也是同一�
 
 一个 Koa 应用就是一个对象，包含了一个 middleware 数组，这个数组由一组 Generator 函数组成。这些函数负责对 HTTP 请求进行各种加工，比如生成缓存、指定代理、请求重定向等等。
 
-```
+```js
 var koa = require('koa');
 var app = koa();
 
@@ -40,7 +40,7 @@ app.use 方法用于向 middleware 数组添加 Generator 函数。
 
 listen 方法指定监听端口，并启动当前应用。它实际上等同于下面的代码。
 
-```
+```js
 var http = require('http');
 var koa = require('koa');
 var app = koa();
@@ -53,7 +53,7 @@ Koa 的中间件很像 Express 的中间件，也是对 HTTP 请求进行处理�
 
 中间件通过当前应用的 use 方法注册。
 
-```
+```js
 app.use(function* (next){
   var start = new Date; // （1）
   yield next;  // （2）
@@ -68,7 +68,7 @@ Generator 函数内部使用 yield 命令，将程序的执行权转交给下一
 
 下面是一个两个中间件级联的例子。
 
-```
+```js
 app.use(function *() {
   this.body = "header\n";
   yield saveResults.call(this);
@@ -82,7 +82,7 @@ function *saveResults() {
 
 上面代码中，第一个中间件调用第二个中间件 saveResults，它们都向`this.body`写入内容。最后，`this.body`的输出如下。
 
-```
+```js
 header
 Results Saved!
 footer
@@ -90,7 +90,7 @@ footer
 
 只要有一个中间件缺少`yield next`语句，后面的中间件都不会执行，这一点要引起注意。
 
-```
+```js
 app.use(function *(next){
   console.log('>> one');
   yield next;
@@ -114,7 +114,7 @@ app.use(function *(next){
 
 如果想跳过一个中间件，可以直接在该中间件的第一行语句写上`return yield next`。
 
-```
+```js
 app.use(function* (next) {
   if (skip) return yield next;
 })
@@ -122,7 +122,7 @@ app.use(function* (next) {
 
 由于 Koa 要求中间件唯一的参数就是 next，导致如果要传入其他参数，必须另外写一个返回 Generator 函数的函数。
 
-```
+```js
 function logger(format) {
   return function *(next){
     var str = format
@@ -144,7 +144,7 @@ app.use(logger(':method :url'));
 
 由于中间件的参数统一为 next（意为下一个中间件），因此可以使用`.call(this, next)`，将多个中间件进行合并。
 
-```
+```js
 function *random(next) {
   if ('/random' == this.path) {
     this.body = Math.floor(Math.random()*10);
@@ -180,7 +180,7 @@ app.use(all);
 
 Koa 内部使用 koa-compose 模块，进行同样的操作，下面是它的源码。
 
-```
+```js
 function compose(middleware){
   return function *(next){
     if (!next) next = noop();
@@ -204,7 +204,7 @@ function *noop(){}
 
 可以通过`this.path`属性，判断用户请求的路径，从而起到路由作用。
 
-```
+```js
 app.use(function* (next) {
   if (this.path === '/') {
     this.body = 'we are at home!';
@@ -221,7 +221,7 @@ app.use(function* (next) {
 
 下面是多路径的例子。
 
-```
+```js
 let koa = require('koa')
 
 let app = koa()
@@ -260,7 +260,7 @@ app.listen(8080)
 
 复杂的路由需要安装 koa-router 插件。
 
-```
+```js
 var app = require('koa')();
 var Router = require('koa-router');
 
@@ -287,7 +287,7 @@ Koa-router 实例提供一系列动词方法，即一种 HTTP 动词对应一种
 
 这些动词方法可以接受两个参数，第一个是路径模式，第二个是对应的控制器方法（中间件），定义用户请求该路径时服务器行为。
 
-```
+```js
 router.get('/', function *(next) {
   this.body = 'Hello World!';
 });
@@ -299,7 +299,7 @@ router.get('/', function *(next) {
 
 有些路径模式比较复杂，Koa-router 允许为路径模式起别名。起名时，别名要添加为动词方法的第一个参数，这时动词方法变成接受三个参数。
 
-```
+```js
 router.get('user', '/users/:id', function *(next) {
  // ...
 });
@@ -307,7 +307,7 @@ router.get('user', '/users/:id', function *(next) {
 
 上面代码中，路径模式`\users\:id`的名字就是`user`。路径的名称，可以用来引用对应的具体路径，比如 url 方法可以根据路径名称，结合给定的参数，生成具体的路径。
 
-```
+```js
 router.url('user', 3);
 // => "/users/3"
 
@@ -319,7 +319,7 @@ router.url('user', { id: 3 });
 
 Koa-router 允许为路径统一添加前缀。
 
-```
+```js
 var router = new Router({
   prefix: '/users'
 });
@@ -330,7 +330,7 @@ router.get('/:id', ...); // 等同于"/users/:id"
 
 路径的参数通过`this.params`属性获取，该属性返回一个对象，所有路径参数都是该对象的成员。
 
-```
+```js
 // 访问 /programming/how-to-node
 router.get('/:category/:title', function *(next) {
   console.log(this.params);
@@ -340,7 +340,7 @@ router.get('/:category/:title', function *(next) {
 
 param 方法可以针对命名参数，设置验证条件。
 
-```
+```js
 router
   .get('/users/:user', function *(next) {
     this.body = this.user;
@@ -357,7 +357,7 @@ router
 
 redirect 方法会将某个路径的请求，重定向到另一个路径，并返回 301 状态码。
 
-```
+```js
 router.redirect('/login', 'sign-in');
 
 // 等同于
@@ -373,7 +373,7 @@ redirect 方法的第一个参数是请求来源，第二个参数是目的地�
 
 中间件当中的 this 表示上下文对象 context，代表一次 HTTP 请求和回应，即一次访问/回应的所有信息，都可以从上下文对象获得。context 对象封装了 request 和 response 对象，并且提供了一些辅助方法。每次 HTTP 请求，就会创建一个新的 context 对象。
 
-```
+```js
 app.use(function *(){
   this; // is the Context
   this.request; // is a koa Request
@@ -392,7 +392,7 @@ context 对象的全局属性。
 *   app：指向 App 对象
 *   state：用于在中间件传递信息。
 
-```
+```js
 this.state.user = yield User.find(id);
 ```
 
@@ -403,7 +403,7 @@ context 对象的全局方法。
 *   throw()：抛出错误，直接决定了 HTTP 回应的状态码。
 *   assert()：如果一个表达式为 false，则抛出一个错误。
 
-```
+```js
 this.throw(403);
 this.throw('name required', 400);
 this.throw('something exploded');
@@ -417,7 +417,7 @@ throw err;
 
 assert 方法的例子。
 
-```
+```js
 // 格式
 ctx.assert(value, [msg], [status], [properties])
 
@@ -431,7 +431,7 @@ this.assert(this.user, 401, 'User not found. Please login!');
 *   [`github.com/koajs/body-parser`](https://github.com/koajs/body-parser)
 *   [`github.com/koajs/body-parsers`](https://github.com/koajs/body-parsers)
 
-```
+```js
 var parse = require('co-body');
 
 // in Koa handler
@@ -442,7 +442,7 @@ var body = yield parse(this);
 
 Koa 提供内置的错误处理机制，任何中间件抛出的错误都会被捕捉到，引发向客户端返回一个 500 错误，而不会导致进程停止，因此也就不需要 forever 这样的模块重启进程。
 
-```
+```js
 app.use(function *() {
   throw new Error();
 });
@@ -452,7 +452,7 @@ app.use(function *() {
 
 当然，也可以额外部署自己的错误处理机制。
 
-```
+```js
 app.use(function *() {
   try {
     yield saveResults();
@@ -466,7 +466,7 @@ app.use(function *() {
 
 对于未捕获错误，可以设置 error 事件的监听函数。
 
-```
+```js
 app.on('error', function(err){
   log.error('server error', err);
 });
@@ -474,7 +474,7 @@ app.on('error', function(err){
 
 error 事件的监听函数还可以接受上下文对象，作为第二个参数。
 
-```
+```js
 app.on('error', function(err, ctx){
   log.error('server error', err, ctx);
 });
@@ -484,7 +484,7 @@ app.on('error', function(err, ctx){
 
 this.throw 方法用于向客户端抛出一个错误。
 
-```
+```js
 this.throw(403);
 this.throw('name required', 400);
 this.throw(400, 'name required');
@@ -501,7 +501,7 @@ throw err;
 
 `this.assert`方法用于在中间件之中断言，用法类似于 Node 的 assert 模块。
 
-```
+```js
 this.assert(this.user, 401, 'User not found. Please login!');
 ```
 
@@ -509,7 +509,7 @@ this.assert(this.user, 401, 'User not found. Please login!');
 
 由于中间件是层级式调用，所以可以把`try { yield next }`当成第一个中间件。
 
-```
+```js
 app.use(function *(next) {
   try {
     yield next;
@@ -529,14 +529,14 @@ app.use(function *(next) {
 
 cookie 的读取和设置。
 
-```
+```js
 this.cookies.get('view');
 this.cookies.set('view', n);
 ```
 
 get 和 set 方法都可以接受第三个参数，表示配置参数。其中的 signed 参数，用于指定 cookie 是否加密。如果指定加密的话，必须用`app.keys`指定加密短语。
 
-```
+```js
 app.keys = ['secret1', 'secret2'];
 this.cookies.set('name', '张三', { signed: true });
 ```
@@ -552,7 +552,7 @@ this.cookie 的配置对象的属性如下。
 
 ## session
 
-```
+```js
 var session = require('koa-session');
 var koa = require('koa');
 var app = koa();
@@ -594,7 +594,7 @@ Request 对象表示 HTTP 请求。
 
 返回 HTTP 请求的完整路径，包括协议、端口和 url。
 
-```
+```js
 this.request.href
 // http://example.com/foo/bar?q=1
 ```
@@ -619,7 +619,7 @@ this.request.href
 
 返回 HTTP 请求的 Content-Type 属性。
 
-```
+```js
 var ct = this.request.type;
 // "image/png"
 ```
@@ -628,7 +628,7 @@ var ct = this.request.type;
 
 返回 HTTP 请求的字符集。
 
-```
+```js
 this.request.charset
 // "utf-8"
 ```
@@ -639,7 +639,7 @@ this.request.charset
 
 比如，查询字符串`color=blue&size=small`，会得到以下的对象。
 
-```
+```js
 {
   color: 'blue',
   size: 'small'
@@ -650,7 +650,7 @@ this.request.charset
 
 返回一个布尔值，表示缓存是否代表了最新内容。通常与 If-None-Match、ETag、If-Modified-Since、Last-Modified 等缓存头，配合使用。
 
-```
+```js
 this.response.set('ETag', '123');
 
 // 检查客户端请求的内容是否有变化
@@ -688,7 +688,7 @@ this.response.body = yield db.find('something');
 
 返回指定的类型字符串，表示 HTTP 请求的 Content-Type 属性是否为指定类型。
 
-```
+```js
 // Content-Type 为 text/html; charset=utf-8
 this.request.is('html'); // 'html'
 this.request.is('text/html'); // 'text/html'
@@ -702,13 +702,13 @@ this.request.is('html', 'application/*'); // 'application/json'
 
 如果不满足条件，返回 false；如果 HTTP 请求不含数据，则返回 undefined。
 
-```
+```js
 this.is('html'); // false
 ```
 
 它可以用于过滤 HTTP 请求，比如只允许请求下载图片。
 
-```
+```js
 if (this.is('image/*')) {
   // process
 } else {
@@ -720,7 +720,7 @@ if (this.is('image/*')) {
 
 检查 HTTP 请求的 Accept 属性是否可接受，如果可接受，则返回指定的媒体类型，否则返回 false。
 
-```
+```js
 // Accept: text/html
 this.request.accepts('html');
 // "html"
@@ -760,7 +760,7 @@ this.request.accepts('json', 'html');
 
 accepts 方法可以根据不同 Accept 字段，向客户端返回不同的字段。
 
-```
+```js
 switch (this.request.accepts('json', 'html', 'text')) {
   case 'json': break;
   case 'html': break;
@@ -773,7 +773,7 @@ switch (this.request.accepts('json', 'html', 'text')) {
 
 该方法根据 HTTP 请求的 Accept-Encoding 字段，返回最佳匹配，如果没有合适的匹配，则返回 false。
 
-```
+```js
 // Accept-Encoding: gzip
 this.request.acceptsEncodings('gzip', 'deflate', 'identity');
 // "gzip"
@@ -785,7 +785,7 @@ this.request.acceptsEncodings(['gzip', 'deflate', 'identity']);
 
 如果 HTTP 请求没有 Accept-Encoding 字段，acceptEncodings 方法返回所有可以提供的编码方法。
 
-```
+```js
 // Accept-Encoding: gzip, deflate
 this.request.acceptsEncodings();
 // ["gzip", "deflate", "identity"]
@@ -797,7 +797,7 @@ this.request.acceptsEncodings();
 
 该方法根据 HTTP 请求的 Accept-Charset 字段，返回最佳匹配，如果没有合适的匹配，则返回 false。
 
-```
+```js
 // Accept-Charset: utf-8, iso-8859-1;q=0.2, utf-7;q=0.5
 this.request.acceptsCharsets('utf-8', 'utf-7');
 // => "utf-8"
@@ -808,7 +808,7 @@ this.request.acceptsCharsets(['utf-7', 'utf-8']);
 
 如果 acceptsCharsets 方法没有参数，则返回所有可接受的匹配。
 
-```
+```js
 // Accept-Charset: utf-8, iso-8859-1;q=0.2, utf-7;q=0.5
 this.request.acceptsCharsets();
 // ["utf-8", "utf-7", "iso-8859-1"]
@@ -820,7 +820,7 @@ this.request.acceptsCharsets();
 
 该方法根据 HTTP 请求的 Accept-Language 字段，返回最佳匹配，如果没有合适的匹配，则返回 false。
 
-```
+```js
 // Accept-Language: en;q=0.8, es, pt
 this.request.acceptsLanguages('es', 'en');
 // "es"
@@ -830,7 +830,7 @@ this.request.acceptsLanguages(['en', 'es']);
 
 如果 acceptsCharsets 方法没有参数，则返回所有可接受的匹配。
 
-```
+```js
 // Accept-Language: en;q=0.8, es, pt
 this.request.acceptsLanguages();
 // ["es", "pt", "en"]
@@ -886,7 +886,7 @@ Response 对象表示 HTTP 回应。
 
 返回 HTTP 回应的指定字段。
 
-```
+```js
 var etag = this.get('ETag');
 ```
 
@@ -896,13 +896,13 @@ var etag = this.get('ETag');
 
 设置 HTTP 回应的指定字段。
 
-```
+```js
 this.set('Cache-Control', 'no-cache');
 ```
 
 set 方法也可以接受一个对象作为参数，同时为多个字段指定值。
 
-```
+```js
 this.set({
   'Etag': '1234',
   'Last-Modified': date
@@ -917,14 +917,14 @@ this.set({
 
 返回 HTTP 回应的 Content-Type 字段，不包括“charset”参数的部分。
 
-```
+```js
 var ct = this.reponse.type;
 // "image/png"
 ```
 
 该属性是可写的。
 
-```
+```js
 this.reponse.type = 'text/plain; charset=utf-8';
 this.reponse.type = 'image/png';
 this.reponse.type = '.png';
@@ -939,7 +939,7 @@ this.reponse.type = 'png';
 
 它可以在中间件中起到处理不同格式内容的作用。
 
-```
+```js
 var minify = require('html-minifier');
 
 app.use(function *minifyHTML(next){
@@ -961,7 +961,7 @@ app.use(function *minifyHTML(next){
 
 该方法执行 302 跳转到指定网址。
 
-```
+```js
 this.redirect('back');
 this.redirect('back', '/index.html');
 this.redirect('/login');
@@ -972,7 +972,7 @@ this.redirect('http://google.com');
 
 如果想修改 302 状态码，或者修改 body 文字，可以采用下面的写法。
 
-```
+```js
 this.status = 301;
 this.redirect('/cart');
 this.body = 'Redirecting to shopping cart';
@@ -990,7 +990,7 @@ this.body = 'Redirecting to shopping cart';
 
 该属性以 Date 对象的形式，返回 HTTP 回应的 Last-Modified 字段（如果该字段存在）。该属性可写。
 
-```
+```js
 this.response.lastModified = new Date();
 ```
 
@@ -998,7 +998,7 @@ this.response.lastModified = new Date();
 
 该属性设置 HTTP 回应的 ETag 字段。
 
-```
+```js
 this.response.etag = crypto.createHash('md5').update(this.body).digest('hex');
 ```
 
@@ -1014,7 +1014,7 @@ CSRF 攻击是指用户的 session 被劫持，用来冒充用户的攻击。
 
 koa-csrf 插件用来防止 CSRF 攻击。原理是在 session 之中写入一个秘密的 token，用户每次使用 POST 方法提交数据的时候，必须含有这个 token，否则就会抛出错误。
 
-```
+```js
 var koa = require('koa');
 var session = require('koa-session');
 var csrf = require('koa-csrf');
@@ -1052,7 +1052,7 @@ POST 请求含有 token，可以是以下几种方式之一，koa-csrf 插件就
 
 koa-compress 模块可以实现数据压缩。
 
-```
+```js
 app.use(require('koa-compress')())
 app.use(function* () {
   this.type = 'text/plain'
@@ -1064,7 +1064,7 @@ app.use(function* () {
 
 每一个网站就是一个 app，它由`lib/application`定义。
 
-```
+```js
 function Application() {
   if (!(this instanceof Application)) return new Application;
   this.env = process.env.NODE_ENV || 'development';
@@ -1082,7 +1082,7 @@ exports = module.exports = Application;
 
 `app.use()`用于注册中间件，即将 Generator 函数放入中间件数组。
 
-```
+```js
 app.use = function(fn){
   if (!this.experimental) {
     // es7 async functions are allowed
@@ -1096,7 +1096,7 @@ app.use = function(fn){
 
 `app.listen()`就是`http.createServer(app.callback()).listen(...)`的缩写。
 
-```
+```js
 app.listen = function(){
   debug('listen');
   var server = http.createServer(this.callback());
@@ -1125,7 +1125,7 @@ app.callback = function(){
 
 `compose(mw)`将中间件数组转为一个层层调用的 Generator 函数。
 
-```
+```js
 function compose(middleware){
   return function *(next){
     if (!next) next = noop();
@@ -1147,7 +1147,7 @@ function *noop(){}
 
 `var fn = co.wrap(gen)`则是将 Generator 函数包装成一个自动执行的函数，并且返回一个 Promise。
 
-```
+```js
 //co package
 co.wrap = function (fn) {
   return function () {
@@ -1160,7 +1160,7 @@ co.wrap = function (fn) {
 
 将所有的上下文变量都放进 context 对象。
 
-```
+```js
 app.createContext = function(req, res){
   var context = Object.create(this.context);
   var request = context.request = Object.create(this.request);
@@ -1182,7 +1182,7 @@ app.createContext = function(req, res){
 
 真正处理 HTTP 请求的是下面这个 Generator 函数。
 
-```
+```js
 function *respond(next) {
   yield *next;
 

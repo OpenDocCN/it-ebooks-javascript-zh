@@ -2,7 +2,7 @@
 
 Chrome 主题与扩展和应用的结构类似，包含一个 Manifest 文件和一些图片资源。主题的 Manifest 结构如下：
 
-```
+```js
 {
     "version": "2.6",
     "name": "camo theme",

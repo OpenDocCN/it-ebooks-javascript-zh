@@ -6,7 +6,7 @@
 
 我们如何遍历数组中的元素？20 年前 JavaScript 刚萌生时，你可能这样实现数组遍历：
 
-```
+```js
 for (var index = 0; index < myArray.length; index++) {
   console.log(myArray[index]);
 }
@@ -14,7 +14,7 @@ for (var index = 0; index < myArray.length; index++) {
 
 自 ES5 正式发布后，你可以使用内建的[forEach](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach)方法来遍历数组：
 
-```
+```js
  myArray.forEach(function (value) {
 console.log(value);
 });
@@ -26,7 +26,7 @@ console.log(value);
 
 那么，你一定想尝试一下[for-in](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in)循环：
 
-```
+```js
  for (var index in myArray) { // 千万别这样做
   console.log(myArray[index]);
 }
@@ -45,7 +45,7 @@ console.log(value);
 
 就像这样：
 
-```
+```js
  for (var value of myArray) {
   console.log(value);
 }
@@ -69,7 +69,7 @@ for-of 循环不仅支持数组，还支持大多数类数组对象，例如 DOM
 
 for-of 循环也支持字符串遍历，它将字符串视为一系列的 Unicode 字符来进行遍历：
 
-```
+```js
  for (var chr of "") {
   alert(chr);
 }
@@ -81,14 +81,14 @@ for-of 循环也支持字符串遍历，它将字符串视为一系列的 Unicod
 
 举个例子，Set 对象可以自动排除重复项：
 
-```
+```js
  // 基于单词数组创建一个 set 对象
 var uniqueWords = new Set(words);
 ```
 
 生成 Set 对象后，你可以轻松遍历它所包含的内容：
 
-```
+```js
  for (var word of uniqueWords) {
    console.log(word);
 }
@@ -96,7 +96,7 @@ var uniqueWords = new Set(words);
 
 Map 对象稍有不同：内含的数据由键值对组成，所以你需要使用解构（destructuring）来将键值对拆解为两个独立的变量：
 
-```
+```js
  for (var [key, value] of phoneBookMap) {
    console.log(key + "'s phone number is: " + value);
 }
@@ -108,7 +108,7 @@ Map 对象稍有不同：内含的数据由键值对组成，所以你需要使�
 
 for-of 循环不支持普通对象，但如果你想迭代一个对象的属性，你可以用 for-in 循环（这也是它的本职工作）或内建的 Object.keys()方法：
 
-```
+```js
  // 向控制台输出对象的可枚举属性
 for (var key of Object.keys(someObject)) {
   console.log(key + ": " + someObject[key]);
@@ -131,7 +131,7 @@ ES6 始终坚持这样的宗旨：凡是新加入的特性，势必已在其它�
 
 举个例子，假设你正在使用 jQuery，尽管你非常钟情于里面的.each()方法，但你还是想让 jQuery 对象也支持 for-of 循环，你可以这样做：
 
-```
+```js
  // 因为 jQuery 对象与数组相似
 // 可以为其添加与数组一致的迭代器方法
 jQuery.prototype[Symbol.iterator] = Array.prototype[Symbol.iterator];
@@ -149,7 +149,7 @@ jQuery.prototype[Symbol.iterator] = Array.prototype[Symbol.iterator];
 
 for-of 循环首先调用集合的[Symbol.iterator]()方法，紧接着返回一个新的迭代器对象。迭代器对象可以是任意具有.next()方法的对象；for-of 循环将重复调用这个方法，每次循环调用一次。举个例子，这段代码是我能想出来的最简单的迭代器：
 
-```
+```js
  var zeroesForeverIterator = {
  [Symbol.iterator]: function () {
    return this;
@@ -170,7 +170,7 @@ for-of 循环首先调用集合的[Symbol.iterator]()方法，紧接着返回一
 
 首先是 for-of 循环：
 
-```
+```js
  for (VAR of ITERABLE) {
   一些语句
 }
@@ -178,7 +178,7 @@ for-of 循环首先调用集合的[Symbol.iterator]()方法，紧接着返回一
 
 然后是一个使用以下方法和少许临时变量实现的与之前大致相当的示例，：
 
-```
+```js
  var $iterator = ITERABLE[Symbol.iterator]();
 var $result = $iterator.next();
 while (!$result.done) {

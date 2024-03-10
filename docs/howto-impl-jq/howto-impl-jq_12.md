@@ -8,7 +8,7 @@
 
 事件部分讲完了后,我们最后实现 3 个方法.
 
-```
+```js
 width : function(w) {
     if(arguments.length == 1) {
         for (var i = 0; i < this.length; i++) {
@@ -40,7 +40,7 @@ width : function(w) {
 
 同理 height 方法也是如此.我就直接给出代码了
 
-```
+```js
 height : function(h) {
     if(arguments.length == 1) {
         for (var i = 0; i < this.length; i++) {
@@ -66,7 +66,7 @@ jQuery 之所以那么广受大众所爱,还一个非常重要的就是他的 ex
 
 在此,我们就实现一个非常简单的浅拷贝.(然而 jQuery 的 extend 非常强大)
 
-```
+```js
 Kodo.prototype.extend = Kodo.extend = function() {
     var options = arguments[0];
     for( var i in options) {
@@ -83,7 +83,7 @@ Kodo.prototype.extend = Kodo.extend = function() {
 
 然后我们就能这样拓展我们的插件了
 
-```
+```js
 f.prototype.extend({  //实例方法
     alert : function(msg) {
         alert(msg)

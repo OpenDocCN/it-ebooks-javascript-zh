@@ -122,7 +122,7 @@ Promise 库
 
 ## Backbone 的加载
 
-```
+```js
 <script src="/javascripts/lib/jquery.js"></script>
 <script src="/javascripts/lib/underscore.js"></script>
 <script src="/javascripts/lib/backbone.js"></script>
@@ -138,7 +138,7 @@ Backbone 是最早的 JavaScript MVC 框架，也是最简化的一个框架。�
 
 定义一个对象，表示 Web 应用。
 
-```
+```js
 var AppName = {
   Models       :{},
   Views        :{},
@@ -151,7 +151,7 @@ var AppName = {
 
 定义 Model，表示数据的一个基本单位。
 
-```
+```js
 AppName.Models.Person = Backbone.Model.extend({
   urlRoot: "/persons"
 });
@@ -159,7 +159,7 @@ AppName.Models.Person = Backbone.Model.extend({
 
 定义 Collection，表示 Model 的集合。
 
-```
+```js
 AppName.Collections.Library = Backbone.Collection.extend({
   model: AppName.Models.Book
 });
@@ -169,7 +169,7 @@ AppName.Collections.Library = Backbone.Collection.extend({
 
 定义一个 View。
 
-```
+```js
 AppName.Views.Modals.AcceptDecline = Backbone.View.Extend({
   el: ".modal-accept",
 
@@ -195,7 +195,7 @@ View 对象必须有 el 属性，指明当前 View 绑定的 DOM 节点，events
 
 定义一个 Controller。
 
-```
+```js
 AppName.Controllers.Person = {};
 AppName.Controllers.Person.show = function(id) {
   var aMa = new AppName.Models.Person({id: id});
@@ -210,7 +210,7 @@ AppName.Controllers.Person.show = function(id) {
 
 最后，定义路由，启动应用程序。
 
-```
+```js
 var Workspace = Backbone.Router.extend({
   routes: {
     "*"                  :"wholeApp",
@@ -233,7 +233,7 @@ Backbone.history.start({pushState: true});
 
 Backbone.View 方法用于定义视图类。
 
-```
+```js
 var AppView = Backbone.View.extend({
   render: function(){
     $('main').append('<h1>一级标题</h1>');
@@ -245,7 +245,7 @@ var AppView = Backbone.View.extend({
 
 使用的时候，需要先新建视图类的实例，然后通过实例，调用 render 方法，从而让视图在网页上显示。
 
-```
+```js
 var appView = new AppView();
 appView.render();
 ```
@@ -254,7 +254,7 @@ appView.render();
 
 新建视图实例时，通常需要指定 Model。
 
-```
+```js
 var document = new Document({
   model: doc
 });
@@ -264,7 +264,7 @@ var document = new Document({
 
 视图还可以定义 initialize 方法，生成实例的时候，会自动调用该方法对实例初始化。
 
-```
+```js
 var AppView = Backbone.View.extend({
   initialize: function(){
     this.render();
@@ -283,7 +283,7 @@ var appView = new AppView();
 
 除了直接在 render 方法中，指定“视图”所绑定的网页元素，还可以用视图的 el 属性指定网页元素。
 
-```
+```js
 var AppView = Backbone.View.extend({
   el: $('main'),
   render: function(){
@@ -298,7 +298,7 @@ var AppView = Backbone.View.extend({
 
 如果不指定 el 属性，也可以通过 tagName 属性和 className 属性指定。
 
-```
+```js
 var Document = Backbone.View.extend({
   tagName: "li",
   className: "document",
@@ -312,7 +312,7 @@ var Document = Backbone.View.extend({
 
 视图的 template 属性用来指定网页模板。
 
-```
+```js
 var AppView = Backbone.View.extend({
       template: _.template("<h3>Hello <%= who %><h3>"),
 });
@@ -320,7 +320,7 @@ var AppView = Backbone.View.extend({
 
 上面代码中，underscore 函数库的 template 函数，接受一个模板字符串作为参数，返回对应的模板函数。有了这个模板函数，只要提供具体的值，就能生成网页代码。
 
-```
+```js
 var AppView = Backbone.View.extend({
       el: $('#container'),
       template: _.template("<h3>Hello <%= who %><h3>"),
@@ -337,7 +337,7 @@ var AppView = Backbone.View.extend({
 
 实际应用中，一般将模板放在 script 标签中，为了防止浏览器按照 JavaScript 代码解析，type 属性设为 text/template。
 
-```
+```js
 <script type="text/template" data-name="templateName">
     <!-- template contents goes here -->
 </script>
@@ -345,7 +345,7 @@ var AppView = Backbone.View.extend({
 
 可以使用下面的代码编译模板。
 
-```
+```js
 window.templates = {};
 
 var $sources = $('script[type="text/template"]');
@@ -360,7 +360,7 @@ $sources.each(function(index, el) {
 
 events 属性用于指定视图的事件及其对应的处理函数。
 
-```
+```js
 var Document = Backbone.View.extend({
   events: {
     "click .icon":          "open",
@@ -376,7 +376,7 @@ var Document = Backbone.View.extend({
 
 listento 方法用于为特定事件指定回调函数。
 
-```
+```js
 var Document = Backbone.View.extend({
   initialize: function() {
     this.listenTo(this.model, "change", this.render);
@@ -390,7 +390,7 @@ var Document = Backbone.View.extend({
 
 remove 方法用于移除一个视图。
 
-```
+```js
 updateView: function() {
   view.remove();
   view.render();
@@ -401,7 +401,7 @@ updateView: function() {
 
 在父视图中可以调用子视图。下面就是一种写法。
 
-```
+```js
 render : function (){
 
     this.$el.html(this.template());
@@ -418,7 +418,7 @@ Router 是 Backbone 提供的路由对象，用来将用户请求的网址与后
 
 首先，新定义一个 Router 类。
 
-```
+```js
 Router = Backbone.Router.extend({
     routes: {
     }
@@ -433,7 +433,7 @@ routes 属性是一个对象，它的每个成员就代表一个路径处理规�
 
 如果键名为空字符串，就代表根路径。
 
-```
+```js
 routes: {
         '': 'phonesIndex',
 },
@@ -445,7 +445,7 @@ phonesIndex: function () {
 
 星号代表任意路径，可以设置路径参数，捕获具体的路径值。
 
-```
+```js
 var AppRouter = Backbone.Router.extend({
     routes: {
         "*actions": "defaultRoute" 
@@ -463,7 +463,7 @@ app_router.on('route:defaultRoute', function(actions) {
 
 路径规则的写法。
 
-```
+```js
 var myrouter = Backbone.Router.extend({
   routes: {
     "help":                 "help",    
@@ -494,7 +494,7 @@ router.on("route:help", function(page) {
 
 设置了 router 以后，就可以启动应用程序。Backbone.history 对象用来监控 url 的变化。
 
-```
+```js
 App = new Router();
 
 $(document).ready(function () {
@@ -504,7 +504,7 @@ $(document).ready(function () {
 
 打开 pushState 方法。如果应用程序不在根目录，就需要指定根目录。
 
-```
+```js
 Backbone.history.start({pushState: true, root: "/public/search/"})
 ```
 
@@ -512,7 +512,7 @@ Backbone.history.start({pushState: true, root: "/public/search/"})
 
 Model 代表单个的对象实体。
 
-```
+```js
 var User = Backbone.Model.extend({
         defaults: {
             name: '',
@@ -527,7 +527,7 @@ var user = new User();
 
 生成实例时，可以提供各个属性的具体值。
 
-```
+```js
 var user = new User ({
     id: 1,
     name: 'name',
@@ -541,7 +541,7 @@ var user = new User ({
 
 Model 实例必须有一个属性，作为区分其他实例的主键。这个属性的名称，由 idAttribute 属性设定，一般是设为 id。
 
-```
+```js
 var Music = Backbone.Model.extend({ 
     idAttribute: 'id'
 });
@@ -551,7 +551,7 @@ var Music = Backbone.Model.extend({
 
 get 方法用于返回 Model 实例的某个属性的值。
 
-```
+```js
 var user = new User({ name: "name", age: 24});
 var age = user.get("age"); // 24
 var name = user.get("name"); // "name"
@@ -561,7 +561,7 @@ var name = user.get("name"); // "name"
 
 set 方法用于设置 Model 实例的某个属性的值。
 
-```
+```js
 var User = Backbone.Model.extend({
     buy: function(newCarsName){
         this.set({car: newCarsName });
@@ -577,7 +577,7 @@ var car = user.get("car"); // ‘Porsche’
 
 on 方法用于监听对象的变化。
 
-```
+```js
 var user = new User({name: 'BMW',model:'i8'});
 
 user.on("change:name", function(model){
@@ -595,7 +595,7 @@ user.set({name: 'Porsche'});
 
 该属性用于指定服务器端对 model 进行操作的路径。
 
-```
+```js
 var User = Backbone.Model.extend({
     urlRoot: '/user'
 });
@@ -607,7 +607,7 @@ var User = Backbone.Model.extend({
 
 fetch 事件用于从服务器取出 Model。
 
-```
+```js
 var user = new User ({id: 1});
 user.fetch({
     success: function (user){
@@ -624,7 +624,7 @@ save 方法用于通知服务器新建或更新 Model。
 
 如果一个 Model 实例不含有 id 属性，则 save 方法将使用 POST 方法新建该实例。
 
-```
+```js
 var User = Backbone.Model.extend({
     urlRoot: '/user'
 });
@@ -646,7 +646,7 @@ user.save(userDetails, {
 
 如果一个 Model 实例含有 id 属性，则 save 方法将使用 PUT 方法更新该实例。
 
-```
+```js
 var user = new User ({
     id: 1,
     name: '张三',
@@ -666,7 +666,7 @@ user.save({name: '李四'}, {
 
 destroy 方法用于在服务器上删除该实例。
 
-```
+```js
 var user = new User ({
     id: 1,
     name: 'name',
@@ -686,7 +686,7 @@ user.destroy({
 
 Collection 是同一类 Model 的集合，比如 Model 是动物，Collection 就是动物园；Model 是单个的人，Collection 就是一家公司。
 
-```
+```js
 var Song = Backbone.Model.extend({});
 
 var Album = Backbone.Collection.extend({
@@ -700,7 +700,7 @@ var Album = Backbone.Collection.extend({
 
 Model 的实例可以直接放入 Collection 的实例，也可以用 add 方法添加。
 
-```
+```js
 var song1 = new Song({ id: 1 ,name: "歌名 1", artist: "张三" });
 var song2 = new Music ({id: 2,name: "歌名 2", artist: "李四" });
 var myAlbum = new Album([song1, song2]);
@@ -711,7 +711,7 @@ myAlbum.add(song3);
 
 remove 方法用于从 Collection 实例中移除一个 Model 实例。
 
-```
+```js
 myAlbum.remove(1);
 ```
 
@@ -721,7 +721,7 @@ myAlbum.remove(1);
 
 get 方法用于从 Collection 中获取指定 id 的 Model 实例。
 
-```
+```js
 myAlbum.get(2))
 ```
 
@@ -729,7 +729,7 @@ myAlbum.get(2))
 
 fetch 方法用于从服务器取出 Collection 数据。
 
-```
+```js
 var songs = new Backbone.Collection;
 songs.url = '/songs';
 songs.fetch();
@@ -737,7 +737,7 @@ songs.fetch();
 
 ## Backbone.events
 
-```
+```js
 var obj = {};
 _.extend(obj, Backbone.Events);
 

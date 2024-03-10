@@ -6,7 +6,7 @@ Chrome 为应用提供了权限更加开放，功能更加强大的一系列文�
 
 要使用 FileSystem API 需要在 Manifest 中声明`fileSystem`权限：
 
-```
+```js
 permissions: {
     "fileSystem"
 } 
@@ -14,7 +14,7 @@ permissions: {
 
 但如果只声明了上述权限，并不能写入文件及获取目录。如果还需要写入文件和获取目录需要进行如下声明：
 
-```
+```js
 permissions: {
     {"fileSystem": ["write", "directory"]}
 } 
@@ -50,7 +50,7 @@ Chrome 应用中的`fileSystem`接口是对 HTML5 已有的文件系统接口的
 
 通过`chooseEntry`方法可以获取到目录及文件操作对象。当`chooseEntry`被执行时，一个文件选择窗口会马上弹出，所以应该让一些事件来触发其运行，比如点击按钮等，否则可能会让用户感到困惑。
 
-```
+```js
 document.getElementById('openfile').onclick = function(){
     chrome.fileSystem.chooseEntry({}, function(fileEntry){
         console.log(fileEntry);
@@ -63,7 +63,7 @@ document.getElementById('openfile').onclick = function(){
 
 在调用`chooseEntry`方法时，我们在上例中传递了一个空对象，这个对象用来定义`chooseEntry`打开的参数，默认情况下会以打开文件的方式获取操作对象。这个定义打开参数的对象完整结构如下：
 
-```
+```js
 {
     type: 打开类型，包括 openFile、openWritableFile、saveFile 和 openDirectory,
     suggestedName: 建议的文件名，会自动显示在保存窗口的文件名输入框中,
@@ -85,7 +85,7 @@ document.getElementById('openfile').onclick = function(){
 
 将`type`指定为`openDirectory`则可以获取到目录操作对象：
 
-```
+```js
 document.getElementById('opendirectory').onclick = function(){
     chrome.fileSystem.chooseEntry({type: 'openDirectory'}, function(Entry){
         console.log(Entry);
@@ -100,7 +100,7 @@ document.getElementById('opendirectory').onclick = function(){
 
 HTML5 可以在文件未上传之前在浏览器端获取到文件的相关信息，就是通过 File API。当用户通过文件选择控件选择文件后，JavaScript 就可以通过控件 DOM 的`files`属性获取到对应的 File 对象：
 
-```
+```js
 document.getElementById('myFile').onchange = function(){
     var file = this.files[0];
     console.log(file);
@@ -109,7 +109,7 @@ document.getElementById('myFile').onchange = function(){
 
 对应的 HTML 为：
 
-```
+```js
 <input type="file" id="myFile" /> 
 ```
 
@@ -120,7 +120,7 @@ document.getElementById('myFile').onchange = function(){
 
 HTML5 还提供了`FileReader`对象，通过`FileReader`可以读取`File`对象对应文件的内容。
 
-```
+```js
 var reader = new FileReader();
 reader.onload = function(){
     console.log(this.result);
@@ -132,7 +132,7 @@ reader.readAsText(File);
 
 下面我们回到 Chrome 应用中。首先通过`chooseEntry`方法以`openFile`的方式获取`fileEntry`：
 
-```
+```js
 chrome.fileSystem.chooseEntry({type: 'openFile'}, function(fileEntry){
     //We'll do something with fileEntry later
 }); 
@@ -140,7 +140,7 @@ chrome.fileSystem.chooseEntry({type: 'openFile'}, function(fileEntry){
 
 之后通过`FileEntry`的`file`方法获取到`File`对象：
 
-```
+```js
 fileEntry.file(function(file){
     //We'll do something with file later
 }); 
@@ -148,7 +148,7 @@ fileEntry.file(function(file){
 
 最后用`FileReader`读取`file`中的内容：
 
-```
+```js
 var reader = new FileReader();
 reader.onload = function(){
     var text = this.result;
@@ -160,7 +160,7 @@ reader.readAsText(file);
 
 将上面这三个过程连起来就可以得到如下代码：
 
-```
+```js
 chrome.fileSystem.chooseEntry({type: 'openFile'}, function(fileEntry){
     fileEntry.file(function(file){
         var reader = new FileReader();
@@ -187,7 +187,7 @@ chrome.fileSystem.chooseEntry({type: 'openFile'}, function(fileEntry){
 
 首先通过`chooseEntry`方法获取`Entry`：
 
-```
+```js
 chrome.fileSystem.chooseEntry({type: 'openDirectory'}, function(Entry) {
     //We'll do something with Entry later
 }); 
@@ -195,7 +195,7 @@ chrome.fileSystem.chooseEntry({type: 'openDirectory'}, function(Entry) {
 
 接下来我们来获取`Entry`下的子目录和文件：
 
-```
+```js
 var dirReader = Entry.createReader();
 dirReader.readEntries (function(Entries) {
     //We'll do something with Entries later
@@ -204,7 +204,7 @@ dirReader.readEntries (function(Entries) {
 
 获取到`Entries`之后要对其中的每个元素进行判断是目录还是文件，如果是文件直接输出文件名，如果还是目录，则继续遍历：
 
-```
+```js
 for(var i=0; i<Entries.length; i++){
     //We'll print name of this Entry
     if(Entries[i].isDirectory){
@@ -215,7 +215,7 @@ for(var i=0; i<Entries.length; i++){
 
 基本的过程已经搞清楚了，现在开始编写打印`Entry`名的函数。我们希望设计成以下输出格式：
 
-```
+```js
 The full path of the selected Entry
 |-Entry1
 | |-sub Entry1
@@ -228,7 +228,7 @@ The full path of the selected Entry
 
 所以显示`Entry`需要指定当前的目录深度以输出相应的层次格式：
 
-```
+```js
 function echoEntry(depth, Entry){
     var tree = '|';
     for(var i=0; i<depth-1; i++){
@@ -240,7 +240,7 @@ function echoEntry(depth, Entry){
 
 然后我们将获取子目录和文件的代码也封装成一个函数以便复用：
 
-```
+```js
 function getSubEntries(depth, Entry){
     var dirReader = Entry.createReader();
     dirReader.readEntries (function(Entries) {
@@ -256,7 +256,7 @@ function getSubEntries(depth, Entry){
 
 最后在`chooseEntry`获取到`Entry`之后调用`getSubEntries`函数：
 
-```
+```js
 chrome.fileSystem.chooseEntry({type: 'openDirectory'}, function(Entry) {
     console.log(Entry.fullPath);
     getSubEntries(0, Entry);
@@ -265,7 +265,7 @@ chrome.fileSystem.chooseEntry({type: 'openDirectory'}, function(Entry) {
 
 别忘了定义`errorHandler`函数用于抓取错误：
 
-```
+```js
 function errorHandler(e){
     console.log(e.message);
 } 
@@ -273,7 +273,7 @@ function errorHandler(e){
 
 但是细心的读者会发现按照上面的写法会先显示一级目录，而后显示二级目录以此类推，并不是像我们所设计的那样展示实际的目录结构。这是因为`getSubEntries`函数得到的结果是以回调的形式传递的，也就是说`getSubEntries`函数未执行结束并不会阻塞循环体。这个问题只是在显示结果时会造成一点小麻烦，在实际遍历目录时我们并不在意哪些先得到哪些后得到。但为了使本小节的例子更加完善，现将代码修改如下：
 
-```
+```js
 var loopEntriesButton = document.getElementById('le');
 
 loopEntriesButton.addEventListener('click', function(e) {
@@ -309,7 +309,7 @@ function echoEntry(depth, Entry){
 
 对应的 HTML 为：
 
-```
+```js
 <input type="button" id="le" value="Loop Entries" />
 <div id="loopEntry"></div> 
 ```
@@ -325,7 +325,7 @@ function echoEntry(depth, Entry){
 
 在调用`getDirectory`方法时，如果在参数对象中指定`create`属性为`true`，则会创建相应的子目录，如：
 
-```
+```js
 chrome.fileSystem.chooseEntry({type: 'openDirectory'}, function(Entry) {
     Entry.getDirectory('new_folder', {create: true}, function(subEntry) {
         //We'll do something with subEntry later
@@ -340,7 +340,7 @@ chrome.fileSystem.chooseEntry({type: 'openDirectory'}, function(Entry) {
 
 同样在调用`getFile`方法时，参数对象中指定`create`属性为`true`会创建文件：
 
-```
+```js
 chrome.fileSystem.chooseEntry({type: 'openDirectory'}, function(Entry) {
     Entry.getFile('log.txt', {create: true}, function(fileEntry) {
         //We'll do something with fileEntry later
@@ -352,7 +352,7 @@ chrome.fileSystem.chooseEntry({type: 'openDirectory'}, function(Entry) {
 
 除了在用户选择的目录下创建文件外，也可以指定`chooseEntry`方法的打开类型为`saveFile`，这样用户看到的将不是一个目录选择窗口，而是一个另存为窗口：
 
-```
+```js
 chrome.fileSystem.chooseEntry({
     type: 'saveFile',
     suggestedName: 'log.txt'
@@ -368,7 +368,7 @@ chrome.fileSystem.chooseEntry({
 
 Entry 和 FileEntry 的`remove`方法可以删除自身：
 
-```
+```js
 chrome.fileSystem.chooseEntry({type: 'openDirectory'}, function(Entry) {
     Entry.getDirectory('new_folder', {}, function(subEntry) {
         subEntry.remove(function(){
@@ -386,7 +386,7 @@ chrome.fileSystem.chooseEntry({type: 'openDirectory'}, function(Entry) {
 
 对于目录来说，只有当目录不包含任何文件和子目录的时候`remove`方法才会调用成功，否则会报错。如果想删除包含内容的目录，需要使用`removeRecursively`方法：
 
-```
+```js
 chrome.fileSystem.chooseEntry({type: 'openDirectory'}, function(Entry) {
     Entry.getDirectory('new_folder', {}, function(subEntry) {
         subEntry.removeRecursively(function(){
@@ -400,7 +400,7 @@ chrome.fileSystem.chooseEntry({type: 'openDirectory'}, function(Entry) {
 
 通过 FileEntry 的`createWriter`方法可以获取 FileWriter 对象，通过 FileWriter 可以对文件进行写操作：
 
-```
+```js
 fileEntry.createWriter(function(fileWriter) {
     //We'll do something with fileWriter later
 }, errorHandler); 
@@ -408,7 +408,7 @@ fileEntry.createWriter(function(fileWriter) {
 
 对于 FileEntry，可以通过 Entry 的`getFile`方法获取，也可以直接通过指定 s`aveFile`类型的`chooseEntry`获得：
 
-```
+```js
 chrome.fileSystem.chooseEntry({type: 'openDirectory'}, function(Entry) {
     Entry.getFile('log.txt', {}, function(fileEntry) {
         fileEntry.createWriter(function(fileWriter) {
@@ -420,7 +420,7 @@ chrome.fileSystem.chooseEntry({type: 'openDirectory'}, function(Entry) {
 
 或
 
-```
+```js
 chrome.fileSystem.chooseEntry({
     type: 'saveFile',
     suggestedName: 'log.txt'
@@ -439,7 +439,7 @@ Typed Array（类型数组）为 JavaScript 直接处理原始二进制数据提
 
 Typed Array 接口定义了一类固定长度的，可以直接获取缓存区数据的数组类型，`ArrayBuffer`类型。可以通过`new ArrayBuffer(length)`来创建一个长度为`length`字节的二进制缓存区，如：
 
-```
+```js
 var buf = new ArrayBuffer(8); 
 ```
 
@@ -447,13 +447,13 @@ var buf = new ArrayBuffer(8);
 
 `ArrayBuffer`类型的数据不可以直接读写，需要再构建`ArrayBufferView`类型数据才可以进行操作。那么`ArrayBuffer`和`ArrayBufferView`是什么样的关系呢？`ArrayBuffer`是最原始的二进制数据，它没有附加任何信息，如数据是如何构造的。而`ArrayBufferView`则指定了原始二进制数据应该被如何看待——多少位被看做一个基本处理单元。为更加直观阐述这一关系，现举例如下：
 
-```
+```js
 var buf = new ArrayBuff(8); 
 ```
 
 此时对应于`buf`的数据是 8 字节（64 位），数据结构为：
 
-```
+```js
 +----+-+-+-+-+-+-+-+-+
 |byte|0|1|2|3|4|5|6|7|
 +----+-+-+-+-+-+-+-+-+ 
@@ -461,13 +461,13 @@ var buf = new ArrayBuff(8);
 
 如果通过`Uint32Array`这一`ArrayBufferView`来格式化`buf`数据：
 
-```
+```js
 var uintBuf = new Uint32Array(buf); 
 ```
 
 则`uintBuf`的数据结构为：
 
-```
+```js
 +----+-+-+-+-+-+-+-+-+
 |byte|0|1|2|3|4|5|6|7|
 +----+-+-+-+-+-+-+-+-+
@@ -483,7 +483,7 @@ var uintBuf = new Uint32Array(buf);
 
 `ArrayBufferView`也可以指定`ArrayBuffer`中数据的起止位置，如：
 
-```
+```js
 var partUintBuf = new Uint8Array(buf, 3, 4); 
 ```
 
@@ -491,31 +491,31 @@ var partUintBuf = new Uint8Array(buf, 3, 4);
 
 下面我们来将一个`ArrayBuffer`数据按照字符串的方式读取出来。首先在 JavaScript 中字符类型（`String`）是占 16 位的，所以应该使用`Uint16Array`这个`ArrayBufferView`指定读取格式：
 
-```
+```js
 var stringBuf = new Uint16Array(buf); 
 ```
 
 这样`stringBuf`中的每个元素保存的就都是字符的 Unicode 码了，再使用`fromCharCode`方法转换成字符就可以了。但是`fromCharCode`方法需要传递多个参数：
 
-```
+```js
 String.fromCharCode(num0, num1, ..., numX); 
 ```
 
 而不是一个数组：
 
-```
+```js
 String.fromCharCode([num0, num1, ..., numX]); 
 ```
 
 可是我们获得的`stringBuf`是一个数组，所以不能直接传给`fromCharCode`。当然可以使用一个循环将每个 Unicode 码进行转换，之后再拼接起来，但有简单的方法，`apply`方法。`apply`方法可以将一个对象的方法应用到另一个对象上，同时改变原方法中的`this`替换为指定的值。虽然看着有点乱，但这不是我们关心的，重要的是它可以自动将一个数组中的元素转化为函数的参数列表，即`foo.apply(null, [a, b, c])`等同于`foo(a, b, c)`，这正是我们所需要的。所以将`stringBuf`转换为字符串的方法就是：
 
-```
+```js
 String.fromCharCode.apply(null, stringBuf); 
 ```
 
 将`stringBuf`变量省略，就可以得到如下`ArrayBuffer`转换为`String`的函数：
 
-```
+```js
 function ab2str(buf){
     return String.fromCharCode.apply(null, new Uint16Array(buf));
 } 
@@ -525,7 +525,7 @@ function ab2str(buf){
 
 `Blob`对象是对二进制数据的封装，它介于`ArrayBuffer`和应用层面数据之间。创建`Blob`对象非常简单，只需指定数据内容和数据类型即可：
 
-```
+```js
 var str = 'Internet Explorer is a good tool to download Chrome.';
 var oneBlob = new Blob([str], {type: 'text/plain'}); 
 ```
@@ -534,7 +534,7 @@ var oneBlob = new Blob([str], {type: 'text/plain'});
 
 创建`Blob`对象时可以通过字符串指定数据，如上例代码；也可以通过`ArrayBuffer`、`ArrayBufferView`和`Blob`类型数据，还可以是它们的组合，如：
 
-```
+```js
 var str = 'Internet Explorer is a good tool to download Chrome.';
 var ab = new ArrayBuffer(8);
 var abv = new Unit16Array(ab, 2, 2);
@@ -544,7 +544,7 @@ var anotherBlob = new Blob([ab, abv, oneBlob]);
 
 当通过一个`Blob`被作为另一个`Blob`的数据时，它的类型会被忽略，即使数据数组中只有它一个元素时，如：
 
-```
+```js
 var oneBlob = new Blob(['Hello World.'], {type: 'text/plain'});
 var anotherBlob = new Blob([oneBlob]); 
 ```
@@ -555,7 +555,7 @@ var anotherBlob = new Blob([oneBlob]);
 
 `Blob`对象还有两种方法，分别是`slice`和`close`。`slice`方法与 String 中的分割非常像，只不过在`Blob`中分割的是二进制数据。如：
 
-```
+```js
 var oneBlob = new Blob(['Hello World.'], {type: 'text/plain'});
 var anotherBlob = oneBlob.slice(2, 4, 'text/plain'); 
 ```
@@ -572,13 +572,13 @@ var anotherBlob = oneBlob.slice(2, 4, 'text/plain');
 
 另外`FileWriter`还有三种方法，分别是`write`、`seek`和`truncate`。其中`write`方法用来写入数据，数据类型为`Blob`。如：
 
-```
+```js
 fileWriter.write(new Blob(['Hello World'], {type: 'text/plain'})); 
 ```
 
 可以通过`onwrite`和`onwriteend`监听数据开始写入和写入完毕事件：
 
-```
+```js
 fileWriter.onwrite = function(){
     console.log('Write begin.');
 }
@@ -590,7 +590,7 @@ fileWriter.onwriteend = function(){
 
 `seek`方法用于移动指针到文件指定位置，之后的写操作将从指针指向的位置开始。如果`seek`给出的偏移量为负数，则将指针移动到距文件末端`n`个字节的位置。如果`seek`给出的偏移量为负数且绝对值比文件长度大，则将指针指向`0`。如果偏移量比文件长度大，则指向文件末端。
 
-```
+```js
 //set position to beginning of the file
 fileWriter.seek(0);
 
@@ -609,7 +609,7 @@ fileWriter.seek(fileWriter.length);
 
 结合前面的内容，我们就可以得到完整的写入文件的代码了：
 
-```
+```js
 chrome.fileSystem.chooseEntry({
     type: 'saveFile',
     suggestedName: 'log.txt'
@@ -624,7 +624,7 @@ chrome.fileSystem.chooseEntry({
 
 Entry 和 FileEntry 均有`copyTo`和`moveTo`方法用来复制和移动目录和文件。
 
-```
+```js
 Entry.copyTo(newEntry, 'new_Entry_name', function(copiedEntry){
     console.log('Entry moved.');
 }, errorHandler);

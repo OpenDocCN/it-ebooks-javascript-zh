@@ -55,7 +55,7 @@ ES6 中又出现了新问题：纯粹的对象不[可遍历](http://www.infoq.co
 
 其次，`Set`的数据存储结构专门为一种操作作了速度优化：包含性检测。
 
-```
+```js
  > // 检查"zythum"是不是一个单词
     > arrayOfWords.indexOf("zythum") !== -1  // 慢
         true
@@ -65,7 +65,7 @@ ES6 中又出现了新问题：纯粹的对象不[可遍历](http://www.infoq.co
 
 `Set`不能提供的则是索引。
 
-```
+```js
  > arrayOfWords[15000]
         "anapanapa"
     > setOfWords[15000]   // Set 不支持索引
@@ -128,7 +128,7 @@ ES6 中又出现了新问题：纯粹的对象不[可遍历](http://www.infoq.co
 
 比如说，我们有若干 URL 对象组成的 Set：
 
-```
+```js
  var urls = new Set;
     urls.add(new URL(location.href));  // 两个 URL 对象。
     urls.add(new URL(location.href));  // 它们一样么？
@@ -159,7 +159,7 @@ ES6 中又出现了新问题：纯粹的对象不[可遍历](http://www.infoq.co
 
 [上篇文章](http://www.infoq.com/cn/articles/es6-in-depth-symbols)我们讨论了一个 JS 动画库相关的例子。我们试着要为每个 DOM 对象设置一个布尔值类型的标识属性，就像这样：
 
-```
+```js
  if (element.isMoving) {
       smoothAnimations(element);
     }
@@ -170,7 +170,7 @@ ES6 中又出现了新问题：纯粹的对象不[可遍历](http://www.infoq.co
 
 上次的文章里，我们接着展示了用 Symbol 解决这个问题的方法。但是，可以用集合来实现同样的效果么？也许看上去会像这样：
 
-```
+```js
  if (movingSet.has(element)) {
       smoothAnimations(element);
     }

@@ -17,7 +17,7 @@
 *   首先安装插件`ember install ember-froala-editor`
 *   配置`environment.js`，在此文件中增加如下配置
 
-```
+```js
 // 其他配置省略
 APP: {  
       // Here you can pass flags/options to your application instance
@@ -33,7 +33,7 @@ APP: {
 
 *   然后在模板中使用如下两行代码引用插件
 
-```
+```js
 {{! app/templates/application.hbs }}
 {{froala-editor}}
 {{froala-content}} 

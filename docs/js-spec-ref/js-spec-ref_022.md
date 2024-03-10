@@ -30,7 +30,7 @@ Date 对象是 JavaScript 提供的日期和时间的操作接口。它有多种
 
 作为一个函数，Date 对象可以直接调用，返回一个当前日期和时间的字符串。
 
-```
+```js
 Date()
 // "Sat Mar 09 2013 08:46:54 GMT+0800 (CST)"
 
@@ -44,7 +44,7 @@ Date(2000, 1, 1)
 
 Date 对象还是一个构造函数，对它使用 new 命令，会返回一个 Date 对象的实例。如果不加参数，生成的就是代表当前时间的对象。
 
-```
+```js
 var today = new Date();
 
 today 
@@ -59,7 +59,7 @@ today.toString()
 
 Date 对象接受从 1970 年 1 月 1 日 00:00:00 UTC 开始计算的毫秒数作为参数。这意味着如果将 Unix 时间戳作为参数，必须将 Unix 时间戳乘以 1000。
 
-```
+```js
 new Date(1378218728000)
 // Tue Sep 03 2013 22:32:08 GMT+0800 (CST)
 
@@ -78,14 +78,14 @@ var Dec31_1969 = new Date(-3600*24*1000);
 
 Date 对象还接受一个日期字符串作为参数，返回所对应的时间。
 
-```
+```js
 new Date("January 6, 2013");
 // Sun Jan 06 2013 00:00:00 GMT+0800 (CST)
 ```
 
 所有可以被 Date.parse()方法解析的日期字符串，都可以当作 Date 对象的参数。
 
-```
+```js
 new Date("2013-02-15")
 new Date("2013-FEB-15")
 new Date("FEB, 15, 2013")
@@ -102,7 +102,7 @@ new Date("15, Feberuary, 2013")
 
 在多个参数的情况下，Date 对象将其分别视作对应的年、月、日、小时、分钟、秒和毫秒。如果采用这种用法，最少需要指定两个参数（年和月），其他参数都是可选的，默认等于 0。如果只使用年一个参数，Date 对象会将其解释为毫秒数。
 
-```
+```js
 new Date(2013) // Thu Jan 01 1970 08:00:02 GMT+0800 (CST)
 new Date(2013,0) // Tue Jan 01 2013 00:00:00 GMT+0800 (CST)
 new Date(2013,0,1) // Tue Jan 01 2013 00:00:00 GMT+0800 (CST)
@@ -114,7 +114,7 @@ new Date(2013,0,1,0,0,0,0) // Tue Jan 01 2013 00:00:00 GMT+0800 (CST)
 
 这些参数如果超出了正常范围，会被自动折算。比如，如果月设为 15，就算折算为下一年的 4 月。参数还可以使用负数，表示扣去的时间。
 
-```
+```js
 new Date(2013,0) // Tue Jan 01 2013 00:00:00 GMT+0800 (CST)
 new Date(2013,-1) // Sat Dec 01 2012 00:00:00 GMT+0800 (CST) 
 new Date(2013,0,1) // Tue Jan 01 2013 00:00:00 GMT+0800 (CST)
@@ -126,7 +126,7 @@ new Date(2013,0,-1) // Sun Dec 30 2012 00:00:00 GMT+0800 (CST)
 
 年的情况有所不同，如果为 0，表示 1900 年；如果为负数，则表示公元前。
 
-```
+```js
 new Date(1,0) // Tue Jan 01 1901 00:00:00 GMT+0800 (CST)
 new Date(0,0) // Mon Jan 01 1900 00:00:00 GMT+0800 (CST)
 new Date(-1,0) // Fri Jan 01 -1 00:00:00 GMT+0800 (CST)
@@ -136,7 +136,7 @@ new Date(-1,0) // Fri Jan 01 -1 00:00:00 GMT+0800 (CST)
 
 类型转换时，Date 对象的实例如果转为数值，则等于对应的毫秒数；如果转为字符串，则等于对应的日期字符串。所以，两个日期对象进行减法运算，返回的就是它们间隔的毫秒数；进行加法运算，返回的就是连接后的两个字符串。
 
-```
+```js
 var then = new Date(2013,2,1);
 var now = new Date(2013,3,1);
 
@@ -153,14 +153,14 @@ now + then
 
 now 方法返回当前距离 1970 年 1 月 1 日 00:00:00 UTC 的毫秒数（Unix 时间戳乘以 1000）。
 
-```
+```js
 Date.now()
 // 1364026285194
 ```
 
 如果需要更精确的时间，可以使用 window.performance.now()。它提供页面加载到命令运行时的已经过去的时间，单位是浮点数形式的毫秒。
 
-```
+```js
 window.performance.now()
 // 21311140.415
 ```
@@ -178,7 +178,7 @@ parse 方法用来解析日期字符串，返回距离 1970 年 1 月 1 日 00:0
 
 请看例子。
 
-```
+```js
 Date.parse("Aug 9, 1995")
 // 返回 807897600000，以下省略返回值
 
@@ -191,7 +191,7 @@ Date.parse("2011-10-10T14:48:00")
 
 如果解析失败，返回 NaN。
 
-```
+```js
 Date.parse("xxx")
 // NaN
 ```
@@ -200,7 +200,7 @@ Date.parse("xxx")
 
 默认情况下，Date 对象返回的都是当前时区的时间。Date.UTC 方法可以返回 UTC 时间（世界标准时间）。该方法接受年、月、日等变量作为参数，返回当前距离 1970 年 1 月 1 日 00:00:00 UTC 的毫秒数。
 
-```
+```js
 // 使用的格式
 Date.UTC(year, month[, date[, hrs[, min[, sec[, ms]]]]]) 
 
@@ -218,7 +218,7 @@ Date.UTC(2011,0,1,2,3,4,567)
 
 toString 方法返回一个完整的时间字符串。
 
-```
+```js
 var today = new Date(1362790014000);
 
 today.toString()
@@ -234,7 +234,7 @@ today
 
 toUTCString 方法返回对应的 UTC 时间，也就是比北京时间晚 8 个小时。toISOString 方法返回对应时间的 ISO8601 写法。
 
-```
+```js
 var today = new Date(1362790014000);
 
 today.toUTCString()
@@ -248,7 +248,7 @@ today.toISOString()
 
 toDateString 方法返回日期的字符串形式，toTimeString 方法返回时间的字符串形式。
 
-```
+```js
 var today = new Date(1362790014000);
 
 today.toDateString()
@@ -262,7 +262,7 @@ today.toTimeString()
 
 toLocalDateString 方法返回一个字符串，代表日期的当地写法；toLocalTimeString 方法返回一个字符串，代表时间的当地写法。
 
-```
+```js
 var today = new Date(1362790014000);
 
 today.toLocaleDateString()
@@ -276,7 +276,7 @@ today.toLocaleTimeString()
 
 valueOf 方法返回实例对象距离 1970 年 1 月 1 日 00:00:00 UTC 对应的毫秒数，该方法等同于 getTime 方法。
 
-```
+```js
 var today = new Date();
 
 today.valueOf()
@@ -288,7 +288,7 @@ today.getTime()
 
 该方法可以用于计算精确时间。
 
-```
+```js
 var start = new Date();
 
 doSomething();
@@ -311,7 +311,7 @@ Date 对象提供了一系列 get 方法，用来获取实例对象某个方面�
 *   Date.prototype.getSeconds()：返回秒（0-59）。
 *   Date.prototype.getTimezoneOffset()：返回当前时间与 UTC 的时区差异，以分钟表示，返回结果考虑到了夏令时因素。
 
-```
+```js
 var d = new Date("January 6, 2013");
 
 d.getDate() // 6
@@ -335,7 +335,7 @@ Date 对象提供了一系列 set 方法，用来设置实例对象的各个方�
 *   Date.prototype.setSeconds(sec [, ms])：设置秒（0-59）。
 *   Date.prototype.setTime(milliseconds)：设置毫秒时间戳。
 
-```
+```js
 var d = new Date ("January 6, 2013");
 
 d 
@@ -350,7 +350,7 @@ d
 
 set 方法的参数都会自动折算。以 setDate 为例，如果参数超过当月的最大天数，则向下一个月顺延，如果参数是负数，表示从上个月的最后一天开始减去的天数。
 
-```
+```js
 var d = new Date("January 6, 2013");
 
 d.setDate(32)
@@ -368,7 +368,7 @@ d
 
 使用 setDate 方法，可以算出今天过后 1000 天是几月几日。
 
-```
+```js
 var d = new Date();
 d.setDate( d.getDate() + 1000 );
 d.getDay();
@@ -380,7 +380,7 @@ set 系列方法除了 setTime()，都有对应的 UTC 版本，比如 setUTCHou
 
 toJSON 方法返回 JSON 格式的日期对象。
 
-```
+```js
 var jsonDate = (new Date()).toJSON();
 
 jsonDate

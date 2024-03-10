@@ -10,7 +10,7 @@
 
 首先我们需要一个 func 来过滤我们需要的 dom
 
-```
+```js
 function sibling(cur, dir) {
     while ((cur = cur[dir]) && cur.nodeType !== 1) {}
     return cur;
@@ -19,7 +19,7 @@ function sibling(cur, dir) {
 
 上面那段比较简单,就是普通的过滤下元素
 
-```
+```js
 next : function() {
     return sibling(this[0], "nextSibling");
 },
@@ -30,7 +30,7 @@ prev : function() {
 
 看下 next 方法的源码就知道,我传入 Kodo 数组对象的 0 个 dom 对象,然后取它的下一个同辈元素,直接返回,prev 方法同理
 
-```
+```js
 parent : function() {
     var parent = this[0].parentNode;
     parent && parent.nodeType !== 11 ? parent : null;
@@ -46,7 +46,7 @@ parent : function() {
 
 所以我在里面 var 了一个 Kodo,然后设置这个 Kodo 数组对象的 selector 等配置,然后直接返回这个新的 Kodo 对象
 
-```
+```js
 parents : function() {
     var a = Kodo(),
         i = 0;

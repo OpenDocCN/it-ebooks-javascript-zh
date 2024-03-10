@@ -18,7 +18,7 @@
 
 ## 所有的验证器都放在一个文件里
 
-```
+```js
 interface StringValidator {
     isAcceptable(s: string): boolean;
 }
@@ -60,7 +60,7 @@ strings.forEach(s => {
 
 ## 使用命名空间的验证器
 
-```
+```js
 namespace Validation {
     export interface StringValidator {
         isAcceptable(s: string): boolean;
@@ -106,7 +106,7 @@ strings.forEach(s => {
 
 ##### Validation.ts
 
-```
+```js
 namespace Validation {
     export interface StringValidator {
         isAcceptable(s: string): boolean;
@@ -116,7 +116,7 @@ namespace Validation {
 
 ##### LettersOnlyValidator.ts
 
-```
+```js
 /// <reference path="Validation.ts" />
 namespace Validation {
     const lettersRegexp = /^[A-Za-z]+$/;
@@ -130,7 +130,7 @@ namespace Validation {
 
 ##### ZipCodeValidator.ts
 
-```
+```js
 /// <reference path="Validation.ts" />
 namespace Validation {
     const numberRegexp = /^[0-9]+$/;
@@ -144,7 +144,7 @@ namespace Validation {
 
 ##### Test.ts
 
-```
+```js
 /// <reference path="Validation.ts" />
 /// <reference path="LettersOnlyValidator.ts" />
 /// <reference path="ZipCodeValidator.ts" />
@@ -167,13 +167,13 @@ strings.forEach(s => {
 
 第一种方式，把所有的输入文件编译为一个输出文件，需要使用`--outFile`标记：
 
-```
+```js
 tsc --outFile sample.js Test.ts 
 ```
 
 编译器会根据源码里的引用标签自动地对输出进行排序。你也可以单独地指定每个文件。
 
-```
+```js
 tsc --outFile sample.js Validation.ts LettersOnlyValidator.ts ZipCodeValidator.ts Test.ts 
 ```
 
@@ -181,7 +181,7 @@ tsc --outFile sample.js Validation.ts LettersOnlyValidator.ts ZipCodeValidator.t
 
 ##### MyTestPage.html (excerpt)
 
-```
+```js
  <script src="Validation.js" type="text/javascript" />
     <script src="LettersOnlyValidator.js" type="text/javascript" />
     <script src="ZipCodeValidator.js" type="text/javascript" />
@@ -192,7 +192,7 @@ tsc --outFile sample.js Validation.ts LettersOnlyValidator.ts ZipCodeValidator.t
 
 另一种简化命名空间操作的方法是使用`import q = x.y.z`给常用的对象起一个短的名字。 不要与用来加载模块的`import x = require('name')`语法弄混了，这里的语法是为指定的符号创建一个别名。 你可以用这种方法为任意标识符创建别名，也包括导入的模块中的对象。
 
-```
+```js
 namespace Shapes {
     export namespace Polygons {
         export class Triangle { }
@@ -218,7 +218,7 @@ let sq = new polygons.Square(); // Same as "new Shapes.Polygons.Square()"
 
 ##### D3.d.ts (部分摘录)
 
-```
+```js
 declare namespace D3 {
     export interface Selectors {
         select: {

@@ -71,7 +71,7 @@ DOM 的事件操作（监听和触发），都定义在 EventTarget 接口。Ele
 
 addEventListener 方法用于在当前节点或对象上，定义一个特定事件的监听函数。
 
-```
+```js
 target.addEventListener(type, listener[, useCapture]);
 ```
 
@@ -85,7 +85,7 @@ target.addEventListener(type, listener[, useCapture]);
 
 下面是一个例子。
 
-```
+```js
 function hello(){
   console.log('Hello world');
 }
@@ -98,7 +98,7 @@ button.addEventListener('click', hello, false);
 
 可以使用 addEventListener 方法，为当前对象的同一个事件，添加多个监听函数。这些函数按照添加顺序触发，即先添加先触发。如果为同一个事件多次添加同一个监听函数，该函数只会执行一次，多余的添加将自动被去除（不必使用 removeEventListener 方法手动去除）。
 
-```
+```js
 function hello(){
   console.log('Hello world');
 }
@@ -111,7 +111,7 @@ document.addEventListener('click', hello, false);
 
 如果希望向监听函数传递参数，可以用匿名函数包装一下监听函数。
 
-```
+```js
 function print(x) {
   console.log(x);
 }
@@ -126,7 +126,7 @@ el.addEventListener("click", function(){print('Hello')}, false);
 
 removeEventListener 方法用来移除 addEventListener 方法添加的事件监听函数。
 
-```
+```js
 div.addEventListener('click', listener, false);
 div.removeEventListener('click', listener, false);
 ```
@@ -139,13 +139,13 @@ removeEventListener 方法的参数，与 addEventListener 方法完全一致。
 
 dispatchEvent 方法在当前节点上触发指定事件，从而触发监听函数的执行。该方法返回一个布尔值，只要有一个监听函数调用了`Event.preventDefault()`，则返回值为 false，否则为 true。
 
-```
+```js
 target.dispatchEvent(event)
 ```
 
 dispatchEvent 方法的参数是一个 Event 对象的实例。
 
-```
+```js
 para.addEventListener('click', hello, false);
 var event = new Event('click');
 para.dispatchEvent(event);
@@ -157,7 +157,7 @@ para.dispatchEvent(event);
 
 下面代码根据 dispatchEvent 方法的返回值，判断事件是否被取消了。
 
-```
+```js
 var canceled = !cb.dispatchEvent(event);
   if (canceled) {
     console.log('事件取消');
@@ -177,7 +177,7 @@ DOM 提供三种方法，可以用来为事件绑定监听函数。
 
 HTML 语言允许在元素标签的属性中，直接定义某些事件的监听代码。
 
-```
+```js
 <body onload="doSomething()">
 
 <div onclick="console.log('触发事件')">
@@ -191,7 +191,7 @@ HTML 语言允许在元素标签的属性中，直接定义某些事件的监听
 
 另外，Element 节点的 setAttribue 方法，其实设置的也是这种效果。
 
-```
+```js
 el.setAttribute('onclick', 'doSomething()');
 ```
 
@@ -199,7 +199,7 @@ el.setAttribute('onclick', 'doSomething()');
 
 Element 节点有事件属性，可以定义监听函数。
 
-```
+```js
 window.onload = doSomething;
 
 div.onclick = function(event){
@@ -213,7 +213,7 @@ div.onclick = function(event){
 
 通过 Element 节点、document 节点、window 对象的 addEventListener 方法，也可以定义事件的监听函数。
 
-```
+```js
 window.addEventListener('load', doSomething, false);
 ```
 
@@ -235,7 +235,7 @@ addEventListener 是推荐的指定监听函数的方法。它有如下优点：
 
 addEventListener 方法指定的监听函数，内部的 this 对象总是指向触发事件的那个节点。
 
-```
+```js
 // HTML 代码为
 // <p id="para">Hello</p>
 
@@ -251,13 +251,13 @@ para.addEventListener('click', hello, false);
 
 执行上面代码，点击 p 节点会输出 para。这是因为监听函数被“拷贝”成了节点的一个属性，使用下面的写法，会看得更清楚。
 
-```
+```js
 para.onclick = hello;
 ```
 
 如果将监听函数部署在 Element 节点的 on-属性上面，this 不会指向触发事件的元素节点。
 
-```
+```js
 <p id="para" onclick="hello()">Hello</p>
 <!-- 或者使用 JavaScript 代码  -->
 <script>
@@ -267,7 +267,7 @@ para.onclick = hello;
 
 执行上面代码，点击 p 节点会输出 doc。这是因为这里只是调用 hello 函数，而 hello 函数实际是在全局作用域执行，相当于下面的代码。
 
-```
+```js
 para.onclick = function(){
   hello();
 }
@@ -275,7 +275,7 @@ para.onclick = function(){
 
 一种解决方法是，不引入函数作用域，直接在 on-属性写入所要执行的代码。因为 on-属性是在当前节点上执行的。
 
-```
+```js
 <p id="para" onclick="console.log(id)">Hello</p>
 <!-- 或者 -->
 <p id="para" onclick="console.log(this.id)">Hello</p>
@@ -285,7 +285,7 @@ para.onclick = function(){
 
 总结一下，以下写法的 this 对象都指向 Element 节点。
 
-```
+```js
 // JavaScript 代码
 element.onclick = print
 element.addEventListener('click', print, false)
@@ -297,7 +297,7 @@ element.onclick = function () {console.log(this.id);}
 
 以下写法的 this 对象，都指向全局对象。
 
-```
+```js
 // JavaScript 代码
 element.onclick = function (){ doSomething() };
 element.setAttribute('onclick', 'doSomething()');
@@ -320,7 +320,7 @@ element.setAttribute('onclick', 'doSomething()');
 
 这种三阶段的传播模型，会使得一个事件在多个节点上触发。比如，假设 div 节点之中嵌套一个 p 节点。
 
-```
+```js
 <div>
   <p>Click Me</p>
 </div>
@@ -328,7 +328,7 @@ element.setAttribute('onclick', 'doSomething()');
 
 如果对这两个节点的 click 事件都设定监听函数，则 click 事件会被触发四次。
 
-```
+```js
 var phases = {
   1: 'capture',
   2: 'target',
@@ -371,7 +371,7 @@ function callback(event) {
 
 由于事件会在冒泡阶段向上传播到父节点，因此可以把子节点的监听函数定义在父节点上，由父节点的监听函数统一处理多个子元素的事件。这种方法叫做事件的代理（delegation）。
 
-```
+```js
 var ul = document.querySelector('ul');
 
 ul.addEventListener('click', function(event) {
@@ -385,7 +385,7 @@ ul.addEventListener('click', function(event) {
 
 如果希望事件到某个节点为止，不再传播，可以使用事件对象的 stopPropagation 方法。
 
-```
+```js
 p.addEventListener('click', function(event) {
   event.stopPropagation();
 });
@@ -395,7 +395,7 @@ p.addEventListener('click', function(event) {
 
 但是，stopPropagation 方法不会阻止 p 节点上的其他 click 事件的监听函数。如果想要不再触发那些监听函数，可以使用 stopImmediatePropagation 方法。
 
-```
+```js
 p.addEventListener('click', function(event) {
  event.stopImmediatePropagation();
 });
@@ -411,7 +411,7 @@ p.addEventListener('click', function(event) {
 
 Event 对象本身就是一个构造函数，可以用来生成新的实例。
 
-```
+```js
 event = new Event(typeArg, eventInit);
 ```
 
@@ -421,7 +421,7 @@ Event 构造函数接受两个参数。第一个参数是字符串，表示事�
 
 *   cancelable：布尔值，可选，默认为 false，表示事件是否可以被取消。
 
-```
+```js
 var ev = new Event("look", {"bubbles":true, "cancelable":false});
 document.dispatchEvent(ev);
 ```
@@ -430,7 +430,7 @@ document.dispatchEvent(ev);
 
 IE8 及以下版本，事件对象不作为参数传递，而是通过 window 对象的 event 属性读取，并且事件对象的 target 属性叫做 srcElement 属性。所以，以前获取事件信息，往往要写成下面这样。
 
-```
+```js
 function myEventHandler(event) {
   var actualEvent = event || window.event;
   var actualTarget = actualEvent.target || actualEvent.srcElement;
@@ -450,7 +450,7 @@ function myEventHandler(event) {
 
 bubbles 属性返回一个布尔值，表示当前事件是否会冒泡。该属性为只读属性，只能在新建事件时改变。除非显式声明，Event 构造函数生成的事件，默认是不冒泡的。
 
-```
+```js
 function goInput(e) {
   if (!e.bubbles) {
     passItOn(e);
@@ -466,7 +466,7 @@ function goInput(e) {
 
 eventPhase 属性返回一个整数值，表示事件目前所处的节点。
 
-```
+```js
 var phase = event.eventPhase;
 ```
 
@@ -483,7 +483,7 @@ var phase = event.eventPhase;
 
 cancelable 属性返回一个布尔值，表示事件是否可以取消。该属性为只读属性，只能在新建事件时改变。除非显式声明，Event 构造函数生成的事件，默认是不可以取消的。
 
-```
+```js
 var bool = event.cancelable;
 ```
 
@@ -493,7 +493,7 @@ var bool = event.cancelable;
 
 defaultPrevented 属性返回一个布尔值，表示该事件是否调用过 preventDefault 方法。
 
-```
+```js
 if (e.defaultPrevented) {
   // ...
 }
@@ -507,7 +507,7 @@ if (e.defaultPrevented) {
 
 currentTarget 属性返回事件当前所在的节点，即正在执行的监听函数所绑定的那个节点。作为比较，target 属性返回事件发生的节点。如果监听函数在捕获阶段和冒泡阶段触发，那么这两个属性返回的值是不一样的。
 
-```
+```js
 function hide(e){
   console.log(this === e.currentTarget);  // true
   e.currentTarget.style.visibility = "hidden";
@@ -522,7 +522,7 @@ para.addEventListener('click', hide, false);
 
 target 属性返回触发事件的那个节点，即事件最初发生的节点。如果监听函数不在该节点触发，那么它与 currentTarget 属性返回的值是不一样的。
 
-```
+```js
 function hide(e){
   console.log(this === e.target);  // 有可能不是 true
   e.target.style.visibility = "hidden";
@@ -537,7 +537,7 @@ para.addEventListener('click', hide, false);
 
 在 IE6—IE8 之中，该属性的名字不是 target，而是 srcElement，因此经常可以看到下面这样的代码。
 
-```
+```js
 function hide(e) {
   var target = e.target || e.srcElement;
   target.style.visibility = 'hidden';
@@ -552,7 +552,7 @@ function hide(e) {
 
 type 属性返回一个字符串，表示事件类型，具体的值同 addEventListener 方法和 removeEventListener 方法的第一个参数一致，大小写不敏感。
 
-```
+```js
 var string = event.type;
 ```
 
@@ -560,7 +560,7 @@ var string = event.type;
 
 detail 属性返回一个数值，表示事件的某种信息。具体含义与事件类型有关，对于鼠标事件，表示鼠标按键在某个位置按下的次数，比如对于 dblclick 事件，detail 属性的值总是 2。
 
-```
+```js
 function giveDetails(e) {
   this.textContent = e.detail;
 }
@@ -572,7 +572,7 @@ el.onclick = giveDetails;
 
 timeStamp 属性返回一个毫秒时间戳，表示事件发生的时间。
 
-```
+```js
 var number = event.timeStamp;
 ```
 
@@ -580,7 +580,7 @@ var number = event.timeStamp;
 
 isTrusted 属性返回一个布尔值，表示该事件是否可以信任。
 
-```
+```js
 var bool = event.isTrusted;
 ```
 
@@ -592,7 +592,7 @@ preventDefault 方法取消浏览器对当前事件的默认行为，比如点�
 
 该方法不会阻止事件的进一步传播（stopPropagation 方法可用于这个目的）。只要在事件的传播过程中（捕获阶段、目标阶段、冒泡阶段皆可），使用了 preventDefault 方法，该事件的默认方法就不会执行。
 
-```
+```js
 // HTML 代码为
 // <input type="checkbox" id="my-checkbox" />
 
@@ -609,7 +609,7 @@ cb.addEventListener(
 
 利用这个方法，可以为文本输入框设置校验条件。如果用户的输入不符合条件，就无法将字符输入文本框。
 
-```
+```js
 function checkName(e) {
   if (e.charCode < 97 || e.charCode > 122) {
     e.preventDefault();
@@ -625,7 +625,7 @@ function checkName(e) {
 
 stopPropagation 方法阻止事件在 DOM 中继续传播，防止再触发定义在别的节点上的监听函数，但是不包括在当前节点上新定义的事件监听函数。
 
-```
+```js
 function stopEvent(e) {
   e.stopPropagation();
 }
@@ -641,7 +641,7 @@ stopImmediatePropagation 方法阻止同一个事件的其他监听函数被调�
 
 如果同一个节点对于同一个事件指定了多个监听函数，这些函数会根据添加的顺序依次调用。只要其中有一个监听函数调用了 stopImmediatePropagation 方法，其他的监听函数就不会再执行了。
 
-```
+```js
 function l1(e){
   e.stopImmediatePropagation();
 }
@@ -668,7 +668,7 @@ click 事件当用户在 Element 节点、document 节点、window 对象上，�
 
 下面是一个设置 click 事件监听函数的例子。
 
-```
+```js
 div.addEventListener("click", function( event ) {
   // 显示在该节点，鼠标连续点击的次数
   event.target.innerHTML = "click count: " + event.detail;
@@ -677,7 +677,7 @@ div.addEventListener("click", function( event ) {
 
 下面的代码是利用 click 事件进行 CSRF 攻击（Cross-site request forgery）的一个例子。
 
-```
+```js
 <a href="http://www.harmless.com/" onclick="
   var f = document.createElement('form');
   f.style.display = 'none';
@@ -710,7 +710,7 @@ mouseover 事件和 mouseenter 事件，都是鼠标进入一个节点时触发�
 
 下面的例子是 mouseenter 事件与 mouseover 事件的区别。
 
-```
+```js
 // HTML 代码为
 // <ul id="test">
 //   <li>item 1</li>
@@ -753,7 +753,7 @@ contextmenu 事件在一个节点上点击鼠标右键时触发，或者按下�
 
 鼠标事件使用 MouseEvent 对象表示，它继承 UIEvent 对象和 Event 对象。浏览器提供一个 MouseEvent 构造函数，用于新建一个 MouseEvent 实例。
 
-```
+```js
 event = new MouseEvent(typeArg, mouseEventInit);
 ```
 
@@ -780,7 +780,7 @@ MouseEvent 构造函数的第一个参数是事件名称（可能的值包括 cl
 
 下面是一个例子。
 
-```
+```js
 function simulateClick() {
   var event = new MouseEvent('click', {
     'bubbles': true,
@@ -804,7 +804,7 @@ function simulateClick() {
 *   metaKey 属性：Meta 键（Mac 键盘是一个四瓣的小花，Windows 键盘是 Windows 键）
 *   shiftKey 属性：Shift 键
 
-```
+```js
 // HTML 代码为
 // <body onclick="showkey(event);">
 
@@ -831,7 +831,7 @@ button 属性返回一个数值，表示按下了鼠标哪个键。
 *   1：按下辅助键（通常是中键或者滚轮键）。
 *   2：按下次键（通常是右键）。
 
-```
+```js
 // HTML 代码为
 // <button onmouseup="whichButton(event);">点击</button>
 
@@ -872,7 +872,7 @@ clientX 属性返回鼠标位置相对于浏览器窗口左上角的水平坐标
 
 clientY 属性返回鼠标位置相对于浏览器窗口左上角的垂直坐标，单位为像素，与页面是否纵向滚动无关。
 
-```
+```js
 // HTML 代码为
 // <body onmousedown="showCoords(event)">
 
@@ -896,7 +896,7 @@ screenX 属性返回鼠标位置相对于屏幕左上角的水平坐标，单位
 
 screenY 属性返回鼠标位置相对于屏幕左上角的垂直坐标，单位为像素。
 
-```
+```js
 // HTML 代码为
 // <body onmousedown="showCoords(event)">
 
@@ -927,7 +927,7 @@ relatedTarget 属性返回事件的次要相关节点。对于那些没有次要
 
 下面是一个例子。
 
-```
+```js
 // HTML 代码为
 // <div id="outer" style="height:50px;width:50px;border-width:1px solid black;">
 //   <div id="inner" style="height:25px;width:25px;border:1px solid black;"></div>
@@ -970,7 +970,7 @@ wheel 事件是与鼠标滚轮相关的事件，目前只有一个 wheel 事件�
 
 浏览器提供一个 WheelEvent 构造函数，可以用来生成滚轮事件的实例。它接受两个参数，第一个是事件名称，第二个是配置对象。
 
-```
+```js
 var syntheticEvent = new WheelEvent("syntheticWheel", {"deltaX": 4, "deltaMode": 0});
 ```
 
@@ -986,7 +986,7 @@ var syntheticEvent = new WheelEvent("syntheticWheel", {"deltaX": 4, "deltaMode":
 
 下面是一个例子，对文本框设置 keypress 监听函数，只允许输入数字。
 
-```
+```js
 // HTML 代码为
 // <input type="text"
 //   name="myInput"
@@ -1011,7 +1011,7 @@ function numbersOnly(oToCheckField, oKeyEvent) {
 
 键盘事件使用 KeyboardEvent 对象表示，该对象继承了 UIEvent 和 MouseEvent 对象。浏览器提供 KeyboardEvent 构造函数，用来新建键盘事件的实例。
 
-```
+```js
 event = new KeyboardEvent(typeArg, KeyboardEventInit);
 ```
 
@@ -1034,7 +1034,7 @@ KeyboardEvent 构造函数的第一个参数是一个字符串，表示事件类
 *   metaKey：meta 键（mac 系统是一个四瓣的小花，windows 系统是 windows 键）
 *   shiftKey：shift 键
 
-```
+```js
 function showChar(e){
   console.log("ALT: " + e.altKey);
   console.log("CTRL: " + e.ctrlKey);
@@ -1071,7 +1071,7 @@ charCode 属性返回一个数值，表示 keypress 事件按键的 Unicode 值�
 
 *   timeout 事件：进度超过限时触发。
 
-```
+```js
 image.addEventListener('load', function(event) {
   image.classList.add('finished');
 });
@@ -1085,7 +1085,7 @@ image.addEventListener('error', function(event) {
 
 有时候，图片加载会在脚本运行之前就完成，尤其是当脚本放置在网页底部的时候，因此有可能使得 load 和 error 事件的监听函数根本不会被执行。所以，比较可靠的方式，是用 complete 属性先判断一下是否加载完成。
 
-```
+```js
 function loaded() {
   // code after image loaded
 }
@@ -1099,7 +1099,7 @@ if (image.complete) {
 
 由于 DOM 没有提供像 complete 属性那样的，判断是否发生加载错误的属性，所以 error 事件的监听函数最好放在 img 元素的 HTML 属性中，这样才能保证发生加载错误时百分之百会执行。
 
-```
+```js
 <img src="/wrong/url" onerror="this.style.display='none';" />
 ```
 
@@ -1115,7 +1115,7 @@ error 事件有一个特殊的性质，就是不会冒泡。这样的设计是�
 
 下面是一个例子。
 
-```
+```js
 var xhr = new XMLHttpRequest();
 
 xhr.addEventListener("progress", updateProgress, false);
@@ -1148,7 +1148,7 @@ function transferCanceled(evt) {
 
 loadend 事件的监听函数，可以用来取代 abort 事件/load 事件/error 事件的监听函数。
 
-```
+```js
 req.addEventListener("loadend", loadEnd, false);
 
 function loadEnd(e) {
@@ -1160,7 +1160,7 @@ loadend 事件本身不提供关于进度结束的原因，但可以用它来做
 
 另外，上面是下载过程的进度事件，还存在上传过程的进度事件。这时所有监听函数都要放在 XMLHttpRequest.upload 对象上面。
 
-```
+```js
 var xhr = new XMLHttpRequest();
 
 xhr.upload.addEventListener("progress", updateProgress, false);
@@ -1173,7 +1173,7 @@ xhr.open();
 
 浏览器提供一个 ProgressEvent 构造函数，用来生成进度事件的实例。
 
-```
+```js
 progressEvent = new ProgressEvent(type, {
   lengthComputable: aBooleanValue,
   loaded: aNumber,
@@ -1189,7 +1189,7 @@ progressEvent = new ProgressEvent(type, {
 
 拖拉的对象有好几种，包括 Element 节点、图片、链接、选中的文字等等。在 HTML 网页中，除了 Element 节点默认不可以拖拉，其他（图片、链接、选中的文字）都是可以直接拖拉的。为了让 Element 节点可拖拉，可以将该节点的 draggable 属性设为 true。
 
-```
+```js
 <div draggable="true">
   此区域可拖拉
 </div>
@@ -1225,7 +1225,7 @@ draggable 属性可用于任何 Element 节点，但是图片（img 元素）和
 
 *   dragenter 和 dragover 事件的监听函数，用来指定可以放下（drop）拖拉的数据。由于网页的大部分区域不适合作为 drop 的目标节点，所以这两个事件的默认设置为当前节点不允许 drop。如果想要在目标节点上 drop 拖拉的数据，首先必须阻止这两个事件的默认行为，或者取消这两个事件。
 
-```
+```js
 <div ondragover="return false">
 <div ondragover="event.preventDefault()">
 ```
@@ -1236,7 +1236,7 @@ draggable 属性可用于任何 Element 节点，但是图片（img 元素）和
 
 下面的例子展示，如何动态改变被拖动节点的背景色。
 
-```
+```js
 div.addEventListener("dragstart", function(e) {
   this.style.backgroundColor = "red";
 }, false);
@@ -1249,7 +1249,7 @@ div.addEventListener("dragend", function(e) {
 
 下面是一个例子，显示如何实现将一个节点从当前父节点，拖拉到另一个父节点中。
 
-```
+```js
 // HTML 代码为
 // <div class="dropzone">
 //    <div id="draggable" draggable="true">
@@ -1326,7 +1326,7 @@ DataTransfer 对象有以下属性。
 
 dropEffect 属性设置放下（drop）被拖拉节点时的效果，可能的值包括 copy（复制被拖拉的节点）、move（移动被拖拉的节点）、link（创建指向被拖拉的节点的链接）、none（无法放下被拖拉的节点）。设置除此以外的值，都是无效的。
 
-```
+```js
 target.addEventListener('dragover', function(e) {
   e.preventDefault();
   e.stopPropagation();
@@ -1344,13 +1344,13 @@ effectAllowed 属性设置本次拖拉中允许的效果，可能的值包括 co
 
 dragstart 事件的监听函数，可以设置被拖拉节点允许的效果；dragenter 和 dragover 事件的监听函数，可以设置目标节点允许的效果。
 
-```
+```js
 event.dataTransfer.effectAllowed = "copy";
 ```
 
 dropEffect 属性和 effectAllowed 属性，往往配合使用。
 
-```
+```js
 event.dataTransfer.effectAllowed = "copyMove";
 event.dataTransfer.dropEffect = "copy";
 ```
@@ -1365,7 +1365,7 @@ files 属性是一个 FileList 对象，包含一组本地文件，可以用来�
 
 下面就是一个接收拖拉文件的例子。
 
-```
+```js
 // HTML 代码为
 // <div id="output" style="min-height: 200px;border: 1px solid black;">
 //   文件拖拉到这里
@@ -1396,7 +1396,7 @@ div.addEventListener("drop", function( event ) {
 
 上面代码中，通过 files 属性读取拖拉文件的信息。如果想要读取文件内容，就要使用 FileReader 对象。
 
-```
+```js
 div.addEventListener('drop', function(e) {
   e.preventDefault();
   e.stopPropagation();
@@ -1422,7 +1422,7 @@ types 属性是一个数组，保存每一次拖拉的数据格式，比如拖�
 
 下面是一个例子，通过检查 dataTransfer 属性的类型，决定是否允许在当前节点执行 drop 操作。
 
-```
+```js
 function contains(list, value){
   for( var i = 0; i < list.length; ++i ){
     if(list[i] === value) return true;
@@ -1446,7 +1446,7 @@ DataTransfer 对象有以下方法。
 
 setData 方法用来设置事件所带有的指定类型的数据。它接受两个参数，第一个是数据类型，第二个是具体数据。如果指定的类型在现有数据中不存在，则该类型将写入 types 属性；如果已经存在，在该类型的现有数据将被替换。
 
-```
+```js
 event.dataTransfer.setData("text/plain", "Text to drag");
 ```
 
@@ -1454,7 +1454,7 @@ event.dataTransfer.setData("text/plain", "Text to drag");
 
 如果拖拉文本框或者拖拉选中的文本，会默认将文本数据添加到 dataTransfer 属性，不用手动指定。
 
-```
+```js
 <div draggable="true" ondragstart="
   event.dataTransfer.setData('text/plain', 'bbb')">
   aaa
@@ -1465,7 +1465,7 @@ event.dataTransfer.setData("text/plain", "Text to drag");
 
 下面是添加其他类型的数据。由于 text/plain 是最普遍支持的格式，为了保证兼容性，建议最后总是将数据保存一份纯文本的格式。
 
-```
+```js
 var dt = event.dataTransfer;
 
 // 添加链接
@@ -1481,7 +1481,7 @@ dt.setData("text/plain", imageurl);
 
 可以一次提供多种格式的数据。
 
-```
+```js
 var dt = event.dataTransfer;
 dt.setData("application/x-bookmark", bookmarkString);
 dt.setData("text/uri-list", "http://www.example.com");
@@ -1496,7 +1496,7 @@ getData 方法接受一个字符串（表示数据类型）作为参数，返回
 
 下面是一个 drop 事件的监听函数，用来取出指定类型的数据。
 
-```
+```js
 function onDrop(event){
   var data = event.dataTransfer.getData("text/plain");
   event.target.textContent = data;
@@ -1508,7 +1508,7 @@ function onDrop(event){
 
 getData 方法返回的是一个字符串，如果其中包含多项数据，就必须手动解析。
 
-```
+```js
 function doDrop(event){
   var lines = event.dataTransfer.getData("text/uri-list").split("\n");
   for (let line of lines) {
@@ -1525,13 +1525,13 @@ function doDrop(event){
 
 类型值指定为 URL，可以取出第一个有效链接。
 
-```
+```js
 var link = event.dataTransfer.getData("URL");
 ```
 
 下面是一次性取出多种类型的数据。
 
-```
+```js
 function doDrop(event){
   var types = event.dataTransfer.types;
   var supportedTypes = ["text/uri-list", "text/plain"];
@@ -1546,7 +1546,7 @@ function doDrop(event){
 
 clearData 方法接受一个字符串（表示数据类型）作为参数，删除事件所带的指定类型的数据。如果没有指定类型，则删除所有数据。如果指定类型不存在，则原数据不受影响。
 
-```
+```js
 event.dataTransfer.clearData("text/uri-list");
 ```
 
@@ -1558,7 +1558,7 @@ event.dataTransfer.clearData("text/uri-list");
 
 下面是一个例子。
 
-```
+```js
 // HTML 代码为
 // <div id="drag-with-image" class="dragdemo" draggable="true">
      drag me
@@ -1592,7 +1592,7 @@ Touch 对象代表一个触摸点。触摸点可能是一根手指，也可能�
 
 identifier 属性表示 Touch 实例的独一无二的识别符。它在整个触摸过程中保持不变。
 
-```
+```js
 var id = touchItem.identifier;
 ```
 
@@ -1649,7 +1649,7 @@ changedTouches 属性返回一个 TouchList 对象，包含了由当前触摸事
 
 对于 touchstart 事件，它代表被激活的触摸点；对于 touchmove 事件，代表发生变化的触摸点；对于 touchend 事件，代表消失的触摸点（即不再被触碰的点）。
 
-```
+```js
 var touches = touchEvent.changedTouches;
 ```
 
@@ -1657,7 +1657,7 @@ var touches = touchEvent.changedTouches;
 
 targetTouches 属性返回一个 TouchList 对象，包含了触摸的目标 Element 节点内部，所有仍然处于活动状态的触摸点。
 
-```
+```js
 var touches = touchEvent.targetTouches;
 ```
 
@@ -1665,7 +1665,7 @@ var touches = touchEvent.targetTouches;
 
 touches 属性返回一个 TouchList 对象，包含了所有仍然处于活动状态的触摸点。
 
-```
+```js
 var touches = touchEvent.touches;
 ```
 
@@ -1683,7 +1683,7 @@ var touches = touchEvent.touches;
 
 下面是一个例子。
 
-```
+```js
 var el = document.getElementsByTagName("canvas")[0];
 el.addEventListener("touchstart", handleStart, false);
 el.addEventListener("touchmove", handleMove, false);
@@ -1727,7 +1727,7 @@ input 事件的一个特点，就是会连续触发，比如用户每次按下�
 
 select 事件当在、中选中文本时触发。
 
-```
+```js
 // HTML 代码为
 // <input id="test" type="text" value="Select me!" />
 
@@ -1747,7 +1747,7 @@ Change 事件当、、的值发生变化时触发。它与 input 事件的最大
 
 下面是一个例子。
 
-```
+```js
 // HTML 代码为
 // <select size="1" onchange="changeEventHandler(event);">
 //   <option>chocolate</option>
@@ -1784,7 +1784,7 @@ beforeunload 事件当窗口将要关闭，或者 document 和网页资源将要
 
 该事件的默认动作就是关闭当前窗口或文档。如果在监听函数中，调用了`event.preventDefault()`，或者对事件对象的 returnValue 属性赋予一个非空的值，就会自动跳出一个确认框，让用户确认是否关闭网页。如果用户点击“取消”按钮，网页就不会关闭。监听函数所返回的字符串，会显示在确认对话框之中。
 
-```
+```js
 window.onbeforeunload = function() {
   if (textarea.value != textarea.defaultValue) {
     return '你确认要离开吗？';
@@ -1796,7 +1796,7 @@ window.onbeforeunload = function() {
 
 下面的两种写法，具有同样效果。
 
-```
+```js
 window.addEventListener('beforeunload', function( event ) {
   event.returnValue = '你确认要离开吗？';
 });
@@ -1817,7 +1817,7 @@ unload 事件在窗口关闭或者 document 对象将要卸载时触发，发生
 
 当 unload 事件发生时，document 对象处于一个特殊状态。所有资源依然存在，但是对用户来说都不可见，UI 互动（window.open、alert、confirm 方法等）全部无效。这时即使抛出错误，也不能停止文档的卸载。
 
-```
+```js
 window.addEventListener('unload', function(event) {
   console.log('文档将要卸载');
 });
@@ -1839,7 +1839,7 @@ pageshow 事件在页面加载时触发，包括第一次加载和从缓存加�
 
 第一次加载时，它的触发顺序排在 load 事件后面。从缓存加载时，load 事件不会触发，因为网页在缓存中的样子通常是 load 事件的监听函数运行后的样子，所以不必重复执行。同理，如果是从缓存中加载页面，网页内初始化的 JavaScript 脚本（比如 DOMContentLoaded 事件的监听函数）也不会执行。
 
-```
+```js
 window.addEventListener('pageshow', function(event) {
   console.log('pageshow: ', event);
 });
@@ -1847,7 +1847,7 @@ window.addEventListener('pageshow', function(event) {
 
 pageshow 事件有一个 persisted 属性，返回一个布尔值。页面第一次加载时，这个属性是 false；当页面从缓存加载时，这个属性是 true。
 
-```
+```js
 window.addEventListener('pageshow', function(event){
   if (event.persisted) {
     // ...
@@ -1869,7 +1869,7 @@ pagehide 事件的 event 对象有一个 persisted 属性，将这个属性设�
 
 当 HTML 文档下载并解析完成以后，就会在 document 对象上触发 DOMContentLoaded 事件。这时，仅仅完成了 HTML 文档的解析（整张页面的 DOM 生成），所有外部资源（样式表、脚本、iframe 等等）可能还没有下载结束。也就是说，这个事件比 load 事件，发生时间早得多。
 
-```
+```js
 document.addEventListener("DOMContentLoaded", function(event) {
   console.log("DOM 生成");
 });
@@ -1881,7 +1881,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 readystatechange 事件发生在 Document 对象和 XMLHttpRequest 对象，当它们的 readyState 属性发生变化时触发。
 
-```
+```js
 document.onreadystatechange = function () {
   if (document.readyState == "interactive") {
     // ...
@@ -1901,7 +1901,7 @@ scroll 事件在文档或文档元素滚动时触发。
 
 由于该事件会连续地大量触发，所以它的监听函数之中不应该有非常耗费计算的操作。推荐的做法是使用 requestAnimationFrame 或 setTimeout 控制该事件的触发频率，然后可以结合 customEvent 抛出一个新事件。
 
-```
+```js
 (function() {
   var throttle = function(type, name, obj) {
     var obj = obj || window;
@@ -1928,7 +1928,7 @@ window.addEventListener("optimizedScroll", function() {
 
 上面代码中，throttle 函数用于控制事件触发频率，requestAnimationFrame 方法保证每次页面重绘（每秒 60 次），只会触发一次 scroll 事件的监听函数。改用 setTimeout 方法，可以放置更大的时间间隔。
 
-```
+```js
 (function() {
   window.addEventListener("scroll", scrollThrottler, false);
 
@@ -1954,7 +1954,7 @@ window.addEventListener("optimizedScroll", function() {
 
 resize 事件在改变浏览器窗口大小时触发，发生在 window、body、frameset 对象上面。
 
-```
+```js
 var resizeMethod = function(){
   if (document.body.clientWidth < 768) {
     console.log('移动设备');
@@ -1974,7 +1974,7 @@ window.addEventListener("resize", resizeMethod, true);
 
 hashchange 事件在 URL 的 hash 部分（即#号后面的部分，包括#号）发生变化时触发。如果老式浏览器不支持该属性，可以通过定期检查 location.hash 属性，模拟该事件，下面就是代码。
 
-```
+```js
 (function(window) {
   if ( "onhashchange" in window.document.body ) { return; }
 
@@ -2010,7 +2010,7 @@ popstate 事件在浏览器的 history 对象的当前记录发生显式切换�
 
 该事件对象有一个 state 属性，保存 history.pushState 方法和 history.replaceState 方法为当前记录添加的 state 对象。
 
-```
+```js
 window.onpopstate = function(event) {
   console.log("state: " + event.state);
 };
@@ -2054,7 +2054,7 @@ history.go(2);  // state: {"page":3}
 
 由于 focus 和 blur 事件不会冒泡，只能在捕获阶段触发，所以 addEventListener 方法的第三个参数需要设为 true。
 
-```
+```js
 form.addEventListener("focus", function( event ) {
   event.target.style.background = "pink";
 }, true);
@@ -2067,7 +2067,7 @@ form.addEventListener("blur", function( event ) {
 
 浏览器提供一个 FocusEvent 构造函数，可以用它生成焦点事件的实例。
 
-```
+```js
 var focusEvent = new FocusEvent(typeArg, focusEventInit);
 ```
 
@@ -2077,7 +2077,7 @@ var focusEvent = new FocusEvent(typeArg, focusEventInit);
 
 除了浏览器预定义的那些事件，用户还可以自定义事件，然后手动触发。
 
-```
+```js
 // 新建事件实例
 var event = new Event('build');
 
@@ -2096,7 +2096,7 @@ elem.dispatchEvent(event);
 
 Event 构造函数只能指定事件名，不能在事件上绑定数据。如果需要在触发事件的同时，传入指定的数据，需要使用 CustomEvent 构造函数生成自定义的事件对象。
 
-```
+```js
 var event = new CustomEvent('build', { 'detail': 'hello' });
 function eventHandler(e) {
   console.log(e.detail);
@@ -2107,7 +2107,7 @@ function eventHandler(e) {
 
 下面是另一个例子。
 
-```
+```js
 var myEvent = new CustomEvent("myevent", {
   detail: {
     foo: "bar"
@@ -2125,7 +2125,7 @@ el.dispatchEvent(myEvent);
 
 IE 不支持这个方法，可以用下面的垫片函数模拟。
 
-```
+```js
 (function () {
   function CustomEvent ( event, params ) {
     params = params || { bubbles: false, cancelable: false, detail: undefined };
@@ -2146,7 +2146,7 @@ IE 不支持这个方法，可以用下面的垫片函数模拟。
 
 下面是一个通过 MouseEvent 构造函数，模拟触发 click 鼠标事件的例子。
 
-```
+```js
 function simulateClick() {
   var event = new MouseEvent('click', {
     'bubbles': true,
@@ -2165,7 +2165,7 @@ function simulateClick() {
 
 document.createEvent 方法用来新建指定类型的事件。它所生成的 Event 实例，可以传入 dispatchEvent 方法。
 
-```
+```js
 // 新建 Event 实例
 var event = document.createEvent('Event');
 
@@ -2195,7 +2195,7 @@ createEvent 方法接受一个字符串作为参数，可能的值参见下表�
 
 事件对象的 initEvent 方法，用来初始化事件对象，还能向事件对象添加属性。该方法的参数必须是一个使用`Document.createEvent()`生成的 Event 实例，而且必须在 dispatchEvent 方法之前调用。
 
-```
+```js
 var event = document.createEvent('Event');
 event.initEvent('my-custom-event', true, true, {foo:'bar'});
 someElement.dispatchEvent(event);
@@ -2218,7 +2218,7 @@ initMouseEvent 方法用来初始化 Document.createEvent 方法新建的鼠标�
 
 initMouseEvent 方法有很长的参数。
 
-```
+```js
 event.initMouseEvent(type, canBubble, cancelable, view,
   detail, screenX, screenY, clientX, clientY,
   ctrlKey, altKey, shiftKey, metaKey,
@@ -2230,7 +2230,7 @@ event.initMouseEvent(type, canBubble, cancelable, view,
 
 模仿并触发 click 事件的写法如下。
 
-```
+```js
 var simulateDivClick = document.createEvent('MouseEvents');
 
 simulateDivClick.initMouseEvent('click',true,true,
@@ -2245,13 +2245,13 @@ divElement.dispatchEvent(simulateDivClick);
 
 `UIEvent.initUIEvent()`用来初始化一个 UI 事件。该方法必须在事件新建（document.createEvent 方法）之后、触发（dispatchEvent 方法）之前调用。
 
-```
+```js
 event.initUIEvent(type, canBubble, cancelable, view, detail)
 ```
 
 该方法的参数含义，可以参见 MouseEvent 构造函数的部分。其中，detail 参数是一个数值，含义与事件类型有关，对于鼠标事件，这个值表示鼠标按键在某个位置按下的次数。
 
-```
+```js
 var e = document.createEvent("UIEvent");
 e.initUIEvent("click", true, true, window, 1);
 ```

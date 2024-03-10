@@ -30,7 +30,7 @@ Mutation Observer 有以下特点：
 
 目前，Firefox（14+）、 Chrome(26+)、Opera（15+）、IE（11+）和 Safari（6.1+）支持这个 API。Safari 6.0 和 Chrome 18-25 使用这个 API 的时候，需要加上 WebKit 前缀（WebKitMutationObserver）。可以使用下面的表达式，检查当前浏览器是否支持这个 API。
 
-```
+```js
 var MutationObserver = window.MutationObserver
   || window.WebKitMutationObserver
   || window.MozMutationObserver;
@@ -42,7 +42,7 @@ var observeMutationSupport = !!MutationObserver;
 
 首先，使用 MutationObserver 构造函数，新建一个观察器实例，同时指定这个实例的回调函数。
 
-```
+```js
 var observer = new MutationObserver(callback);
 ```
 
@@ -54,7 +54,7 @@ var observer = new MutationObserver(callback);
 
 observe 方法指定所要观察的 DOM 节点，以及所要观察的特定变动。
 
-```
+```js
 var article = document.querySelector('article');
 
 var  options = {
@@ -88,7 +88,7 @@ observer.observe(article, options);
 
 下面的例子观察新增的子节点。
 
-```
+```js
 var insertedNodes = [];
 var observer = new MutationObserver(function(mutations) {
   mutations.forEach(function(mutation) {
@@ -104,13 +104,13 @@ console.log(insertedNodes);
 
 disconnect 方法用来停止观察。再发生相应变动，就不再调用回调函数。
 
-```
+```js
 observer.disconnect();
 ```
 
 takeRecords 方法用来清除变动记录，即不再处理未处理的变动。该方法返回变动记录的数组。
 
-```
+```js
 observer.takeRecords();
 ```
 
@@ -135,7 +135,7 @@ MutationRecord 对象包含了 DOM 的相关信息，有如下属性：
 
 下面的例子说明如何读取变动记录。
 
-```
+```js
 var callback = function(records){
   records.map(function(record){
     console.log('Mutation type: ' + record.type);
@@ -159,7 +159,7 @@ mo.observe(document.body, option);
 
 下面的例子说明如何追踪属性的变动。
 
-```
+```js
 var callback = function(records){
   records.map(function(record){
     console.log('Previous attribute value: ' + record.oldValue);
@@ -184,7 +184,7 @@ mo.observe(element, options);
 
 网页加载的时候，DOM 节点的生成会产生变动记录，因此只要观察 DOM 的变动，就能在第一时间触发相关事件，因此也就没有必要使用 DOMContentLoaded 事件。
 
-```
+```js
 var observer = new MutationObserver(callback);
 observer.observe(document.documentElement, {
   childList: true,
@@ -196,7 +196,7 @@ observer.observe(document.documentElement, {
 
 下面的代码，使用 MutationObserver 对象封装一个监听 DOM 生成的函数。
 
-```
+```js
 (function(win){
   'use strict';
 

@@ -6,7 +6,7 @@
 
 ### 1，绑定字符串
 
-```
+```js
 <!-- //  app/templates/binding-element-attribute.hbs -->
 
 <div id="logo">  
@@ -16,7 +16,7 @@
 
 在对应的`route:binding-element-attributes`里增加测试数据。
 
-```
+```js
 import Ember from 'ember';
 
 export default Ember.Route.extend({  
@@ -28,7 +28,7 @@ export default Ember.Route.extend({
 
 运行之后模板会编译成如下代码：
 
-```
+```js
 <div id="logo">  
     <img alt="logo" src="http://i1.tietuku.com/1f73778ea702c725.jpg">
 </div> 
@@ -40,20 +40,20 @@ export default Ember.Route.extend({
 
 在开发过程中我们经常会根据某个值判断是否给某个标签增加 CSS 类，或者根据某个值决定按钮是否可用等等……那么 ember 是怎么做的呢？？ 比如下面的代码演示的是`checkbox`按钮根据绑定的属性`isEnable`的值决定是否可用。
 
-```
+```js
 {{! 当 isEnable 为 true 时候，disabled 为 true，不可用；否则可用}}
 <input type='checkbox' disabled={{model.isEnable}}> 
 ```
 
 如果在`route`里设置的值是`true`那么渲染之后的 HTML 如下：
 
-```
+```js
 <input type="checkbox" disabled=""> 
 ```
 
 否则
 
-```
+```js
 <input type="checkbox"> 
 ```
 
@@ -61,7 +61,7 @@ export default Ember.Route.extend({
 
 默认情况下，ember 不会绑定到`data-xxx`这一类属性上。比如下面的绑定结果就得不到你的预期。
 
-```
+```js
 {{! 绑定到 data-xxx 这种属性需要特殊设置}}
 {{#link-to 'photo' data-toggle='dropdown'}} link-to {{/link-to}}
 {{input type='text' data-toggle='tooltip' data-placement='bottom' title="Name"}} 
@@ -69,7 +69,7 @@ export default Ember.Route.extend({
 
 模板渲染之后得到下面的 HTML 代码
 
-```
+```js
 <a id="ember455" href="/binding-element-attributes" class="ember-view active"> link-to </a>  
 <input id="ember470" title="Name" type="text" class="ember-view ember-text-field"> 
 ```
@@ -78,7 +78,7 @@ export default Ember.Route.extend({
 `ember generate view binding-element-attributes`，
 在 view 中手动绑定，如下：
 
-```
+```js
 //  app/views/binding-element-attributes.js
 
 import Ember from 'ember';
@@ -102,7 +102,7 @@ Ember.LinkComponent.reopen({
 
 渲染之后得到的结果符合预期。得到如下 HTML 代码
 
-```
+```js
 <a id="ember398" href="/binding-element-attributes" data-toggle="dropdown" class="ember-view active">link-to</a>  
 <input id="ember414" title="Name" type="text" data-toggle="tooltip" data-placement="bottom" class="ember-view ember-text-field"> 
 ```

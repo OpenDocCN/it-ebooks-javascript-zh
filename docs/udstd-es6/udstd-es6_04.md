@@ -48,7 +48,7 @@ JS 函数的独特之处是可以接受任意数量的参数，而无视函数�
 
 在 ES5 或更早的版本中，你可能会使用下述模式来创建带有参数默认值的函数：
 
-```
+```js
 function makeRequest(url, timeout, callback) {
 
     timeout = timeout || 2000;
@@ -63,7 +63,7 @@ function makeRequest(url, timeout, callback) {
 
 在这种情况下，更安全的替代方法是使用 `typeof` 来检测参数的类型，正如下例：
 
-```
+```js
 function makeRequest(url, timeout, callback) {
 
     timeout = (typeof timeout !== "undefined") ? timeout : 2000;
@@ -80,7 +80,7 @@ function makeRequest(url, timeout, callback) {
 
 ES6 能更容易地为参数提供默认值，它使用了初始化形式，以便在参数未被正式传递进来时使用。例如：
 
-```
+```js
 function makeRequest(url, timeout = 2000, callback = function() {}) {
 
     // 函数的剩余部分
@@ -92,7 +92,7 @@ function makeRequest(url, timeout = 2000, callback = function() {}) {
 
 如果使用全部三个参数来调用 `makeRequest()` ，那么默认值将不会被使用，例如：
 
-```
+```js
 // 使用默认的 timeout 与 callback
 makeRequest("/foo");
 
@@ -109,7 +109,7 @@ ES6 会认为 `url` 参数是必须的，这就是三次调用 `makeRequest()` �
 
 在函数声明中能指定任意一个参数的默认值，即使该参数排在未指定默认值的参数之前也是可以的。例如，下面这样是可行的：
 
-```
+```js
 function makeRequest(url, timeout = 2000, callback) {
 
     // 函数的剩余部分
@@ -119,7 +119,7 @@ function makeRequest(url, timeout = 2000, callback) {
 
 在本例中，只有在未传递第二个参数、或明确将第二个参数值指定为 `undefined` 时， `timeout` 的默认值才会被使用，例如：
 
-```
+```js
 // 使用默认的 timeout
 makeRequest("/foo", undefined, function(body) {
     doSomething(body);
@@ -140,7 +140,7 @@ makeRequest("/foo", null, function(body) {
 
 需要记住的是， `arguments` 对象会在使用参数默认值时有不同的表现。在 ES5 的非严格模式下， `arguments` 对象会反映出具名参数的变化。以下代码说明了该工作机制：
 
-```
+```js
 function mixArgs(first, second) {
     console.log(first === arguments[0]);
     console.log(second === arguments[1]);
@@ -155,7 +155,7 @@ mixArgs("a", "b");
 
 输出：
 
-```
+```js
 true
 true
 true
@@ -166,7 +166,7 @@ true
 
 然而在 ES5 的严格模式下，关于 `arguments` 对象的这种混乱情况被消除了，它不再反映出具名参数的变化。在严格模式下重新使用上例中的函数：
 
-```
+```js
 function mixArgs(first, second) {
  "use strict";
 
@@ -183,7 +183,7 @@ mixArgs("a", "b");
 
 调用 `mixArgs()` 则输出：
 
-```
+```js
 true
 true
 false
@@ -194,7 +194,7 @@ false
 
 然而在使用 ES6 参数默认值的函数中， `arguments` 对象的表现总是会与 ES5 的严格模式一致，无论此时函数是否明确运行在严格模式下。参数默认值的存在触发了 `arguments` 对象与具名参数的分离。这是个细微但重要的细节，因为 `arguments` 对象的使用方式发生了变化。研究如下代码：
 
-```
+```js
 // 非严格模式
 function mixArgs(first, second = "b") {
     console.log(arguments.length);
@@ -211,7 +211,7 @@ mixArgs("a");
 
 输出：
 
-```
+```js
 1
 true
 false
@@ -225,7 +225,7 @@ false
 
 参数默认值最有意思的特性或许就是默认值并不要求一定是基本类型的值。例如，你可以执行一个函数来产生参数的默认值，就像这样：
 
-```
+```js
 function getValue() {
     return 5;
 }
@@ -240,7 +240,7 @@ console.log(add(1));        // 6
 
 此处若未提供第二个参数， `getValue()` 函数就会被调用以获取正确的默认值。需要注意的是，仅在调用 `add()` 函数而未提供第二个参数时， `getValue()` 函数才会被调用，而在 `getValue()` 的函数声明初次被解析时并不会进行调用。这意味着 `getValue()` 函数若被写为可变的，则它有可能会返回可变的值，例如：
 
-```
+```js
 let value = 5;
 
 function getValue() {
@@ -262,7 +262,7 @@ console.log(add(1));        // 7
 
 这种行为引出了另一种有趣的能力：可以将前面的参数作为后面参数的默认值，这里有个例子：
 
-```
+```js
 function add(first, second = first) {
     return first + second;
 }
@@ -273,7 +273,7 @@ console.log(add(1));        // 2
 
 此代码中 `first` 为 `second` 参数提供了默认值，意味着只传入一个参数会让两个参数获得相同的值，因此 `add(1, 1)` 与 `add(1)` 同样返回了 2 。进一步说，你可以将 `first` 作为参数传递给一个函数来产生 `second` 参数的值，正如下例：
 
-```
+```js
 function getValue(value) {
     return value + 5;
 }
@@ -290,7 +290,7 @@ console.log(add(1));        // 7
 
 引用其他参数来为参数进行默认赋值时，仅允许引用前方的参数，因此前面的参数不能访问后面的参数，例如：
 
-```
+```js
 function add(first = second, second) {
     return first + second;
 }
@@ -307,7 +307,7 @@ console.log(add(undefined, 1)); // 抛出错误
 
 为了探寻参数默认值中的暂时性死区，可再次研究“参数默认值表达式”中的例子：
 
-```
+```js
 function getValue(value) {
     return value + 5;
 }
@@ -322,7 +322,7 @@ console.log(add(1));        // 7
 
 调用 `add(1, 1)` 和 `add(1)` 事实上执行了以下代码来创建 `first` 与 `second` 的参数值：
 
-```
+```js
 // JS 调用 add(1, 1) 可表示为
 let first = 1;
 let second = 1;
@@ -334,7 +334,7 @@ let second = getValue(first);
 
 当函数 `add()` 第一次执行时， `first` 与 `second` 的绑定被加入了特定参数的暂时性死区（类似于 `let` 声明的行为）。因此 `second` 可以使用 `first` 来初始化，因为此处 `first` 总是已经完成了初始化，但反之则不行。现在再研究以下重写过的 `add()` 函数：
 
-```
+```js
 function add(first = second, second) {
     return first + second;
 }
@@ -345,7 +345,7 @@ console.log(add(undefined, 1)); // 抛出错误
 
 本例中调用 `add(1, 1)` 与 `add(undefined, 1)` 对应着以下的后台代码：
 
-```
+```js
 // JS 调用 add(1, 1) 可表示为
 let first = 1;
 let second = 1;
@@ -367,7 +367,7 @@ let second = 1;
 
 JS 早就提供了 `arguments` 对象用于查看传递给函数的所有参数，这样就不必分别指定每个参数。虽然查看 `arguments` 对象在大多数情况下都工作正常，但操作它有时仍然比较麻烦。例如，参考以下查看 `arguments` 对象的代码：
 
-```
+```js
 function pick(object) {
     let result = Object.create(null);
 
@@ -401,7 +401,7 @@ ES6 引入了剩余参数以便解决这个问题。
 
 **剩余参数**（ **rest parameter** ）由三个点（ `...` ）与一个紧跟着的具名参数指定，它会是包含传递给函数的其余参数的一个数组，名称中的“剩余”也由此而来。例如， `pick()` 函数可以像下面这样用剩余参数来重写：
 
-```
+```js
 function pick(object, ...keys) {
     let result = Object.create(null);
 
@@ -421,7 +421,7 @@ function pick(object, ...keys) {
 
 剩余参数受到两点限制。一是函数只能有一个剩余参数，并且它必须被放在最后。例如，如下代码是无法工作的：
 
-```
+```js
 // 语法错误：不能在剩余参数后使用具名参数
 function pick(object, ...keys, last) {
     let result = Object.create(null);
@@ -438,7 +438,7 @@ function pick(object, ...keys, last) {
 
 第二个限制是剩余参数不能在对象字面量的 setter 属性中使用，这意味着如下代码同样会导致语法错误：
 
-```
+```js
 let object = {
 
     // 语法错误：不能在 setter 中使用剩余参数
@@ -456,7 +456,7 @@ let object = {
 
 `arguments` 对象在函数被调用时反映了传入的参数，与剩余参数能协同工作，就像如下程序所演示的：
 
-```
+```js
 function checkArgs(...args) {
     console.log(args.length);
     console.log(arguments.length);
@@ -469,7 +469,7 @@ checkArgs("a", "b");
 
 调用 `checkArgs()` 输出了：
 
-```
+```js
 2
 2
 a a
@@ -484,7 +484,7 @@ b b
 
 `Function` 构造器允许你动态创建一个新函数，但在 JS 中并不常用。传给该构造器的参数都是字符串，它们就是目标函数的参数与函数体，这里有个范例：
 
-```
+```js
 var add = new Function("first", "second", "return first + second");
 
 console.log(add(1, 1));     // 2 
@@ -492,7 +492,7 @@ console.log(add(1, 1));     // 2
 
 ES6 增强了 `Function` 构造器的能力，允许使用默认参数以及剩余参数。对于默认参数来说，你只需为参数名称添加等于符号以及默认值，正如下例：
 
-```
+```js
 var add = new Function("first", "second = first",
         "return first + second");
 
@@ -504,7 +504,7 @@ console.log(add(1));        // 2
 
 而对剩余参数来说，只需在最后一个参数前添加 `...` 即可，就像这样：
 
-```
+```js
 var pickFirst = new Function("...args", "return args[0]");
 
 console.log(pickFirst(1, 2));   // 1 
@@ -518,7 +518,7 @@ console.log(pickFirst(1, 2));   // 1
 
 与剩余参数关联最密切的就是扩展运算符。剩余参数允许你把多个独立的参数合并到一个数组中；而扩展运算符则允许将一个数组分割，并将各个项作为分离的参数传给函数。考虑一下 `Math.max()` 方法，它接受任意数量的参数，并会返回其中的最大值。这里有个此方法的简单用例：
 
-```
+```js
 let value1 = 25,
     value2 = 50;
 
@@ -527,7 +527,7 @@ console.log(Math.max(value1, value2));      // 50
 
 若像本例这样仅处理两个值，那么 `Math.max()` 非常容易使用：将这两个值传入，就会返回较大的那个。但若想处理数组中的值，此时该如何找到最大值？ `Math.max()` 方法并不允许你传入一个数组，因此在 ES5 或更早版本中，你必须自行搜索整个数组，或像下面这样使用 `apply()` 方法：
 
-```
+```js
 let values = [25, 50, 75, 100]
 
 console.log(Math.max.apply(Math, values));  // 100 
@@ -537,7 +537,7 @@ console.log(Math.max.apply(Math, values));  // 100
 
 ES6 的扩展运算符令这种情况变得简单。无须调用 `apply()` ，你可以像使用剩余参数那样在该数组前添加 `...` ，并直接将其传递给 `Math.max()` 。 JS 引擎将会将该数组分割为独立参数并把它们传递进去，就像这样：
 
-```
+```js
 let values = [25, 50, 75, 100]
 
 // 等价于 console.log(Math.max(25, 50, 75, 100));
@@ -548,7 +548,7 @@ console.log(Math.max(...values));           // 100
 
 你可以将扩展运算符与其他参数混用。假设你想让 `Math.max()` 返回的最小值为 0 （以防数组中混入了负值），你可以将参数 0 单独传入，并继续为其他参数使用扩展运算符，正如下例：
 
-```
+```js
 let values = [-25, -50, -75, -100]
 
 console.log(Math.max(...values, 0));        // 0 
@@ -568,7 +568,7 @@ console.log(Math.max(...values, 0));        // 0
 
 ES6 中所有函数都有适当的 `name` 属性值。为了理解其实际运作，请看下例——它展示了一个函数与一个函数表达式，并将二者的 `name` 属性都打印出来：
 
-```
+```js
 function doSomething() {
     // ...
 }
@@ -589,7 +589,7 @@ console.log(doAnotherThing.name);       // "doAnotherThing"
 
 虽然函数声明与函数表达式的名称易于查找，但 ES6 更进一步确保了**所有**函数都拥有合适的名称。为了表明这点，请参考如下程序：
 
-```
+```js
 var doSomething = function doSomethingElse() {
     // ...
 };
@@ -614,7 +614,7 @@ console.log(descriptor.get.name); // "get firstName"
 
 函数名称还有另外两个特殊情况。使用 `bind()` 创建的函数会在名称属性值之前带有 `"bound"` 前缀；而使用 `Function` 构造器创建的函数，其名称属性则会有 `"anonymous"` 前缀，正如此例：
 
-```
+```js
 var doSomething = function() {
     // ...
 };
@@ -632,7 +632,7 @@ console.log((new Function()).name);     // "anonymous"
 
 在 ES5 以及更早版本中，函数根据是否使用 `new` 来调用而有双重用途。当使用 `new` 时，函数内部的 `this` 是一个新对象，并作为函数的返回值，如下例所示：
 
-```
+```js
 function Person(name) {
     this.name = name;
 }
@@ -654,7 +654,7 @@ JS 为函数提供了两个不同的内部方法： `[[Call]]` 与 `[[Construct]
 
 在 ES5 中判断函数是不是使用了 `new` 来调用（即作为构造器），最流行的方式是使用 `instanceof` ，例如：
 
-```
+```js
 function Person(name) {
     if (this instanceof Person) {
         this.name = name;   // 使用 new
@@ -669,7 +669,7 @@ var notAPerson = Person("Nicholas");  // 抛出错误
 
 此处对 `this` 值进行了检查，来判断其是否为构造器的一个实例：若是，正常继续执行；否则抛出错误。这能奏效是因为 `[[Construct]]` 方法创建了 `Person` 的一个新实例并将其赋值给 `this` 。可惜的是，该方法并不绝对可靠，因为在不使用 `new` 的情况下 `this` 仍然可能是 `Person` 的实例，正如下例：
 
-```
+```js
 function Person(name) {
     if (this instanceof Person) {
         this.name = name;   // 使用 new
@@ -690,7 +690,7 @@ var notAPerson = Person.call(person, "Michael");    // 奏效了！
 
 通过检查 `new.target` 是否被定义，这个新的元属性就让你能安全地判断函数是否被使用 `new` 进行了调用。
 
-```
+```js
 function Person(name) {
     if (typeof new.target !== "undefined") {
         this.name = name;   // 使用 new
@@ -707,7 +707,7 @@ var notAPerson = Person.call(person, "Michael");    // 出错！
 
 也可以检查 `new.target` 是否被使用特定构造器进行了调用，例如以下代码：
 
-```
+```js
 function Person(name) {
     if (new.target === Person) {
         this.name = name;   // 使用 new
@@ -726,13 +726,13 @@ var anotherPerson = new AnotherPerson("Nicholas");  // 出错！
 
 > 译注：原文此段代码有误。
 > 
-> ```
+> ```js
 > if (new.target === Person) { 
 > ```
 > 
 > 这一行原先写为：
 > 
-> ```
+> ```js
 > if (typeof new.target === Person) { 
 > ```
 > 
@@ -750,7 +750,7 @@ ES6 通过新增 `new.target` 而消除了函数调用方面的不确定性。�
 
 为了控制这种不兼容行为， ES5 的严格模式为代码块内部的函数声明引入了一个错误，就像这样：
 
-```
+```js
 "use strict";
 
 if (true) {
@@ -764,7 +764,7 @@ if (true) {
 
 在 ES5 中，这段代码会抛出语法错误。然而 ES6 会将 `doSomething()` 函数视为块级声明，并允许它在定义所在的代码块内部被访问。例如：
 
-```
+```js
 "use strict";
 
 if (true) {
@@ -787,7 +787,7 @@ console.log(typeof doSomething);            // "undefined"
 
 块级函数与 `let` 函数表达式相似，在执行流跳出定义所在的代码块之后，函数定义就会被移除。关键区别在于：块级函数会被提升到所在代码块的顶部；而使用 `let` 的函数表达式则不会，正如以下范例所示：
 
-```
+```js
 "use strict";
 
 if (true) {
@@ -810,7 +810,7 @@ console.log(typeof doSomething);
 
 ES6 在非严格模式下同样允许使用块级函数，但行为有细微不同。块级函数的作用域会被提升到所在函数或全局环境的顶部，而不是代码块的顶部。
 
-```
+```js
 // ES6 behavior
 if (true) {
 
@@ -851,7 +851,7 @@ ES6 最有意思的一个新部分就是**箭头函数**（ **arrow function** �
 
 箭头函数的语法可以有多种变体，取决于你要完成的目标。所有变体都以函数参数为开头，紧跟着的是箭头，再接下来则是函数体。参数与函数体都根据实际使用有不同的形式。例如，以下箭头函数接收单个参数并返回它：
 
-```
+```js
 var reflect = value => value;
 
 // 有效等价于：
@@ -865,7 +865,7 @@ var reflect = function(value) {
 
 如果需要传入多于一个的参数，就需要将它们放在括号内，就像这样：
 
-```
+```js
 var sum = (num1, num2) => num1 + num2;
 
 // 有效等价于：
@@ -879,7 +879,7 @@ var sum = function(num1, num2) {
 
 如果函数没有任何参数，那么在声明时就必须使用一对空括号，就像这样：
 
-```
+```js
 var getName = () => "Nicholas";
 
 // 有效等价于：
@@ -891,7 +891,7 @@ var getName = function() {
 
 当你想使用更传统的函数体、也就是可能包含多个语句的时候，需要将函数体用一对花括号进行包裹，并明确定义一个返回值，正如下面这个版本的 `sum()` ：
 
-```
+```js
 var sum = (num1, num2) => {
     return num1 + num2;
 };
@@ -907,7 +907,7 @@ var sum = function(num1, num2) {
 
 若你想创建一个空函数，就必须使用空的花括号，就像这样：
 
-```
+```js
 var doNothing = () => {};
 
 // 有效等价于：
@@ -917,7 +917,7 @@ var doNothing = function() {};
 
 花括号被用于表示函数的主体，它在你至今看到的例子中都工作正常。但若箭头函数想要从函数体内向外返回一个对象字面量，就必须将该字面量包裹在圆括号内，例如：
 
-```
+```js
 var getTempItem = id => ({ id: id, name: "Temp" });
 
 // 有效等价于：
@@ -937,7 +937,7 @@ var getTempItem = function(id) {
 
 JS 中使用函数的一种流行方式是创建立即调用函数表达式（ immediately-invoked function expression ， IIFE ）。 IIFE 允许你定义一个匿名函数并在未保存引用的情况下立刻调用它。当你想创建一个作用域并隔离在程序其他部分外，这种模式就很有用了。例如：
 
-```
+```js
 let person = function(name) {
 
     return {
@@ -955,7 +955,7 @@ console.log(person.getName());      // "Nicholas"
 
 你可以使用箭头函数来完成同样的事情，只要将其包裹在括号内即可：
 
-```
+```js
 let person = ((name) => {
 
     return {
@@ -979,7 +979,7 @@ console.log(person.getName());      // "Nicholas"
 
 JS 最常见的错误领域之一就是在函数内的 `this` 绑定。由于一个函数内部的 `this` 值可以被改变，这取决于调用该函数时的上下文，因此完全可能错误地影响了一个对象，尽管你本意是要修改另一个对象。研究如下例子：
 
-```
+```js
 var PageHandler = {
 
     id: "123456",
@@ -1002,7 +1002,7 @@ var PageHandler = {
 
 你可以明确使用 `bind()` 方法将函数的 `this` 值绑定到 `PageHandler` 上，以修正这段代码，就像这样：
 
-```
+```js
 var PageHandler = {
 
     id: "123456",
@@ -1023,7 +1023,7 @@ var PageHandler = {
 
 箭头函数没有 `this` 绑定，意味着箭头函数内部的 `this` 值只能通过查找作用域链来确定。如果箭头函数被包含在一个非箭头函数内，那么 `this` 值就会与该函数的相等；否则， `this` 值就会是 `undefined` 。你可以使用箭头函数来书写如下代码：
 
-```
+```js
 var PageHandler = {
 
     id: "123456",
@@ -1043,7 +1043,7 @@ var PageHandler = {
 
 箭头函数被设计为“抛弃型”的函数，因此不能被用于定义新的类型； `prototype` 属性的缺失让这个特性显而易见。对箭头函数使用 `new` 运算符会导致错误，正如下例：
 
-```
+```js
 var MyType = () => {},
     object = new MyType();  // 错误：你不能对箭头函数使用 'new' 
 ```
@@ -1056,7 +1056,7 @@ var MyType = () => {},
 
 箭头函数的简洁语法也让它成为进行数组操作的理想选择。例如，若你想使用自定义比较器来对数组进行排序，通常会这么写：
 
-```
+```js
 var result = values.sort(function(a, b) {
     return a - b;
 }); 
@@ -1064,7 +1064,7 @@ var result = values.sort(function(a, b) {
 
 这里为一个非常简单的工序使用了过多代码，可以比较一下使用了箭头函数的更简洁版本：
 
-```
+```js
 var result = values.sort((a, b) => a - b); 
 ```
 
@@ -1074,7 +1074,7 @@ var result = values.sort((a, b) => a - b);
 
 尽管箭头函数没有自己的 `arguments` 对象，但仍然能访问包含它的函数的 `arguments` 对象。无论此后箭头函数在何处执行，该对象都是可用的。例如：
 
-```
+```js
 function createArrowFunctionReturningFirstArg() {
     return () => arguments[0];
 }
@@ -1090,7 +1090,7 @@ console.log(arrowFunction());       // 5
 
 尽管语法不同，但箭头函数依然属于函数，并能被照常识别。研究如下代码：
 
-```
+```js
 var comparator = (a, b) => a - b;
 
 console.log(typeof comparator);                 // "function"
@@ -1101,7 +1101,7 @@ console.log(comparator instanceof Function);    // true
 
 也像对其他函数那样，你仍然可以对箭头函数使用 `call()` 、 `apply()` 与 `bind()` 方法，虽然函数的 `this` 绑定并不会受影响。这里有几个例子：
 
-```
+```js
 var sum = (num1, num2) => num1 + num2;
 
 console.log(sum.call(null, 1, 2));      // 3
@@ -1120,7 +1120,7 @@ console.log(boundSum());                // 3
 
 在 ES6 中对函数最有趣的改动或许就是一项引擎优化，它改变了尾部调用的系统。**尾调用**（ **tail call** ）指的是调用函数的语句是另一个函数的最后语句，就像这样：
 
-```
+```js
 function doSomething() {
     return doSomethingElse();   // 尾调用
 } 
@@ -1138,7 +1138,7 @@ ES6 在严格模式下力图为特定尾调用减少调用栈的大小（非严�
 
 作为一个例子，下面代码满足了全部三个条件，因此能被轻易地优化：
 
-```
+```js
 "use strict";
 
 function doSomething() {
@@ -1149,7 +1149,7 @@ function doSomething() {
 
 该函数对 `doSomethingElse()` 进行了一次尾调用，并立即返回了其结果，同时并未访问局部作用域的任何变量。一个小改动——不返回结果，就会产生一个无法被优化的函数：
 
-```
+```js
 "use strict";
 
 function doSomething() {
@@ -1160,7 +1160,7 @@ function doSomething() {
 
 类似的，如果你的函数在尾调用返回结果之后进行了额外操作，那么该函数也无法被优化：
 
-```
+```js
 "use strict";
 
 function doSomething() {
@@ -1173,7 +1173,7 @@ function doSomething() {
 
 无意中关闭优化的另一个常见方式，是将函数调用的结果储存在一个变量上，之后才返回了结果，就像这样：
 
-```
+```js
 "use strict";
 
 function doSomething() {
@@ -1187,7 +1187,7 @@ function doSomething() {
 
 使用闭包或许就是需要避免的最困难情况，因为闭包能够访问上层作用域的变量，会导致尾调用优化被关闭。例如：
 
-```
+```js
 "use strict";
 
 function doSomething() {
@@ -1205,7 +1205,7 @@ function doSomething() {
 
 在实践中，尾调用优化在后台进行，所以不必对此考虑太多，除非要尽力去优化一个函数。尾调用优化的主要用例是在递归函数中，而且在其中的优化具有最大效果。考虑以下计算阶乘的函数：
 
-```
+```js
 function factorial(n) {
 
     if (n <= 1) {
@@ -1222,7 +1222,7 @@ function factorial(n) {
 
 为了优化此函数，你需要确保在最后的函数调用之后不会发生乘法运算。为此你可以使用一个默认参数来将乘法操作移出 `return` 语句。有结果的函数携带着临时结果进入下一次迭代，这样创建的函数的功能与前例相同，但它能被 ES6 的引擎所优化。此处是新的代码：
 
-```
+```js
 function factorial(n, p = 1) {
 
     if (n <= 1) {

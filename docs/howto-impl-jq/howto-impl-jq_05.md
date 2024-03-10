@@ -12,7 +12,7 @@
 
 首先我们需要一个对数组进行验证的方法
 
-```
+```js
 function isArray(obj) {
     return Array.isArray(obj);
 } 
@@ -20,7 +20,7 @@ function isArray(obj) {
 
 接着就是我们的重头戏
 
-```
+```js
 Kodo.each = function(obj,callback) {
     var len = obj.length,
         constru = obj.constructor,
@@ -50,7 +50,7 @@ Kodo.each = function(obj,callback) {
 
 如
 
-```
+```js
 f("div").each(function(index,item) {
 
 }) 
@@ -58,7 +58,7 @@ f("div").each(function(index,item) {
 
 所以还需要一个判断 是否是 Kodo 数组对象
 
-```
+```js
 if(constru === window.f) {
     for (; i < len; i++) {
         var val = callback.call(obj[i],i,obj[i]);

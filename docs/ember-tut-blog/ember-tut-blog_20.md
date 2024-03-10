@@ -4,7 +4,7 @@
 
 按照文章惯例先准备好测试所需要的数据、文件。仍然是使用[Ember CLI](http://ember-cli.com/user-guide)命令，这次我们创建的是`helper`、`controller`、`route`（创建`route`会自动创建`template`）。
 
-```
+```js
 ember generate helper my-helper  
 ember generate controller tools-helper  
 ember generate route tools-helper 
@@ -14,7 +14,7 @@ ember generate route tools-helper
 
 自定义助手非常简答直接使用[Ember CLI](http://ember-cli.com/user-guide)命令生成就可以了。当然你也可以手动创建，自定义的助手都是放在`app/helpers`目录下。Ember 会根据模板上使用的助手自动到这个目录查找。定义了`helper`之后你就可以直接在模板上使用。
 
-```
+```js
 <!--  //app/templates/tools-helper.hbs  -->
 
 my-helper: {{my-helper}} 
@@ -22,7 +22,7 @@ my-helper: {{my-helper}}
 
 程序没有报错，但是什么也没有显示。是的什么也没有显示。没有显示就对了。因为我们对于刚刚创建的`app/helpers/my-helper.js`没有做任何的修改。你可以看这个文件的代码。直接返回了`params`，目前来说这个参数是空的。修改这个文件，直接返回一个字符串。
 
-```
+```js
 //  app/helpers/my-helper.js
 
 import Ember from 'ember';
@@ -40,14 +40,14 @@ export default Ember.Helper.helper(myHelper);
 
 上面的代码定义了一个最简单的 helper，不过没啥用，Ember 允许在自定义的 helper 上添加自定义的参数。
 
-```
+```js
 my-helper-param: {{my-helper 'chen' 'ubuntuvim'}} 
 ```
 
 在这个自定义的`helper`中增加了两个参数，既然有了参数那么又有什么用呢？当然是有用的，你可以在自定义的`helper`中获取参数，获取模板的参数有两种方式。
 **写法一**
 
-```
+```js
 //  app/helpers/my-helper.js
 
 import Ember from 'ember';
@@ -66,7 +66,7 @@ export default Ember.Helper.helper(myHelper);
 
 **写法二**
 
-```
+```js
 //  app/helpers/my-helper.js
 
 import Ember from 'ember';
@@ -93,13 +93,13 @@ export default Ember.Helper.helper(myHelper);
 
 上一点演示了在模板中传递无名的参数，这一小节讲为你介绍有名字的参数。
 
-```
+```js
 my-helper-named-param: {{my-helper firstName='chen' lastName='ubuntuvim'}} 
 ```
 
 相比于第一种使用方式给每个参数增加了参数名。那么`helper`处理类有要怎么去获取这些参数呢？
 
-```
+```js
 //  app/helpers/my-helper.js
 
 import Ember from 'ember';
@@ -128,7 +128,7 @@ export default Ember.Helper.helper(myHelper);
 1.  创建格式化`helper`：`ember generate helper format-date`
 2.  在`controller`初始化一个时间数据。
 
-```
+```js
 //  app/controllers/tools-helper.js
 
 import Ember from 'ember';
@@ -140,14 +140,14 @@ export default Ember.Controller.extend({
 
 默认情况下显示数据`currentDate`。
 
-```
+```js
 <!--  //app/templates/tools-helper.hbs  -->  
 {{ currentDate}}` 
 ```
 
 此时显示的默认的数据格式。 运行[`localhost:4200/tools-helper`](http://localhost:4200/tools-helper)，可以在页面看到：`Mon Sep 21 2015 23:46:03 GMT+0800 (CST)`这种格式的时间。显然不太合法我们的习惯，看着都觉得不舒服。那下面使用自定义的`helper`格式化日期格式。
 
-```
+```js
 //  app/helpers/format-data.js
 
 import Ember from 'ember';
@@ -170,7 +170,7 @@ export default Ember.Helper.helper(formatDate);
 
 或者你也可以这样写。
 
-```
+```js
 export default Ember.Helper.helper(function formatDate(params/*, hash*/) {  
     var d = Date.parse(params);
     var dd = new Date(parseInt(d)).toLocaleString().replace(/:\d{1,2}$/,' ');  //  2015/9/21 下午 11:21
@@ -181,7 +181,7 @@ export default Ember.Helper.helper(function formatDate(params/*, hash*/) {
 
 为了简便，直接就替换字符，修改时间分隔字 `/`为`-`。 然后修改显示的模板，使用自定义的`helper`。
 
-```
+```js
 <!--  //app/templates/tools-helper.hbs  -->  
 {{format-date currentDate}} 
 ```
@@ -196,7 +196,7 @@ export default Ember.Helper.helper(function formatDate(params/*, hash*/) {
 2.  在`controller`类里新增两个用于测试的属性`cDate`和
     `currentTime`。
 
-```
+```js
 //  app/controllers/tools-helper.js
 
 import Ember from 'ember';  
@@ -207,7 +207,7 @@ export default Ember.Controller.extend({
 }); 
 ```
 
-```
+```js
 <!--  //app/templates/tools-helper.hbs  -->
 
 <br><br><br>  
@@ -221,7 +221,7 @@ format-date-time-local: {{format-date-time currentDate cDate currentTime format=
 
 下面看看`format-date-time`这个助手怎么获取页面的数据。
 
-```
+```js
 // app/helpers/format-date-time.js
 
 import Ember from 'ember';
@@ -253,7 +253,7 @@ export default Ember.Helper.helper(formatDateTime);
 
 新建一个`helper`：`ember generate helper escape-helper`
 
-```
+```js
 // app/helpers/escape-helper.js
 
 import Ember from 'ember';
@@ -266,7 +266,7 @@ export function escapeHelper(params/*, hash*/) {
 export default Ember.Helper.helper(escapeHelper); 
 ```
 
-```
+```js
 escape-helper: {{escape-helper "helloworld!"}} 
 ```
 

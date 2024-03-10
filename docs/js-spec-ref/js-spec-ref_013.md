@@ -20,7 +20,7 @@ Error 对象的实例有三个最基本的属性：
 
 利用 name 和 message 这两个属性，可以对发生什么错误有一个大概的了解。
 
-```
+```js
 if (error.name){
   console.log(error.name + ": " + error.message);
 }
@@ -30,7 +30,7 @@ if (error.name){
 
 stack 属性用来查看错误发生时的堆栈。
 
-```
+```js
 function throwit() {
   throw new Error('');
 }
@@ -60,7 +60,7 @@ Error 对象是最一般的错误类型，在它的基础上，JavaScript 还定
 
 SyntaxError 是解析代码时发生的语法错误。
 
-```
+```js
 // 变量名错误
 var 1a;
 
@@ -72,14 +72,14 @@ console.log 'hello');
 
 ReferenceError 是引用一个不存在的变量时发生的错误。
 
-```
+```js
 unknownVariable
 // ReferenceError: unknownVariable is not defined
 ```
 
 另一种触发场景是，将一个值分配给无法分配的对象，比如对函数的运行结果或者 this 赋值。
 
-```
+```js
 console.log() = 1
 // ReferenceError: Invalid left-hand side in assignment
 
@@ -93,7 +93,7 @@ this = 1
 
 RangeError 是当一个值超出有效范围时发生的错误。主要有几种情况，一是数组长度为负数，二是 Number 对象的方法参数超出范围，以及函数堆栈超过最大值。
 
-```
+```js
 new Array(-1)
 // RangeError: Invalid array length
 
@@ -105,7 +105,7 @@ new Array(-1)
 
 TypeError 是变量或参数不是预期类型时发生的错误。比如，对字符串、布尔值、数值等原始类型的值使用 new 命令，就会抛出这种错误，因为 new 命令的参数应该是一个构造函数。
 
-```
+```js
 new 123
 //TypeError: number is not a func
 
@@ -120,7 +120,7 @@ obj.unknownMethod()
 
 URIError 是 URI 相关函数的参数不正确时抛出的错误，主要涉及 encodeURI()、decodeURI()、encodeURIComponent()、decodeURIComponent()、escape()和 unescape()这六个函数。
 
-```
+```js
 decodeURI('%2')
 // URIError: URI malformed
 ```
@@ -131,7 +131,7 @@ eval 函数没有被正确执行时，会抛出 EvalError 错误。该错误类�
 
 以上这 6 种派生错误，连同原始的 Error 对象，都是构造函数。开发者可以使用它们，人为生成错误对象的实例。
 
-```
+```js
 new Error("出错了！");
 new RangeError("出错了，变量超出有效范围！");
 new TypeError("出错了，变量类型无效！");
@@ -143,7 +143,7 @@ new TypeError("出错了，变量类型无效！");
 
 除了 JavaScript 内建的 7 种错误对象，还可以定义自己的错误对象。
 
-```
+```js
 function UserError(message) {
    this.message = message || "默认信息";
    this.name = "UserError";
@@ -155,7 +155,7 @@ UserError.prototype.constructor = UserError;
 
 上面代码自定义一个错误对象 UserError，让它继承 Error 对象。然后，就可以生成这种自定义的错误了。
 
-```
+```js
 new UserError("这是自定义的错误！");
 ```
 
@@ -163,7 +163,7 @@ new UserError("这是自定义的错误！");
 
 throw 语句的作用是中断程序执行，抛出一个意外或错误。它接受一个表达式作为参数。
 
-```
+```js
 throw "Error！";
 throw 42;
 throw true;
@@ -174,7 +174,7 @@ throw {toString: function() { return "Error!"; } };
 
 如果只是简单的错误，返回一条出错信息就可以了，但是如果遇到复杂的情况，就需要在出错以后进一步处理。这时最好的做法是使用 throw 语句手动抛出一个 Error 对象。
 
-```
+```js
 throw new Error('出错了!');
 ```
 
@@ -182,7 +182,7 @@ throw new Error('出错了!');
 
 throw 语句还可以抛出用户自定义的错误。
 
-```
+```js
 function UserError(message) {
    this.message = message || "默认信息";
    this.name = "UserError";
@@ -199,7 +199,7 @@ throw new UserError("出错了！");
 
 为了对错误进行处理，需要使用 try...catch 结构。
 
-```
+```js
 try {
   throw new Error('出错了!');
 } catch (e) {
@@ -216,7 +216,7 @@ try {
 
 上面代码中，try 代码块抛出的错误（包括用 throw 语句抛出错误），可以被 catch 代码块捕获。catch 接受一个参数，表示 try 代码块传入的错误对象。
 
-```
+```js
 function throwIt(exception) {
   try {
     throw exception;
@@ -235,7 +235,7 @@ throwIt(new Error('An error happened'));
 
 catch 代码块捕获错误之后，程序不会中断，会按照正常流程继续执行下去。
 
-```
+```js
 try {
   throw "出错了";
 } catch (e) {
@@ -250,7 +250,7 @@ console.log(222);
 
 catch 代码块之中，还可以再抛出错误，甚至使用嵌套的 try...catch 结构。
 
-```
+```js
 try {
    throw n; // 这里抛出一个整数
 } catch (e) {
@@ -265,7 +265,7 @@ try {
 
 为了捕捉不同类型的错误，catch 代码块之中可以加入判断语句。
 
-```
+```js
 try {
   foo.bar();
 } catch (e) {
@@ -284,7 +284,7 @@ try...catch 结构是 JavaScript 语言受到 Java 语言影响的一个明显�
 
 try...catch 结构允许在最后添加一个 finally 代码块，表示不管是否出现错误，都必需在最后运行的语句。
 
-```
+```js
 function cleansUp() {
     try {
         throw new Error('Sorry...');
@@ -300,7 +300,7 @@ cleansUp()
 
 上面代码说明，throw 语句抛出错误以后，finanlly 继续得到执行。
 
-```
+```js
 function idle(x) {
     try {
         console.log(x);
@@ -320,7 +320,7 @@ idle('hello')
 
 下面的例子说明，return 语句的执行是排在 finanlly 代码之前，只是等 finnally 代码执行完毕后才返回。
 
-```
+```js
 var count = 0;
 function countUp() {
     try {
@@ -340,7 +340,7 @@ count
 
 下面是另一个例子。
 
-```
+```js
 openFile();
 
 try {
@@ -356,7 +356,7 @@ try {
 
 下面的例子充分反应了 try...catch...finally 这三者之间的执行顺序。
 
-```
+```js
 function f() {
     try {
         console.log(0);
@@ -385,7 +385,7 @@ result
 
 某些情况下，甚至可以省略 catch 代码块，只使用 finally 代码块。
 
-```
+```js
 openFile();
 
 try {

@@ -19,7 +19,7 @@ JSONSerializer 期待后台返回的是一个符合 JSON API 规范和约定的 
 
 比如请求`/people/123`，响应的数据如下：
 
-```
+```js
 {
   "data": {
     "type": "people",
@@ -34,7 +34,7 @@ JSONSerializer 期待后台返回的是一个符合 JSON API 规范和约定的 
 
 如果响应的数据有多条，那么`data`将是以数组形式返回。
 
-```
+```js
 {
   "data": [
       {
@@ -60,7 +60,7 @@ JSONSerializer 期待后台返回的是一个符合 JSON API 规范和约定的 
 
 数据有时候并不是请求的主体，如果数据有链接。链接的关系会放在`included`下面。
 
-```
+```js
 {
   "data": {
     "type": "articles",
@@ -112,7 +112,7 @@ Ember Data 默认的序列化器是 JSONAPISerializer，但是你也可以自定
 
 直接使用命令生成：`ember g serializer application`
 
-```
+```js
 //  app/serializers/application.js
 
 import DS from 'ember-data';
@@ -124,7 +124,7 @@ export default DS.JSONSerializer.extend({
 
 甚至你还可以针对某个模型定义序列化器。比如下面的代码为`post`定义了一个专门的序列化器，在前一篇自定义适配器中介绍过如何为一个模型自定义适配器，这个两个是相关的。
 
-```
+```js
 //  app/serializers/post.js
 import DS from ‘ember-data’;  
 export default DS.JSONSerializer.extend({  
@@ -135,7 +135,7 @@ export default DS.JSONSerializer.extend({
 
 比如前端发送的数据格式是如下结构，
 
-```
+```js
 {
   "data": {
     "attributes": {
@@ -151,7 +151,7 @@ export default DS.JSONSerializer.extend({
 
 但是服务器接受的数据结构是下面这种结构：
 
-```
+```js
 {
   "data": {
     "attributes": {
@@ -169,7 +169,7 @@ export default DS.JSONSerializer.extend({
 
 此时你可以重写`serialize`回调。
 
-```
+```js
 //  app/serializers/application.js
 
 import DS from 'ember-data';
@@ -192,7 +192,7 @@ export default DS.JSONSerializer.extend({
 
 那么如果是反过来呢。 如果后端返回的数据格式为：
 
-```
+```js
 {
   "data": {
     "attributes": {
@@ -210,7 +210,7 @@ export default DS.JSONSerializer.extend({
 
 但是前端需要的格式是：
 
-```
+```js
 {
   "data": {
     "attributes": {
@@ -226,7 +226,7 @@ export default DS.JSONSerializer.extend({
 
 此时你可以重写回调方法`normalizeResponse`或`normalize`，在方法里设置数据格式：
 
-```
+```js
 //  app/serializers/application.js
 
 import DS from 'ember-data';
@@ -248,7 +248,7 @@ export default DS.JSONSerializer.extend({
 
 每一条数据都有一个唯一值作为`ID`，默认情况下 Ember 会为每个模型加上一个名为`id`的属性。如果你想改为其他名称，你可以在序列化器中指定。
 
-```
+```js
 //  app/serializers/application.js
 
 import DS from 'ember-data';
@@ -264,7 +264,7 @@ export default DS.JSONSerializer.extend({
 
 Ember Data 约定的属性名是驼峰式的命名方式，但是序列化器却期望的是中划线分隔的命名方式，不过 Ember 会自动转换，不需要开发者手动指定。然而，如果你想修改这种默认的方式也是可以的，只需在序列化器中使用属性`keyForAttributes`指定你喜欢的分隔方式即可。比如下面的代码把序列号的属性名称改为以下划线分隔：
 
-```
+```js
 //  app/serializers/application.js
 
 import DS from 'ember-data';
@@ -280,7 +280,7 @@ export default DS.JSONSerializer.extend({
 
 如果你想模型数据被序列化、反序列化时指定模型属性的别名，直接在序列化器中使用`attrs`属性指定即可。
 
-```
+```js
 //  app/models/person.js
 export default DS.Model.extend({  
   lastName: DS.attr(‘string’)
@@ -289,7 +289,7 @@ export default DS.Model.extend({
 
 指定序列化、反序列化属性别名：
 
-```
+```js
 //  app/serializers/application.js
 
 import DS from 'ember-data';
@@ -307,7 +307,7 @@ export default DS.JSONSerializer.extend({
 
 一个模型通过`ID`引用另一个模型。比如有两个模型存在一对多关系：
 
-```
+```js
 //  app/models/post.js
 export default DS.Model.extend({  
   comments: DS.hasMany(‘comment’, { async: true });
@@ -316,7 +316,7 @@ export default DS.Model.extend({
 
 序列化后 JSON 数据格式如下，其中关联关系通过一个存放`ID`属性值的数组实现。
 
-```
+```js
 {
   "data": {
     "type": "posts",
@@ -335,7 +335,7 @@ export default DS.Model.extend({
 
 可见，有两个`comment`关联到一个`post`上。 如果是`belongsTo`关系的，JSON 结构与`hadMany`关系相差不大。
 
-```
+```js
 {
   "data": {
     "type": "comment",
@@ -357,7 +357,7 @@ export default DS.Model.extend({
 
 Ember Data 可以注册新的 JSON 转换器去格式化数据，可用直接使用命令创建：`ember g transform coordinate-point`
 
-```
+```js
 //  app/transforms/coordinate-point.js
 
 import DS from 'ember-data';
@@ -375,7 +375,7 @@ export default DS.Transform.extend({
 
 定义一个复合属性类型，这个类型由两个属性构成，形成一个坐标。
 
-```
+```js
 //  app/models/curor.js
 import DS from 'ember-data';  
 export default DS.Model.extend({  
@@ -385,7 +385,7 @@ export default DS.Model.extend({
 
 自定义的属性类型使用方式与普通类型一致，直接作为`attr`方法的参数。最后当我们接受到服务返回的数据形如下面的代码所示：
 
-```
+```js
 {
   cursor: {
     position: [4, 9]
@@ -395,7 +395,7 @@ export default DS.Model.extend({
 
 加载模型实例时仍然作为一个普通对象加载。仍然可以使用`.`操作获取属性值。
 
-```
+```js
 var cursor = this.store.findRecord(‘cursor’, 1);  
 cursor.get(‘position.x’);  //  => 4  
 cursor.get(‘position.y’);  //  => 9 
@@ -405,7 +405,7 @@ cursor.get(‘position.y’);  //  => 9
 
 并不是所有的 API 都遵循 JSONAPISerializer 约定通过数据命名空间和拷贝关系记录。比如系统遗留问题，原先的 API 返回的只是简单的 JSON 格式并不是 JSONAPISerializer 约定的格式，此时你可以自定义序列化器去适配旧接口。并且可以同时兼容使用 RESTAdapter 去序列号这些简单的 JSON 数据。
 
-```
+```js
 //  app/serializer/application.js
 
 export default DS.JSONSerializer.extend({  
@@ -419,7 +419,7 @@ export default DS.JSONSerializer.extend({
 
 比如`post`中包含了一个`author`记录。
 
-```
+```js
 {
     "id": "1",
     "title": "Rails is omakase",
@@ -435,7 +435,7 @@ export default DS.JSONSerializer.extend({
 
 你可以定义里的模型关联关系如下：
 
-```
+```js
 //  app/serializers/post.js
 export default DS.JSONSerialier.extend(DS.EmbeddedRecordsMixin, {  
   attrs: {
@@ -449,7 +449,7 @@ author: {
 
 如果你发生对象本身需要序列化与反序列化嵌入的关系，你可以使用属性`embedded`设置。
 
-```
+```js
 //  app/serializers/post.js
 export default DS.JSONSerialier.extend(DS.EmbeddedRecordsMixin, {  
   attrs: {
@@ -466,7 +466,7 @@ author: { embedded: ‘always’ }
 
 例如，你可能会发现你想读一个嵌入式记录提取时一个 JSON 有效载荷只包括关系的身份在序列化记录。这可能是使用`serialize: ids`。你也可以选择通过设置序列化的关系 `serialize: false`。
 
-```
+```js
 export default DS.JSONSerializer.extend(DS.EmbeddedRecordsMixin, {  
   attrs: {
     author: {
@@ -485,7 +485,7 @@ export default DS.JSONSerializer.extend(DS.EmbeddedRecordsMixin, {
 
 如果你没有重写`attrs`去指定模型的关联关系，那么`EmbeddedRecordsMixin`会有如下的默认行为：
 
-```
+```js
 belongsTo：{serialize: ‘id’, deserialize: ‘id’ }  
 hasMany: { serialize: false, deserialize: ‘ids’ } 
 ```
@@ -500,7 +500,7 @@ hasMany: { serialize: false, deserialize: ‘ids’ }
 
 知道规范化 JSON 数据对 Ember Data 来说是非常重要的，如果模型属性名不符合 Ember Data 规范这些属性值将不会自动更新。如果返回的数据没有在模型中指定那么这些数据将会被忽略。比如下面的模型定义，`this.store.push()`方法接受的格式为第二段代码所示。
 
-```
+```js
 //   app/models/post.js
 import DS from 'ember-data';  
 export default DS.Model.extend({  
@@ -511,7 +511,7 @@ export default DS.Model.extend({
 }); 
 ```
 
-```
+```js
 {
   data: {
     id: "1",

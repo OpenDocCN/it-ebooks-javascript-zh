@@ -7,7 +7,7 @@ Ember 提供的表单元素都是经过封装的，封装成了`view`组件。�
 
 ### 1，`input`助手
 
-```
+```js
 {{! //app/templates/form-helper.hbs }}
 {{input name="username" placeholder="your name"}} 
 ```
@@ -16,7 +16,7 @@ Ember 提供的表单元素都是经过封装的，封装成了`view`组件。�
 **注意：对于使用在`input`助手上的属性是不是使用双引号括住是有区别的。比如`value='helloworld'`和`value=helloworld`渲染之后的结果是不一样的，第一种写法是直接把"helloworld"这个字符串赋值设置到`value`上，第二种写法是从上下文获取变量 helloworld 的值再设置到`value`上，通常是在`controller`或者`route`设置的值。**
 看下面 2 行代码的演示结果：
 
-```
+```js
 {{input name="username" placeholder="your name" value="model.helloworld"}}
 <br><br>  
 {{input name="username" placeholder="your name" value=model.helloworld}} 
@@ -24,7 +24,7 @@ Ember 提供的表单元素都是经过封装的，封装成了`view`组件。�
 
 修改对应的`route`类，重写`model`回调，返回一个字符串；或者你可以在模板对应的`controller`类设置。比如下面的第二段代码（使用命令`ember generate controller form-helper`得到模板对应的`controller`类。 ）。
 
-```
+```js
 // app/routes/form-helper.js
 
 import Ember from 'ember';
@@ -38,7 +38,7 @@ export default Ember.Route.extend({
 
 在`controller`类初始化测试数据。
 
-```
+```js
 // app/controllers/form-helper.js
 
 import Ember from 'ember';
@@ -50,7 +50,7 @@ export default Ember.Controller.extend({
 
 对应的，如果你使用的是`controller`初始化测试数据，那么你的模板获取数据的方式就要稍微修改下。需要去掉前缀`model.`。`controller`不需要在回调中初始化测试数据，可用直接定义成`controller`的属性。
 
-```
+```js
 {{input name="username" placeholder="your name" value=helloworld}} 
 ```
 
@@ -60,12 +60,12 @@ export default Ember.Controller.extend({
 
 你可以想想下，我们平常写过的 javascript 代码，不是可用直接在`input`输入框上使用 javascript 的函数，同理的，`input`助手上可以使用 javascript 函数，不过使用方式有点差别，请看下面示例。比如按`enter`键触发指定的事件、失去焦点触发事件等等。 首先编写`input`输入框，获取`input`输入框的值有点不按常理=^=。在`controller`类获取`input`输入框的值是通过不用双引号的`value`属性获取的。
 
-```
+```js
 按 enter 键触发
 {{input value=getValueKey enter="getInputValue" name=getByName placeholder="请输入测试的内容"}} 
 ```
 
-```
+```js
 // app/controllers/form-helper.js
 
 import Ember from 'ember';
@@ -93,13 +93,13 @@ export default Ember.Controller.extend({
 
 `checkbox`这个表单元素也是经过 Ember 封装了，作为一个组件使用。使用过程需要注意的问题与前面的`input`是一样的，属性是不是使用双引号所起的作用是不一样的。
 
-```
+```js
 checkbox{{input type="checkbox" checked=isChecked }} 
 ```
 
 你可以在`controller`增加一个属性`isChecked`并设置为`true`，`checkbox`将默认为选中。
 
-```
+```js
 // app/controllers/form-helper.js
 
 import Ember from 'ember';
@@ -116,7 +116,7 @@ export default Ember.Controller.extend({
 
 ### 4，`textarea`助手
 
-```
+```js
 {{textarea value=key cols="80" rows="3" enter="getValueByV"}} 
 ```
 

@@ -8,7 +8,7 @@ WebGL 程序要求你编写必须编译和链接的着色器程序，然后你�
 
 顶点着色器：
 
-```
+```js
 uniform mat4 u_worldViewProjection;
 uniform vec3 u_lightWorldPos;
 uniform mat4 u_world;
@@ -37,7 +37,7 @@ void main() {
 
 片段着色器：
 
-```
+```js
 precision mediump float;
 
 varying vec4 v_position;
@@ -78,7 +78,7 @@ u_specular * litR.z * u_specularFactor)).rgb,
 
 你最终不得不像以下这样编写代码，来对所有要绘制的各种各样的值进行查找和设置。
 
-```
+```js
 // At initialization time
 var u_worldViewProjectionLoc   = gl.getUniformLocation(program, "u_worldViewProjection");
 var u_lightWorldPosLoc = gl.getUniformLocation(program, "u_lightWorldPos");
@@ -147,7 +147,7 @@ gl.drawArrays(...);
 
 这里有许多方法可以用来简化它。其中一项建议是要求 WebGL 告诉我们所有的制服和位置，然后设置函数，来帮助我们建立它们。然后我们可以通过 JavaScript 对象来使设置我们的设置更加容易。如果还是不清楚，我们的代码将会跟以下代码类似
 
-```
+```js
 // At initialiation time
 var uniformSetters = createUniformSetters(gl, program);
 var attribSetters  = createAttributeSetters(gl, program);
@@ -189,7 +189,7 @@ gl.drawArrays(...);
 
 你甚至可以使用多个 JavaScript 对象，如果那样适合你的话。如下所示
 
-```
+```js
 // At initialiation time
 var uniformSetters = createUniformSetters(gl, program);
 var attribSetters  = createAttributeSetters(gl, program);
@@ -264,7 +264,7 @@ objects.forEach(function(object) {
 
 让我们向前更进一小步。在上面代码中，我们设置了一个拥有我们创建的缓冲区的变量 `attribs`。在代码中不显示设置这些缓冲区的代码。例如，如果你想要设置位置，法线和纹理坐标，你可能会需要这样的代码
 
-```
+```js
 // a single triangle
 var positions = [0, -10, 0, 10, 10, 0, -10, 10, 0];
 var texcoords = [0.5, 0, 1, 1, 0, 1];
@@ -285,7 +285,7 @@ gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW);
 
 看起来像一种我们也可以简化的模式。
 
-```
+```js
  // a single triangle
 var arrays = {
    position: { numComponents: 3, data: [0, -10, 0, 10, 10, 0, -10, 10, 0], },
@@ -298,7 +298,7 @@ var bufferInfo = createBufferInfoFromArrays(gl, arrays);
 
 更短！现在我们可以在渲染时间这样做
 
-```
+```js
 // Setup all the needed buffers and attributes.
 setBuffersAndAttributes(gl, attribSetters, bufferInfo);
 
@@ -314,7 +314,7 @@ gl.drawArrays(gl.TRIANGLES, 0, bufferInfo.numElements);
 
 如果我们有 indices，这可能会奏效。setAttribsAndBuffers 将会设置所有的属性，同时用你的 `indices` 来设置 `ELEMENT-ARRAY-BUFFER`。 所以你可以调用 `gl.drawElements`.
 
-```
+```js
 // an indexed quad
 var arrays = {
    position: { numComponents: 3, data: [0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0], },
@@ -328,7 +328,7 @@ var bufferInfo = createBufferInfoFromTypedArray(gl, arrays);
 
 同时在渲染时，我们可以调用 `gl.drawElements`，而不是 `gl.drawArrays`。
 
-```
+```js
 // Setup all the needed buffers and attributes.
 setBuffersAndAttributes(gl, attribSetters, bufferInfo);
 
@@ -344,7 +344,7 @@ gl.drawElements(gl.TRIANGLES, bufferInfo.numElements, gl.UNSIGNED_SHORT, 0);
 
 `createBufferInfoFromArrays` 基本上使一个对象与如下代码相似
 
-```
+```js
  bufferInfo = {
    numElements: 4,// or whatever the number of elements is
    indices: WebGLBuffer,  // this property will not exist if there are no indices
@@ -360,7 +360,7 @@ gl.drawElements(gl.TRIANGLES, bufferInfo.numElements, gl.UNSIGNED_SHORT, 0);
 
 最后我们可以进展到我之前认为可能太远的地步。给出的 `position` 几乎总是拥有 3 个组件 (x, y, z)，同时 `texcoords` 几乎总是拥有 2 个组件，indices 几乎总是有 3 个组件，同时 normals 总是有 3 个组件，我们就可以让系统来猜想组件的数量。
 
-```
+```js
 // an indexed quad
 var arrays = {
    position: [0, 0, 0, 10, 0, 0, 0, 10, 0, 10, 10, 0],
@@ -380,7 +380,7 @@ var arrays = {
 
 如果想要寻找更多的模式，如下所示
 
-```
+```js
 var program = createProgramFromScripts(gl, ["vertexshader", "fragmentshader"]);
 var uniformSetters = createUniformSetters(gl, program);
 var attribSetters  = createAttributeSetters(gl, program); 
@@ -388,13 +388,13 @@ var attribSetters  = createAttributeSetters(gl, program);
 
 让我们将上述代码简化成如下代码
 
-```
+```js
 var programInfo = createProgramInfo(gl, ["vertexshader", "fragmentshader"]); 
 ```
 
 它将返回与下面代码类似的东西
 
-```
+```js
 programInfo = {
    program: WebGLProgram,  // program we just compiled
    uniformSetters: ...,// setters as returned from createUniformSetters,
@@ -416,13 +416,13 @@ programInfo = {
 
 除了少数例外情况，首先要意识到的东西是，WebGL 就像某人写的包含某个函数，而不是向函数中传递大量参数，相反，你有一个独自的函数来绘制东西，同时有 70 + 函数来为一个函数设置状态。因此，例如假设你有一个可以绘制一个圆的函数。你可以像如下一样编写程序
 
-```
+```js
 function drawCircle(centerX, centerY, radius, color) { ... } 
 ```
 
 或者你可以像如下一样编写代码
 
-```
+```js
 var centerX;
 var centerY;
 var radius;
@@ -488,7 +488,7 @@ WebGL 以第二种方式工作。函数，诸如 `gl.createBuffer`, `gl.bufferDa
 
 所以这里是代码。我们的着色器，与从我们的[角度看示例](http://webglfundamentals.org/webgl/lessons/webgl-3d-perspective.html)的一个简单着色器相同，除了我们已经通过添加另外一个 `u-colorMult` 来增加顶点颜色。
 
-```
+```js
 // Passed in from the vertex shader.
 varying vec4 v_color;
 
@@ -501,7 +501,7 @@ void main() {
 
 在初始化时
 
-```
+```js
 // Our uniforms for each thing we want to draw
 var sphereUniforms = {
   u_colorMult: [0.5, 1, 0.5, 1],
@@ -524,7 +524,7 @@ var coneTranslation   = [ 40, 0, 0];
 
 在绘制时
 
-```
+```js
 var sphereXRotation =  time;
 var sphereYRotation =  time;
 var cubeXRotation   = -time;
@@ -602,7 +602,7 @@ gl.drawArrays(gl.TRIANGLES, 0, coneBufferInfo.numElements);
 
 所以，一个简单的简化可能会绘制出一个数组的东西，同时在这个数组中将 3 个东西放在一起。
 
-```
+```js
 var objectsToDraw = [
   {
 programInfo: programInfo,
@@ -624,7 +624,7 @@ uniforms: coneUniforms,
 
 在绘制时，我们仍然需要更新矩阵
 
-```
+```js
 var sphereXRotation =  time;
 var sphereYRotation =  time;
 var cubeXRotation   = -time;
@@ -657,7 +657,7 @@ coneYRotation);
 
 但是这个绘制代码现在只是一个简单的循环
 
-```
+```js
 // ------ Draw the objects --------
 
 objectsToDraw.forEach(function(object) {
@@ -685,7 +685,7 @@ objectsToDraw.forEach(function(object) {
 
 所以，一个很简单的优化会与以下代码类似
 
-```
+```js
 var lastUsedProgramInfo = null;
 var lastUsedBufferInfo = null;
 
@@ -721,7 +721,7 @@ setBuffersAndAttributes(gl, programInfo.attribSetters, bufferInfo);
 
 这次让我们来绘制更多的对象。与之前的仅仅 3 个东西不同，让我们做一系列的东西来绘制更大的东西。
 
-```
+```js
 // put the shapes in an array so it's easy to pick them at random
 var shapes = [
   sphereBufferInfo,
@@ -762,7 +762,7 @@ uniforms: object.uniforms,
 
 在渲染时
 
-```
+```js
 // Compute the matrices for each object.
 objects.forEach(function(object) {
   object.uniforms.u_matrix = computeMatrix(
@@ -810,19 +810,19 @@ objects.forEach(function(object) {
 
 使用场景图，你可以将月球看做是地球的孩子，然后简单的绕地球转动。场景图很注意地球围绕太阳转的事实。它是通过节点和它走的矩阵相乘来完成的。
 
-```
+```js
 worldMatrix = greatGrandParent * grandParent * parent * self(localMatrix) 
 ```
 
 在具体的条款中，我们的宇宙模型可能是
 
-```
+```js
 worldMatrixForMoon = galaxyMatrix * starMatrix * planetMatrix * moonMatrix; 
 ```
 
 我们可以使用一个有效的递归函数来非常简单的完成这些
 
-```
+```js
 function computeWorldMatrix(currentNode, parentWorldMatrix) {
 // compute our world matrix by multplying our local matrix with
 // our parent's world matrix.
@@ -843,7 +843,7 @@ computeWorldMatrix(child, worldMatrix);
 
 制作场景图非常简单。让我们定义一个简单的`节点`对象。还有无数个方式可以组织场景图，我不确定哪一种方式是最好的。最常见的是有一个可以选择绘制东西的字段。
 
-```
+```js
  var node = {
    localMatrix: ...,  // the "local" matrix for this node
    worldMatrix: ...,  // the "world" matrix for this node
@@ -854,7 +854,7 @@ computeWorldMatrix(child, worldMatrix);
 
 让我们来做一个太阳系场景图。我不准备使用花式纹理或者类似的东西，因为它会使例子变的混乱。首先让我们来制作一些功能来帮助管理这些节点。首先我们将做一个节点类
 
-```
+```js
 var Node = function() {
   this.children = [];
   this.localMatrix = makeIdentity();
@@ -864,7 +864,7 @@ var Node = function() {
 
 我们给出一种设置一个节点的父母的方式
 
-```
+```js
 Node.prototype.setParent = function(parent) {
   // remove us from our parent
   if (this.parent) {
@@ -884,7 +884,7 @@ parent.children.append(this);
 
 这里，这里的代码是从基于它们的父子关系的本地矩阵计算世界矩阵。如果我们从父母和递归访问它孩子开始，我们可以计算它们的世界矩阵。
 
-```
+```js
 Node.prototype.updateWorldMatrix = function(parentWorldMatrix) {
   if (parentWorldMatrix) {
 // a matrix was passed in so do the math and
@@ -905,7 +905,7 @@ child.updateWorldMatrix(worldMatrix);
 
 让我们仅仅做太阳，地球，月亮，来保持场景图简单。当然我们会使用假的距离，来使东西适合屏幕。我们将只使用一个单球体模型，然后太阳为淡黄色，地球为蓝 - 淡绿色，月球为淡灰色。如果你对 `drawInfo`，`bufferInfo` 和 `programInfo` 并不熟悉，你可以查看前一篇文章。
 
-```
+```js
 // Let's make all the nodes
 var sunNode = new Node();
 sunNode.localMatrix = makeTranslation(0, 0, 0);  // sun at the center
@@ -943,7 +943,7 @@ u_colorMult:   [0.1, 0.1, 0.1, 1],
 
 现在我们已经得到了节点，让我们来连接它们。
 
-```
+```js
 // connect the celetial objects
 moonNode.setParent(earthNode);
 earthNode.setParent(sunNode); 
@@ -951,7 +951,7 @@ earthNode.setParent(sunNode);
 
 我们会再一次做一个对象的列表和一个要绘制的对象的列表。
 
-```
+```js
 var objects = [
   sunNode,
   earthNode,
@@ -967,7 +967,7 @@ var objectsToDraw = [
 
 在渲染时，我们将会通过稍微旋转它来更新每一个对象的本地矩阵。
 
-```
+```js
 // update the local matrices for each object.
 matrixMultiply(sunNode.localMatrix, makeYRotation(0.01), sunNode.localMatrix);
 matrixMultiply(earthNode.localMatrix, makeYRotation(0.01), earthNode.localMatrix);
@@ -976,13 +976,13 @@ matrixMultiply(moonNode.localMatrix, makeYRotation(0.01), moonNode.localMatrix);
 
 现在，本地矩阵都更新了，我们会更新所有的世界矩阵。
 
-```
+```js
 sunNode.updateWorldMatrix(); 
 ```
 
 最后，我们有了世界矩阵，我们需要将它们相乘来为每个对象获取一个世界观投射矩阵。
 
-```
+```js
 // Compute all the matrices for rendering
 objects.forEach(function(object) {
   object.drawInfo.uniforms.u_matrix = matrixMultiply(object.worldMatrix, viewProjectionMatrix);
@@ -995,7 +995,7 @@ objects.forEach(function(object) {
 
 你将会注意到所有的行星都是一样的尺寸。我们试着让地球更大点。
 
-```
+```js
 earthNode.localMatrix = matrixMultiply(
 makeScale(2, 2, 2),   // make the earth twice as large
 makeTranslation(100, 0, 0));  // earth 100 units from the sun 
@@ -1005,7 +1005,7 @@ makeTranslation(100, 0, 0));  // earth 100 units from the sun
 
 哦。月亮也越来越大。为了解决这个问题，我们可以手动的缩小月亮。但是一个更好的解决方法是在我们的场景图中增加更多的节点。而不仅仅是如下图所示。
 
-```
+```js
  sun
    |
   earth
@@ -1015,7 +1015,7 @@ makeTranslation(100, 0, 0));  // earth 100 units from the sun
 
 我们将改变它为
 
-```
+```js
  solarSystem
    ||
    |   sun
@@ -1031,7 +1031,7 @@ makeTranslation(100, 0, 0));  // earth 100 units from the sun
 
 这将会使地球围绕太阳系旋转，但是我们可以单独的旋转和缩放太阳，它不会影响地球。同样，地球与月球可以单独旋转。让我们给`太阳系`，`地球轨道`和`月球轨道`设置更多的节点。
 
-```
+```js
 var solarSystemNode = new Node();
 var earthOrbitNode = new Node();
 earthOrbitNode.localMatrix = makeTranslation(100, 0, 0);  // earth orbit 100 units from the sun
@@ -1045,7 +1045,7 @@ moonOrbitNode.localMatrix = makeTranslation(20, 0, 0);  // moon 20 units from th
 
 现在连接它们，如下所示
 
-```
+```js
 // connect the celetial objects
 sunNode.setParent(solarSystemNode);
 earthOrbitNode.setParent(solarSystemNode);
@@ -1072,7 +1072,7 @@ moonNode.setParent(moonOrbitNode);
 
 目前我们有一个 `localMatrix`，我们在每一帧都修改它。但是有一个问题，即在每一帧中我们数学都将收集一点错误。有许多可以解决这种被称为*邻位的正常化矩阵*的数学的方式，但是，甚至是它都不总是奏效。例如，让我们想象我们缩减零。让我们为一个值 `x` 这样做。
 
-```
+```js
 x = 246;   // frame #0, x = 246
 
 scale = 1;
@@ -1097,7 +1097,7 @@ x = x * scale  // frame #5, x = 0  OOPS!
 
 现在我们来创建一个源。一个常见的源是那些提供转化，旋转和缩放的，如下所示。
 
-```
+```js
 var TRS = function() {
   this.translation = [0, 0, 0];
   this.rotation = [0, 0, 0];
@@ -1122,7 +1122,7 @@ TRS.prototype.getMatrix = function(dst) {
 
 我们可以像下面一样使用它
 
-```
+```js
 // at init time making a node with a source
 var someTRS  = new TRS();
 var someNode = new Node(someTRS);

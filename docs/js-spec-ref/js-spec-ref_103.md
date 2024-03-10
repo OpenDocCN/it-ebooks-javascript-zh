@@ -7,7 +7,7 @@
 
 `path.join`方法用于连接路径。该方法的主要用途在于，会正确使用当前系统的路径分隔符，Unix 系统是”/“，Windows 系统是”\“。
 
-```
+```js
 var path = require('path');
 path.join(mydir, "foo");
 ```
@@ -20,7 +20,7 @@ path.join(mydir, "foo");
 
 它可以接受多个参数，依次表示所要进入的路径，直到将最后一个参数转为绝对路径。如果根据参数无法得到绝对路径，就以当前所在路径作为基准。除了根目录，该方法的返回值都不带尾部的斜杠。
 
-```
+```js
 // 格式
 path.resolve([from ...], to)
 
@@ -30,7 +30,7 @@ path.resolve('foo/bar', '/tmp/file/', '..', 'a/../subfile')
 
 上面代码的实例，执行效果类似下面的命令。
 
-```
+```js
 $ cd foo/bar
 $ cd /tmp/file/
 $ cd ..
@@ -40,7 +40,7 @@ $ pwd
 
 更多例子。
 
-```
+```js
 path.resolve('/foo/bar', './baz')
 // '/foo/bar/baz'
 

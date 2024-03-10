@@ -8,7 +8,7 @@
 
 先给出代码
 
-```
+```js
 find : function(selector) {
     if(!selector) return;
     var context = this.selector;
@@ -37,7 +37,7 @@ get : function(num) {
 
 明白了这个后就很容易能写出这 4 个方法
 
-```
+```js
 find : function(selector) {
     if(!selector) return;
     var context = this.selector;
@@ -55,7 +55,7 @@ find : function(selector) {
 
 所以最后 return 就变为 `new Kodo(context + ' ' + selector);` 虽然效率不一定高,总是一种解决思路不是吗?
 
-```
+```js
 first : function() {
     return new Kodo(this[0])
 },
@@ -85,7 +85,7 @@ find 方法比较难解决,之后这 4 个就很容易了,first,last,eq,分别�
 
 所以我们只需要写好 ajax 最后把你想要公开的接口放在 Kodo 上即可
 
-```
+```js
 Kodo.get = function(url,sucBack,complete) {
     var options = {
         url : url,

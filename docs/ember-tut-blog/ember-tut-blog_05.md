@@ -6,7 +6,7 @@
 
 `Ember`可以察觉所有属性的变化，包括计算属性。观察者是非常有用的，特别是计算属性绑定之后需要同步的时候。 观察者经常被 Ember 开发过度使用。`Ember`框架本身已经大量使用观察者，但是对于大多数的开发者面对开发问题时使用计算属性是更适合的解决方案。 使用方式：可以用`Ember.observer`创建一个对象为观察者。
 
-```
+```js
 // Observer 对于 Emberjs 来说非常重要，前面你看到的很多代码都是与它有关系，计算属性之所以能更新也是因为它
 Person = Ember.Object.extend({  
   firstName: null,
@@ -41,7 +41,7 @@ console.log('fullName = ' + person.get('fullName'));
 
 `Ember`还为开发者提供了另一种使用观察者的方式。这种方式使你可以在类定义之外为某个计算属性增加一个观察者。
 
-```
+```js
 person.addObserver('fullName', function() {  
     // deal with the change…
 }); 
@@ -51,7 +51,7 @@ person.addObserver('fullName', function() {
 
 目前，观察者在`Ember`中是同步的（不是笔误，官网就是这么说的`Observers in Ember are currently synchronous.`）。这就意味着只要计算属性一发生变化就会触发观察者。也因为这个原因很容易就会引入这样的`bug`在计算属性没有同步的时候。比如下面的代码；
 
-```
+```js
 Person.reopen({  
   lastNameChanged: Ember.observer('lastName', function() {
     // The observer depends on lastName and so does fullName. Because observers
@@ -64,7 +64,7 @@ Person.reopen({
 
 然而由于同步的原因如果你的的观察者同时观察多个属性，就会导致观察者执行多次。
 
-```
+```js
 person = Ember.Object.extend({  
   firstName: null,
   lastName: null,
@@ -98,7 +98,7 @@ person.set('lastName', '[lastName]');
 
 显然上述代码执行了两次`set()`所以观察者也会执行 2 次，但是如果开发中需要设置只能执行一次观察出呢？Ember 提供了一个`once()`方法，这个方法会在下一次循环所有绑定属性都同步的时候执行。
 
-```
+```js
 Person = Ember.Object.extend({  
   firstName: null,
   lastName: null,
@@ -141,7 +141,7 @@ person.set('lastName', '[lastName]');
 
 观察者一直到对象初始化完成之后才会执行。 如果你想观察者在对象初始化的时候就执行你必须要手动调用`Ember.on()`方法。这个方法会在对象初始化之后就执行。
 
-```
+```js
 Person = Ember.Object.extend({  
   salutation:null,
   init() {

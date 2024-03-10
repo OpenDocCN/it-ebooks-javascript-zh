@@ -8,7 +8,7 @@
 
 **注意:** 定时处理**不是** ECMAScript 的标准，它们在 [DOM (文档对象模型)](http://en.wikipedia.org/wiki/Document_Object_Model) 被实现。
 
-```
+```js
 function foo() {}
 var id = setTimeout(foo, 1000); // 返回一个大于零的数字 
 ```
@@ -19,7 +19,7 @@ var id = setTimeout(foo, 1000); // 返回一个大于零的数字
 
 作为第一个参数的函数将会在*全局作用域*中执行，因此函数内的 `this` 将会指向这个全局对象。
 
-```
+```js
 function Foo() {
     this.value = 42;
     this.method = function() {
@@ -39,7 +39,7 @@ new Foo();
 
 当回调函数的执行被阻塞时，`setInterval` 仍然会发布更多的回调指令。在很小的定时间隔情况下，这会导致回调函数被堆积起来。
 
-```
+```js
 function foo(){
     // 阻塞执行 1 秒
 }
@@ -54,7 +54,7 @@ setInterval(foo, 100);
 
 最简单也是最容易控制的方案，是在回调函数内部使用 `setTimeout` 函数。
 
-```
+```js
 function foo(){
     // 阻塞执行 1 秒
     setTimeout(foo, 100);
@@ -68,7 +68,7 @@ foo();
 
 可以通过将定时时产生的 ID 标识传递给 `clearTimeout` 或者 `clearInterval` 函数来清除定时， 至于使用哪个函数取决于调用的时候使用的是 `setTimeout` 还是 `setInterval`。
 
-```
+```js
 var id = setTimeout(foo, 1000);
 clearTimeout(id); 
 ```
@@ -77,7 +77,7 @@ clearTimeout(id);
 
 由于没有内置的清除所有定时器的方法，可以采用一种暴力的方式来达到这一目的。
 
-```
+```js
 // 清空"所有"的定时器
 for(var i = 1; i < 1000; i++) {
     clearTimeout(i);
@@ -92,7 +92,7 @@ for(var i = 1; i < 1000; i++) {
 
 **注意:** 由于定时器函数不是 ECMAScript 的标准，如何解析字符串参数在不同的 JavaScript 引擎实现中可能不同。 事实上，微软的 JScript 会使用 `Function` 构造函数来代替 `eval` 的使用。
 
-```
+```js
 function foo() {
     // 将会被调用
 }
@@ -110,7 +110,7 @@ bar();
 
 建议**不要**在调用定时器函数时，为了向回调函数传递参数而使用字符串的形式。
 
-```
+```js
 function foo(a, b, c) {}
 
 // 不要这样做

@@ -19,7 +19,7 @@
 
 所谓“包装对象”，就是分别与数值、字符串、布尔值相对应的 Number、String、Boolean 三个原生对象。这三个原生对象可以把原始类型的值变成（包装成）对象。
 
-```
+```js
 var v1 = new Number(123);
 var v2 = new String("abc");
 var v3 = new Boolean(true);
@@ -27,7 +27,7 @@ var v3 = new Boolean(true);
 
 上面代码根据原始类型的值，生成了三个对象，与原始值的类型不同。这用 typeof 运算符就可以看出来。
 
-```
+```js
 typeof v1 // "object"
 typeof v2 // "object"
 typeof v3 // "object"
@@ -43,7 +43,7 @@ JavaScript 设计包装对象的最大目的，首先是使得 JavaScript 的“
 
 Number、String 和 Boolean 这三个原生对象，既可以当作构造函数使用（即加上 new 关键字，生成包装对象实例），也可以当作工具方法使用（即不加 new 关键字，直接调用），这相当于生成实例后再调用 valueOf 方法，常常用于将任意类型的值转为某种原始类型的值。
 
-```
+```js
 Number(123) // 123
 
 String("abc") // "abc"
@@ -61,7 +61,7 @@ Boolean(true) // true
 
 valueOf 方法返回包装对象实例对应的原始类型的值。
 
-```
+```js
 new Number(123).valueOf()
 // 123
 
@@ -76,7 +76,7 @@ new Boolean("true").valueOf()
 
 toString 方法返回该实例对应的原始类型值的字符串形式。
 
-```
+```js
 new Number(123).toString()
 // "123"
 
@@ -91,14 +91,14 @@ new Boolean("true").toString()
 
 原始类型可以自动调用定义在包装对象上的方法和属性。比如 String 对象的实例有一个 length 属性，返回字符串的长度。
 
-```
+```js
 var v = new String("abc");
 v.length // 3
 ```
 
 所有原始类型的字符串，都可以直接使用这个 length 属性。
 
-```
+```js
 "abc".length // 3
 ```
 
@@ -108,7 +108,7 @@ abc 是一个字符串，属于原始类型，本身不能调用任何方法和�
 
 这种原始类型值可以直接调用的方法还有很多（详见后文对各包装对象的介绍），除了前面介绍过的 valueOf 和 stringOf 方法，还包括三个包装对象各自定义在实例上的方法。。
 
-```
+```js
 'abc'.charAt === String.prototype.charAt
 // true
 ```
@@ -117,7 +117,7 @@ abc 是一个字符串，属于原始类型，本身不能调用任何方法和�
 
 如果包装对象与原始类型值进行混合运算，包装对象会转化为原始类型（实际是调用自身的 valueOf 方法）。
 
-```
+```js
 new Number(123) + 123
 // 246
 
@@ -131,7 +131,7 @@ new String("abc") + "abc"
 
 比如，我们可以新增一个 double 方法，使得字符串和数字翻倍。
 
-```
+```js
 String.prototype.double = function (){
     return this.valueOf() + this.valueOf();
 };
@@ -151,7 +151,7 @@ Number.prototype.double = function (){
 
 但是，这种自定义方法和属性的机制，只能定义在包装对象的原型上，如果直接对原始类型的变量添加属性，则无效。
 
-```
+```js
 var s = "abc";
 
 s.p = 123;
@@ -166,7 +166,7 @@ s.p // undefined
 
 Boolean 对象是 JavaScript 的三个包装对象之一。作为构造函数，它主要用于生成布尔值的包装对象的实例。
 
-```
+```js
 var b = new Boolean(true);
 
 typeof b // "object"
@@ -175,7 +175,7 @@ b.valueOf() // true
 
 上面代码的变量 b 是一个 Boolean 对象的实例，它的类型是对象，值为布尔值 true。这种写法太繁琐，几乎无人使用，直接对变量赋值更简单清晰。
 
-```
+```js
 var b = true;
 ```
 
@@ -183,7 +183,7 @@ var b = true;
 
 特别要注意的是，所有对象的布尔运算结果都是 true。因此，false 对应的包装对象实例，布尔运算结果也是 true。
 
-```
+```js
 if (new Boolean(false)) {
     console.log("true"); 
 } // true
@@ -199,7 +199,7 @@ if (new Boolean(false).valueOf()) {
 
 Boolean 对象除了可以作为构造函数，还可以单独使用，将任意值转为布尔值。这时 Boolean 就是一个单纯的工具方法。
 
-```
+```js
 Boolean(undefined) // false
 Boolean(null) // false
 Boolean(0) // false
@@ -217,7 +217,7 @@ Boolean(/foo/) // true
 
 使用 not 运算符（!）也可以达到同样效果。
 
-```
+```js
 !!undefined // false
 !!null // false
 !!0 // false
@@ -233,7 +233,7 @@ Boolean(/foo/) // true
 
 综上所述，如果要获得一个变量对应的布尔值，有多种写法。
 
-```
+```js
 var a = "hello world";
 
 new Boolean(a).valueOf() // true
@@ -243,7 +243,7 @@ Boolean(a) // true
 
 最后，对于一些特殊值，Boolean 对象前面加不加 new，会得到完全相反的结果，必须小心。
 
-```
+```js
 if (Boolean(false)) 
         console.log('true'); // 无输出
 

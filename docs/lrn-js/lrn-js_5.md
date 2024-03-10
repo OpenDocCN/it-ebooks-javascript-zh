@@ -8,7 +8,7 @@
 
 这是一个简单的数组：
 
-```
+```js
 // 1, 1, 2, 3, 5 和 8 是数组中的元素
 var numbers = [1, 1, 2, 3, 5, 8]; 
 ```
@@ -19,7 +19,7 @@ var numbers = [1, 1, 2, 3, 5, 8];
 
 若你有一个数组，如何访问想要的特定元素？索引出现了。一个 **下标** 指向数组中的一个位置。正如其他大部分语言，索引逻辑上是一个接一个，但要注意第一个数组下标是 0。方括号[]被用来表示使用数组下标。
 
-```
+```js
 // 这是字符串构成的数组
 var fruits = ["apple", "banana", "pineapple", "strawberry"];
 
@@ -31,7 +31,7 @@ var banana = fruits[1];
 
 Exercise 定义变量使用数组的索引
 
-```
+```js
 var cars = ["Mazda", "Honda", "Chevy", "Ford"]
 var honda =
 var ford =
@@ -45,7 +45,7 @@ var mazda =
 
 数组有个属性称为长度，正如字面意思，这就是数组的长度。
 
-```
+```js
 var array = [1 , 2, 3];
 
 // 结果: l = 3
@@ -54,7 +54,7 @@ var l = array.length;
 
 Exercise 定义变量 a 为数组的长度
 
-```
+```js
 var array = [1, 1, 2, 3, 5, 8];
 var l = array.length;
 var a =

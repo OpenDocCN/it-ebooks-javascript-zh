@@ -41,7 +41,7 @@ JS 使用混合术语来描述能在标准中找到的对象，而不是那些�
 
 在 ES5 及更早版本中，对象字面量是“键/值对”的简单集合。这意味着在属性值被初始化时可能会有些重复，例如：
 
-```
+```js
 function createPerson(name, age) {
     return {
         name: name,
@@ -54,7 +54,7 @@ function createPerson(name, age) {
 
 在 ES6 中，你可以使用**属性初始化器**的速记法来消除对象名称与本地变量的重复情况。当对象的一个属性名称与本地变量名相同时，你可以简单书写名称而省略冒号与值。例如， `createPerson()` 可以像这样用 ES6 重写：
 
-```
+```js
 function createPerson(name, age) {
     return {
         name,
@@ -71,7 +71,7 @@ function createPerson(name, age) {
 
 ES6 同样改进了为对象字面量方法赋值的语法。在 ES5 及更早版本中，你必须指定一个名称并用完整的函数定义来为对象添加方法，如下：
 
-```
+```js
 var person = {
     name: "Nicholas",
     sayName: function() {
@@ -82,7 +82,7 @@ var person = {
 
 通过省略冒号与 `function` 关键字， ES6 将这个语法变得更简洁，这意味着你可以这样重写上个例子：
 
-```
+```js
 var person = {
     name: "Nicholas",
     sayName() {
@@ -99,7 +99,7 @@ var person = {
 
 在 ES5 及更早版本中，对象实例能使用“需计算的属性名”，只要用方括号表示法来代替小数点表示法即可。方括号允许你将变量或字符串字面量指定为属性名，而在字符串中允许存在作为标识符时会导致语法错误的特殊字符。这里有个范例：
 
-```
+```js
 var person = {},
     lastName = "last name";
 
@@ -114,7 +114,7 @@ console.log(person[lastName]);          // "Zakas"
 
 此外，你可以在对象字面量中将字符串字面量直接用作属性，就像这样：
 
-```
+```js
 var person = {
     "first name": "Nicholas"
 };
@@ -126,7 +126,7 @@ console.log(person["first name"]);      // "Nicholas"
 
 在 ES6 中，需计算属性名是对象字面量语法的一部分，它用的也是方括号表示法，与此前在对象实例上的用法一致。例如：
 
-```
+```js
 var lastName = "last name";
 
 var person = {
@@ -140,7 +140,7 @@ console.log(person[lastName]);          // "Zakas"
 
 对象字面量内的方括号表明该属性名需要计算，其结果是一个字符串。这意味着其中可以包含表达式，像下面这样：
 
-```
+```js
 var suffix = " name";
 
 var person = {
@@ -164,7 +164,7 @@ ES 从 ES5 开始就有一个设计意图：避免创建新的全局函数，避
 
 ES6 引入了 `Object.is()` 方法来弥补严格相等运算符残留的怪异点。此方法接受两个参数，并会在二者的值相等时返回 `true` ，此时要求二者类型相同并且值也相等。这有个例子：
 
-```
+```js
 console.log(+0 == -0);              // true
 console.log(+0 === -0);             // true
 console.log(Object.is(+0, -0));     // false
@@ -187,7 +187,7 @@ console.log(Object.is(5, "5"));     // false
 
 **混入**（ **Mixin** ）是在 JS 中组合对象时最流行的模式。在一次混入中，一个对象会从另一个对象中接收属性与方法。很多 JS 的库中都有类似下面的混入方法：
 
-```
+```js
 function mixin(receiver, supplier) {
     Object.keys(supplier).forEach(function(key) {
         receiver[key] = supplier[key];
@@ -199,7 +199,7 @@ function mixin(receiver, supplier) {
 
 `mixin()` 函数在 `supplier` 对象的自有属性上进行迭代，并将这些属性复制到 `receiver` 对象（浅复制，当属性值为对象时，仅复制其引用）。这样 `receiver` 对象就能获得新的属性而无须使用继承，正如下面代码：
 
-```
+```js
 function EventTarget() { /*...*/ }
 EventTarget.prototype = {
     constructor: EventTarget,
@@ -221,7 +221,7 @@ myObject.emit("somethingChanged");
 
 你可以在任意曾使用 `mixin()` 函数的地方使用 `Object.assign()` ，此处有个例子：
 
-```
+```js
 function EventTarget() { /*...*/ }
 EventTarget.prototype = {
     constructor: EventTarget,
@@ -237,7 +237,7 @@ myObject.emit("somethingChanged");
 
 `Object.assign()` 方法接受任意数量的供应者，而接收者会按照供应者在参数中的顺序来依次接收它们的属性。这意味着在接收者中，第二个供应者的属性可能会覆盖第一个供应者的，这在下面的代码片段中就发生了：
 
-```
+```js
 var receiver = {};
 
 Object.assign(receiver,
@@ -262,7 +262,7 @@ console.log(receiver.name);     // "file.js"
 > 
 > 需要记住 `Object.assign()` 并未在接收者上创建访问器属性，即使供应者拥有访问器属性。由于 `Object.assign()` 使用赋值运算符，供应者的访问器属性就会转变成接收者的数据属性，例如：
 > 
-> ```
+> ```js
 > var receiver = {},
 > supplier = {
 >   get name() {
@@ -284,7 +284,7 @@ console.log(receiver.name);     // "file.js"
 
 ES5 严格模式为重复的对象字面量属性引入了一个检查，若找到重复的属性名，就会抛出错误。例如，以下代码就有问题：
 
-```
+```js
 "use strict";
 
 var person = {
@@ -295,7 +295,7 @@ var person = {
 
 在 ES5 严格模式下运行时，第二个 `name` 属性会造成语法错误。但 ES6 移除了重复属性的检查，严格模式与非严格模式都不再检查重复的属性。当存在重复属性时，排在后面的属性的值会成为该属性的实际值，如下所示：
 
-```
+```js
 "use strict";
 
 var person = {
@@ -320,7 +320,7 @@ ES5 并没有定义对象属性的枚举顺序，而是把该问题留给了 JS 
 
 这里有个示例：
 
-```
+```js
 var obj = {
     a: 1,
     0: 1,
@@ -351,7 +351,7 @@ console.log(Object.getOwnPropertyNames(obj).join(""));     // "012acbd"
 
 ES6 通过添加 `Object.setPrototypeOf()` 方法而改变了这种假定，此方法允许你修改任意指定对象的原型。它接受两个参数：需要被修改原型的对象，以及将会成为前者原型的对象。例如：
 
-```
+```js
 let person = {
     getGreeting() {
         return "Hello";
@@ -383,7 +383,7 @@ console.log(Object.getPrototypeOf(friend) === dog);     // true
 
 正如前面提到的，原型对 JS 来说非常重要，而 ES6 也进行了很多工作来让它更易用。关于原型的另一项进步就是引入了 `super` 引用，这让在对象原型上的功能调用变得更容易。例如，若要覆盖对象实例的一个方法、但依然要调用原型上的同名方法，你可能会这么做：
 
-```
+```js
 let person = {
     getGreeting() {
         return "Hello";
@@ -417,7 +417,7 @@ console.log(Object.getPrototypeOf(friend) === dog);     // true
 
 调用原型上的方法时要记住使用 `Object.getPrototypeOf()` 与 `.call(this)` ，这有点复杂难懂，因此 ES6 才引入了 `super` 。简单来说， `super` 是指向当前对象的原型的一个指针，实际上就是 `Object.getPrototypeOf(this)` 的值。知道这些，你就可以像下面这样简化 `getGreeting()` 方法：
 
-```
+```js
 let friend = {
     getGreeting() {
         // 这相当于上个例子中的：
@@ -429,7 +429,7 @@ let friend = {
 
 此处调用 `super.getGreeting()` 等同于在上例的环境中使用 `Object.getPrototypeOf(this).getGreeting.call(this)` 。类似的，你能使用 `super` 引用来调用对象原型上的任何方法，只要这个引用是位于简写的方法之内。试图在方法简写之外的情况使用 `super` 会导致语法错误，正如下例：
 
-```
+```js
 let friend = {
     getGreeting: function() {
         // 语法错误
@@ -442,7 +442,7 @@ let friend = {
 
 当使用多级继承时， `super` 引用就是非常强大的，因为这种情况下 `Object.getPrototypeOf()` 不再适用于所有场景，例如：
 
-```
+```js
 let person = {
     getGreeting() {
         return "Hello";
@@ -469,7 +469,7 @@ console.log(relative.getGreeting());                // error!
 
 此问题在 ES5 中很难解决，但若使用 ES6 的 `super` ，就很简单了：
 
-```
+```js
 let person = {
     getGreeting() {
         return "Hello";
@@ -498,7 +498,7 @@ console.log(relative.getGreeting());                // "Hello, hi!"
 
 在 ES6 之前，“方法”的概念从未被正式定义，它此前仅指对象的函数属性（而非数据属性）。 ES6 则正式做出了定义：方法是一个拥有 `[[HomeObject]]` 内部属性的函数，此内部属性指向该方法所属的对象。研究以下例子：
 
-```
+```js
 let person = {
 
     // 方法
@@ -517,7 +517,7 @@ function shareGreeting() {
 
 任何对 `super` 的引用都会使用 `[[HomeObject]]` 属性来判断要做什么。第一步是在 `[[HomeObject]]` 上调用 `Object.getPrototypeOf()` 来获取对原型的引用；接下来，在该原型上查找同名函数；最后，创建 `this` 绑定并调用该方法。这里有个例子：
 
-```
+```js
 let person = {
     getGreeting() {
         return "Hello";

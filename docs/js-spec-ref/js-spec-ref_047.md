@@ -37,7 +37,7 @@ IndexedDB 具有以下特点。
 
 下面的代码用来检查浏览器是否支持这个 API。
 
-```
+```js
 if("indexedDB" in window) {
     // 支持
 } else {
@@ -49,7 +49,7 @@ if("indexedDB" in window) {
 
 浏览器原生提供 indexedDB 对象，作为开发者的操作接口。indexedDB.open 方法用于打开数据库。
 
-```
+```js
 var openRequest = indexedDB.open("test",1);
 ```
 
@@ -66,7 +66,7 @@ open 方法的第一个参数是数据库名称，格式为字符串，不可省
 
 根据不同的需要，对上面 4 种事件设立回调函数。
 
-```
+```js
 var openRequest = indexedDB.open("test",1);
 var db;
 
@@ -95,7 +95,7 @@ openRequest.onerror = function(e) {
 
 createObjectStore 方法用于创建存放数据的“对象仓库”（object store），类似于传统关系型数据库的表格。
 
-```
+```js
 db.createObjectStore("firstOS");
 ```
 
@@ -103,7 +103,7 @@ db.createObjectStore("firstOS");
 
 createObjectStore 方法还可以接受第二个对象参数，用来设置“对象仓库”的属性。
 
-```
+```js
 db.createObjectStore("test", { keyPath: "email" }); 
 db.createObjectStore("test2", { autoIncrement: true });
 ```
@@ -114,7 +114,7 @@ db.createObjectStore("test2", { autoIncrement: true });
 
 objectStoreNames 属性返回一个 DOMStringList 对象，里面包含了当前数据库所有“对象仓库”的名称。可以使用 DOMStringList 对象的 contains 方法，检查数据库是否包含某个“对象仓库”。
 
-```
+```js
 if(!db.objectStoreNames.contains("firstOS")) {
      db.createObjectStore("firstOS");
 }
@@ -126,7 +126,7 @@ if(!db.objectStoreNames.contains("firstOS")) {
 
 transaction 方法用于创建一个数据库事务。向数据库添加数据之前，必须先创建数据库事务。
 
-```
+```js
 var t = db.transaction(["firstOS"],"readwrite");
 ```
 
@@ -134,7 +134,7 @@ transaction 方法接受两个参数：第一个参数是一个数组，里面�
 
 transaction 方法返回一个事务对象，该对象的 objectStore 方法用于获取指定的对象仓库。
 
-```
+```js
 var t = db.transaction(["firstOS"],"readwrite");
 
 var store = t.objectStore("firstOS");
@@ -146,7 +146,7 @@ transaction 方法有三个事件，可以用来定义回调函数。
 *   complete：事务完成。
 *   error：事务出错。
 
-```
+```js
 var transaction = db.transaction(["note"], "readonly");  
 
 transaction.oncomplete = function(event) {
@@ -160,7 +160,7 @@ transaction.oncomplete = function(event) {
 
 获取对象仓库以后，就可以用 add 方法往里面添加数据了。
 
-```
+```js
 var store = t.objectStore("firstOS");
 
 var o = {p: 123};
@@ -172,7 +172,7 @@ add 方法的第一个参数是所要添加的数据，第二个参数是这条�
 
 add 方法是异步的，有自己的 success 和 error 事件，可以对这两个事件指定回调函数。
 
-```
+```js
 var request = store.add(o,1);
 
 request.onerror = function(e) {
@@ -189,7 +189,7 @@ request.onsuccess = function(e) {
 
 读取数据使用 get 方法，它的参数是数据的键名。
 
-```
+```js
 var t = db.transaction(["test"], "readonly");
 var store = t.objectStore("test");
 
@@ -198,7 +198,7 @@ var ob = store.get(x);
 
 get 方法也是异步的，会触发自己的 success 和 error 事件，可以对它们指定回调函数。
 
-```
+```js
 var ob = store.get(x);
 
 ob.onsuccess = function(e) {
@@ -208,7 +208,7 @@ ob.onsuccess = function(e) {
 
 从创建事务到读取数据，所有操作方法也可以写成下面这样链式形式。
 
-```
+```js
 db.transaction(["test"], "readonly")
   .objectStore("test")
   .get(X)
@@ -219,7 +219,7 @@ db.transaction(["test"], "readonly")
 
 put 方法的用法与 add 方法相近。
 
-```
+```js
 var o = { p:456 };
 var request = store.put(o, 1);
 ```
@@ -228,7 +228,7 @@ var request = store.put(o, 1);
 
 删除记录使用 delete 方法。
 
-```
+```js
 var t = db.transaction(["people"], "readwrite");
 var request = t.objectStore("people").delete(thisId);
 ```
@@ -239,7 +239,7 @@ delete 方法的参数是数据的键名。另外，delete 也是一个异步操
 
 如果想要遍历数据，就要 openCursor 方法，它在当前对象仓库里面建立一个读取光标（cursor）。
 
-```
+```js
 var t = db.transaction(["test"], "readonly");
 var store = t.objectStore("test");
 
@@ -248,7 +248,7 @@ var cursor = store.openCursor();
 
 openCursor 方法也是异步的，有自己的 success 和 error 事件，可以对它们指定回调函数。
 
-```
+```js
 cursor.onsuccess = function(e) {
     var res = e.target.result;
     if(res) {
@@ -269,7 +269,7 @@ createIndex 方法用于创建索引。
 
 假定对象仓库中的数据对象都是下面 person 类型的。
 
-```
+```js
 var person = {
     name:name,
     email:email,
@@ -279,7 +279,7 @@ var person = {
 
 可以指定这个数据对象的某个属性来建立索引。
 
-```
+```js
 var store = db.createObjectStore("people", { autoIncrement:true });
 
 store.createIndex("name","name", {unique:false});
@@ -292,7 +292,7 @@ createIndex 方法接受三个参数，第一个是索引名称，第二个是�
 
 有了索引以后，就可以针对索引所在的属性读取数据。index 方法用于从对象仓库返回指定的索引。
 
-```
+```js
 var t = db.transaction(["people"],"readonly");
 var store = t.objectStore("people");
 var index = store.index("name");
@@ -317,7 +317,7 @@ IDBKeyRange 对象的作用是生成一个表示范围的 Range 对象。生成�
 
 下面是一些代码实例：
 
-```
+```js
 // All keys ≤ x 
 var r1 = IDBKeyRange.upperBound(x);
 
@@ -350,7 +350,7 @@ var r9 = IDBKeyRange.only(z);
 
 生成 Range 对象以后，将它作为参数输入 openCursor 方法，就可以在所设定的范围内读取数据。
 
-```
+```js
 var t = db.transaction(["people"],"readonly");
 var store = t.objectStore("people");
 var index = store.index("name");

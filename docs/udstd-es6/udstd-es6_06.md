@@ -25,7 +25,7 @@
 
 在 ES5 及更早版本中，从对象或数组中获取信息、并将特定数据存入本地变量，需要书写许多并且相似的代码。例如：
 
-```
+```js
 let options = {
         repeat: true,
         save: false
@@ -44,7 +44,7 @@ let repeat = options.repeat,
 
 对象解构语法在赋值语句的左侧使用了对象字面量，例如：
 
-```
+```js
 let node = {
         type: "Identifier",
         name: "foo"
@@ -62,7 +62,7 @@ console.log(name);      // "foo"
 > 
 > 当使用解构来配合 `var` 、 `let` 或 `const` 来声明变量时，必须提供初始化器（即等号右边的值）。下面的代码都会因为缺失初始化器而抛出错误：
 > 
-> ```
+> ```js
 > // 语法错误！
 > var { type, name };
 > 
@@ -79,7 +79,7 @@ console.log(name);      // "foo"
 
 以上对象解构示例都用于变量声明。不过，也可以在赋值的时候使用解构。例如，你可能想在变量声明之后改变它们的值，如下所示：
 
-```
+```js
 let node = {
         type: "Identifier",
         name: "foo"
@@ -98,7 +98,7 @@ console.log(name);      // "foo"
 
 解构赋值表达式的值为表达式右侧（在 `=` 之后）的值。也就是说在任何期望有个值的位置都可以使用解构赋值表达式。例如，传递值给函数：
 
-```
+```js
 let node = {
         type: "Identifier",
         name: "foo"
@@ -124,7 +124,7 @@ console.log(name);      // "foo"
 
 当你使用解构赋值语句时，如果所指定的本地变量在对象中没有找到同名属性，那么该变量会被赋值为 `undefined` 。例如：
 
-```
+```js
 let node = {
         type: "Identifier",
         name: "foo"
@@ -141,7 +141,7 @@ console.log(value);     // undefined
 
 你可以选择性地定义一个默认值，以便在指定属性不存在时使用该值。若要这么做，需要在属性名后面添加一个等号并指定默认值，就像这样：
 
-```
+```js
 let node = {
         type: "Identifier",
         name: "foo"
@@ -160,7 +160,7 @@ console.log(value);     // true
 
 至此的每个解构赋值示例都使用了对象中的属性名作为本地变量的名称，例如，把 `node.type` 的值存储到 `type` 变量上。若想使用相同名称，这么做就没问题，但若你不想呢？ ES6 有一个扩展语法，允许你在给本地变量赋值时使用一个不同的名称，而且该语法看上去就像是使用对象字面量的非简写的属性初始化。这里有个示例：
 
-```
+```js
 let node = {
         type: "Identifier",
         name: "foo"
@@ -176,7 +176,7 @@ console.log(localName);     // "foo"
 
 你也可以给变量别名添加默认值，依然是在本地变量名称后添加等号与默认值，例如：
 
-```
+```js
 let node = {
         type: "Identifier"
     };
@@ -195,7 +195,7 @@ console.log(localName);     // "bar"
 
 使用类似于对象字面量的语法，可以深入到嵌套的对象结构中去提取你想要的数据。这里有个示例：
 
-```
+```js
 let node = {
         type: "Identifier",
         name: "foo",
@@ -221,7 +221,7 @@ console.log(start.column);      // 1
 
 你还能更进一步，在对象的嵌套解构中同样能为本地变量使用不同的名称：
 
-```
+```js
 let node = {
         type: "Identifier",
         name: "foo",
@@ -252,7 +252,7 @@ console.log(localStart.column); // 1
 > 
 > 使用嵌套的解构时需要小心，因为你可能无意中就创建了一个没有任何效果的语句。空白花括号在对象解构中是合法的，然而它不会做任何事。例如：
 > 
-> ```
+> ```js
 > // 没有变量被声明！
 > let { loc: {} } = node; 
 > ```
@@ -263,7 +263,7 @@ console.log(localStart.column); // 1
 
 数组解构的语法看起来与对象解构非常相似，只是将对象字面量替换成了数组字面量。数组解构时，解构作用在数组内部的位置上，而不是作用在对象的具名属性上，例如：
 
-```
+```js
 let colors = [ "red", "green", "blue" ];
 
 let [ firstColor, secondColor ] = colors;
@@ -276,7 +276,7 @@ console.log(secondColor);       // "green"
 
 你也可以在解构模式中忽略一些项，并且只给感兴趣的项提供变量名。例如，若只想获取数组中的第三个元素，那么不必给前两项提供变量名。以下展示了这种方式：
 
-```
+```js
 let colors = [ "red", "green", "blue" ];
 
 let [ , , thirdColor ] = colors;
@@ -292,7 +292,7 @@ console.log(thirdColor);        // "blue"
 
 你可以在赋值表达式中使用数组解构，但是与对象解构不同，不必将表达式包含在圆括号内，例如：
 
-```
+```js
 let colors = [ "red", "green", "blue" ],
     firstColor = "black",
     secondColor = "purple";
@@ -307,7 +307,7 @@ console.log(secondColor);       // "green"
 
 数组解构赋值有一个非常独特的用例，能轻易地互换两个变量的值。互换变量值在排序算法中十分常用，而在 ES5 中需要使用第三个变量作为临时变量，正如下例：
 
-```
+```js
 // 在 ES5 中互换值
 let a = 1,
     b = 2,
@@ -323,7 +323,7 @@ console.log(b);     // 1
 
 其中的 `tmp` 变量对于互换 `a` 与 `b` 的值来说是必要的。然而若使用数组解构赋值，就不再需要这个额外变量。以下演示了在 ES6 中如何互换变量值：
 
-```
+```js
 // 在 ES6 中互换值
 let a = 1,
     b = 2;
@@ -342,7 +342,7 @@ console.log(b);     // 1
 
 数组解构赋值同样允许在数组任意位置指定默认值。当指定位置的项不存在、或其值为 `undefined` ，那么该默认值就会被使用。例如：
 
-```
+```js
 let colors = [ "red" ];
 
 let [ firstColor, secondColor = "green" ] = colors;
@@ -357,7 +357,7 @@ console.log(secondColor);       // "green"
 
 与解构嵌套的对象相似，可以用类似的方式来解构嵌套的数组。在整个解构模式中插入另一个数组模式，解构操作就会下行到嵌套的数组中，就像这样：
 
-```
+```js
 let colors = [ "red", [ "green", "lightgreen" ], "blue" ];
 
 // 随后
@@ -374,7 +374,7 @@ console.log(secondColor);       // "green"
 
 第三章介绍过函数的剩余参数，而数组解构有个类似的、名为**剩余项**（ **rest items** ）的概念，它使用 `...` 语法来将剩余的项目赋值给一个指定的变量，此处有个范例：
 
-```
+```js
 let colors = [ "red", "green", "blue" ];
 
 let [ firstColor, ...restColors ] = colors;
@@ -389,7 +389,7 @@ console.log(restColors[1]);     // "blue"
 
 方便地克隆数组在 JS 中是个明显被遗漏的功能。在 ES5 中开发者往往使用的是一个简单的方式，也就是用 `concat()` 方法来克隆数组，例如：
 
-```
+```js
 // 在 ES5 中克隆数组
 var colors = [ "red", "green", "blue" ];
 var clonedColors = colors.concat();
@@ -399,7 +399,7 @@ console.log(clonedColors);      //"[red,green,blue]"
 
 尽管 `concat()` 方法的本意是合并两个数组，但不使用任何参数来调用此方法，就会获得原数组的一个克隆品。而在 ES6 中，你可以使用剩余项的语法来达到同样效果。实现如下：
 
-```
+```js
 // 在 ES6 中克隆数组
 let colors = [ "red", "green", "blue" ];
 let [ ...clonedColors ] = colors;
@@ -415,7 +415,7 @@ console.log(clonedColors);      //"[red,green,blue]"
 
 对象与数组解构能被用在一起，以创建更复杂的解构表达式。在对象与数组混合而成的结构中，这么做便能准确提取其中你想要的信息片段。例如：
 
-```
+```js
 let node = {
         type: "Identifier",
         name: "foo",
@@ -448,7 +448,7 @@ console.log(startIndex);        // 0
 
 解构还有一个特别有用的场景，即在传递函数参数时。当 JS 的函数接收大量可选参数时，一个常用模式是创建一个 `options` 对象，其中包含了附加的参数，就像这样：
 
-```
+```js
 // options 上的属性表示附加参数
 function setCookie(name, value, options) {
 
@@ -473,7 +473,7 @@ setCookie("type", "js", {
 
 参数解构提供了更清楚地标明函数期望输入的替代方案。它使用对象或数组解构的模式替代了具名参数。要看到其实际效果，请查看下例中重写版本的 `setCookie()` 函数：
 
-```
+```js
 function setCookie(name, value, { secure, path, domain, expires }) {
 
     // 设置 cookie 的代码
@@ -495,14 +495,14 @@ setCookie("type", "js", {
 
 One quirk of using destructured parameters is that, by default, an error is thrown when they are not provided in a function call. For instance, this call to the `setCookie()` function in the last example throws an error:
 
-```
+```js
 // 出错！
 setCookie("type", "js"); 
 ```
 
 调用时第三个参数缺失了，因此它不出预料地等于 `undefined` 。这导致了一个错误，因为参数解构实际上只是解构声明的简写。当 `setCookie()` 函数被调用时， JS 引擎实际上是这么做的：
 
-```
+```js
 function setCookie(name, value, options) {
 
     let { secure, path, domain, expires } = options;
@@ -515,7 +515,7 @@ function setCookie(name, value, options) {
 
 若你让解构的参数作为必选参数，那么上述行为并不会令人困扰。但若你要求它是可选的，可以给解构的参数提供默认值来处理这种行为，就像这样：
 
-```
+```js
 function setCookie(name, value, { secure, path, domain, expires } = {}) {
 
     // ...
@@ -528,7 +528,7 @@ function setCookie(name, value, { secure, path, domain, expires } = {}) {
 
 你可以为参数解构提供可解构的默认值，就像在解构赋值时所做的那样，只需在其中每个参数后面添加等号并指定默认值即可。例如：
 
-```
+```js
 function setCookie(name, value,
     {
         secure = false,

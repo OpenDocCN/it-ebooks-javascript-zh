@@ -16,7 +16,7 @@ Chrome 为开发者提供了添加、分类（书签文件夹）和排序等方�
 
 要在扩展中操作书签，需要在 Manifest 中声明 bookmarks 权限：
 
-```
+```js
 "permissions": [
     "bookmarks"
 ] 
@@ -26,7 +26,7 @@ Chrome 为开发者提供了添加、分类（书签文件夹）和排序等方�
 
 创建书签。可以通过`create`方法来创建书签，下面的代码创建了一个标题为“Google”，URL 为“http://www.google.com/”的书签：
 
-```
+```js
 chrome.bookmarks.create({
     parentId: '1',
     index: 0,
@@ -43,7 +43,7 @@ chrome.bookmarks.create({
 
 调整书签位置。通过`move`方法可以调整书签的位置，这种调整可以是跨越父节点的，下面的代码将 id 为`'16'`的书签移动到了 id 为`'7'`的父节点第 5 个位置：
 
-```
+```js
 chrome.bookmarks.move('16', {
     parentId:'7',
     index:4
@@ -54,7 +54,7 @@ chrome.bookmarks.move('16', {
 
 更新书签。通过 update 方法可以更改书签属性，包括标题和 URL，更新时未指定的属性值将不会更改。下面的代码将将`id`为`'16'`的书签标题改为`'Gmail'`，URL 改为`'https://mail.google.com/'`：
 
-```
+```js
 chrome.bookmarks.update('16', {
     title: 'Gmail',
     url: 'https://mail.google.com/'
@@ -65,7 +65,7 @@ chrome.bookmarks.update('16', {
 
 移除书签。通过`remove`和`removeTree`可以删除书签，`remove`方法可以删除书签和空的书签分组，`removeTree`可以删除包含书签的书签分组。下面的代码移除了`id`为`'16'`的书签和`id`为`'6'`的书签分组。请注意，下面的代码实际上并不能看出删除的是书签还是分组，这要结合用户的实际情况。
 
-```
+```js
 chrome.bookmarks.remove('16', function(){
     console.log('Bookmark 16 has been removed.');
 });
@@ -77,7 +77,7 @@ chrome.bookmarks.removeTree('6', function(){
 
 下面我们来了解一下如何获取用户的书签内容。通过`getTree`方法可以获得用户完整的书签树，但请注意，如果用户的书签树结构过于复杂或内容过多，`getTree`方法的效率会很低，而且也会消耗较多的资源，所以请考虑使用后面的方法按需获取部分书签树。下面的代码获取了用户的整个书签树：
 
-```
+```js
 chrome.bookmarks.getTree(function(bookmarkArray){
     console.log(bookmarkArray);
 }); 
@@ -87,7 +87,7 @@ chrome.bookmarks.getTree(function(bookmarkArray){
 
 `getChildren`方法可以返回以指定节点为父节点的下一级书签节点，但不包括再下一级的节点，也就是说返回的书签对象不包括`children`属性，无论它是否具有子节点。通过这个方法我们可以一层一层地按需获取用户的书签结构。下面的方法获取了根节点的所有子节点。
 
-```
+```js
 chrome.bookmarks.getChildren('0', function(bookmarkArray){
     console.log(bookmarkArray);
 }); 
@@ -95,7 +95,7 @@ chrome.bookmarks.getChildren('0', function(bookmarkArray){
 
 `getSubTree`方法可以返回自指定节点开始包括当前节点及向下的所有节点，这个方法与`getChildren`的区别是返回值会包含父节点，且没有层级限制，即包含书签对象的`children`属性。下面的代码返回的结果与`getTree`方法返回的结果相同：
 
-```
+```js
 chrome.bookmarks.getSubTree('0', function(bookmarkArray){
     console.log(bookmarkArray);
 }); 
@@ -103,7 +103,7 @@ chrome.bookmarks.getSubTree('0', function(bookmarkArray){
 
 `get`方法可以返回指定节点不包含`children`属性的书签对象数组，指定的节点可以是一个或多个。比如下面的代码获取了`id`为`'16'`和`'17'`的书签对象：
 
-```
+```js
 chrome.bookmarks.get(['16', '17'], function(bookmarkArray){
     console.log(bookmarkArray);
 }); 
@@ -111,7 +111,7 @@ chrome.bookmarks.get(['16', '17'], function(bookmarkArray){
 
 `getRecent`方法提供了获取最近添加的多个书签，下面的代码获取了最近添加的 5 个书签：
 
-```
+```js
 chrome.bookmarks.getRecent(5, function(bookmarkArray){
     console.log(bookmarkArray);
 }); 
@@ -119,7 +119,7 @@ chrome.bookmarks.getRecent(5, function(bookmarkArray){
 
 `search`方法可以返回匹配指定条件的书签对象，匹配的条件只能字符串，比如下面的代码会返回所有标题或 URL 中包含`google`的书签：
 
-```
+```js
 chrome.bookmarks.search('google', function(bookmarkArray){
     console.log(bookmarkArray);
 }); 
@@ -129,7 +129,7 @@ chrome.bookmarks.search('google', function(bookmarkArray){
 
 `onCreated`事件用以监控书签的创建行为：
 
-```
+```js
 chrome.bookmarks.onCreated.addListener(function(bookmark){
     console.log(bookmark);
 }); 
@@ -137,7 +137,7 @@ chrome.bookmarks.onCreated.addListener(function(bookmark){
 
 `onRemoved`事件用以监控书签的移除行为：
 
-```
+```js
 chrome.bookmarks.onRemoved.addListener(function(id, removeInfo){
     console.log('Bookmark '+id+' has been removed:');
     console.log(removeInfo);
@@ -148,7 +148,7 @@ chrome.bookmarks.onRemoved.addListener(function(id, removeInfo){
 
 `onChanged`事件用以监控书签的更新行为：
 
-```
+```js
 chrome.bookmarks.onChanged.addListener(function(id, changeInfo){
     console.log('Bookmark '+id+' has been changed:');
     console.log(changeInfo);
@@ -159,7 +159,7 @@ chrome.bookmarks.onChanged.addListener(function(id, changeInfo){
 
 `onMoved`事件用以监控书签的移动行为：
 
-```
+```js
 chrome.bookmarks.onMoved.addListener(function(id, moveInfo){
     console.log('Bookmark '+id+' has been moved:');
     console.log(moveInfo);
@@ -170,7 +170,7 @@ chrome.bookmarks.onMoved.addListener(function(id, moveInfo){
 
 `onChildrenReordered`事件用以监控一个书签分组下的更改子节点顺序的行为：
 
-```
+```js
 chrome.bookmarks.onChildrenReordered.addListener(function(id, reorderInfo){
     console.log('Bookmark '+id+' has a new children order:');
     console.log(reorderInfo);
@@ -181,7 +181,7 @@ chrome.bookmarks.onChildrenReordered.addListener(function(id, reorderInfo){
 
 `onImportBegan`和`onImportEnded`事件分别用以监控导入书签开始和结束的行为：
 
-```
+```js
 onImportBegan(function(){
     console.log('Bookmark import began.');
 });
@@ -201,7 +201,7 @@ Cookies 是浏览器记录在本地的用户数据，如用户的登录信息。
 
 要管理 Cookies，需要在 Manifest 中声明`cookies`权限，同时也要声明所需管理 Cookies 所在的域：
 
-```
+```js
 "permissions": [
     "cookies",
     "*://*.google.com"
@@ -210,7 +210,7 @@ Cookies 是浏览器记录在本地的用户数据，如用户的登录信息。
 
 如果想要管理所有的 Cookies 可以声明如下权限：
 
-```
+```js
 "permissions": [
     "cookies",
     "<all_urls>"
@@ -223,7 +223,7 @@ Chrome 定义的`Cookie`对象包含如下属性：`name`（名称）、`value`�
 
 读 Cookies。Chrome 提供了`get`和`getAll`两个方法读取 Cookies，`get`方法可以读取指定`name`、`url`和`storeId`的 Cookie，其中`storeId`可以不指定，但是`name`和`url`必须指定。如果在同一 URL 中包含多个`name`相同的 Cookies，则会返回`path`最长的那个，如果有多个 Cookies 的`path`长度相同，则返回创建最早的那个。
 
-```
+```js
 chrome.cookies.get({
     url: 'https://github.com',
     name: 'dotcom_user'
@@ -236,7 +236,7 @@ chrome.cookies.get({
 
 `getAll`方法与 get 方法不同，它可以获取所有符合条件的 Cookies，支持的匹配条件包括`url`、`name`、`domain`、`path`、`secure`、`session`和`storeId`中的任意一个或多个，如果一个都不指定，则返回所有此扩展有权访问到的 Cookies。比如下面的代码就可以获取到所有可以读取的 Cookies：
 
-```
+```js
 chrome.cookies.getAll({}, function(cookies){
     console.log(cookies);
 }); 
@@ -244,7 +244,7 @@ chrome.cookies.getAll({}, function(cookies){
 
 设置 Cookie。`set`方法可以设置 Cookie：
 
-```
+```js
 chrome.cookies.set({
     'url':'http://github.com/test_cookie',
     'name':'TEST',
@@ -263,7 +263,7 @@ chrome.cookies.set({
 
 删除 Cookie。`remove`方法可以删除指定`url`、`name`和`storeId`的 Cookie。
 
-```
+```js
 chrome.cookies.remove({
     url: 'http://www.google.com',
     name: '_ga'
@@ -280,7 +280,7 @@ chrome.cookies.remove({
 
 `onChanged`事件用来监控 cookie 的设置和删除行为：
 
-```
+```js
 chrome.cookies.onChanged.addListener(function(changeInfo){
     console.log(changeInfo);
 }); 
@@ -296,7 +296,7 @@ chrome.cookies.onChanged.addListener(function(changeInfo){
 
 要使用`history`接口，需要在 Manifest 中声明`history`权限：
 
-```
+```js
 "permissions": [
     "history"
 ] 
@@ -306,7 +306,7 @@ chrome.cookies.onChanged.addListener(function(changeInfo){
 
 读取历史。Chrome 提供了`search`和`getVisits`两种方法读取历史。通过`search`方法可以读取匹配指定文字，指定时间区间，指定条目的历史结果。
 
-```
+```js
 chrome.history.search({
     text: 'Google',
     startTime: new Date().getTime()-24*3600*1000,
@@ -321,7 +321,7 @@ chrome.history.search({
 
 `getVisits`方法可以获取指定 URL 的访问结果。必须指定完整的 URL，返回的结果会绝对匹配指定的 URL，也就是说，如果指定`'http://www.google.com/'`，返回的结果不会包含`'http://www.google.com/a/'`的内容。不要忘记`http://`，这也是不可省略的。
 
-```
+```js
 chrome.history.getVisits(
     url: 'http://www.google.com/'
 }, function(visitItemArray){
@@ -341,7 +341,7 @@ Chrome 对每一个访问记录都详细地归类了打开方式，用`transitio
 
 添加历史。`addUrl`方法可以将特定的 url 以当前时间为访问时间，添加至历史中。
 
-```
+```js
 chrome.history.addUrl({
     url: 'http://twitter.com'
 }, function(){
@@ -351,7 +351,7 @@ chrome.history.addUrl({
 
 删除历史。`deleteUrl`可以删除指定 URL 的历史，`deleteRange`可以删除指定时间段的历史，`deleteAll`可以删除全部历史。
 
-```
+```js
 chrome.history.deleteUrl({
     url: 'http://www.google.com'
 }, function(){
@@ -372,7 +372,7 @@ chrome.history.deleteAll(function(){
 
 Chrome 提供两个事件，`onVisited`和`onVisitRemoved`，分别监听用户访问历史和历史被删除的事件。
 
-```
+```js
 chrome.history.onVisited.addListener(function(historyItem){
     console.log(historyItem);
 });
@@ -392,7 +392,7 @@ chrome.history.onVisitRemoved.addListener(function(removedObject){
 
 要使用`management`接口，需要在 Manifest 中声明`management`权限：
 
-```
+```js
 "permissions": [
     "management"
 ] 
@@ -400,7 +400,7 @@ chrome.history.onVisitRemoved.addListener(function(removedObject){
 
 读取用户已安装扩展和应用的信息。Management 提供了两个方法获取用户已安装扩展应用的信息，分别是`getAll`和`get`。
 
-```
+```js
 chrome.management.getAll(function(exInfoArray){
     console.log(exInfoArray);
 });
@@ -412,7 +412,7 @@ chrome.management.get(exId, function(exInfo){
 
 `exInfo`是扩展信息对象，其结构如下：
 
-```
+```js
 {
     id: 扩展 id,
     name: 扩展名称,
@@ -442,7 +442,7 @@ chrome.management.get(exId, function(exInfo){
 
 获取权限警告。`getPermissionWarningsById`和`getPermissionWarningsByManifest`方法可以获取权限警告，这些警告与用户安装扩展时网上应用商店弹出的警告类似。
 
-```
+```js
 chrome.management.getPermissionWarningsById(exId, function(permissionWarningArray){
     console.log(permissionWarningArray);
 });
@@ -456,7 +456,7 @@ getPermissionWarningsByManifest(exManifest, function(permissionWarningArray){
 
 启用、禁用、卸载扩展和启动应用。`setEnabled`方法可以启用或禁用扩展应用，如果一个扩展或应用被禁用，它的后台页面不会运行。
 
-```
+```js
 chrome.management.setEnabled(exId, enabled, function(){
     if(enabled){
         console.log('Extension '+exId+' has been enabled.');
@@ -469,7 +469,7 @@ chrome.management.setEnabled(exId, enabled, function(){
 
 卸载扩展有两种方法，`uninstall`可以卸载指定 id 的扩展，`uninstallSelf`可以卸载扩展自身且无需请求`management`权限。
 
-```
+```js
 uninstall(exId, {
     showConfirmDialog: true
 }, function(){
@@ -487,7 +487,7 @@ uninstallSelf({
 
 通过`launchApp`方法启动应用：
 
-```
+```js
 chrome.management.launchApp(exId, function(){
     console.log('App '+exId+' has been launched.');
 }); 
@@ -495,7 +495,7 @@ chrome.management.launchApp(exId, function(){
 
 `management`接口提供了四种事件，`onInstalled`、`onUninstalled`、`onEnabled`和`onDisabled`，分别用于监听安装、卸载、启用和禁用扩展应用。
 
-```
+```js
 chrome.management.onInstalled.addListener(function(exInfo){
     console.log('Extension '+exInfo.id+' has been installed.')
 });
@@ -519,7 +519,7 @@ chrome.management.onDisabled.addListener(function(exInfo){
 
 前面的章节中，多次提到了标签，本节将详细讲解对标签信息获取和操作的内容。在开始介绍之前，先让我们来看一下标签对象的结构：
 
-```
+```js
 {
     id: 标签 id,
     index: 标签在窗口中的位置，以 0 开始,
@@ -541,7 +541,7 @@ chrome.management.onDisabled.addListener(function(exInfo){
 
 Chrome 通过`tabs`方法提供了管理标签的方法与监听标签行为的事件，大多数方法与事件是无需声明特殊权限的，但有关标签的`url`、`title`和`favIconUrl`的操作（包括读取），都需要声明`tabs`权限。
 
-```
+```js
 "permissions": [
     "tabs"
 ] 
@@ -549,7 +549,7 @@ Chrome 通过`tabs`方法提供了管理标签的方法与监听标签行为的�
 
 获取标签信息。Chrome 提供了三种获取标签信息的方法，分别是`get`、`getCurrent`和`query`。`get`方法可以获取到指定 id 的标签，`getCurrent`则获取运行的脚本本身所在的标签，`query`可以获取所有符合指定条件的标签。
 
-```
+```js
 chrome.tabs.get(tabId, function(tab){
     console.log(tab);
 });
@@ -561,7 +561,7 @@ chrome.tabs.getCurrent(function(tab){
 
 `query`方法可以指定的匹配条件如下：
 
-```
+```js
 {
     active: 是否是活动的,
     pinned: 是否被固定,
@@ -579,7 +579,7 @@ chrome.tabs.getCurrent(function(tab){
 
 下面的代码获取了所有在窗口中活动的标签：
 
-```
+```js
 chrome.tabs.query({
     active: true
 }, function(tabArray){
@@ -589,7 +589,7 @@ chrome.tabs.query({
 
 创建标签。创建标签与在浏览器中打开新的标签行为类似，但可以指定更加丰富的信息，如 URL、窗口中的位置和活动状态等。
 
-```
+```js
 chrome.tabs.create({
     windowId: wId,
     index: 0,
@@ -606,7 +606,7 @@ chrome.tabs.create({
 
 除了用`create`方法，还可以使用`duplicate`方法“复制”指定标签：
 
-```
+```js
 chrome.tabs.duplicate(tabId, function(tab){
     console.log(tab);
 }); 
@@ -614,7 +614,7 @@ chrome.tabs.duplicate(tabId, function(tab){
 
 更新标签。通过`update`方法可以更新标签的属性：
 
-```
+```js
 chrome.tabs.update(tabId, {
     url: 'http://www.google.com'
 }, function(tab){
@@ -626,7 +626,7 @@ chrome.tabs.update(tabId, {
 
 移动标签。`move`方法可以将指定的一个或多个标签移动到指定位置：
 
-```
+```js
 chrome.tabs.move(tabIds, {
     'windowId':wId,
     'index':0
@@ -639,7 +639,7 @@ chrome.tabs.move(tabIds, {
 
 重载标签。`reload`方法可以重载指定标签，同时还可以指定是否跳过缓存（强制刷新）：
 
-```
+```js
 chrome.tabs.reload(tabId, {
     bypassCache: true
 }, function(){
@@ -651,7 +651,7 @@ chrome.tabs.reload(tabId, {
 
 移除标签。通过`remove`方法可以关闭一个或多个标签：
 
-```
+```js
 chrome.tabs.remove(tabIds, function(){
     console.log('The tabs has been closed.');
 }); 
@@ -661,7 +661,7 @@ chrome.tabs.remove(tabIds, function(){
 
 获取当前标签页面的显示语言。有时可能需要针对用户浏览内容语言的不同，采用不同的处理方法。比如翻译扩展就要根据不同的语言决定是否提示用户进行翻译。
 
-```
+```js
 chrome.tabs.detectLanguage(tabId, function(lang){
     console.log('The primary language of the tab is '+lang);
 }); 
@@ -671,7 +671,7 @@ chrome.tabs.detectLanguage(tabId, function(lang){
 
 获取指定窗口活动标签可见部分的截图。Chrome 提供了截取指定窗口活动标签页面为图片的接口：
 
-```
+```js
 chrome.tabs.captureVisibleTab(windowId, {
     format: 'jpeg',
     quality: 50
@@ -682,7 +682,7 @@ chrome.tabs.captureVisibleTab(windowId, {
 
 其中`format`还支持`png`，如果指定为`png`，则`quality`属性会被忽略。如果指定`jpeg`格式，`quality`的取值范围为 0-100，数值越高，图片质量越好，体积也越大。扩展只有声明`activeTab`或`<all_url>`权限能获取到活动标签的截图：
 
-```
+```js
 "permissions": [
     "activeTab"
 ] 
@@ -690,7 +690,7 @@ chrome.tabs.captureVisibleTab(windowId, {
 
 注入 JS 和 CSS。之前我们接触过`content_scripts`，它可以向匹配条件的页面注入 JS 和 CSS，但是却无法向用户指定的标签注入。通过`executeScript`和`insertCSS`可以做到向指定的标签注入脚本。
 
-```
+```js
 chrome.tabs.executeScript(tabId, {
     file: 'js/ex.js',
     allFrames: true,
@@ -702,7 +702,7 @@ chrome.tabs.executeScript(tabId, {
 
 也可以直接注入代码：
 
-```
+```js
 chrome.tabs.executeScript(tabId, {
     code: 'document.body.style.backgroundColor="red"',
     allFrames: true,
@@ -714,7 +714,7 @@ chrome.tabs.executeScript(tabId, {
 
 向指定的标签注入 CSS：
 
-```
+```js
 chrome.tabs.insertCSS(tabId, {
     file: 'css/insert.css',
     allFrames: false,
@@ -730,7 +730,7 @@ chrome.tabs.insertCSS(tabId, {
 
 与指定标签中的内容脚本（content script）通信。前面章节介绍过扩展页面间的通信，我们也可以与指定的标签通信，方法如下：
 
-```
+```js
 chrome.tabs.sendMessage(tabId, message, function(response){
     console.log(response);
 }); 
@@ -746,7 +746,7 @@ chrome.tabs.sendMessage(tabId, message, function(response){
 
 ^(2 要解释清楚 onReplaced 就不得不提一下即搜即得和预呈现（Instant search, Prerendering）。例如默认搜索引擎为 Google，启用了即搜即得，网络条件也足够好，在打开的另一个网页地址栏中开始输入关键字并且即时出现结果时，此时按下回车键，当前标签页就会被 Google 搜索结果替换，产生 onReplaced 事件。如果扩展程序通过 tabId 追踪标签页的话就必须处理该事件。)
 
-```
+```js
 chrome.tabs.onCreated.addListener(function(tab){
     console.log(tab);
 });
@@ -794,7 +794,7 @@ Chrome 不仅提供了管理书签、历史和标签的接口，还支持用自�
 
 使用 override pages 很简单，只需在 Manifest 中进行声明即可（一个扩展只能替换一个页面）：
 
-```
+```js
 "chrome_url_overrides" : {
     "bookmarks": "bookmarks.html"
 }

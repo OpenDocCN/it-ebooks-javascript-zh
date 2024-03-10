@@ -12,7 +12,7 @@ JavaScript 有两种方式判断两个值是否相等。
 
 JavaScript 是*弱类型*语言，这就意味着，等于操作符会为了比较两个值而进行**强制类型转换**。
 
-```
+```js
 ""           ==   "0"           // false
 0            ==   ""            // true
 0            ==   "0"           // true
@@ -34,7 +34,7 @@ null         ==   undefined     // true
 
 不像普通的等于操作符，严格等于操作符**不会**进行强制类型转换。
 
-```
+```js
 ""           ===   "0"           // false
 0            ===   ""            // false
 0            ===   "0"           // false
@@ -52,7 +52,7 @@ null         ===   undefined     // false
 
 虽然 `==` 和 `===` 操作符都是等于操作符，但是当其中有一个操作数为对象时，行为就不同了。
 
-```
+```js
 {} === {};                   // false
 new String('foo') === 'foo'; // false
 new Number(10) === 10;       // false
@@ -78,7 +78,7 @@ foo === foo;                 // true
 
 ### JavaScript 类型表格
 
-```
+```js
 Value               Class      Type
 -------------------------------------
 "foo"               String     string
@@ -110,7 +110,7 @@ new Object()        Object     object
 
 JavaScript 标准文档只给出了一种获取 `[[Class]]` 值的方法，那就是使用 `Object.prototype.toString`。
 
-```
+```js
 function is(type, obj) {
     var clas = Object.prototype.toString.call(obj).slice(8, -1);
     return obj !== undefined && obj !== null && clas === type;
@@ -124,7 +124,7 @@ is('String', new String('test')); // true
 
 **[译者注](http://cnblogs.com/sanshi/)：**`Object.prototype.toString` 返回一种标准格式字符串，所以上例可以通过 `slice` 截取指定位置的字符串，如下所示：
 
-```
+```js
 Object.prototype.toString.call([])    // "[object Array]"
 Object.prototype.toString.call({})    // "[object Object]"
 Object.prototype.toString.call(2)    // "[object Number]" 
@@ -134,7 +134,7 @@ Object.prototype.toString.call(2)    // "[object Number]"
 
 **[译者注](http://cnblogs.com/sanshi/)：**这种变化可以从 IE8 和 Firefox 4 中看出区别，如下所示：
 
-```
+```js
 // IE8
 Object.prototype.toString.call(null)    // "[object Object]"
 Object.prototype.toString.call(undefined)    // "[object Object]"
@@ -146,7 +146,7 @@ Object.prototype.toString.call(undefined)    // "[object Undefined]"
 
 ### 测试为定义变量
 
-```
+```js
 typeof foo !== 'undefined' 
 ```
 
@@ -164,7 +164,7 @@ typeof foo !== 'undefined'
 
 ### 比较自定义对象
 
-```
+```js
 function Foo() {}
 function Bar() {}
 Bar.prototype = new Foo();
@@ -179,7 +179,7 @@ new Bar() instanceof Foo; // false
 
 ### `instanceof` 比较内置类型
 
-```
+```js
 new String('foo') instanceof String; // true
 new String('foo') instanceof Object; // true
 
@@ -197,7 +197,7 @@ new String('foo') instanceof Object; // true
 
 JavaScript 是*弱类型*语言，所以会在**任何**可能的情况下应用*强制类型转换*。
 
-```
+```js
 // 下面的比较结果是：true
 new Number(10) == 10; // Number.toString() 返回的字符串被再次转换为数字
 
@@ -220,7 +220,7 @@ isNaN(null) == false; // null 被转换为数字 0
 
 内置类型（比如 `Number` 和 `String`）的构造函数在被调用时，使用或者不使用 `new` 的结果完全不同。
 
-```
+```js
 new Number(10) === 10;     // False, 对象与数字的比较
 Number(10) === 10;         // True, 数字与数字的比较
 new Number(10) + 0 === 10; // True, 由于隐式的类型转换 
@@ -234,7 +234,7 @@ new Number(10) + 0 === 10; // True, 由于隐式的类型转换
 
 ### 转换为字符串
 
-```
+```js
 '' + 10 === '10'; // true 
 ```
 
@@ -242,7 +242,7 @@ new Number(10) + 0 === 10; // True, 由于隐式的类型转换
 
 ### 转换为数字
 
-```
+```js
 +'10' === 10; // true 
 ```
 
@@ -250,7 +250,7 @@ new Number(10) + 0 === 10; // True, 由于隐式的类型转换
 
 **[译者注](http://cnblogs.com/sanshi/)：**字符串转换为数字的常用方法：
 
-```
+```js
 +'010' === 10
 Number('010') === 10
 parseInt('010', 10) === 10  // 用来转换为整数
@@ -264,7 +264,7 @@ parseInt('010.2', 10) === 10
 
 通过使用 **否** 操作符两次，可以把一个值转换为布尔型。
 
-```
+```js
 !!'foo';   // true
 !!'';      // false
 !!'0';     // true

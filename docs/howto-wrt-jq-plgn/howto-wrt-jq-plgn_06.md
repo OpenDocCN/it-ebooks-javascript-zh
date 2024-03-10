@@ -8,7 +8,7 @@
 
 前置条件需要有 nodejs 和 npm，请确保已安装成功：
 
-```
+```js
 npm install -g grunt
 npm install -g grunt-init
 git clone https://github.com/gruntjs/grunt-init-jquery.git ~/.grunt-init/jquery 
@@ -17,7 +17,7 @@ grunt-init jquery
 
 如果是万恶的 window 系统，请修改:
 
-```
+```js
 git clone https://github.com/gruntjs/grunt-init-jquery.git %USERPROFILE%/.grunt-init/jquery 
 ```
 
@@ -25,7 +25,7 @@ git clone https://github.com/gruntjs/grunt-init-jquery.git %USERPROFILE%/.grunt-
 
 ### 1.6.2\. 创建项目
 
-```
+```js
 ➜  jquery_plugin git:(master) ✗ mkdir plugin_grunt     
 ➜  jquery_plugin git:(master) ✗ cd plugin_grunt 
 ➜  plugin_grunt git:(master) ✗ grunt-init jquery
@@ -95,7 +95,7 @@ Done, without errors.
 
 切换到 plugin_grunt 根目录，通过下面命令安装 grunt 依赖的包
 
-```
+```js
 ➜  plugin_grunt git:(master) npm install 
 ```
 
@@ -105,7 +105,7 @@ qunit 依赖 phantomjs，需要翻墙，自备梯子或者 [`i5ting.github.io/Ho
 
 grunt 的 task 是在 Gruntfile.js 里定义的，所以看最后的 2 句
 
-```
+```js
 // Default task.
 grunt.registerTask('default', ['jshint', 'qunit', 'clean', 'concat', 'uglify']); 
 ```
@@ -122,13 +122,13 @@ grunt.registerTask('default', ['jshint', 'qunit', 'clean', 'concat', 'uglify']);
 
 当然你也可以分别运行，比如，运行单元测试：
 
-```
+```js
 grunt qunit 
 ```
 
 比如，运行混淆代码
 
-```
+```js
 grunt uglify 
 ```
 

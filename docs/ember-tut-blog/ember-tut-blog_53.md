@@ -68,7 +68,7 @@
 
 使用[ember-cli](http://ember-cli.com/user-guide)命令创建文件。
 
-```
+```js
 ember g route users  
 ember g model user username:string email:string  
 ember g adapter application 
@@ -111,7 +111,7 @@ Ember Data 是 Ember.js 非常重要的一块，提供了几乎所有操作数�
 
 如果你不使用 Ember Data，在这里提供一个简单的方案供参考。 如果你想获取后端数据并显示数据到组件上（模板调用组件），你可以像下面的代码这样处理：
 
-```
+```js
 // app/components/list-of-drafts.js
 export default Ember.Component.extend({  
   willRender() {
@@ -124,7 +124,7 @@ export default Ember.Component.extend({
 
 这里不同过 Ember Data，自然也就没有调用 Ember Data 提供的方法（比如，findAll、findRecord），而是直接发 Ajax 请求，得到数据到设置到对象`drafts`中，然后在模板上显示数据。
 
-```
+```js
 <!-- app/templates/components/list-of-drafts.hbs -->  
 <ul>  
   {{#each drafts key="id" as |draft|}}
@@ -145,7 +145,7 @@ model 之间还可以定义单向或者双向的一对一、一对多和多对�
 
 #### 简单 model 定义
 
-```
+```js
 //app/models/person.js
 import Model from 'ember-data/model';  
 import attr from 'ember-data/attr';
@@ -158,7 +158,7 @@ export default Model.extend({
 
 model 类可以直接使用 ember-cli 命令创建：
 
-```
+```js
 ember g model person 
 ```
 
@@ -176,7 +176,7 @@ ember g model person
 
 比如下面的代码：
 
-```
+```js
 this.get('store').findRecord('person', 1); // => { id: 1, name: 'steve-buscemi' } 
 ```
 
@@ -204,7 +204,7 @@ this.get('store').findRecord('person', 1); // => { id: 1, name: 'steve-buscemi' 
 
 怎么建表我也不说了，下面直接贴建表的 SQL。
 
-```
+```js
 DROP TABLE IF EXISTS `user`;  
 CREATE TABLE `user` (  
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -220,13 +220,13 @@ CREATE TABLE `user` (
 
 如何在 ember 项目中创建服务端程序呢？ember 提供了创建的命令。
 
-```
+```js
 ember g server 
 ```
 
 创建完毕之后再按照开始介绍的依赖插件。
 
-```
+```js
 npm install mysql  
 npm install body-parser  
 npm install supervisor 
@@ -246,7 +246,7 @@ npm install supervisor
 
 为了不使服务端和 Ember 请求 URL 冲突修改了 URL 的默认方式，修改`config/environment.js`的第 8 行代码为如下：
 
-```
+```js
 locationType: 'hash', 
 ```
 
@@ -256,7 +256,7 @@ locationType: 'hash',
 
 首先简单列出数据库数据。
 
-```
+```js
 <!-- app/templates/users.hbs -->  
 <h1>用户列表</h1>
 
@@ -294,7 +294,7 @@ locationType: 'hash',
 </table> 
 ```
 
-```
+```js
 // app/routes/users.js
 import Ember from 'ember';
 
@@ -313,7 +313,7 @@ export default Ember.Route.extend({
 
 先从适配器下手！在前面已经创建好了适配器，如果是 2.0 之后的项目默认会创建`JSONAPIAdapter`这个适配器所接收、发送的数据格式都必须符合 jsonapi 规范，否则会报错，无法正常完成数据的交互。不过为了简便我们先不使用这个适配器，改用另一个简单的适配器`RESTAdapter`，这个适配器不是需要遵循 jsonapi 规范，只要自己约定好前后端的数据格式即可。
 
-```
+```js
 // app/adapters/application.js
 
 // import JSONAPIAdapter from 'ember-data/adapters/json-api';
@@ -326,7 +326,7 @@ export default DS.RESTAdapter.extend({
 
 手动修改好之后的适配器还不能起作用，这个适配器并没有连接到任何的后端服务，如果你想连接到你的服务上需要使用属性`host`指定。
 
-```
+```js
 // app/adapters/application.js
 
 // import JSONAPIAdapter from 'ember-data/adapters/json-api';
@@ -345,7 +345,7 @@ export default DS.RESTAdapter.extend({
 
 修改`server/index.js`。
 
-```
+```js
 /*jshint node:true*/
 
 // To use it create some files under `mocks/`
@@ -406,7 +406,7 @@ module.exports = function(app) {
 
 另外再多介绍一个属性`namespace`，这个属性是用于定义 URL 前缀的，比如下面的适配器定义：
 
-```
+```js
 // app/adapters/application.js
 
 // import JSONAPIAdapter from 'ember-data/adapters/json-api';
@@ -420,7 +420,7 @@ export default DS.RESTAdapter.extend({
 
 如果是这样定义那么后端处理的 URL 也需要做相应的处理，需要在拦截的请求上加前缀，比如下面的代码。
 
-```
+```js
 // 处理请求 http://localhost:4200/api/v1/user
   app.get('/api/v1/users', function(req, res) {
     // 返回三个对象
@@ -461,7 +461,7 @@ export default DS.RESTAdapter.extend({
 
 使用`JSONAPIAdapter`适配器和使用`RESTAdapter`适配器有何不同呢？我觉得最重要的一点是：数据规范。`JSONAPIAdapter`适配器要求交互的数据格式必须遵循[jsonapi](http://jsonapi.org)规范，否则是不能完成数据交互的。要求高了相应的你的处理代码也相应的要复杂。下面我们改用`JSONAPIAdapter`处理。
 
-```
+```js
 // app/adapters/application.js
 
 import JSONAPIAdapter from 'ember-data/adapters/json-api';  
@@ -480,7 +480,7 @@ export default JSONAPIAdapter.extend({
 
 从截图当中可以清楚地看到报错出来的错误，`must return a valid JSON API document`必须是一个有效 jsonapi 文档。要修复好这个错误也很简单，只需要滚吧后端服务返回的数据格式改成 jsonapi 的就行了。请看下面的代码：
 
-```
+```js
 // 处理请求 http://localhost:4200/user
   app.get('/api/v1/users', function(req, res) {
     // 返回三个对象
@@ -554,7 +554,7 @@ export default JSONAPIAdapter.extend({
 
 连接 MySQL 的工作交给前面已经安装好的`node-mysql`，如果还没安装请执行命令`npm install mysqljs/mysql`进行安装。继续修改后端服务代码`server/index.js`。
 
-```
+```js
 module.exports = function(app) {  
   // 与之前的内容不变 
   // 
@@ -619,7 +619,7 @@ module.exports = function(app) {
 
 为了方便演示再增加几个路由和模板。
 
-```
+```js
 ember g template users/index  
 ember g route users/new  
 ember g route users/edit 
@@ -633,7 +633,7 @@ ember g route users/edit
 
 #### Ember 前端处理代码
 
-```
+```js
 // app/components/user-form.js
 // 新增，修改 user
 import Ember from 'ember';
@@ -689,7 +689,7 @@ export default Ember.Component.extend({
 
 新增和修改处理是相似的，根据`id`是否为空判断是否是新增还是更新。
 
-```
+```js
 {{! 新增、修改都用到的表单，提出为公共部分}}
 <div class="container">  
   <h1>{{title}}</h1>
@@ -726,14 +726,14 @@ export default Ember.Component.extend({
 
 ##### new.hbs
 
-```
+```js
 {{! 增加数据的表单}}
 {{user-form title='新增 user' store=store model=model}} 
 ```
 
 ##### edit.hbs
 
-```
+```js
 {{! 修改数据的表单}}
 {{user-form title='修改 user' store=store model=model}} 
 ```
@@ -744,7 +744,7 @@ export default Ember.Component.extend({
 
 与前端对应的要有相应的后端处理服务，增加 2 个路由监听，一个是监听`post`提交（新增），一个是`put`提交（更新）。
 
-```
+```js
 // 处理请求 POST http://localhost:4200/users
   app.post('/api/v1/users', function(req, res) {
 
@@ -867,7 +867,7 @@ export default Ember.Component.extend({
 
 #### Ember 前端处理
 
-```
+```js
 // app/routes/user.js
 import Ember from 'ember';
 
@@ -887,7 +887,7 @@ export default Ember.Route.extend({
 }); 
 ```
 
-```
+```js
 <!-- app/templates/index.hbs -->
 
 <h1>用户列表</h1>
@@ -945,7 +945,7 @@ export default Ember.Route.extend({
 
 在后端增加一个监听删除的路由。
 
-```
+```js
 // 处理请求 DELETE http://localhost:4200/users/id 删除记录
   app.delete('/api/v1/users/:id', function(req, res) {
 

@@ -10,7 +10,7 @@
 
 创建组件的方法不用我多说，直接使用[Ember CLI](http://ember-cli.com/user-guide)命令创建即可。
 
-```
+```js
 ember g component button-with-confirmation  
 ember g component user-profile  
 ember g route button-with-confirmation-route 
@@ -20,7 +20,7 @@ ember g route button-with-confirmation-route
 
 下面是组件`user-profile`的定义，调用组件`button-with-confirmation`，那么此时`user-profile`作为父组件，`button-with-confirmation`作为子组件：
 
-```
+```js
 <!--  app/temlates/components/user-profile.hbs  -->
 
 {{button-with-confirmation text="Click OK to delete your account"}} 
@@ -41,7 +41,7 @@ ember g route button-with-confirmation-route
 
 在[Ember](http://emberjs.com)应用中，每个组件都有一个名为`actions`的属性。这个属性值是函数，是可以被用户或者子组件执行的函数。
 
-```
+```js
 //  app/components/user-profile.js
 
 import Ember from 'ember';
@@ -61,7 +61,7 @@ export default Ember.Component.extend({
 
 这一步我们将实现当用户点击“确定”之后触发事件的逻辑。
 
-```
+```js
 //  app/components/button-with-confirmation.js
 
 import Ember from 'ember';
@@ -80,7 +80,7 @@ export default Ember.Component.extend({
 
 现在我们在`user-profile`组件中使用`onConfirm()`方法触发组件`button-with-confirmation`类中的`userDidDeleteAccount`事件。
 
-```
+```js
 <!--  app/temlates/components/user-profile.hbs  -->
 
 {{#button-with-confirmation text="Click OK to delete your account" onConfirm=(action 'userDidDeleteAccount')}}
@@ -92,7 +92,7 @@ export default Ember.Component.extend({
 
 现在你可以在子组件中使用`onConfirm`方法执行父组件的动作。
 
-```
+```js
 //  app/components/button-with-confirmation.js
 
 import Ember from 'ember';
@@ -112,7 +112,7 @@ export default Ember.Component.extend({
 
 在模板`button-with-confirmation-route.hbs`中调用组件。
 
-```
+```js
 <!--  app/temlates/button-with-confirmation-route.hbs  -->
 
 {{user-profile}} 

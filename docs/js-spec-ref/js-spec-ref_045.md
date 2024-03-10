@@ -10,7 +10,7 @@
 
 window.postMessage 方法就是用来在某种程度上，绕过同域限制，实现不同域名的窗口（包括 iframe 窗口）之间的通信。它的格式如下。
 
-```
+```js
 targetWindow.postMessage(message, targetURL[, transferObject]);
 ```
 
@@ -18,7 +18,7 @@ targetWindow.postMessage(message, targetURL[, transferObject]);
 
 下面是一个 postMessage 方法的实例。假定当前网页弹出一个新窗口。
 
-```
+```js
 var popup = window.open(...popup details...);
 
 popup.postMessage("Hello World!", "http://example.org");
@@ -28,7 +28,7 @@ popup.postMessage("Hello World!", "http://example.org");
 
 然后，在当前网页上监听 message 事件。
 
-```
+```js
 window.addEventListener("message", receiveMessage, false);
 
 function receiveMessage(event) {
@@ -48,7 +48,7 @@ function receiveMessage(event) {
 
 最后，在 popup 窗口中部署下面的代码。
 
-```
+```js
 // popup 窗口
 
 function receiveMessage(event) {
@@ -70,7 +70,7 @@ iframe 中的网页，如果与主页面来自同一个域，通过设置 docume
 
 iframe 页面的代码如下。
 
-```
+```js
 document.domain = "domain.com";
 window.onmessage = function(e) {
   if (e.origin !== "http://domain.com") {
@@ -83,7 +83,7 @@ window.onmessage = function(e) {
 
 主页面的代码如下。
 
-```
+```js
 window.onload = function() {
     var win = document.getElementsByTagName('iframe')[0].contentWindow;
     var obj = {
@@ -97,7 +97,7 @@ window.onload = function() {
 
 加强版的 iframe 代码如下。
 
-```
+```js
 document.domain = "domain.com";
 window.onmessage = function(e) {
     if (e.origin !== "http://domain.com") {
@@ -122,7 +122,7 @@ window.onmessage = function(e) {
 
 加强版的主页面代码如下。
 
-```
+```js
 window.onload = function() {
     var win = document.getElementsByTagName('iframe')[0].contentWindow;
     var obj = {

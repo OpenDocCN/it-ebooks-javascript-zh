@@ -20,7 +20,7 @@
 
 代码可以写成下面这样：
 
-```
+```js
 var menu = {
 
 　　// 当前状态
@@ -62,13 +62,13 @@ var menu = {
 
 该库提供一个全局对象 StateMachine，使用该对象的 create 方法，可以生成有限状态机的实例。
 
-```
+```js
 var fsm = StateMachine.create();
 ```
 
 生成的时候，需要提供一个参数对象，用来描述实例的性质。比如，交通信号灯（红绿灯）可以这样描述：
 
-```
+```js
 var fsm = StateMachine.create({
 
 　　initial: 'green',
@@ -113,7 +113,7 @@ Javascript Finite State Machine 允许为每个事件指定两个回调函数，
 
 如果事件的回调函数里面有异步操作（比如与服务器进行 Ajax 通信），这时我们可能希望等到异步操作结束，再发生状态改变。这就要用到 transition 方法。
 
-```
+```js
 fsm.onleavegreen = function(){
 　　light.fadeOut('slow', function() {
 　　　　fsm.transition();
@@ -126,7 +126,7 @@ fsm.onleavegreen = function(){
 
 Javascript Finite State Machine 还允许指定错误处理函数，当发生了当前状态不可能发生的事件时自动触发。
 
-```
+```js
 var fsm = StateMachine.create({
 　　// ...
 　　error: function(eventName, from, to, args, errorCode, errorMessage) {

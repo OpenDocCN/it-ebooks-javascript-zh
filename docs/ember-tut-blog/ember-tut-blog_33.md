@@ -14,14 +14,14 @@
 
 准备工作：
 
-```
+```js
 ember g route passing-properties-to-component  
 ember g component passing-properties-to-component 
 ```
 
 调用组件的模板，传入两个位置参数，分别是`item.title`、`item.body`。
 
-```
+```js
 <!-- app/templates/passing-properties-to-component.hbs  -->
 
 {{#each model as |item|}}
@@ -32,7 +32,7 @@ ember g component passing-properties-to-component
 
 准备需要显示的数据。
 
-```
+```js
 //  app/routes/padding-properties-to-component.js
 
 import Ember from 'ember';
@@ -52,7 +52,7 @@ export default Ember.Route.extend({
 
 在组件类中指定位置参数的名称。
 
-```
+```js
 //  app/components/padding-properties-to-component.js
 
 import Ember from 'ember';
@@ -71,7 +71,7 @@ export default PaddingPropertiesToComponentComponent ;
 
 组件直接使用组件类中指定的位置参数名称获取数据。
 
-```
+```js
 <!--  app/templates/components/passing-properties-to-component.hbs  -->
 
 <article>  
@@ -88,7 +88,7 @@ export default PaddingPropertiesToComponentComponent ;
 
 调用组件的模板
 
-```
+```js
 <!-- app/templates/passing-properties-to-component.hbs  -->
 
 {{#each model as |item|}}
@@ -99,7 +99,7 @@ export default PaddingPropertiesToComponentComponent ;
 
 指定参数名称的组件类，获取参数的方式可以[Ember.js 入门指南之三计算属性](http://blog.ddlisting.com/2016/03/17/ember-js-ru-men-zhi-nan-ji-suan-shu-xing-compute-properties/)这章。
 
-```
+```js
 //  app/components/padding-properties-to-component.js
 
 import Ember from 'ember';
@@ -128,7 +128,7 @@ export default PaddingPropertiesToComponentComponent;
 
 下面看组件是怎么获取传递过来的参数的。
 
-```
+```js
 <!--  app/templates/components/passing-properties-to-component.hbs  -->
 
 <article>  

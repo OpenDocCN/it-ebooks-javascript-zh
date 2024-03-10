@@ -22,7 +22,7 @@ D3 提供了 4 个方法用于实现图形的过渡：从**状态 A **变为**�
 
 其前后是图形变化前后的状态（形状、位置、颜色等等），例如：
 
-```
+```js
 .attr("fill","red")         //初始颜色为红色
 .transition()               //启动过渡
 .attr("fill","steelblue")   //终止颜色为铁蓝色
@@ -53,7 +53,7 @@ D3 会自动对两种颜色（红色和铁蓝色）之间的颜色值（RGB 值�
 
 例如，对整体指定时：
 
-```
+```js
 .transition()
 .duration(1000)
 .delay(500)
@@ -63,7 +63,7 @@ D3 会自动对两种颜色（红色和铁蓝色）之间的颜色值（RGB 值�
 
 又如，对一个一个的图形（图形上绑定了数据）进行指定时：
 
-```
+```js
 .transition()
 .duration(1000)
 .delay(funtion(d,i){
@@ -79,7 +79,7 @@ D3 会自动对两种颜色（红色和铁蓝色）之间的颜色值（RGB 值�
 
 第一个圆，要求移动 x 坐标。
 
-```
+```js
 var circle1 = svg.append("circle")
         .attr("cx", 100)
         .attr("cy", 100)
@@ -94,7 +94,7 @@ circle1.transition()
 
 第二个圆，要求既移动 x 坐标，又改变颜色。
 
-```
+```js
 var circle2 = svg.append("circle")... //与第一个圆一样，省略部分代码
 
 //在 1.5 秒（1500 毫秒）内将圆心坐标由 100 变为 300，
@@ -107,7 +107,7 @@ circle2.transition()
 
 第三个圆，要求既移动 x 坐标，又改变颜色，还改变半径。
 
-```
+```js
 var circle3 = svg.append("circle")... //与第一个圆一样，省略部分代码
 
 //在 2 秒（2000 毫秒）内将圆心坐标由 100 变为 300
@@ -134,7 +134,7 @@ circle3.transition()
 
 对于文字元素，代码如下：
 
-```
+```js
 .attr("y",function(d){
     var min = yScale.domain()[0];
     return yScale(min);

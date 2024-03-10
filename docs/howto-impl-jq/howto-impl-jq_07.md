@@ -8,7 +8,7 @@
 
 新增 attr 和 data
 
-```
+```js
 css: function(attr, val) { //链式测试
 
     for (var i = 0; i < this.length; i++) {
@@ -38,7 +38,7 @@ css: function(attr, val) { //链式测试
 
 如果是对象`css({"width":'100px','height':'200px'})`
 
-```
+```js
 var _this = this[i];
 f.each(attr,function(attr,val) {
     _this.style.cssText += '' + attr + ':' + val + ';';
@@ -51,7 +51,7 @@ f.each(attr,function(attr,val) {
 
 比如有这样的 dom 结构
 
-```
+```js
 <div id="pox">
     <ul>
         <li class="a c">pox</li>
@@ -68,7 +68,7 @@ f.each(attr,function(attr,val) {
 
 而现在基本能搜到的完全没有做这方面的判断.所以我们来看看我是如何实现的
 
-```
+```js
 hasClass : function(cls) {
     var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
     var arr = [];
@@ -87,7 +87,7 @@ hasClass : function(cls) {
 
 最后是我们的 attr 和 data 方法
 
-```
+```js
 attr : function(attr, val) {
     for (var i = 0; i < this.length; i++) {
         if(typeof attr == 'string') {

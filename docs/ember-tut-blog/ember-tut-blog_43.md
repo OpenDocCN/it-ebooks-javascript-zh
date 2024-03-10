@@ -6,7 +6,7 @@
 
 在开始学习`model`之前先做好准备工作： 重新创建一个[Ember](http://emberjs.com)项目，仍旧使用的是[Ember CLI](http://ember-cli.com/user-guide)命令创建。
 
-```
+```js
 ember new chapter6_models  
 cd chapter6_models  
 ember server 
@@ -20,7 +20,7 @@ ember server
 
 *   安装
 
-```
+```js
 ember install emberfire 
 ```
 
@@ -32,7 +32,7 @@ ember install emberfire
 
 *   再在`config/enviroment.js`的`APP:{}`(大概第 20 行)后面新增如下代码
 
-```
+```js
 APP: {  
       // Here you can pass flags/options to your application instance
       // when it is created
@@ -52,7 +52,7 @@ APP: {
 
 或者你可以参考我的配置文件：
 
-```
+```js
 /* jshint node: true */
 
 module.exports = function(environment) {  
@@ -112,7 +112,7 @@ Ember 使用适配器模式连接数据库，可以适配不同类型的后端�
 
 下面先看一个简单的例子，由这个例子延伸出有关于`model`的核心概念。这些代码是旧版写法，仅仅是为了说明问题，本文也不会真正执行。
 
-```
+```js
 //  app/components/list-of-drafts.js
 export default Ember.Component.extend({  
     willRender() {
@@ -126,7 +126,7 @@ export default Ember.Component.extend({
 
 定义了一个组件类。并在组件类中获取`json`格式数据。 下面是组件对应的模板文件。
 
-```
+```js
 <!-- app/templates/components/list-of-drafts.hbs  -->  
 <ul>  
     {{#each drafts key="id" as |draft|}}
@@ -137,7 +137,7 @@ export default Ember.Component.extend({
 
 再定义另外一个组件类和模板
 
-```
+```js
 //  app/components/list-button.js
 export default Ember.Component.extend({  
     willRender() {
@@ -149,7 +149,7 @@ export default Ember.Component.extend({
 }); 
 ```
 
-```
+```js
 <!-- app/templates/components/ list-button.hbs  -->  
 {{#link-to ‘drafts’ tagName=’button’}}
 Drafts ({{drafts.length}})  
@@ -174,12 +174,12 @@ Drafts ({{drafts.length}})
 
 下面的例子结合 firebase 演示： 创建路由和`model`：
 
-```
+```js
 ember g route store-example  
 ember g model article 
 ```
 
-```
+```js
 //   app/models/article.js
 
 import DS from 'ember-data';
@@ -196,7 +196,7 @@ export default DS.Model.extend({
 
 我们在路由的`model`回调中获取远程的数据，并显示在模板上。
 
-```
+```js
 //  app/routes/store-example.js
 
 import Ember from 'ember';
@@ -211,7 +211,7 @@ export default Ember.Route.extend({
 
 `find`方法的第一个参数是`model`类名，第二个参数对象的`id`属性值。记得 id 属性不需要在`model`类中手动定义，Ember 会自动为你定义。
 
-```
+```js
 <h1>{{model.title}}</h1>
 
 <div class="body">  
@@ -235,7 +235,7 @@ export default Ember.Route.extend({
 
 `model`是由若干个属性构成的。`attr`方法的参数指定属性的类型。
 
-```
+```js
 export default DS.Model.extend({  
     title: DS.attr('string'),  //  字符串类型
     flag: DS.attr('boolean'), //  布尔类型
@@ -246,7 +246,7 @@ export default DS.Model.extend({
 
 模型也声明了它与其他对象的关系。例如，一个`Order`可以有许多`LineItems`，一个`LineItem`可以属于一个特定的`Order`。
 
-```
+```js
 App.Order = DS.Model.extend({  
   lineItems: DS.hasMany('lineItem')
 });

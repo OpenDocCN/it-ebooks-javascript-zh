@@ -18,7 +18,7 @@
 
 ##### 保存记录
 
-```
+```js
 mongo = require 'mongodb'
 
 server = new mongo.Server "127.0.0.1", 27017, {}
@@ -39,7 +39,7 @@ client.open (err, database) ->
 
 ##### 查找记录
 
-```
+```js
 mongo = require 'mongodb'
 
 server = new mongo.Server "127.0.0.1", 27017, {}
@@ -77,7 +77,7 @@ client.open (err, database) ->
 
 使用 [SQLite 模块](http://code.google.com/p/node-sqlite/)。
 
-```
+```js
 sqlite = require 'sqlite'
 
 db = new sqlite.Database
@@ -118,7 +118,7 @@ db.open ":memory:", (openErr) ->
 
 你也可以提前准备你的 SQL 查询语句。
 
-```
+```js
 sqlite = require 'sqlite'
 async = require 'async' # Not required but added to make the example more concise
 

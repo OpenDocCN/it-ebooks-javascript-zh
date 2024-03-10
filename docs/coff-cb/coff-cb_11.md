@@ -10,7 +10,7 @@
 
 使用 CoffeeScript 的 “heregexes” ——可以忽视内部空白字符并可以包含注释的扩展正则表达式。
 
-```
+```js
 pattern = ///
   ^\(?(\d{3})\)? # 采集区域代码，忽略可选的括号
   [-\s]?(\d{3})  # 采集前缀，忽略可选破折号或空格
@@ -40,7 +40,7 @@ pattern = ///
 
 ### 解决方案
 
-```
+```js
 htmlEncode = (str) ->
   str.replace /[&<>"']/g, ($0) ->
     "&" + {"&":"amp", "<":"lt", ">":"gt", '"':"quot", "'":"#39"}[$0] + ";"
@@ -65,7 +65,7 @@ htmlEncode('<a href="http://bn.com">Barnes & Noble</a>')
 
 第一个版本需要 2 个参数：*模式*和*字符串替换*
 
-```
+```js
 "JavaScript is my favorite!".replace /Java/, "Coffee"
  # => 'CoffeeScript is my favorite!'
 
@@ -78,7 +78,7 @@ htmlEncode('<a href="http://bn.com">Barnes & Noble</a>')
 
 第二个版本需要 2 个参数：*模式*和*回调函数*
 
-```
+```js
 "CoffeeScript is my favorite!".replace /(\w+)/g, (match) ->
   match.toUpperCase()
  # => 'COFFEESCRIPT IS MY FAVORITE!'
@@ -104,7 +104,7 @@ htmlEncode('<a href="http://bn.com">Barnes & Noble</a>')
 
 第一种方式是在 RegExp 模式或对象中调用 test 方法。test 方法返回一个布尔值：
 
-```
+```js
 match = /sample/.test("Sample text")
  # => false
 
@@ -114,7 +114,7 @@ match = /sample/i.test("Sample text")
 
 下一种方式是在 RegExp 模式或对象中调用 exec 方法。exec 方法返回一个匹配信息的数组或空值：
 
-```
+```js
 match = /s(amp)le/i.exec "Sample text"
  # => [ 'Sample', 'amp', index: 0, input: 'Sample text' ]
 
@@ -126,7 +126,7 @@ match = /s(amp)le/.exec "Sample text"
 
 match 方法使给定的字符串与表达式对象匹配。有 “g” 标识的返回一个包含匹配项的数组，没有 “g” 标识的仅返回第一个匹配项或如果没有找到匹配项则返回 null 。
 
-```
+```js
 "Watch out for the rock!".match(/r?or?/g)
  # => [ 'o', 'or', 'ro' ]
 
@@ -139,7 +139,7 @@ match 方法使给定的字符串与表达式对象匹配。有 “g” 标识�
 
 search 方法以字符串匹配正则表达式，且如果找到的话返回匹配的起始位置，未找到的话则返回 -1 。
 
-```
+```js
 "Watch out for the rock!".search /for/
  # => 10
 

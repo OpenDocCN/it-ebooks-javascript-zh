@@ -10,7 +10,7 @@
 
 由于这个模板在创建项目的时候就已经有了，所以会提示你是否覆盖原来的文件，你可以选择覆盖或者不覆盖都行。
 
-```
+```js
 <!-- app/templates/application.hbs -->  
 <h1>Kittens</h1>  
 <p>  
@@ -30,7 +30,7 @@ Kittens are the cutest!!
 
 每一个模板都会有一个与之关联的`controller`类、`route`类、`model`类（当然这些类是不是必须有的）。这就是模板能显示表达式的值的原因，你可以在`controller`类中设置模板中表达式显示的值，就像`java web`开发中在`servlet`或者`Action`调用`request.setAttribute()`方法设置某个属性一样。比如下面的模板代码：
 
-```
+```js
 <!-- app/templates/application.hbs -->
 
 <!-- 这个是默认的模板，Ember 会根据命名的规则自动找到 controllers/application 对应的模板是 templates/application.hbs -->
@@ -51,7 +51,7 @@ My email is <b>{{email}}</b>
 
 打开你的文件目录，是不是可以在`app/controllers`下面看到了！ 现在为了演示表达式我们在`controller`里添加一些代码：
 
-```
+```js
 // app/controllers/application.js
 
 import Ember from 'ember';
@@ -70,7 +70,7 @@ export default Ember.Controller.extend({
 
 然后修改显示的模板如下：
 
-```
+```js
 <!-- app/templates/application.hbs -->
 
 <!-- 这个是默认的模板，Ember 会根据命名的规则自动找到 controllers/application 对应的模板是 templates/application.hbs -->  

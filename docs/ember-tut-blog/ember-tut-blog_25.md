@@ -4,7 +4,7 @@
 
 比如下面的路由设置，`posts`路由渲染模板`posts.hbs`，路由`new`渲染模板`posts/new.hbs`。
 
-```
+```js
 Router.map(function() {  
      this.route('posts', function() {
      this.route('new');
@@ -16,7 +16,7 @@ Router.map(function() {
 
 如果你想渲染到另外一个模板上也是允许的，但是要在路由中重写`renderTemplate`回调方法。
 
-```
+```js
 //  app/routes/posts.js
 
 import Ember from 'ember';

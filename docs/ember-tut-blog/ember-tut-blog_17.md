@@ -6,7 +6,7 @@
 
 #### 1，在 route 层增加测试数据
 
-```
+```js
 //  apap/routes/myaction.js
 
 import Ember from 'ember';
@@ -23,7 +23,7 @@ export default Ember.Route.extend({
 
 #### 2，编写 action 模板
 
-```
+```js
 <!--  //  app/templates/myaction.hbs  -->
 
 <!-- showDetailInfo 这个事件的名字必须要跟 controller 里的方法名字一致 -->  
@@ -39,7 +39,7 @@ export default Ember.Route.extend({
 
 #### 3，编写 action 的 controller 实现模板所需要的逻辑
 
-```
+```js
 // app/controllers/myaction.js
 
 import Ember from 'ember';
@@ -60,7 +60,7 @@ export default Ember.Controller.extend({
 
 对于`controller`的处理逻辑你还可以直接编写触发的判断。
 
-```
+```js
 actions: {  
         showDetailInfo: function() {
             // toggleProperty 方法直接把 isShowingBody 设置为相反值
@@ -90,7 +90,7 @@ actions: {
 
 就像调用`javascript`的方法一样，你也可以为`action`助手增加必要的参数。只要在`action`名字后面接上你的参数即可。
 
-```
+```js
 <p>  
 <!-- model 直接作为参数传递到 controller -->  
 <button {{action 'hitMe' model}}>点击我吧</button>  
@@ -99,7 +99,7 @@ actions: {
 
 对应的在`controller`增加处理的方法`selected`。在此方法内打印获取到的参数值。
 
-```
+```js
 // app/controllers/myaction.js
 
 import Ember from 'ember';
@@ -132,11 +132,11 @@ Ember 规定我们编写的动作处理的方法都是放在`actions`这个哈�
 
 默认情况下`action`触发的是`click`事件，你可以指定其他事件，比如键盘按下事件`keypress`。事件的名字与`javascript`提供的名字是相似的，唯一不同的是 Ember 所识别是事件名字如果是由不同单词组成的需要用中划线分隔，比如`keypress`事件在 Ember 模板中你需要写成`key-press`。 注意：你指定事件的时候要把事件的名字作为`on`的属性。比如`on='key-press'`。
 
-```
+```js
 <a href="#/myaction" {{action 'triggerMe' on="mouse-over"}}>鼠标移到我身上触发</a> 
 ```
 
-```
+```js
 triggerMe: function() {  
     console.log('触发 mouseover 事件。。。。');
 } 
@@ -146,7 +146,7 @@ triggerMe: function() {
 
 甚至你还可以指定按下键盘某个键后点击才触发`action`所指定的事件，比如按下键盘的`Alt`再点击才会触发事件。使用`allowedkeys`属性指定按下的是那个键。
 
-```
+```js
 <br><br>  
 <button {{action 'pressALTKeyTiggerMe' allowedKeys='alt'}}>按下 Alt 点击触发我</button> 
 ```
@@ -155,7 +155,7 @@ triggerMe: function() {
 
 在`action`助手内使用属性`preventDefault=false`可以禁止标签的默认行为，比如下面的 a 标签，如果`action`助手内没有定义这个属性那么你点击链接时只会执行执行的`action`动作，`a`标签默认的行为不会被触发。
 
-```
+```js
 <a href="http://www.baidu.com" {{action "showDetailInfo" preventDefault=false}}>  
 点我跳转
 </a> 
@@ -165,12 +165,12 @@ triggerMe: function() {
 
 `handlebars`的`action`助手真的是非常强大，你甚至可以把触发的事件作为`action`的参数直接传递到`controller`。不过你需要把`action`助手放在`javascript`的事件里。比如下面的代码当失去焦点时触发，并且通过`action`指定的`dandDidChange`把触发的事件`blur`传递到`controller`。
 
-```
+```js
 <label>失去焦点时候触发</label>  
 <input type="text" value={{textValue}} onblur={{action 'bandDidChange'}} /> 
 ```
 
-```
+```js
 // app/controllers/myaction.js
 
 import Ember from 'ember';
@@ -190,7 +190,7 @@ export default Ember.Controller.extend({
 
 从控制台输出结果看出来`event`的值是一个对象并且是一个`focus`事件。 但是如果你在`action`助手内增加一个属性`value='target.value'`(别写错只能是`target.value`)之后，传递到`controller`的则是输入框本身的内容。不再是事件对象本身。
 
-```
+```js
 <input type="text" value={{textValue}} onblur={{action 'bandDidChange' value="target.value"}} /> 
 ```
 
@@ -200,7 +200,7 @@ export default Ember.Controller.extend({
 
 ### 7，`action`助手用在非点击元素上
 
-```
+```js
 `action`助手可以用在任何的`DOM`元素上，不仅仅是用在能点击的元素上（比如`a`、`button`），但是用在其他非点击的元素上默认情况下是不可用的，也就是说点击也是无效的。比如用在`div`标签上，但是你点击`div`元素是没有反应的。如果你需要让`div`元素也能触发单击事件你需要给元素添加一个 CSS 类'cursor:pointer;`。 
 ```
 

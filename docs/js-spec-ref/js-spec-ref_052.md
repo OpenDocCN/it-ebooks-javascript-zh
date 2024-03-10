@@ -13,7 +13,7 @@
 
 alt 属性返回 image 元素的 HTML 标签的 alt 属性值，src 属性返回 image 元素的 HTML 标签的 src 属性值。
 
-```
+```js
 // 方法一：HTML5 构造函数 Image
 var img1 = new Image(); 
 img1.src = 'image1.png';
@@ -42,7 +42,7 @@ complete 属性返回一个布尔值，true 表示当前图像属于浏览器支
 
 这两个属性只读，表示 image 对象真实的宽度和高度。
 
-```
+```js
 myImage.addEventListener('onload', function() {
     console.log('My width is: ', this.naturalWidth);
     console.log('My height is: ', this.naturalHeight);

@@ -19,7 +19,7 @@ WebSocket 协议完全可以取代 Ajax 方法，用来向服务器端发送文�
 
 WebSocket 不使用 HTTP 协议，而是使用自己的协议。浏览器发出的 WebSocket 请求类似于下面的样子：
 
-```
+```js
 GET / HTTP/1.1
 Connection: Upgrade
 Upgrade: websocket
@@ -33,7 +33,7 @@ Sec-WebSocket-Version: 13
 
 服务器端的 WebSocket 回应则是
 
-```
+```js
 HTTP/1.1 101 Switching Protocols
 Connection: Upgrade
 Upgrade: websocket
@@ -62,7 +62,7 @@ WebSocket 协议需要服务器支持，目前比较流行的实现是基于 nod
 
 首先，客户端要检查浏览器是否支持 WebSocket，使用的方法是查看 window 对象是否具有 WebSocket 属性。
 
-```
+```js
 if(window.WebSocket != undefined) {
     // WebSocket 代码
 }
@@ -70,7 +70,7 @@ if(window.WebSocket != undefined) {
 
 然后，开始与服务器建立连接（这里假定服务器就是本机的 1740 端口，需要使用 ws 协议）。
 
-```
+```js
 if(window.WebSocket != undefined) {
     var connection = new WebSocket('ws://localhost:1740');
 }
@@ -85,7 +85,7 @@ if(window.WebSocket != undefined) {
 
 握手协议成功以后，readyState 就从 0 变为 1，并触发 open 事件，这时就可以向服务器发送信息了。我们可以指定 open 事件的回调函数。
 
-```
+```js
 connection.onopen = wsOpen;
 
 function wsOpen (event) {
@@ -95,7 +95,7 @@ function wsOpen (event) {
 
 关闭 WebSocket 连接，会触发 close 事件。
 
-```
+```js
 connection.onclose = wsClose;
 
 function wsClose () {
@@ -109,13 +109,13 @@ connection.close();
 
 连接建立后，客户端通过 send 方法向服务器端发送数据。
 
-```
+```js
 connection.send(message);
 ```
 
 除了发送字符串，也可以使用 Blob 或 ArrayBuffer 对象发送二进制数据。
 
-```
+```js
 // 使用 ArrayBuffer 发送 canvas 图像数据
 var img = canvas_context.getImageData(0, 0, 400, 320);
 var binary = new Uint8Array(img.data.length);
@@ -131,7 +131,7 @@ connection.send(file);
 
 客户端收到服务器发送的数据，会触发 message 事件。可以通过定义 message 事件的回调函数，来处理服务端返回的数据。
 
-```
+```js
 connection.onmessage = wsMessage;
 
 function wsMessage (event) {
@@ -143,7 +143,7 @@ function wsMessage (event) {
 
 如果接收的是二进制数据，需要将连接对象的格式设为 blob 或 arraybuffer。
 
-```
+```js
 connection.binaryType = 'arraybuffer';
 
 connection.onmessage = function(e) {
@@ -155,7 +155,7 @@ connection.onmessage = function(e) {
 
 如果出现错误，浏览器会触发 WebSocket 实例对象的 error 事件。
 
-```
+```js
 connection.onerror = wsError;
 
 function wsError(event) {
@@ -167,14 +167,14 @@ function wsError(event) {
 
 服务器端需要单独部署处理 WebSocket 的代码。下面用 node.js 搭建一个服务器环境。
 
-```
+```js
 var http = require('http');
 var server = http.createServer(function(request, response) {});
 ```
 
 假设监听 1740 端口。
 
-```
+```js
 server.listen(1740, function() {
     console.log((new Date()) + ' Server is listening on port 1740');
 });
@@ -182,7 +182,7 @@ server.listen(1740, function() {
 
 接着启动 WebSocket 服务器。这需要加载 websocket 库，如果没有安装，可以先使用 npm 命令安装。
 
-```
+```js
 var WebSocketServer = require('websocket').server;
 var wsServer = new WebSocketServer({
     httpServer: server
@@ -191,7 +191,7 @@ var wsServer = new WebSocketServer({
 
 WebSocket 服务器建立 request 事件的回调函数。
 
-```
+```js
 var connection;
 
 wsServer.on('request', function(req){
@@ -201,7 +201,7 @@ wsServer.on('request', function(req){
 
 上面代码的回调函数接受一个参数 req，表示 request 请求对象。然后，在回调函数内部，建立 WebSocket 连接 connection。接着，就要对 connection 的 message 事件指定回调函数。
 
-```
+```js
 wsServer.on('request', function(r){
     connection = req.accept('echo-protocol', req.origin);
 
@@ -214,7 +214,7 @@ wsServer.on('request', function(r){
 
 最后，监听用户的 disconnect 事件。
 
-```
+```js
 connection.on('close', function(reasonCode, description) {
     console.log(connection.remoteAddress + ' disconnected.');
 });
@@ -222,7 +222,7 @@ connection.on('close', function(reasonCode, description) {
 
 使用[ws](https://github.com/einaros/ws)模块，部署一个简单的 WebSocket 服务器非常容易。
 
-```
+```js
 var WebSocketServer = require('ws').Server;
 var wss = new WebSocketServer({ port: 8080 });
 
@@ -241,13 +241,13 @@ wss.on('connection', function connection(ws) {
 
 第一步，在服务器端的项目根目录下，安装 socket.io 模块。
 
-```
+```js
 npm install socket.io
 ```
 
 第二步，在根目录下建立 app.js，并写入以下代码（假定使用了 Express 框架）。
 
-```
+```js
 var app = require('express')();
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
@@ -263,19 +263,19 @@ app.get('/', function (req, res) {
 
 第三步，将 Socket.io 插入客户端网页。
 
-```
+```js
 <script src="/socket.io/socket.io.js"></script>
 ```
 
 然后，在客户端脚本中，建立 WebSocket 连接。
 
-```
+```js
 var socket = io.connect('http://localhost');
 ```
 
 由于本例假定 WebSocket 主机与客户端是同一台机器，所以 connect 方法的参数是`http://localhost`。接着，指定 news 事件（即服务器端发送 news）的回调函数。
 
-```
+```js
 socket.on('news', function (data){
    console.log(data);
 });
@@ -283,7 +283,7 @@ socket.on('news', function (data){
 
 最后，用 emit 方法向服务器端发送信号，触发服务器端的 anotherNews 事件。
 
-```
+```js
 socket.emit('anotherNews');
 ```
 
@@ -291,7 +291,7 @@ socket.emit('anotherNews');
 
 第四步，在服务器端的 app.js，加入以下代码。
 
-```
+```js
 io.sockets.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
   socket.on('anotherNews', function (data) {

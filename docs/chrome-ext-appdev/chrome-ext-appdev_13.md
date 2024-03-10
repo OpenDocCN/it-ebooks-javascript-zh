@@ -6,7 +6,7 @@
 
 通过`usb`接口可以与 USB 设备进行交互，这能让 Chrome 应用作为 USB 设备的驱动程序。要使用`usb`接口需要在 Manifest 中声明`usb`权限：
 
-```
+```js
 "permissions": [
     "usb"
 ] 
@@ -18,7 +18,7 @@
 
 列出指定的 USB 设备：
 
-```
+```js
 var options = {
     vendorId: 0x05ac,  //Apple, Inc.
     productId: 0x12a0  //iPhone 4s
@@ -31,7 +31,7 @@ chrome.usb.getDevices(options, function(deviceArray){
 
 请求访问操作系统占用的设备（仅限 Chrome OS）：
 
-```
+```js
 chrome.usb.requestAccess(device, interfaceId, function(sucess){
     //sucess is boolean
 }); 
@@ -41,7 +41,7 @@ chrome.usb.requestAccess(device, interfaceId, function(sucess){
 
 打开设备：
 
-```
+```js
 chrome.usb.openDevice(device, function(ConnectionHandle){
     //do something with handle
 }); 
@@ -51,7 +51,7 @@ chrome.usb.openDevice(device, function(ConnectionHandle){
 
 寻找指定的 USB 设备（如果权限允许的话同时打开设备以便使用）：
 
-```
+```js
 var options = {
     vendorId: 0x05ac,  //Apple, Inc.
     productId: 0x12a0  //iPhone 4s
@@ -65,7 +65,7 @@ chrome.usb.findDevices(options, function(ConnectionHandleArray){
 
 关闭连接句柄：
 
-```
+```js
 chrome.usb.closeDevice(ConnectionHandle, function(){
     //do something after close a device
 }); 
@@ -73,7 +73,7 @@ chrome.usb.closeDevice(ConnectionHandle, function(){
 
 重置 USB 设备：
 
-```
+```js
 chrome.usb.resetDevice(ConnectionHandle, function(result){
     //result is boolean
 }); 
@@ -83,7 +83,7 @@ chrome.usb.resetDevice(ConnectionHandle, function(result){
 
 列举 USB 设备上的所有接口：
 
-```
+```js
 chrome.usb.listInterfaces(ConnectionHandle, function(descriptorsArray){
     //do something with descriptorsArray
 }); 
@@ -93,7 +93,7 @@ chrome.usb.listInterfaces(ConnectionHandle, function(descriptorsArray){
 
 在指定 USB 设备上获取接口：
 
-```
+```js
 chrome.usb.claimInterface(ConnectionHandle, interfaceNumber, function(){
     //do something after the interface is claimed
 }); 
@@ -101,7 +101,7 @@ chrome.usb.claimInterface(ConnectionHandle, interfaceNumber, function(){
 
 释放在提供的设备上获取的接口：
 
-```
+```js
 chrome.usb.releaseInterface(ConnectionHandle, interfaceNumber, function(){
     //do something after the interface is released
 }); 
@@ -109,7 +109,7 @@ chrome.usb.releaseInterface(ConnectionHandle, interfaceNumber, function(){
 
 在之前获取的设备接口上选择替代的设置：
 
-```
+```js
 chrome.usb.setInterfaceAlternateSetting(ConnectionHandle, interfaceNumber, alternateSetting, function(){
     //do something after the interface setting is set
 }); 
@@ -121,7 +121,7 @@ chrome.usb.setInterfaceAlternateSetting(ConnectionHandle, interfaceNumber, alter
 
 在指定设备上进行控制传输：
 
-```
+```js
 chrome.usb.controlTransfer(ConnectionHandle, transferInfo, function(info){
     //do something with info
 }); 
@@ -133,7 +133,7 @@ chrome.usb.controlTransfer(ConnectionHandle, transferInfo, function(info){
 
 在指定设备上进行大块传输：
 
-```
+```js
 chrome.usb.bulkTransfer(ConnectionHandle, transferInfo, function(info){
     //do something with info
 }); 
@@ -143,7 +143,7 @@ chrome.usb.bulkTransfer(ConnectionHandle, transferInfo, function(info){
 
 在指定设备上进行中断传输：
 
-```
+```js
 chrome.usb.interruptTransfer(ConnectionHandle, transferInfo, function(info){
     //do something with info
 }); 
@@ -153,7 +153,7 @@ chrome.usb.interruptTransfer(ConnectionHandle, transferInfo, function(info){
 
 在指定设备上进行同步传输：
 
-```
+```js
 chrome.usb.isochronousTransfer(ConnectionHandle, transferInfo, function(info){
     //do something with info
 }); 
@@ -165,7 +165,7 @@ chrome.usb.isochronousTransfer(ConnectionHandle, transferInfo, function(info){
 
 通过`serial`接口可以使 Chrome 应用进行串口通信。使用`serial`接口需要在 Manifest 中声明`serial`权限：
 
-```
+```js
 "permissions": [
     "serial"
 ] 
@@ -177,7 +177,7 @@ chrome.usb.isochronousTransfer(ConnectionHandle, transferInfo, function(info){
 
 获取系统中可用串行设备的有关信息：
 
-```
+```js
 chrome.serial.getDevices(function(portsArray){
     //do something with portsArray
 }); 
@@ -187,7 +187,7 @@ chrome.serial.getDevices(function(portsArray){
 
 连接到指定的串行端口：
 
-```
+```js
 chrome.serial.connect(path, options, function(connectionInfo){
     //do something with connectionInfo
 }); 
@@ -195,7 +195,7 @@ chrome.serial.connect(path, options, function(connectionInfo){
 
 其中`options`为端口配置选项，完整的结构如下：
 
-```
+```js
 {
     persistent: 应用关闭时连接是否保持打开状态,
     name: 与连接相关联的字符串,
@@ -212,7 +212,7 @@ chrome.serial.connect(path, options, function(connectionInfo){
 
 更新打开的串行端口连接的选项设置：
 
-```
+```js
 chrome.serial.update(connectionId, options, function(result){
     //result is boolean
 }); 
@@ -220,7 +220,7 @@ chrome.serial.update(connectionId, options, function(result){
 
 断开串行端口连接：
 
-```
+```js
 chrome.serial.disconnect(connectionId, function(result){
     //result is boolean
 }); 
@@ -228,7 +228,7 @@ chrome.serial.disconnect(connectionId, function(result){
 
 暂停或恢复打开的连接：
 
-```
+```js
 chrome.serial.setPaused(connectionId, paused, function(){
     //do something after pause a connection
 }); 
@@ -238,7 +238,7 @@ chrome.serial.setPaused(connectionId, paused, function(){
 
 向指定连接写入数据：
 
-```
+```js
 chrome.serial.send(connectionId, data, function(sendInfo){
     //do something with sendInfo
 }); 
@@ -248,7 +248,7 @@ chrome.serial.send(connectionId, data, function(sendInfo){
 
 清除指定连接输入输出缓存中的所有内容：
 
-```
+```js
 chrome.serial.flush(connectionId, function(result){
     //result is boolean
 }); 
@@ -256,7 +256,7 @@ chrome.serial.flush(connectionId, function(result){
 
 当接收到数据时，会触发`onReceive`事件：
 
-```
+```js
 chrome.serial.onReceive.addListener(function(info){
     //do something with info
 }); 
@@ -266,7 +266,7 @@ chrome.serial.onReceive.addListener(function(info){
 
 当发生错误时，会触发`onReceiveError`事件：
 
-```
+```js
 chrome.serial.onReceiveError.addListener(function(info){
     //do something with info
 }); 
@@ -278,7 +278,7 @@ chrome.serial.onReceiveError.addListener(function(info){
 
 获取指定连接的状态：
 
-```
+```js
 chrome.serial.getInfo(connectionId, function(connectionInfo){
     //do something with connectionInfo
 }); 
@@ -286,7 +286,7 @@ chrome.serial.getInfo(connectionId, function(connectionInfo){
 
 获取当前应用拥有并打开的串行端口连接列表：
 
-```
+```js
 chrome.serial.getConnections(function(connectionInfoArray){
     //do something with connectionInfoArray
 }); 
@@ -294,7 +294,7 @@ chrome.serial.getConnections(function(connectionInfoArray){
 
 获取指定连接上控制信号的状态：
 
-```
+```js
 chrome.serial.getControlSignals(connectionId, function(signals){
     //do something with signals
 }); 
@@ -304,7 +304,7 @@ chrome.serial.getControlSignals(connectionId, function(signals){
 
 设置指定连接上控制信号的状态：
 
-```
+```js
 chrome.serial.setControlSignals(connectionId, signals, function(result){
     //result is boolean
 }); 
@@ -318,7 +318,7 @@ chrome.serial.setControlSignals(connectionId, signals, function(result){
 
 要在应用中使用`tts`接口，需要在 Manifest 的`permissions`中声明`tts`权限：
 
-```
+```js
 "permissions": [
     "tts"
 ] 
@@ -328,19 +328,19 @@ chrome.serial.setControlSignals(connectionId, signals, function(result){
 
 使用`speak`方法来朗读文字：
 
-```
+```js
 chrome.tts.speak('Hello, world.'); 
 ```
 
 `speak`方法还可以指定朗读参数和回调函数：
 
-```
+```js
 chrome.tts.speak(utterance, options, callback); 
 ```
 
 回调函数`callback`会在`speak`方法调用成功后立刻执行，这意味着不会等到朗读结束后才调用`callback`。`options`指定了朗读时所采用的语调、语速、音量等等，`options`完整的结构如下所示：
 
-```
+```js
 {
     enqueue: 是否将朗读任务放入队列，如果为 true，此朗读任务将在之前的任务结束后才开始,
     voiceName: 朗读所使用的声音名称,
@@ -358,20 +358,20 @@ chrome.tts.speak(utterance, options, callback);
 
 如下面的例子，用美式英文以正常语速的 2 倍阅读“Hello, world.”：
 
-```
+```js
 chrome.tts.speak('Hello, world.', {lang: 'en-US', rate: 2.0}); 
 ```
 
 而下一个例子会在“Speak this first.”阅读完毕后才阅读“Speak this next, when the first sentence is done.”：
 
-```
+```js
 chrome.tts.speak('Speak this first.');
 chrome.tts.speak('Speak this next, when the first sentence is done.', {enqueue: true}); 
 ```
 
 使用`chrome.runtime.lastError`来抓取`tts`接口使用中可能发生的错误：
 
-```
+```js
 chrome.tts.speak(utterance, options, function() {
     if (chrome.runtime.lastError) {
         console.log('Error: ' + chrome.runtime.lastError.message);
@@ -381,19 +381,19 @@ chrome.tts.speak(utterance, options, function() {
 
 使用`stop`方法可以随时停止正在进行的朗读任务：
 
-```
+```js
 chrome.tts.stop(); 
 ```
 
 使用`pause`方法可以随时暂停正在进行的朗读任务：
 
-```
+```js
 chrome.tts.pause(); 
 ```
 
 使用`resume`方法可以随时恢复被暂停的朗读任务：
 
-```
+```js
 chrome.tts.resume(); 
 ```
 
@@ -401,7 +401,7 @@ chrome.tts.resume();
 
 通过`getVoices`方法可以获取到目前计算机中提供的声音：
 
-```
+```js
 chrome.tts.getVoices(function(voices){
     //do something with voices
 }); 
@@ -411,7 +411,7 @@ chrome.tts.getVoices(function(voices){
 
 如下面为一个声音对象的实例：
 
-```
+```js
 {
     "eventTypes": [
         "start",
@@ -430,7 +430,7 @@ chrome.tts.getVoices(function(voices){
 
 获取到声音对象后，通过指定`speak`方法中的相应参数来应用声音，如：
 
-```
+```js
 chrome.tts.speak(utterance, {
     voiceName: 'Google UK English Female',
     lang: 'en-GB'
@@ -441,7 +441,7 @@ chrome.tts.speak(utterance, {
 
 如果当前应用正在朗读文本，执行一个新的朗读任务会立即停止之前的朗读任务。为了避免打断正在进行的朗读任务，可以通过`isSpeaking`方法获取当前的朗读状态：
 
-```
+```js
 chrome.tts.isSpeaking(function(isSpeaking){
     //isSpeaking is boolean
 }); 
@@ -449,7 +449,7 @@ chrome.tts.isSpeaking(function(isSpeaking){
 
 在 10.3.1 中提到`speak`参数的`onEvent`属性用来监听朗读事件：
 
-```
+```js
 chrome.tts.speak(utterance,{
     onEvent: function(event) {
         console.log('Event ' + event.type ' at position ' + event.charIndex);
@@ -474,7 +474,7 @@ chrome.tts.speak(utterance,{
 
 Chrome 应用可以获取到的系统信息包括 CPU、内存、存储设备、显示器和网卡。要获取信息，需要在 Manifest 中声明相应权限：
 
-```
+```js
 "permissions": [
     "system.cpu",
     "system.memory",
@@ -488,7 +488,7 @@ Chrome 应用可以获取到的系统信息包括 CPU、内存、存储设备、
 
 通过`chrome.system.display.getInfo`方法可以获取到显示器相关信息：
 
-```
+```js
 chrome.system.display.getInfo(function(displayInfoArray){
     //do something with displayInfoArray
 }); 
@@ -496,7 +496,7 @@ chrome.system.display.getInfo(function(displayInfoArray){
 
 `displayInfoArray`是一个包含多个`displayInfo`对象的数组。`displayInfo`对象的完整结构如下：
 
-```
+```js
 {
     id: 显示器的唯一 id,
     name: 显示器名称，如 HP LCD monitor,
@@ -532,7 +532,7 @@ chrome.system.display.getInfo(function(displayInfoArray){
 
 通过`chrome.system.display.setDisplayProperties`方法可以更改显示器设置，支持更改的属性包括`mirroringSourceId`、`isPrimary`、`overscan`、`rotation`、`boundsOriginX`和`boundsOriginY`。`boundsOriginX`和`boundsOriginY`对应于`bounds.left`和`bounds.top`，即显示器逻辑范围的原点坐标。
 
-```
+```js
 chrome.system.display.setDisplayProperties(id, info, function(){
     //do something after set display properties
 }); 
@@ -540,7 +540,7 @@ chrome.system.display.setDisplayProperties(id, info, function(){
 
 通过`chrome.system.display.onDisplayChanged`监听显示器设置更改事件：
 
-```
+```js
 chrome.system.display.onDisplayChanged.addListener(function(){
     //do something after display properties are changed
 }); 
@@ -548,7 +548,7 @@ chrome.system.display.onDisplayChanged.addListener(function(){
 
 通过`chrome.system.network.getNetworkInterfaces`方法可以获取到网卡信息：
 
-```
+```js
 chrome.system.network.getNetworkInterfaces(function(networkInterfaces){
     //do something with networkInterfaces
     console.log(networkInterfaces);

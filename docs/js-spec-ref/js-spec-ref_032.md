@@ -70,14 +70,14 @@ nodeName 属性返回节点的名称，nodeType 属性返回节点的常数值�
 
 以 document 节点为例，它的 nodeName 属性等于#document，nodeType 属性等于 9。
 
-```
+```js
 document.nodeName // "#document"
 document.nodeType // 9
 ```
 
 通常来说，使用 nodeType 属性确定一个节点的类型，比较方便。
 
-```
+```js
 document.querySelector('a').nodeType === 1
 // true
 
@@ -95,7 +95,7 @@ document.querySelector('a').nodeType === Node.ELEMENT_NODE
 
 ownerDocument 属性返回当前节点所在的顶层文档对象，即 document 对象。
 
-```
+```js
 var d = p.ownerDocument;
 d === document // true
 ```
@@ -106,7 +106,7 @@ document 对象本身的 ownerDocument 属性，返回 null。
 
 nextsibling 属性返回紧跟在当前节点后面的第一个同级节点。如果当前节点后面没有同级节点，则返回 null。注意，该属性还包括文本节点和评论节点。因此如果当前节点后面有空格，该属性会返回一个文本节点，内容为空格。
 
-```
+```js
 var el = document.getelementbyid('div-01').firstchild;
 var i = 1;
 
@@ -123,7 +123,7 @@ while (el) {
 
 previoussibling 属性返回当前节点前面的、距离最近的一个同级节点。如果当前节点前面没有同级节点，则返回 null。
 
-```
+```js
 // html 代码如下
 // <a><b1 id="b1"/><b2 id="b2"/></a>
 
@@ -139,7 +139,7 @@ parentNode 属性返回当前节点的父节点。对于一个节点来说，它
 
 下面代码是如何从父节点移除指定节点。
 
-```
+```js
 if (node.parentNode) {
   node.parentNode.removeChild(node);
 }
@@ -151,7 +151,7 @@ if (node.parentNode) {
 
 parentElement 属性返回当前节点的父 Element 节点。如果当前节点没有父节点，或者父节点类型不是 Element 节点，则返回 null。
 
-```
+```js
 if (node.parentElement) {
   node.parentElement.style.color = "red";
 }
@@ -169,7 +169,7 @@ if (node.parentElement) {
 
 textContent 属性返回当前节点和它的所有后代节点的文本内容。
 
-```
+```js
 // HTML 代码为
 // <div id="divA">This is <span>some</span> text</div>
 
@@ -181,7 +181,7 @@ document.getElementById("divA").textContent
 
 该属性是可读写的，设置该属性的值，会用一个新的文本节点，替换所有它原来的子节点。它还有一个好处，就是自动对 HTML 标签转义。这很适合用于用户提供的内容。
 
-```
+```js
 document.getElementById('foo').textContent = '<p>GoodBye!</p>';
 ```
 
@@ -213,7 +213,7 @@ nodeValue 属性返回或设置当前节点的值，格式为字符串。但是�
 
 childNodes 属性返回一个 NodeList 集合，成员包括当前节点的所有子节点。注意，除了 HTML 元素节点，该属性返回的还包括 Text 节点和 Comment 节点。如果当前节点不包括任何子节点，则返回一个空的 NodeList 集合。由于 NodeList 对象是一个动态集合，一旦子节点发生变化，立刻会反映在返回结果之中。
 
-```
+```js
 var ulElementChildNodes = document.querySelector('ul').childNodes;
 ```
 
@@ -231,7 +231,7 @@ baseURI 属性返回一个字符串，由当前网页的协议、域名和所在
 
 通常情况下，该属性由当前网址的 URL（即 window.location 属性）决定，但是可以使用 HTML 的标签，改变该属性的值。
 
-```
+```js
 <base href="http://www.example.com/page.html">
 <base target="_blank" href="http://www.example.com/page.html">
 ```
@@ -248,7 +248,7 @@ baseURI 属性返回一个字符串，由当前网页的协议、域名和所在
 
 appendChild 方法接受一个节点对象作为参数，将其作为最后一个子节点，插入当前节点。
 
-```
+```js
 var p = document.createElement("p");
 document.body.appendChild(p);
 ```
@@ -257,7 +257,7 @@ document.body.appendChild(p);
 
 hasChildNodes 方法返回一个布尔值，表示当前节点是否有子节点。
 
-```
+```js
 var foo = document.getElementById("foo");
 
 if ( foo.hasChildNodes() ) {
@@ -271,7 +271,7 @@ if ( foo.hasChildNodes() ) {
 
 hasChildNodes 方法结合 firstChild 属性和 nextSibling 属性，可以遍历当前节点的所有后代节点。
 
-```
+```js
 function DOMComb (oParent, oCallback) {
   if (oParent.hasChildNodes()) {
     for (var oNode = oParent.firstChild; oNode; oNode = oNode.nextSibling) {
@@ -284,7 +284,7 @@ function DOMComb (oParent, oCallback) {
 
 上面代码的 DOMComb 函数的第一个参数是某个指定的节点，第二个参数是回调函数。这个回调函数会依次作用于指定节点，以及指定节点的所有后代节点。
 
-```
+```js
 function printContent () {
   if (this.nodeValue) {
     console.log(this.nodeValue);
@@ -302,7 +302,7 @@ DOMComb(document.body, printContent);
 
 cloneNode 方法用于克隆一个节点。它接受一个布尔值作为参数，表示是否同时克隆子节点，默认是 false，即不克隆子节点。
 
-```
+```js
 var cloneUL = document.querySelector('ul').cloneNode(true);
 ```
 
@@ -314,7 +314,7 @@ var cloneUL = document.querySelector('ul').cloneNode(true);
 
 insertBefore 方法用于将某个节点插入当前节点的指定位置。它接受两个参数，第一个参数是所要插入的节点，第二个参数是当前节点的一个子节点，新的节点将插在这个节点的前面。该方法返回被插入的新节点。
 
-```
+```js
 var text1 = document.createTextNode('1');
 var li = document.createElement('li');
 li.appendChild(text1);
@@ -329,7 +329,7 @@ ul.insertBefore(li,ul.firstChild);
 
 将新节点插在当前节点的最前面（即变成第一个子节点），可以使用当前节点的 firstChild 属性。
 
-```
+```js
 parentElement.insertBefore(newElement, parentElement.firstChild);
 ```
 
@@ -337,7 +337,7 @@ parentElement.insertBefore(newElement, parentElement.firstChild);
 
 由于不存在 insertAfter 方法，如果要插在当前节点的某个子节点后面，可以用 insertBefore 方法结合 nextSibling 属性模拟。
 
-```
+```js
 parentDiv.insertBefore(s1, s2.nextSibling);
 ```
 
@@ -347,7 +347,7 @@ parentDiv.insertBefore(s1, s2.nextSibling);
 
 removeChild 方法接受一个子节点作为参数，用于从当前节点移除该节点。它返回被移除的节点。
 
-```
+```js
 var divA = document.getElementById('A');
 divA.parentNode.removeChild(divA);
 ```
@@ -356,7 +356,7 @@ divA.parentNode.removeChild(divA);
 
 下面是如何移除当前节点的所有子节点。
 
-```
+```js
 var element = document.getElementById("top");
 while (element.firstChild) {
   element.removeChild(element.firstChild);
@@ -369,13 +369,13 @@ while (element.firstChild) {
 
 replaceChild 方法用于将一个新的节点，替换当前节点的某一个子节点。它接受两个参数，第一个参数是用来替换的新节点，第二个参数将要被替换走的子节点。它返回被替换走的那个节点。
 
-```
+```js
 replacedNode = parentNode.replaceChild(newChild, oldChild);
 ```
 
 下面是一个例子。
 
-```
+```js
 var divA = document.getElementById('A');
 var newSpan = document.createElement('span');
 newSpan.textContent = 'Hello World!';
@@ -392,7 +392,7 @@ divA.parentNode.replaceChild(newSpan,divA);
 
 contains 方法接受一个节点作为参数，返回一个布尔值，表示参数节点是否为当前节点的后代节点。
 
-```
+```js
 document.body.contains(node)
 ```
 
@@ -400,7 +400,7 @@ document.body.contains(node)
 
 注意，如果将当前节点传入 contains 方法，会返回 true。虽然从意义上说，一个节点不应该包含自身。
 
-```
+```js
 nodeA.contains(nodeA) // true
 ```
 
@@ -418,7 +418,7 @@ compareDocumentPosition 方法的用法，与 contains 方法完全一致，返�
 | 010000 | 16 | 当前节点包含参数节点 |
 | 100000 | 32 | 浏览器的私有用途 |
 
-```
+```js
 // HTML 代码为
 // <div id="writeroot">
 //   <form>
@@ -437,7 +437,7 @@ y.compareDocumentPosition(x) // 10
 
 由于 compareDocumentPosition 返回值的含义，定义在每一个比特位上，所以如果要检查某一种特定的含义，就需要使用比特位运算符。
 
-```
+```js
 var head = document.head;
 var body = document.body;
 if (head.compareDocumentPosition(body) & 4) {
@@ -451,7 +451,7 @@ if (head.compareDocumentPosition(body) & 4) {
 
 在这个方法的基础上，可以部署一些特定的函数，检查节点的位置。
 
-```
+```js
 Node.prototype.before = function (arg) {
   return !!(this.compareDocumentPosition(arg) & 2)
 }
@@ -465,7 +465,7 @@ nodeA.before(nodeB)
 
 isEqualNode 方法返回一个布尔值，用于检查两个节点是否相等。所谓相等的节点，指的是两个节点的类型相同、属性相同、子节点相同。
 
-```
+```js
 var targetEl = document.getElementById("targetEl");
 var firstDiv = document.getElementsByTagName("div")[0];
 
@@ -476,7 +476,7 @@ targetEl.isEqualNode(firstDiv)
 
 normailize 方法用于清理当前节点内部的所有 Text 节点。它会去除空的文本节点，并且将毗邻的文本节点合并成一个。
 
-```
+```js
 var wrapper = document.createElement("div");
 
 wrapper.appendChild(document.createTextNode("Part 1 "));
@@ -503,7 +503,7 @@ wrapper.childNodes.length // 1
 
 NodeList 接口有时返回一个动态集合，有时返回一个静态集合。所谓动态集合就是一个活的集合，DOM 树删除或新增一个相关节点，都会立刻反映在 NodeList 接口之中。Node.childNodes 返回的，就是一个动态集合。
 
-```
+```js
 var parent = document.getElementById('parent');
 parent.childNodes.length // 2
 parent.appendChild(document.createElement('div'));
@@ -516,7 +516,7 @@ document.querySelectorAll 方法返回的是一个静态，DOM 内部的变化�
 
 NodeList 接口提供 length 属性和数字索引，因此可以像数组那样，使用数字索引取出每个节点，但是它本身并不是数组，不能使用 pop 或 push 之类数组特有的方法。
 
-```
+```js
 // 数组的继承链
 myArray --> Array.prototype --> Object.prototype --> null
 
@@ -526,14 +526,14 @@ myNodeList --> NodeList.prototype --> Object.prototype --> null
 
 从上面的继承链可以看到，NodeList 接口对象并不继承 Array.prototype，因此不具有数组接口提供的方法。如果要在 NodeList 接口使用数组方法，可以将 NodeList 接口对象转为真正的数组。
 
-```
+```js
 var div_list = document.querySelectorAll('div');
 var div_array = Array.prototype.slice.call(div_list);
 ```
 
 也可以通过下面的方法调用。
 
-```
+```js
 var forEach = Array.prototype.forEach;
 
 forEach.call(element.childNodes, function(child){
@@ -545,7 +545,7 @@ forEach.call(element.childNodes, function(child){
 
 不过，遍历 NodeList 接口对象的首选方法，还是使用 for 循环。
 
-```
+```js
 for (var i = 0; i < myNodeList.length; ++i) {
   var item = myNodeList[i];
 }
@@ -555,7 +555,7 @@ for (var i = 0; i < myNodeList.length; ++i) {
 
 ES6 新增的 for...of 循环，也可以正确遍历 NodeList 接口对象。
 
-```
+```js
 var list = document.querySelectorAll( 'input[type=checkbox]' );
 for (var item of list) {
   item.checked = true;
@@ -564,7 +564,7 @@ for (var item of list) {
 
 NodeList 接口提供 item 方法，接受一个数字索引作为参数，返回该索引对应的成员。如果取不到成员，或者索引不合法，则返回 null。
 
-```
+```js
 nodeItem = nodeList.item(index)
 
 // 实例
@@ -576,7 +576,7 @@ var secondDiv = divs.item(1);
 
 所有类似数组的对象，都可以使用方括号运算符取出成员，所以一般情况下，都是使用下面的写法，而不使用 item 方法。
 
-```
+```js
 nodeItem = nodeList[index]
 ```
 
@@ -588,7 +588,7 @@ HTMLCollection 接口与 NodeList 接口类似，也是节点的集合，但是�
 
 item 方法根据成员的位置参数（从 0 开始），返回该成员。如果取不到成员或数字索引不合法，则返回 null。
 
-```
+```js
 var c = document.images;
 var img1 = c.item(10);
 
@@ -598,7 +598,7 @@ var img1 = c[1];
 
 namedItem 方法根据成员的 ID 属性或 name 属性，返回该成员。如果没有对应的成员，则返回 null。
 
-```
+```js
 // HTML 代码为
 // <form id="myForm"></form>
 var elem = document.forms.namedItem("myForm");
@@ -622,7 +622,7 @@ children 属性返回一个动态的 HTMLCollection 集合，由当前节点的�
 
 下面代码遍历指定节点的所有 Element 子节点。
 
-```
+```js
 if (el.children.length) {
   for (var i = 0; i < el.children.length; i++) {
     // ...
@@ -634,7 +634,7 @@ if (el.children.length) {
 
 firstChild 属性返回当前节点的第一个 Element 子节点，如果不存在任何 Element 子节点，则返回 null。
 
-```
+```js
 document.firstElementChild.nodeName
 // "HTML"
 ```
@@ -645,7 +645,7 @@ document.firstElementChild.nodeName
 
 lastElementChild 属性返回当前节点的最后一个 Element 子节点，如果不存在任何 Element 子节点，则返回 null。
 
-```
+```js
 document.lastElementChild.nodeName
 // "HTML"
 ```
@@ -664,7 +664,7 @@ ChildNode 接口用于处理子节点（包含但不限于 Element 子节点）�
 
 remove 方法用于移除当前节点。
 
-```
+```js
 el.remove()
 ```
 
@@ -702,25 +702,25 @@ dataset 属性用于操作 HTML 标签元素的 data-*属性。目前，Firefox�
 
 假设有如下的网页代码。
 
-```
+```js
 <div id="myDiv" data-id="myId"></div>
 ```
 
 以 data-id 属性为例，要读取这个值，可以用 dataset.id。
 
-```
+```js
 var id = document.getElementById("myDiv").dataset.id;
 ```
 
 要设置 data-id 属性，可以直接对 dataset.id 赋值。这时，如果 data-id 属性不存在，将会被创造出来。
 
-```
+```js
 document.getElementById("myDiv").dataset.id = "hello";
 ```
 
 删除一个 data-*属性，可以直接使用 delete 命令。
 
-```
+```js
 delete document.getElementById("myDiv").dataset.id
 ```
 
@@ -732,7 +732,7 @@ IE 9 不支持 dataset 属性，可以用 getAttribute('data-foo')、removeAttri
 
 tabindex 属性用来指定，当前 HTML 元素节点是否被 tab 键遍历，以及遍历的优先级。
 
-```
+```js
 var b1 = document.getElementById("button1");
 
 b1.tabIndex = 1;
@@ -773,7 +773,7 @@ Element 对象也部署了 document 对象的 4 个选择子元素的方法，�
 
 上面四个方法只用于选择 Element 对象的子节点。因此，可以采用链式写法来选择子节点。
 
-```
+```js
 document.getElementById('header').getElementsByClassName('a')
 ```
 
@@ -783,7 +783,7 @@ document.getElementById('header').getElementsByClassName('a')
 
 该方法用于选择在指定坐标的最上层的 Element 对象。
 
-```
+```js
 document.elementFromPoint(50,50)
 ```
 
@@ -800,7 +800,7 @@ document.elementFromPoint(50,50)
 
 该方法返回一个布尔值，表示 Element 对象是否符合某个 CSS 选择器。
 
-```
+```js
 document.querySelector('li').matchesSelector('li:first-child')
 ```
 
@@ -810,7 +810,7 @@ document.querySelector('li').matchesSelector('li:first-child')
 
 focus 方法用于将当前页面的焦点，转移到指定元素上。
 
-```
+```js
 document.getElementById('my-span').focus();
 ```
 
@@ -829,7 +829,7 @@ document.getElementById('my-span').focus();
 
 下面是使用 JavaScript 生成表格的一个例子。
 
-```
+```js
 var table = document.createElement('table');
 var tbody = document.createElement('tbody');
 table.appendChild(tbody);

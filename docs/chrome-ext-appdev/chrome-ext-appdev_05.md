@@ -16,7 +16,7 @@ Manifest 的`content_scripts`属性值为数组类型，数组的每个元素可
 
 首先创建 Manifest 文件，内容如下：
 
-```
+```js
 {
     "manifest_version": 2,
     "name": "永远点不到的搜索按钮",
@@ -40,7 +40,7 @@ Manifest 的`content_scripts`属性值为数组类型，数组的每个元素可
 
 接下来我们开始编写 cannot_touch.js。
 
-```
+```js
 function btn_move(el, mouseLeft, mouseTop){
     var leftRnd = (Math.random()-0.5)*20;
     var topRnd = (Math.random()-0.5)*20;
@@ -88,7 +88,7 @@ document.getElementById('gbqfba').onmouseover = over_btn;
 
 比如，如果我们想设计一款获取维基百科数据并显示在其他网页中的扩展，就要在 Manifest 中进行如下声明：
 
-```
+```js
 {
     ...
     "permissions": [
@@ -101,7 +101,7 @@ document.getElementById('gbqfba').onmouseover = over_btn;
 
 我们可以利用如下的代码发起异步请求：
 
-```
+```js
 function httpRequest(url, callback){
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url, true);
@@ -118,7 +118,7 @@ function httpRequest(url, callback){
 
 为了更加明确地说清上述问题，让我们来举两个例子。
 
-```
+```js
 function count(n){
     var sum = 0;
     for(var i=1; i<=n; i++){
@@ -133,7 +133,7 @@ console.log(c);
 
 上面这个例子会在控制台显示 16，因为`count(5)=1+2+3+4+5=15`，`c=15+1=16`。我们再看下面的例子：
 
-```
+```js
 function httpRequest(url){
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url, true);
@@ -160,7 +160,7 @@ console.log(html);
 
 让我们来用回调函数的形式重写第二个例子：
 
-```
+```js
 function httpRequest(url, callback){
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url, true);
@@ -186,7 +186,7 @@ httpRequest('test.txt', function(result){
 
 下面来实战编写一款显示用户 IP 的扩展。
 
-```
+```js
 {
     "manifest_version": 2,
     "name": "查看我的 IP",
@@ -215,7 +215,7 @@ httpRequest('test.txt', function(result){
 
 popup.html 的结构也完全可以按照时钟的扩展照抄下来，只是个别元素的`id`和脚本的路径根据当前扩展的名称稍加更改，同样不再赘述。
 
-```
+```js
 <html>
 <head>
 <style>
@@ -245,7 +245,7 @@ div {
 
 下面编写 my_ip.js。
 
-```
+```js
 function httpRequest(url, callback){
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url, true);
@@ -285,7 +285,7 @@ Chrome 允许扩展应用在后台常驻一个页面以实现这样的功能。�
 
 下面是这个扩展的 Manifest 文件，此例中以检测 www.google.cn 为例，你可以根据自己的意愿更改为其他的网站。
 
-```
+```js
 {
     "manifest_version": 2,
     "name": "Google 在线状态",
@@ -315,7 +315,7 @@ Chrome 允许扩展应用在后台常驻一个页面以实现这样的功能。�
 
 由于这个扩展没有 UI，所以我们不必编写 HTML 文件，下面直接编写 status.js。
 
-```
+```js
 function httpRequest(url, callback){
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url, true);
@@ -367,7 +367,7 @@ status.js 调用了我们之前没有介绍过的方法，`chrome.browserAction.
 
 有很多网站提供天气预报的 API，比如 OpenWeatherMap 的 API。可以通过 http://openweathermap.org/API 了解更多相关内容。
 
-```
+```js
 {
     "manifest_version": 2,
     "name": "天气预报",
@@ -395,7 +395,7 @@ status.js 调用了我们之前没有介绍过的方法，`chrome.browserAction.
 
 上面是这个扩展的 Manifest 文件，options.html 为设定选项的页面。下面开始编写 options.html 文件。
 
-```
+```js
 <html>
     <head>
         <title>设定城市</title>
@@ -410,7 +410,7 @@ status.js 调用了我们之前没有介绍过的方法，`chrome.browserAction.
 
 这个页面提供了一个 id 为 city 的文本框和一个`id`为`save`的按钮。由于 Chrome 不允许将 JavaScript 内嵌在 HTML 文件中，所以我们单独编写一个 options.js 脚本文件，并在 HTML 文件中引用它。下面来编写 options.js 文件。
 
-```
+```js
 var city = localStorage.city || 'beijing';
 document.getElementById('city').value = city;
 document.getElementById('save').onclick = function(){
@@ -423,7 +423,7 @@ document.getElementById('save').onclick = function(){
 
 为了显示天气预报的结果，我们为扩展指定了一个 popup 页面，popup.html。下面来编写这个 UI 页面。
 
-```
+```js
 <html>
 <head>
 <style>
@@ -480,7 +480,7 @@ table tbody tr:hover td {
 
 其中`id`为`weather`的`div`元素将用于显示天气预报的结果。下面来编写 weather.js 文件。
 
-```
+```js
 function httpRequest(url, callback){
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url, true);
@@ -517,7 +517,7 @@ httpRequest(url, showWeather);
 
 小提示：无论是 options.js 还是 weather.js 中都有如下语句：
 
-```
+```js
 var city = localStorage.city;
 city = city?city:'beijing'; 
 ```
@@ -542,7 +542,7 @@ Chrome 提供了 4 个有关扩展页面间相互通信的接口，分别是`run
 
 `runtime.sendMessage`完整的方法为：
 
-```
+```js
 chrome.runtime.sendMessage(extensionId, message, options, callback) 
 ```
 
@@ -552,7 +552,7 @@ chrome.runtime.sendMessage(extensionId, message, options, callback)
 
 `runtime.onMessage`完整的方法为：
 
-```
+```js
 chrome.runtime.onMessage.addListener(callback) 
 ```
 
@@ -562,7 +562,7 @@ chrome.runtime.onMessage.addListener(callback)
 
 在 popup.html 中执行如下代码：
 
-```
+```js
 chrome.runtime.sendMessage('Hello', function(response){
     document.write(response);
 }); 
@@ -570,7 +570,7 @@ chrome.runtime.sendMessage('Hello', function(response){
 
 在 background 中执行如下代码：
 
-```
+```js
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
     if(message == 'Hello'){
         sendResponse('Hello from background.');
@@ -615,7 +615,7 @@ Chrome 为扩展应用提供了存储 API，以便将扩展中需要保存的数
 
 `get`方法即为读取数据，完整的方法为：
 
-```
+```js
 chrome.storage.StorageArea.get(keys, callback) 
 ```
 
@@ -623,7 +623,7 @@ chrome.storage.StorageArea.get(keys, callback)
 
 `getBytesInUse`方法为获取一个数据或多个数据所占用的总空间，返回结果的单位是字节，完整方法为：
 
-```
+```js
 chrome.storage.StorageArea.getBytesInUse(keys, callback) 
 ```
 
@@ -631,7 +631,7 @@ chrome.storage.StorageArea.getBytesInUse(keys, callback)
 
 `set`方法为写入数据，完整方法为：
 
-```
+```js
 chrome.storage.StorageArea.set(items, callback) 
 ```
 
@@ -639,7 +639,7 @@ chrome.storage.StorageArea.set(items, callback)
 
 `remove`方法为删除数据，完整方法为：
 
-```
+```js
 chrome.storage.StorageArea.remove(keys, callback) 
 ```
 
@@ -647,7 +647,7 @@ chrome.storage.StorageArea.remove(keys, callback)
 
 `clear`方法为删除所有数据，完整方法为：
 
-```
+```js
 chrome.storage.StorageArea.clear(callback) 
 ```
 
@@ -657,7 +657,7 @@ Chrome 同时还为存储 API 提供了一个`onChanged`事件，当存储区的
 
 `onChanged`的完整方法为：
 
-```
+```js
 chrome.storage.onChanged.addListener(callback) 
 ```
 
@@ -669,7 +669,7 @@ Web SQL Database 的三个核心方法为`openDatabase`、`transaction`和`execu
 
 下面举一个简单的例子：
 
-```
+```js
 db = openDatabase("db_name", "0.1", "This is a test db.", 1024*1024);
 if(!db){
     alert('数据库连接失败。');

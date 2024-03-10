@@ -22,7 +22,7 @@ Canvas API（画布）用于在网页实时生成图像，并且可以操作图�
 
 使用前，首先需要新建一个 canvas 网页元素。
 
-```
+```js
 <canvas id="myCanvas" width="400" height="200">
     您的浏览器不支持 canvas！
 </canvas>
@@ -32,7 +32,7 @@ Canvas API（画布）用于在网页实时生成图像，并且可以操作图�
 
 每个 canvas 元素都有一个对应的 context 对象（上下文对象），Canvas API 定义在这个 context 对象上面，所以需要获取这个对象，方法是使用 getContext 方法。
 
-```
+```js
 var canvas = document.getElementById('myCanvas');
 
 if (canvas.getContext) {
@@ -50,7 +50,7 @@ canvas 画布提供了一个用来作图的平面空间，该空间的每个点�
 
 beginPath 方法表示开始绘制路径，moveTo(x, y)方法设置线段的起点，lineTo(x, y)方法设置线段的终点，stroke 方法用来给透明的线段着色。
 
-```
+```js
 ctx.beginPath(); // 开始路径绘制
 ctx.moveTo(20, 20); // 设置路径起点，坐标为(20,20)
 ctx.lineTo(200, 20); // 绘制一条到(200,20)的直线
@@ -65,20 +65,20 @@ moveto 和 lineto 方法可以多次使用。最后，还可以使用 closePath 
 
 fillRect(x, y, width, height)方法用来绘制矩形，它的四个参数分别为矩形左上角顶点的 x 坐标、y 坐标，以及矩形的宽和高。fillStyle 属性用来设置矩形的填充色。
 
-```
+```js
 ctx.fillStyle = 'yellow';
 ctx.fillRect(50, 50, 200, 100);
 ```
 
 strokeRect 方法与 fillRect 类似，用来绘制空心矩形。
 
-```
+```js
 ctx.strokeRect(10,10,200,100);
 ```
 
 clearRect 方法用来清除某个矩形区域的内容。
 
-```
+```js
 ctx.clearRect(100,50,50,50);
 ```
 
@@ -86,7 +86,7 @@ ctx.clearRect(100,50,50,50);
 
 fillText(string, x, y) 用来绘制文本，它的三个参数分别为文本内容、起点的 x 坐标、y 坐标。使用之前，需用 font 设置字体、大小、样式（写法类似与 CSS 的 font 属性）。与此类似的还有 strokeText 方法，用来添加空心字。
 
-```
+```js
 // 设置字体
 ctx.font = "Bold 20px Arial"; 
 // 设置对齐方式
@@ -105,7 +105,7 @@ fillText 方法不支持文本断行，即所有文本出现在一行内。所�
 
 arc 方法用来绘制扇形。
 
-```
+```js
 ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
 ```
 
@@ -113,7 +113,7 @@ arc 方法的 x 和 y 参数是圆心坐标，radius 是半径，startAngle 和 
 
 下面是如何绘制实心的圆形。
 
-```
+```js
 ctx.beginPath(); 
 ctx.arc(60, 60, 50, 0, Math.PI*2, true); 
 ctx.fillStyle = "#000000"; 
@@ -122,7 +122,7 @@ ctx.fill();
 
 绘制空心圆形的例子。
 
-```
+```js
 ctx.beginPath(); 
 ctx.arc(60, 60, 50, 0, Math.PI*2, true); 
 ctx.lineWidth = 1.0; 
@@ -134,7 +134,7 @@ ctx.stroke();
 
 createLinearGradient 方法用来设置渐变色。
 
-```
+```js
 var myGradient = ctx.createLinearGradient(0, 0, 0, 160); 
 
 myGradient.addColorStop(0, "#BABABA"); 
@@ -146,7 +146,7 @@ createLinearGradient 方法的参数是(x1, y1, x2, y2)，其中 x1 和 y1 是�
 
 使用方法如下：
 
-```
+```js
 ctx.fillStyle = myGradient;
 ctx.fillRect(10,10,200,100);
 ```
@@ -155,7 +155,7 @@ ctx.fillRect(10,10,200,100);
 
 一系列与阴影相关的方法，可以用来设置阴影。
 
-```
+```js
 ctx.shadowOffsetX = 10; // 设置水平位移
 ctx.shadowOffsetY = 10; // 设置垂直位移
 ctx.shadowBlur = 5; // 设置模糊度
@@ -171,7 +171,7 @@ ctx.fillRect(10,10,200,100);
 
 canvas 允许将图像文件插入画布，做法是读取图片后，使用 drawImage 方法在画布内进行重绘。
 
-```
+```js
 var img = new Image();
 img.src = "image.png";
 ctx.drawImage(img, 0, 0); // 设置对应的图像对象，以及它在画布上的位置
@@ -181,7 +181,7 @@ ctx.drawImage(img, 0, 0); // 设置对应的图像对象，以及它在画布上
 
 由于图像的载入需要时间，drawImage 方法只能在图像完全载入后才能调用，因此上面的代码需要改写。
 
-```
+```js
 var image = new Image(); 
 
 image.onload = function() { 
@@ -202,13 +202,13 @@ drawImage()方法接受三个参数，第一个参数是图像文件的 DOM 元�
 
 getImageData 方法可以用来读取 Canvas 的内容，返回一个对象，包含了每个像素的信息。
 
-```
+```js
 var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
 ```
 
 imageData 对象有一个 data 属性，它的值是一个一维数组。该数组的值，依次是每个像素的红、绿、蓝、alpha 通道值，因此该数组的长度等于 图像的像素宽度 x 图像的像素高度 x 4，每个值的范围是 0–255。这个数组不仅可读，而且可写，因此通过操作这个数组的值，就可以达到操作图像的目的。修改这个数组以后，使用 putImageData 方法将数组内容重新绘制在 Canvas 上。
 
-```
+```js
 context.putImageData(imageData, 0, 0);
 ```
 
@@ -216,7 +216,7 @@ context.putImageData(imageData, 0, 0);
 
 对图像数据做出修改以后，可以使用 toDataURL 方法，将 Canvas 数据重新转化成一般的图像文件形式。
 
-```
+```js
 function convertCanvasToImage(canvas) {
   var image = new Image();
   image.src = canvas.toDataURL("image/png");
@@ -230,7 +230,7 @@ function convertCanvasToImage(canvas) {
 
 save 方法用于保存上下文环境，restore 方法用于恢复到上一次保存的上下文环境。
 
-```
+```js
 ctx.save(); 
 
 ctx.shadowOffsetX = 10;
@@ -253,7 +253,7 @@ ctx.fillRect(180,10,150,100);
 
 利用 JavaScript，可以在 canvas 元素上很容易地产生动画效果。
 
-```
+```js
 var posX = 20,
     posY = 100;
 
@@ -279,7 +279,7 @@ setInterval(function() {
 
 先上升后下降。
 
-```
+```js
 var vx = 10,
     vy = -10,
     gravity = 1;
@@ -296,7 +296,7 @@ setInterval(function() {
 
 小球不断反弹后，逐步趋于静止。
 
-```
+```js
 var vx = 10,
     vy = -10,
     gravity = 1;
@@ -324,7 +324,7 @@ setInterval(function() {
 
 假定 filter 是一个处理像素的函数，那么整个对 Canvas 的处理流程，可以用下面的代码表示。
 
-```
+```js
 if (canvas.width > 0 && canvas.height > 0) {
 
     var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
@@ -342,7 +342,7 @@ if (canvas.width > 0 && canvas.height > 0) {
 
 灰度图（grayscale）就是取红、绿、蓝三个像素值的算术平均值，这实际上将图像转成了黑白形式。假定 d[i]是像素数组中一个象素的红色值，则 d[i+1]为绿色值，d[i+2]为蓝色值，d[i+3]就是 alpha 通道值。转成灰度的算法，就是将红、绿、蓝三个值相加后除以 3，再将结果写回数组。
 
-```
+```js
 grayscale = function (pixels) {
 
     var d = pixels.data;
@@ -363,7 +363,7 @@ grayscale = function (pixels) {
 
 复古效果（sepia）则是将红、绿、蓝三个像素，分别取这三个值的某种加权平均值，使得图像有一种古旧的效果。
 
-```
+```js
 sepia = function (pixels) {
 
     var d = pixels.data;
@@ -386,7 +386,7 @@ sepia = function (pixels) {
 
 红色蒙版指的是，让图像呈现一种偏红的效果。算法是将红色通道设为红、绿、蓝三个值的平均值，而将绿色通道和蓝色通道都设为 0。
 
-```
+```js
 red = function (pixels) {
 
     var d = pixels.data;
@@ -408,7 +408,7 @@ red = function (pixels) {
 
 亮度效果（brightness）是指让图像变得更亮或更暗。算法将红色通道、绿色通道、蓝色通道，同时加上一个正值或负值。
 
-```
+```js
 brightness = function (pixels, delta) {
 
     var d = pixels.data;
@@ -428,7 +428,7 @@ brightness = function (pixels, delta) {
 
 反转效果（invert）是指图片呈现一种色彩颠倒的效果。算法为红、绿、蓝通道都取各自的相反值（255-原值）。
 
-```
+```js
 invert = function (pixels) {
 
     var d = pixels.data;

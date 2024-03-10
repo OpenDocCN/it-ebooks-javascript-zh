@@ -10,7 +10,7 @@
 
 ### 解决方案
 
-```
+```js
  # a fragment of 3-rd party grid component
 
 class AwesomeGrid
@@ -59,7 +59,7 @@ agrid.sort() # sort data with custom sorter through adapter
 
 假设你开发了一个浏览器的文本编辑器保存到云。然而，现在你需要通过独立客户端的端口将其在本地保存。
 
-```
+```js
 class TextSaver
     constructor: (@filename, @options) ->
     save: (data) ->
@@ -111,7 +111,7 @@ saver.save data
 
 [Todo.txt](http://todotxt.com/) 格式提供了一个先进的但还是纯文本的方法来维护待办事项列表。手工输入每个项目有损耗且容易出错，然而 TodoTxtBuilder 类可以解决我们的麻烦：
 
-```
+```js
 class TodoTxtBuilder
     constructor: (defaultParameters={ }) ->
         @date = new Date(defaultParameters.date) or new Date
@@ -155,7 +155,7 @@ TodoTxtBuilder 类负责所有文本的生成，让程序员关注每个工作�
 
 并不是每次创建一个新的实例所需的对象都要从头开始，我们将负担转移到一个单独的对象，可以在对象创建过程中进行调整。
 
-```
+```js
 builder = new TodoTxtBuilder(date: "10/13/2011")
 
 builder.newTodo "Order new netbook"
@@ -197,7 +197,7 @@ builder.newTodo "Fill gas tank"
 
 使用 [Command pattern](http://en.wikipedia.org/wiki/Command_pattern) 传递函数的引用。
 
-```
+```js
  # Using a private variable to simulate external scripts or modules
 
 incrementers = (() ->
@@ -230,7 +230,7 @@ incrementers.value() # => 6
 
 jqXHR 对象返回 jQuery AJAX 方法使用此模式。
 
-```
+```js
 jqxhr = $.ajax
     url: "/"
 
@@ -255,7 +255,7 @@ jqxhr.complete -> logMessages += "Completed!\n"
 
 使用修饰模式来构造如何更改应用。
 
-```
+```js
 miniMarkdown = (line) ->
     if match = line.match /^(#+)\s*(.*)$/
         headerLevel = match[1].length
@@ -300,7 +300,7 @@ processor.processString exampleText
 
 ### 结果
 
-```
+```js
 <h1>A level 1 header</h1>
 <p>A regular line</p>
 
@@ -314,7 +314,7 @@ TextProcessor 服务有修饰的作用，可将个人、专业文本处理器绑
 
 我们甚至可以修改现有的修饰对象动态：
 
-```
+```js
 smilies =
     ':)' : "smile"
     ':D' : "huge_grin"
@@ -349,7 +349,7 @@ processor.processors.shift()
 
 你需要将一个文件加载到编辑器，但是直到用户选择文件时你才知道它的格式。一个类使用[工厂方法 ( Factory Method )](http://en.wikipedia.org/wiki/Factory_method_pattern) 模式可以根据文件的扩展名提供不同的解析器。
 
-```
+```js
 class HTMLParser
     constructor: ->
         @type = "HTML parser"
@@ -396,7 +396,7 @@ factory.makeParser("example.json").type # => "JSON parser"
 
 我们来做个假设，例如用户希望在你的应用程序中执行数学运算。你可以让他们正向运行代码来演算指令（eval）但这会让他们运行任意代码。相反，你可以提供一个小型的“堆栈计算器（stack calculator）”语言，用来做单独分析，以便只运行数学运算，同时报告更有用的错误信息。
 
-```
+```js
 class StackCalculator
     parseString: (string) ->
         @stack = [ ]
@@ -468,7 +468,7 @@ catch error
 
 作为一种替代编写我们自己的解释器的选择，你可以将现有的 CoffeeScript 解释器与更自然的（更容易理解的）表达自己的算法的正常方式相结合。
 
-```
+```js
 class Sandwich
     constructor: (@customer, @bread='white', @toppings=[], @toasted=false)->
 
@@ -537,7 +537,7 @@ send toasted turkey ham swiss sandwich to 'Matt' # => "Matt requested a toasted,
 
 如果你的应用程序可以让用户编辑文本文件，例如，他们可能想要撤销上一个动作。你可以在用户改变文件之前保存文件现有的状态，然后回滚到上一个位置。
 
-```
+```js
 class PreserveableText
     class Memento
         constructor: (@text) ->
@@ -577,7 +577,7 @@ pt.text # => "The original string"
 
 使用观察者模式[（Observer Pattern）](http://en.wikipedia.org/wiki/Observer_pattern)。
 
-```
+```js
 class PostOffice
     constructor: () ->
         @subscribers = []
@@ -619,7 +619,7 @@ postOffice.notifyNewItemReleased "Mens Health"
 
 这很奏效因为 CoffeeScript 允许你在一个类的声明中定义可执行的状态。但是，因为大多数 CoffeeScript 编译成一个 [IIFE](http://benalman.com/news/2010/11/immediately-invoked-function-expression/) 包，如果这个方式适合你，你就不需要在类的声明中放置私有的类。之后的内容可能对开发模块化代码有所帮助，例如 [CommonJS](http://www.commonjs.org/)（Node.js）或 [Require.js](http://requirejs.org/) 中可见（见实例讨论）。
 
-```
+```js
 class Singleton
   # You can add statements inside the class definition
   # which helps establish private scope (due to closures)
@@ -653,7 +653,7 @@ Singleton.PrivateClass # => undefined
 
 隐藏或使私有类在内部运作的想法是更受偏爱的。尤其是由于缺省的 CoffeeScript 将编译的代码封装在自己的 IIFE（闭包）中，你可以定义类而无须担心会被文件外部访问到。在这个实例中，注意，用惯用的模块导出特点来强调模块中可被公共访问的部分。（请看 “[导出到全局命名空间](http://stackoverflow.com/questions/4214731/coffeescript-global-variables)” 中对此理解更深入的讨论）。
 
-```
+```js
 root = exports ? this
 
  # Create a private class that we can initialize however
@@ -695,14 +695,14 @@ root.Singleton = Singleton
 
 #### 基类
 
-```
+```js
 StringSorter = (algorithm) ->
     sort: (list) -> algorithm list
 ```
 
 #### 策略
 
-```
+```js
 bubbleSort = (list) ->
     anySwaps = false
     swapPass = ->
@@ -734,7 +734,7 @@ reverseBubbleSort = (list) ->
 
 #### 使用策略
 
-```
+```js
 sorter = new StringSorter bubbleSort
 
 unsortedList = ['e', 'b', 'd', 'c', 'x', 'a']
@@ -774,7 +774,7 @@ sorter.sort unsortedList
 
 例如，想象你希望模拟各种类型的文件的生成，并且每个文件要包含一个标题和正文。
 
-```
+```js
 class Document
     produceDocument: ->
         @produceHeader()

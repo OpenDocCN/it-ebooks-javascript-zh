@@ -23,7 +23,7 @@ JavaScript 的所有对象都存在于一个运行环境之中，这个运行环
 
 所有浏览器环境的全局变量，都是 window 对象的属性。
 
-```
+```js
 var a = 1;
 window.a // 1
 ```
@@ -36,7 +36,7 @@ window.a // 1
 
 window.name 属性用于设置当前浏览器窗口的名字。它有一个特点，就是浏览器刷新后，该属性保持不变。所以，可以把值存放在该属性内，然后跨页面、甚至跨域名使用。当然，这个值有可能被其他网站的页面改写。
 
-```
+```js
 window.name = "Hello World!";
 console.log(window.name);
 ```
@@ -59,7 +59,7 @@ window.pageXOffset 属性返回页面的水平滚动距离，window.pageYOffset 
 
 window.frames 返回一个类似数组的对象，成员为页面内的所有框架，包括 frame 元素和 iframe 元素。需要注意的是，window.frames 的每个成员对应的是框架内的窗口（即框架的 window 对象），获取每个框架的 DOM 树，需要使用 window.frames[0].document。
 
-```
+```js
 var iframe = window.getElementsByTagName("iframe")[0];
 var iframe_title = iframe.contentWindow.title;
 ```
@@ -78,7 +78,7 @@ Window 对象的 Navigator 属性，指向一个包含浏览器相关信息的�
 
 Navigator.userAgent 属性返回浏览器的 User-Agent 字符串，用来标示浏览器的种类。下面是 Chrome 浏览器的 User-Agent。
 
-```
+```js
 navigator.userAgent
 // "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.57 Safari/537.36"
 ```
@@ -87,7 +87,7 @@ navigator.userAgent
 
 不过，通过 userAgent 可以大致准确地识别手机浏览器，方法就是测试是否包含“mobi”字符串。
 
-```
+```js
 var ua = navigator.userAgent.toLowerCase();
 
 if (/mobi/i.test(ua)) {
@@ -99,7 +99,7 @@ if (/mobi/i.test(ua)) {
 
 如果想要识别所有移动设备的浏览器，可以测试更多的特征字符串。
 
-```
+```js
 /mobi|android|touch|mini/i.test(ua)
 ```
 
@@ -111,7 +111,7 @@ navigator.plugins 属性返回一个类似数组的对象，成员是浏览器�
 
 screen 对象包含了显示设备的信息。
 
-```
+```js
 // 显示设备的高度，单位为像素
 screen.height
 // 1920
@@ -127,7 +127,7 @@ screen.width
 
 下面是根据屏幕分辨率，将用户导向不同网页的代码。
 
-```
+```js
 if ((screen.width<=800) && (screen.height<=600)) {
     window.location.replace('small.html');
 } else {
@@ -160,7 +160,7 @@ window.matchMedia 方法用来检查 CSS 的 mediaQuery 语句。详见《DOM》
 
 浏览器脚本发生错误时，会触发 window 对象的 error 事件。我们可以通过`window.onerror`属性对该事件指定回调函数。
 
-```
+```js
 window.onerror = function (message, filename, lineno, colno, error) {
     console.log("出错了！--> %s", error.stack);
 };
@@ -178,13 +178,13 @@ error 事件的回调函数，一共可以有五个参数，它们的含义依�
 
 需要注意的是，如果脚本网址与网页网址不在同一个域（比如使用了 CDN），浏览器根本不会提供详细的出错信息，只会提示出错，错误类型是“Script error.”，行号为 0，其他信息都没有。这是浏览器防止向外部脚本泄漏信息。一个解决方法是在脚本所在的服务器，设置 Access-Control-Allow-Origin 的 HTTP 头信息。
 
-```
+```js
 Access-Control-Allow-Origin:*
 ```
 
 然后，在网页的 script 标签中设置 crossorigin 属性。
 
-```
+```js
 <script crossorigin="anonymous" src="//example.com/file.js"></script>
 ```
 
@@ -209,7 +209,7 @@ alert()、prompt()、confirm()都是浏览器用来与用户互动的方法。�
 
 alert 方法弹出的对话框，只有一个“确定”按钮，往往用来通知用户某些信息。
 
-```
+```js
 // 格式
 alert(message);
 
@@ -221,7 +221,7 @@ alert("Hello World");
 
 prompt 方法弹出的对话框，在提示文字的下方，还有一个输入框，要求用户输入信息，并有“确定”和“取消”两个按钮。它往往用来获取用户输入的数据。
 
-```
+```js
 // 格式
 var result = prompt(text[, default]);
 
@@ -241,7 +241,7 @@ prompt 方法的第二个参数是可选的，但是如果不提供的话，IE �
 
 confirm 方法弹出的对话框，除了提示信息之外，只有“确定”和“取消”两个按钮，往往用来征询用户的意见。
 
-```
+```js
 // 格式
 var result = confirm(message);
 

@@ -30,7 +30,7 @@ Web Worker 有以下几个特点：
 
 使用之前，检查浏览器是否支持这个 API。支持的浏览器包括 IE10、Firefox (从 3.6 版本开始)、Safari (从 4.0 版本开始)、Chrome 和 Opera 11，但是手机浏览器还不支持。
 
-```
+```js
 if (window.Worker) {
   // 支持
 } else {
@@ -42,7 +42,7 @@ if (window.Worker) {
 
 主线程采用 new 命令，调用 Worker 构造函数，可以新建一个子线程。
 
-```
+```js
 var worker = new Worker('work.js');
 ```
 
@@ -50,7 +50,7 @@ Worker 构造函数的参数是一个脚本文件，这个文件就是子线程�
 
 子线程新建之后，并没有启动，必需等待主线程调用 postMessage 方法，即发出信号之后才会启动。postMessage 方法的参数，就是主线程传给子线程的信号。它可以是一个字符串，也可以是一个对象。
 
-```
+```js
 worker.postMessage("Hello World");
 worker.postMessage({method: 'echo', args: ['Work']});
 ```
@@ -59,7 +59,7 @@ worker.postMessage({method: 'echo', args: ['Work']});
 
 在子线程内，必须有一个回调函数，监听 message 事件。
 
-```
+```js
 /* File: work.js */
 
 self.addEventListener('message', function(e) {
@@ -71,7 +71,7 @@ self 代表子线程自身，self.addEventListener 表示对子线程的 message
 
 根据主线程发来的不同的信号值，子线程可以调用不同的方法。
 
-```
+```js
 /* File: work.js */
 
 self.onmessage = function(event) {
@@ -87,7 +87,7 @@ self.onmessage = function(event) {
 
 主线程也必须指定 message 事件的回调函数，监听子线程发来的信号。
 
-```
+```js
 /* File: main.js */
 
 worker.addEventListener('message', function(e) {
@@ -99,7 +99,7 @@ worker.addEventListener('message', function(e) {
 
 主线程可以监听子线程是否发生错误。如果发生错误，会触发主线程的 error 事件。
 
-```
+```js
 worker.onerror(function(event) {
   console.log(event);
 });
@@ -115,13 +115,13 @@ worker.addEventListener('error', function(event) {
 
 使用完毕之后，为了节省系统资源，我们必须在主线程调用 terminate 方法，手动关闭子线程。
 
-```
+```js
 worker.terminate();
 ```
 
 也可以子线程内部关闭自身。
 
-```
+```js
 self.close();
 ```
 
@@ -135,7 +135,7 @@ self.close();
 
 如果要使用该方法，postMessage 方法的最后一个参数必须是一个数组，用来指定前面发送的哪些值可以被转移给子线程。
 
-```
+```js
 worker.postMessage(arrayBuffer, [arrayBuffer]);
 window.postMessage(arrayBuffer, targetOrigin, [arrayBuffer]);
 ```
@@ -144,7 +144,7 @@ window.postMessage(arrayBuffer, targetOrigin, [arrayBuffer]);
 
 通常情况下，子线程载入的是一个单独的 JavaScript 文件，但是也可以载入与主线程在同一个网页的代码。假设网页代码如下：
 
-```
+```js
 <!DOCTYPE html>
     <body>
         <script id="worker" type="app/worker">
@@ -159,13 +159,13 @@ window.postMessage(arrayBuffer, targetOrigin, [arrayBuffer]);
 
 我们可以读取页面中的 script，用 worker 来处理。
 
-```
+```js
 var blob = new Blob([document.querySelector('#worker').textContent]);
 ```
 
 这里需要把代码当作二进制对象读取，所以使用 Blob 接口。然后，这个二进制对象转为 URL，再通过这个 URL 创建 worker。
 
-```
+```js
 var url = window.URL.createObjectURL(blob);
 
 var worker = new Worker(url);
@@ -173,7 +173,7 @@ var worker = new Worker(url);
 
 部署事件监听代码。
 
-```
+```js
 worker.addEventListener('message', function(e) {
    console.log(e.data);
 }, false);
@@ -181,13 +181,13 @@ worker.addEventListener('message', function(e) {
 
 最后，启动 worker。
 
-```
+```js
 worker.postMessage('');
 ```
 
 整个页面的代码如下：
 
-```
+```js
 <!DOCTYPE html>
     <body>
         <script id="worker" type="app/worker">

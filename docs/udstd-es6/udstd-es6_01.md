@@ -84,7 +84,7 @@ The following typographical conventions are used in this book:
 
 Additionally, longer code examples are contained in constant width code blocks such as:
 
-```
+```js
 function doSomething() {
     // empty
 } 
@@ -92,13 +92,13 @@ function doSomething() {
 
 Within a code block, comments to the right of a `console.log()` statement indicate the output you’ll see in the browser or Node.js console when the code is execute, for example:
 
-```
+```js
 console.log("Hi");      // "Hi" 
 ```
 
 If a line of code in a code block throws an error, this is also indicated to the right of the code:
 
-```
+```js
 doSomething();          // error! 
 ```
 

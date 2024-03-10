@@ -6,7 +6,7 @@
 
 在之前的文章《[深入浅出 ES6（十三）：类 Class](http://www.infoq.com/cn/articles/es6-in-depth-classes)》中，我们一起深入探讨了 ES6 的新特性——类，在这篇文章中我写到“可以使用类来创建一些简易的对象构造函数”，于是我们共同实现了这样一段代码：
 
-```
+```js
  class Circle {
         constructor(radius) {
             this.radius = radius;
@@ -43,7 +43,7 @@
 
 我们在创建对象的时候可以为其添加各种属性，但在这个过程中，新创建的对象同时也继承了原型对象的属性。作为 JavaScript 开发者，你应该很熟悉`Object.create`这个 API，我们可以用它来创建一些新对象：
 
-```
+```js
  var proto = {
         value: 4,
         method() { return 14; }
@@ -55,7 +55,7 @@
 
 进一步说，如果我们在创建`obj`时给它添加`proto`已有的属性，则新创建对象会覆盖原型对象中的同名属性。
 
-```
+```js
  obj.value = 5;
     obj.value; // 5
     proto.value; // 4
@@ -69,7 +69,7 @@
 
 继续我们之前的示例，假设我们有一个类`Shape`，并且想要基于这个类生成一个子类：
 
-```
+```js
  class Shape {
         get color() {
             return this._color;
@@ -83,7 +83,7 @@
 
 在尝试编写这些代码时，我们仍会面临以前遇到过的`static`属性的问题：我们不能在定义函数的同时改变它的原型，到目前为止我们所知的语法不能实现这种功能。只不过你可以通过`Object.setPrototypeOf`方法绕过这一限制，但随即带来的问题是，这个方法性能很差，而 JS 引擎又很难对其进行优化，所以我们期待一种更完美的方法，能够在创建函数的同时处理好原型。
 
-```
+```js
  class Circle {
         // 与上文中代码相同
     }
@@ -95,7 +95,7 @@
 
 这 段代码丑爆了！我们为 JavaScript 添加类语法的初衷是：能够用一段完整的代码封装目标对象的所有逻辑，而不是在类声明结束后再进行一些额外的“连 结”操作。Java、Ruby 和其它面向对象的语言中有一种特定的语法可以声明“一个类是另一个的子类”，JavaScript 中当然也要有这样的方法！ 我们可以用关键词`extends`声明子类关系，看好了，代码可以这样去写：
 
-```
+```js
  class Circle extends Shape {
         // 与上文中代码相同
     }
@@ -118,7 +118,7 @@
 
 假设我们想基于`Circle`类生成一个子类，这个子类可以通过一些因子来控制圆的缩放，为了实现这一目标，我们写下的这个类看起来有些不太自然：
 
-```
+```js
  class ScalableCircle extends Circle {
         get radius() {
             return this.scalingFactor * super.radius;
@@ -135,7 +135,7 @@
 
 通过方法定义语法定义的函数，其原始对象方法的定义在初始化后就已完成，从而我们可以访问它的 super 属性（也可以访问`super[expr]`），由于该访问依赖的是原始对象，所以即使我们将方法存到本地变量，再访问时也不会改变`super`的行为。
 
-```
+```js
  var obj = {
         toString() {
             return "MyObject: " + super.toString();
@@ -150,7 +150,7 @@
 
 你想做的另一件事可能是扩展 JavaScript 的内建方法。现在你拥有极为强大的 JS 内建数据结构，它是子类化设计的基础之一，可被用来创建新的类型。假设你想编写一个带版本号的数组，你可以改变数组内容然后提交，或者将数组回滚到之前的状态。我们可以通过子类化`Array`来快速实现这一功能。
 
-```
+```js
  class VersionedArray extends Array {
         constructor() {
             super();
@@ -176,7 +176,7 @@
 
 我们可以通过`super`关键词调用父类中的构造函数，此时它本身也好像是函数一般。请注意，这个语法只在使用`extends`扩展的子类的`constructor`方法中有效，通过关键词`super`可以重写我们的`Shape`类。
 
-```
+```js
  class Shape {
         constructor(color) {
             this._color = color;
@@ -197,7 +197,7 @@
 
 正如我们在上一篇文章中看到的，派生类构造函数与`constructor`方法的省略规则相同，看起来好像你这样写就像这样：
 
-```
+```js
  constructor(...args) {
         super(...args);
     }
@@ -213,7 +213,7 @@
 
 我知道这很难理解，所以我将通过一段代码详细讲解：
 
-```
+```js
  class foo {
         constructor() {
             return new.target;
@@ -245,7 +245,7 @@
 
 如 果你想继续使用混入类，你可能希望你能有这样一种类，它继承自几个不同的主体，所以你可以继承每一个混入（Mixin）然后获取它们的精华。不幸的是，如 果改变现有的继承模型可能会使整个系统非常混乱，所以 JavaScript 没有实现类的多继承。那也就是说，在一个基于类的框架内部有一种混合解决方案可 以支持混入类特性。请看下面的这段代码，这是一个基于我们熟知的`extend`混入习语打造的函数：
 
-```
+```js
  function mix(...mixins) {
         class Mix {}
         // 以编程方式给 Mix 类添加
@@ -268,7 +268,7 @@
 
 现在，我们无须在各种各样的混入之间创建显示的继承关系，我们只须使用`mix`函数就可以创建一个组合而成的超类。设想一下，如果你想编写一个协作编辑工具，在这个工具中的所有编辑动作都被记录下来，然后将内容序列化。你可以使用`mix`函数写一个`DistributedEdit`类：
 
-```
+```js
  class DistributedEdit extends mix(Loggable, Serializable) {
         // 事件方法
     }

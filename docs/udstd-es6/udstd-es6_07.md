@@ -26,7 +26,7 @@
 
 符号没有字面量形式，这在 JS 的基本类型中是独一无二的，有别于布尔类型的 `true` 或数值类型的 `42` 等等。你可以使用全局 `Symbol` 函数来创建一个符号值，正如下面这个例子：
 
-```
+```js
 let firstName = Symbol();
 let person = {};
 
@@ -40,7 +40,7 @@ console.log(person[firstName]);     // "Nicholas"
 
 `Symbol` 函数还可以接受一个额外的参数用于描述符号值，该描述并不能用来访问对应属性，但它能用于调试，例如：
 
-```
+```js
 let firstName = Symbol("first name");
 let person = {};
 
@@ -57,7 +57,7 @@ console.log(firstName);                     // "Symbol(first name)"
 > 
 > 由于符号是基本类型的值，因此你可以使用 `typeof` 运算符来判断一个变量是否为符号。 ES6 扩充了 `typeof` 的功能以便让它在作用于符号值的时候能够返回 `"symbol"`，例如：
 > 
-> ```
+> ```js
 > let symbol = Symbol("test symbol");
 > console.log(typeof symbol);         // "symbol" 
 > ```
@@ -68,7 +68,7 @@ console.log(firstName);                     // "Symbol(first name)"
 
 你可以在任意能使用“需计算属性名”的场合使用符号。此前的例子已经展示了符号的方括号用法，而你还能在对象的“需计算字面量属性名”中使用符号，此外还可以在 `Object.defineProperty()` 或 `Object.defineProperties()` 调用中使用它，例如：
 
-```
+```js
 let firstName = Symbol("first name");
 
 // 使用一个需计算字面量属性
@@ -102,7 +102,7 @@ console.log(person[lastName]);      // "Zakas"
 
 若你想创建共享符号值，应使用 `Symbol.for()` 方法而不是 `Symbol()` 方法。 `Symbol.for()` 方法仅接受单个字符串类型的参数，作为目标符号值的标识符，同时此参数也会成为该符号的描述信息。例如：
 
-```
+```js
 let uid = Symbol.for("uid");
 let object = {};
 
@@ -114,7 +114,7 @@ console.log(uid);               // "Symbol(uid)"
 
 `Symbol.for()` 方法首先会搜索全局符号注册表，看是否存在一个键值为 `"uid"` 的符号值。若是，该方法会返回这个已存在的符号值；否则，会创建一个新的符号值，并使用该键值将其记录到全局符号注册表中，然后返回这个新的符号值。这就意味着此后使用同一个键值去调用 `Symbol.for()` 方法都将会返回同一个符号值，就像下面这个例子：
 
-```
+```js
 let uid = Symbol.for("uid");
 let object = {
     [uid]: "12345"
@@ -134,7 +134,7 @@ console.log(uid2);              // "Symbol(uid)"
 
 共享符号值还有另一个独特用法，你可以使用 `Symbol.keyFor()` 方法在全局符号注册表中根据符号值检索出对应的键值，例如：
 
-```
+```js
 let uid = Symbol.for("uid");
 console.log(Symbol.keyFor(uid));    // "uid"
 
@@ -155,7 +155,7 @@ console.log(Symbol.keyFor(uid3));   // undefined
 
 本章之前的例子使用了 `console.log()` 来展示符号值的输出，能这么做是由于自动调用了符号的 `String()` 方法来产生输出。你也可以直接调用 `String()` 方法来获取相同结果，例如：
 
-```
+```js
 let uid = Symbol.for("uid"),
     desc = String(uid);
 
@@ -164,7 +164,7 @@ console.log(desc);              // "Symbol(uid)"
 
 `String()` 方法调用了 `uid.toString()` 来获取符号的字符串描述信息。但若你想直接将符号转换为字符串，则会引发错误：
 
-```
+```js
 let uid = Symbol.for("uid"),
     desc = uid + "";            // 引发错误！ 
 ```
@@ -173,7 +173,7 @@ let uid = Symbol.for("uid"),
 
 相似地，你不能将符号转换为数值，对符号使用所有数学运算符都会引发错误，例如：
 
-```
+```js
 let uid = Symbol.for("uid"),
     sum = uid / 1;            // 引发错误！ 
 ```
@@ -186,7 +186,7 @@ let uid = Symbol.for("uid"),
 
 `Object.getOwnPropertySymbols()` 方法会返回一个数组，包含了对象自有属性名中的符号值，例如：
 
-```
+```js
 let uid = Symbol.for("uid");
 let object = {
     [uid]: "12345"
@@ -233,13 +233,13 @@ ES6 定义了“知名符号”来代表 JS 中一些公共行为，而这些行
 
 `Symbol.hasInstance` 方法只接受单个参数，即需要检测的值。如果该值是本函数的一个实例，则方法会返回 `true` 。为了理解该方法是如何工作的，可研究下述代码：
 
-```
+```js
 obj instanceof Array; 
 ```
 
 这句代码等价于：
 
-```
+```js
 ArraySymbol.hasInstance; 
 ```
 
@@ -247,7 +247,7 @@ ES6 从本质上将 `instanceof` 运算符重定义为上述方法调用的简�
 
 例如，假设你想定义一个函数，使得任意对象都不会被判断为该函数的一个实例，你可以采用硬编码的方式让该函数的 `Symbol.hasInstance` 方法始终返回 `false` ，就像这样：
 
-```
+```js
 function MyObject() {
     // ...
 }
@@ -267,7 +267,7 @@ console.log(obj instanceof MyObject);       // false
 
 当然，你可以基于各种条件来决定一个值是否应当被判断为某个类的实例。例如，将介于 1 到 100 之间的数值认定为一个特殊的数值类型，为此你可以书写如下代码：
 
-```
+```js
 function SpecialNumber() {
     // empty
 }
@@ -293,7 +293,7 @@ console.log(zero instanceof SpecialNumber);   // false
 
 JS 在数组上设计了 `concat()` 方法用于将两个数组连接到一起，此处示范了如何使用该方法：
 
-```
+```js
 let colors1 = [ "red", "green" ],
     colors2 = colors1.concat([ "blue", "black" ]);
 
@@ -303,7 +303,7 @@ console.log(colors2);           // ["red","green","blue","black"]
 
 此代码将一个新数组连接到 `colors1` 末尾，并创建了 `colors2` ，后者包含了前两个数组中所有的项。不过， `concat()` 方法也可以接受非数组的参数，此时这些参数只是简单地被添加到数组末尾，例如：
 
-```
+```js
 let colors1 = [ "red", "green" ],
     colors2 = colors1.concat([ "blue", "black" ], "brown");
 
@@ -315,7 +315,7 @@ console.log(colors2);           // ["red","green","blue","black","brown"]
 
 `Symbol.isConcatSpreadable` 属性是一个布尔类型的属性，它表示目标对象拥有长度属性与数值类型的键、并且数值类型键所对应的属性值在参与 `concat()` 调用时需要被分离为个体。该符号与其他的知名符号不同，默认情况下并不会作为任意常规对象的属性。它只出现在特定类型的对象上，用来标示该对象在作为 `concat()` 参数时应如何工作，从而有效改变该对象的默认行为。你可以用它来定义任意类型的对象，让该对象在参与 `concat()` 调用时能够表现得像数组一样，例如：
 
-```
+```js
 let collection = {
     0: "Hello",
     1: "world",
@@ -355,7 +355,7 @@ console.log(messages);           // ["hi","Hello","world"]
 
 在对象上定义这些属性，允许你创建能够进行模式匹配的对象，而无需使用正则表达式，并且允许在任何需要正则表达式的方法中使用该对象。这里有一个例子，展示了这些符号的用法：
 
-```
+```js
 // 有效等价于 /^.{10}$/
 let hasLengthOf10 = {
     [Symbol.match]: function(value) {
@@ -429,7 +429,7 @@ JS 经常在使用特定运算符的时候试图进行隐式转换，以便将�
 
 使用 `Symbol.toPrimitive` 属性并将一个函数赋值给它，便可以重写默认的转换行为，例如：
 
-```
+```js
 function Temperature(degrees) {
     this.degrees = degrees;
 }
@@ -469,7 +469,7 @@ JS 最有趣的课题之一是在多个不同的全局执行环境中使用，�
 
 面对这个问题，开发者迅速找到了识别数组的一个好办法，他们发现通过调用常规的 `toString()` 方法，就会得到一个可预期的字符串结果。因此，很多 JS 库都包含了如下函数：
 
-```
+```js
 function isArray(value) {
     return Object.prototype.toString.call(value) === "[object Array]";
 }
@@ -483,7 +483,7 @@ console.log(isArray([]));   // true
 
 在 ES5 之前，许多开发者都使用了 Douglas Crockford 的 json2.js 脚本，用来创建全局的 `JSON` 对象。在浏览器开始实现 `JSON` 全局对象之后，区分全局 `JSON` 对象是 JS 运行环境自带的、还是由库文件引入的，就变得非常必要。使用与识别数组相同的技术，很多开发者创建了如下的函数：
 
-```
+```js
 function supportsNativeJSON() {
     return typeof JSON !== "undefined" &&
         Object.prototype.toString.call(JSON) === "[object JSON]";
@@ -498,7 +498,7 @@ ES6 通过 `Symbol.toStringTag` 重定义了相关行为，该符号代表了所
 
 同样，你可以在自设对象上定义 `Symbol.toStringTag` 的值：
 
-```
+```js
 function Person(name) {
     this.name = name;
 }
@@ -513,7 +513,7 @@ console.log(Object.prototype.toString.call(me));    // "[object Person]"
 
 本例在 `Person` 的原型上定义了 `Symbol.toStringTag` 属性，用于提供它的默认的字符串表现形式。由于 `Person` 的原型继承了 `Object.prototype.toString()` 方法， `Symbol.toStringTag` 的返回值在调用 `me.toString()` 的时候也会被使用。不过，你依然可以在该对象上定义你自己的 `toString()` 方法，让它有不同的返回值，而不用影响 `Object.prototype.toString.call()` 方法。这里有个例子：
 
-```
+```js
 function Person(name) {
     this.name = name;
 }
@@ -536,7 +536,7 @@ console.log(Object.prototype.toString.call(me));    // "[object Person]"
 
 对于开发者自定义对象， `Symbol.toStringTag` 的返回值不受任何限制。例如，你可以自由使用 `"Array"` 作为 `Symbol.toStringTag` 属性的值，像这样：
 
-```
+```js
 function Person(name) {
     this.name = name;
 }
@@ -557,7 +557,7 @@ console.log(Object.prototype.toString.call(me));    // "[object Array]"
 
 改变原生对象的字符串标签也是可能的，只需要在对象的原型上对 `Symbol.toStringTag` 进行赋值，例如：
 
-```
+```js
 Array.prototype[Symbol.toStringTag] = "Magic";
 
 let values = [];
@@ -577,7 +577,7 @@ console.log(Object.prototype.toString.call(values));    // "[object Magic]"
 
 为了理解这个任务的复杂性，可研究如下代码：
 
-```
+```js
 let values = [1, 2, 3],
     colors = ["red", "green", "blue"],
     color = "black";
@@ -596,7 +596,7 @@ console.log(colors);    // ["red", "green", "blue", "black", 1, 2, 3]
 
 `Symbol.unscopables` 符号在 `Array.prototype` 上使用，以指定哪些属性不允许在 `with` 语句内被绑定。 `Symbol.unscopables` 属性是一个对象，当提供该属性时，它的键就是用于忽略 `with` 语句绑定的标识符，键值为 `true` 代表屏蔽绑定。以下是数组的 `Symbol.unscopables` 属性的默认值：
 
-```
+```js
 // 默认内置在 ES6 中
 Array.prototype[Symbol.unscopables] = Object.assign(Object.create(null), {
     copyWithin: true,

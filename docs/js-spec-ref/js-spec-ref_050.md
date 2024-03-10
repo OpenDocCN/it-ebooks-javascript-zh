@@ -19,7 +19,7 @@ Viewport 指的是网页的显示区域，也就是不借助滚动条的情况�
 
 viewport 缩放规则，需要在 HTML 网页的 head 部分指定。
 
-```
+```js
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
 </head>
@@ -38,7 +38,7 @@ viewport 全部属性如下。
 
 其他的例子如下。
 
-```
+```js
 <meta name = "viewport" content = "width = 320,
        initial-scale = 2.3, user-scalable = no">
 ```
@@ -49,7 +49,7 @@ Geolocation 接口用于获取用户的地理位置。它使用的方法基于 G
 
 下面的方法，可以检查浏览器是否支持这个接口。
 
-```
+```js
 if(navigator.geolocation) { 
    // 支持
 } else {
@@ -63,7 +63,7 @@ if(navigator.geolocation) {
 
 getCurrentPosition 方法，用来获取用户的地理位置。使用它需要得到用户的授权，浏览器会跳出一个对话框，询问用户是否许可当前页面获取他的地理位置。必须考虑两种情况的回调函数：一种是同意授权，另一种是拒绝授权。如果用户拒绝授权，会抛出一个错误。
 
-```
+```js
 navigator.geolocation.getCurrentPosition(geoSuccess,geoError);
 ```
 
@@ -73,7 +73,7 @@ navigator.geolocation.getCurrentPosition(geoSuccess,geoError);
 
 如果用户同意授权，就会调用 geoSuccess。
 
-```
+```js
 function geoSuccess(event) { 
    console.log(event.coords.latitude + ', ' + event.coords.longitude);
 }
@@ -95,7 +95,7 @@ geoSuccess 的参数是一个 event 对象。event 有两个属性：timestamp �
 
 如果用户拒绝授权，就会调用 getCurrentPosition 方法指定的第二个回调函数 geoError。
 
-```
+```js
 function geoError(event) { 
    console.log("Error code " + event.code + ". " + event.message);
 }
@@ -112,7 +112,7 @@ geoError 的参数也是一个 event 对象。event.code 属性表示错误类�
 
 getCurrentPosition 方法还可以接受一个对象作为第三个参数，用来设置定位行为。
 
-```
+```js
 var option = {
             enableHighAccuracy : true,
             timeout : Infinity,
@@ -134,7 +134,7 @@ navigator.geolocation.getCurrentPosition(geoSuccess, geoError, option);
 
 watchPosition 方法可以用来监听用户位置的持续改变，使用方法与 getCurrentPosition 方法一样。
 
-```
+```js
 var watchID = navigator.geolocation.watchPosition(geoSuccess,geoError, option);
 ```
 
@@ -142,7 +142,7 @@ var watchID = navigator.geolocation.watchPosition(geoSuccess,geoError, option);
 
 watchPosition 和 getCurrentPosition 方法的不同之处在于，前者返回一个表示符，后者什么都不返回。watchPosition 方法返回的标识符，用于供 clearWatch 方法取消监听。
 
-```
+```js
 navigator.geolocation.clearWatch(watchID);
 ```
 
@@ -152,7 +152,7 @@ Vibration 接口用于在浏览器中发出命令，使得设备振动。显然�
 
 使用下面的代码检查该接口是否可用。目前，只有 Chrome 和 Firefox 的 Android 平台最新版本支持它。
 
-```
+```js
 navigator.vibrate = navigator.vibrate 
                     || navigator.webkitVibrate 
                     || navigator.mozVibrate 
@@ -165,7 +165,7 @@ if (navigator.vibrate) {
 
 vibrate 方法可以使得设备振动，它的参数就是振动持续的毫秒数。
 
-```
+```js
 navigator.vibrate(1000);
 ```
 
@@ -173,7 +173,7 @@ navigator.vibrate(1000);
 
 vibrate 方法还可以接受一个数组作为参数，表示振动的模式。偶数位置的数组成员表示振动的毫秒数，奇数位置的数组成员表示等待的毫秒数。
 
-```
+```js
 navigator.vibrate([500, 300, 100]);
 ```
 
@@ -181,14 +181,14 @@ navigator.vibrate([500, 300, 100]);
 
 vibrate 是一个非阻塞式的操作，即手机振动的同时，JavaScript 代码继续向下运行。要停止振动，只有将 0 毫秒或者一个空数组传入 vibrate 方法。
 
-```
+```js
 navigator.vibrate(0);
 navigator.vibrate([]);
 ```
 
 如果要让振动一直持续，可以使用 setInterval 不断调用 vibrate。
 
-```
+```js
 var vibrateInterval;
 
 function startVibrate(duration) {
@@ -211,7 +211,7 @@ function startPeristentVibrate(duration, interval) {
 
 Luminosity API 用于屏幕亮度调节，当移动设备的亮度传感器感知外部亮度发生显著变化时，会触发 devicelight 事件。目前，只有 Firefox 部署了这个 API。
 
-```
+```js
 window.addEventListener('devicelight', function(event) {
   console.log(event.value + 'lux');
 });
@@ -221,7 +221,7 @@ window.addEventListener('devicelight', function(event) {
 
 这个 API 的一种应用是，如果亮度变强，网页可以显示黑底白字，如果亮度变弱，网页可以显示白底黑字。
 
-```
+```js
 window.addEventListener('devicelight', function(e) {
   var lux = e.value;
 
@@ -239,7 +239,7 @@ window.addEventListener('devicelight', function(e) {
 
 CSS 下一个版本的 Media Query 可以单独设置亮度，一旦浏览器支持，就可以用来取代 Luminosity API。
 
-```
+```js
 @media (light-level: dim) {
   /* 暗光环境 */
 }
@@ -259,7 +259,7 @@ Orientation API 用于检测手机的摆放方向（竖放或横放）。
 
 使用下面的代码检测浏览器是否支持该 API。
 
-```
+```js
 if (window.DeviceOrientationEvent) {
   // 支持
 } else {
@@ -269,13 +269,13 @@ if (window.DeviceOrientationEvent) {
 
 一旦设备的方向发生变化，会触发 deviceorientation 事件，可以对该事件指定回调函数。
 
-```
+```js
 window.addEventListener("deviceorientation", callback);
 ```
 
 回调函数接受一个 event 对象作为参数。
 
-```
+```js
 function callback(event){
     console.log(event.alpha);
     console.log(event.beta);

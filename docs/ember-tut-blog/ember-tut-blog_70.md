@@ -11,7 +11,7 @@
 
 #### 测试使用的数据库
 
-```
+```js
 SET NAMES utf8;  
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -39,7 +39,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 ##### 获取数据库链接
 
-```
+```js
 /**
  * 后台服务，链接 MySQL 获取项目数据
  */
@@ -57,7 +57,7 @@ var conn = mysql.createConnection({
 
 ##### 使用连接池
 
-```
+```js
 //  使用连接池
 var pool = mysql.createPool({  
     host: '127.0.0.1',
@@ -84,7 +84,7 @@ pool.getConnection(function(err, conn) {
 
 ##### 查询所有数据
 
-```
+```js
 conn.connect();  //打开链接
 
 conn.query('select * from user', function(err, rows, fields) {  
@@ -105,7 +105,7 @@ conn.end();  //关闭连接
 
 ##### 多表关联查询
 
-```
+```js
 //  多表连接查询
 var options = { sql: 'select * from user u, todoItem td where u.id = td.user', nestTables: '_' };  
 conn.connect();  //打开链接  
@@ -124,7 +124,7 @@ conn.end();
 
 ##### 查询某个字段值
 
-```
+```js
 //  根据属性查
 conn.connect();  //打开数据库连接  
 //  与 jdbc 操作数据库类似，也可以使用占位符
@@ -163,7 +163,7 @@ conn.end();  //关闭 MySQL 连接
 
 ##### 插入数据
 
-```
+```js
 // 插入数据
 console.log('------------- 插入数据 ------------');  
 conn.connect();  //打开连接  
@@ -181,7 +181,7 @@ conn.end();  //关闭连接
 
 ##### 更新数据
 
-```
+```js
 console.log('------------- 更新数据 ------------');  
 conn.connect();  //打开连接  
 var data = [ 'update test', 4 ];  //需要跟占位符的顺序一致  
@@ -197,7 +197,7 @@ conn.end();  //关闭连接
 
 ##### 删除数据
 
-```
+```js
 console.log('------------- 删除数据 ------------');  
 conn.connect();  //打开连接  
 var data = [ 4 ];  //需要跟占位符的顺序一致  

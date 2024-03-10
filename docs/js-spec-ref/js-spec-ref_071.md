@@ -17,7 +17,7 @@ Gulp 与 Grunt 一样，也是一个自动任务运行器。它充分借鉴了 U
 
 Gulp 需要全局安装，然后再在项目的开发目录中安装为本地模块。先进入项目目录，运行下面的命令。
 
-```
+```js
 npm install -g gulp
 
 npm install --save-dev gulp
@@ -25,7 +25,7 @@ npm install --save-dev gulp
 
 除了安装 gulp 以外，不同的任务还需要安装不同的 gulp 插件模块。举例来说，下面代码安装了 gulp-uglify 模块。
 
-```
+```js
 $ npm install --save-dev gulp-uglify
 ```
 
@@ -33,7 +33,7 @@ $ npm install --save-dev gulp-uglify
 
 项目根目录中的 gulpfile.js，是 Gulp 的配置文件。下面就是一个典型的 gulpfile.js 文件。
 
-```
+```js
 var gulp = require('gulp');
 var uglify = require('gulp-uglify');
 
@@ -50,7 +50,7 @@ task 方法的回调函数使用了两次 pipe 方法，也就是说做了两种
 
 执行 minify 任务时，就在项目目录中执行下面命令就可以了。
 
-```
+```js
 $ gulp minify
 ```
 
@@ -58,7 +58,7 @@ $ gulp minify
 
 下面是另一个数据流的例子。
 
-```
+```js
 gulp.task('js', function () {
   return gulp.src('js/*.js')
     .pipe(jshint())
@@ -84,7 +84,7 @@ gulp 模块的 src 方法，用于产生数据流。它的参数表示所要处�
 
 src 方法的参数还可以是一个数组，用来指定多个成员。
 
-```
+```js
 gulp.src(['js/**/*.js', '!js/**/*.min.js'])
 ```
 
@@ -92,7 +92,7 @@ gulp.src(['js/**/*.js', '!js/**/*.min.js'])
 
 dest 方法将管道的输出写入文件，同时将这些输出继续输出，所以可以依次调用多次 dest 方法，将输出写入多个目录。如果有目录不存在，将会被新建。
 
-```
+```js
 gulp.src('./client/templates/*.jade')
   .pipe(jade())
   .pipe(gulp.dest('./build/templates'))
@@ -102,7 +102,7 @@ gulp.src('./client/templates/*.jade')
 
 dest 方法还可以接受第二个参数，表示配置对象。
 
-```
+```js
 gulp.dest('build', {
   cwd: './app',
   mode: '0644'
@@ -115,7 +115,7 @@ gulp.dest('build', {
 
 task 方法用于定义具体的任务。它的第一个参数是任务名，第二个参数是任务函数。下面是一个非常简单的任务函数。
 
-```
+```js
 gulp.task('greet', function () {
    console.log('Hello world!');
 });
@@ -123,7 +123,7 @@ gulp.task('greet', function () {
 
 task 方法还可以指定按顺序运行的一组任务。
 
-```
+```js
 gulp.task('build', ['css', 'js', 'imgs']);
 ```
 
@@ -131,7 +131,7 @@ gulp.task('build', ['css', 'js', 'imgs']);
 
 如果希望各个任务严格按次序运行，可以把前一个任务写成后一个任务的依赖模块。
 
-```
+```js
 gulp.task('css', ['greet'], function () {
    // Deal with CSS here
 });
@@ -141,7 +141,7 @@ gulp.task('css', ['greet'], function () {
 
 task 方法的回调函数，还可以接受一个函数作为参数，这对执行异步任务非常有用。
 
-```
+```js
 // 执行 shell 命令
 var exec = require('child_process').exec;
 gulp.task('jekyll', function(cb) {
@@ -155,7 +155,7 @@ gulp.task('jekyll', function(cb) {
 
 如果一个任务的名字为 default，就表明它是“默认任务”，在命令行直接输入 gulp 命令，就会运行该任务。
 
-```
+```js
 gulp.task('default', function () {
   // Your default task
 });
@@ -171,7 +171,7 @@ gulp.task('default', ['styles', 'jshint', 'watch']);
 
 watch 方法用于指定需要监视的文件。一旦这些文件发生变动，就运行指定任务。
 
-```
+```js
 gulp.task('watch', function () {
    gulp.watch('templates/*.tmpl.html', ['build']);
 });
@@ -181,7 +181,7 @@ gulp.task('watch', function () {
 
 watch 方法也可以用回调函数，代替指定的任务。
 
-```
+```js
 gulp.watch('templates/*.tmpl.html', function (event) {
    console.log('Event type: ' + event.type);
    console.log('Event path: ' + event.path);
@@ -190,7 +190,7 @@ gulp.watch('templates/*.tmpl.html', function (event) {
 
 另一种写法是 watch 方法所监控的文件发生变化时（修改、增加、删除文件），会触发 change 事件。可以对 change 事件指定回调函数。
 
-```
+```js
 var watcher = gulp.watch('templates/*.tmpl.html', ['build']);
 
 watcher.on('change', function (event) {
@@ -217,7 +217,7 @@ watcher 对象还包含其他一些方法。
 
 一般情况下，gulpfile.js 中的模块需要一个个加载。
 
-```
+```js
 var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
     uglify = require('gulp-uglify'),
@@ -237,7 +237,7 @@ gulp.task('js', function () {
 
 这种一一加载的写法，比较麻烦。使用 gulp-load-plugins 模块，可以加载 package.json 文件中所有的 gulp 模块。上面的代码用 gulp-load-plugins 模块改写，就是下面这样。
 
-```
+```js
 var gulp = require('gulp'),
     gulpLoadPlugins = require('gulp-load-plugins'),
     plugins = gulpLoadPlugins();
@@ -254,7 +254,7 @@ gulp.task('js', function () {
 
 上面代码假设 package.json 文件包含以下内容。
 
-```
+```js
 {
    "devDependencies": {
       "gulp-concat": "~2.2.0",
@@ -269,7 +269,7 @@ gulp.task('js', function () {
 
 gulp-livereload 模块用于自动刷新浏览器，反映出源码的最新变化。它除了模块以外，还需要在浏览器中安装插件，用来配合源码变化。
 
-```
+```js
 var gulp = require('gulp'),
     less = require('gulp-less'),
     livereload = require('gulp-livereload'),

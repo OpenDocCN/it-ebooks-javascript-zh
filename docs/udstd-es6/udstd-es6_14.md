@@ -43,7 +43,7 @@ JS “共享一切”的代码加载方式是该语言混乱且最易出错的�
 
 你可以使用 `export` 关键字将已发布代码部分公开给其他模块。最简单方法就是将 `export` 放置在任意变量、函数或类声明之前，从模块中将它们公开出去，就像这样：
 
-```
+```js
 // 导出数据
 export var color = "red";
 export let name = "Nicholas";
@@ -86,7 +86,7 @@ export { multiply };
 
 一旦你有了包含导出的模块，就能在其他模块内使用 `import` 关键字来访问已被导出的功能。 `import` 语句有两个部分，一是需要导入的标识符，二是需导入的标识符的来源模块。此处是导入语句的基本形式：
 
-```
+```js
 import { identifier1, identifier2 } from "./example.js"; 
 ```
 
@@ -100,7 +100,7 @@ import { identifier1, identifier2 } from "./example.js";
 
 对于“基本的导入”小节的第一个例子，先假设它位于一个文件名为 `example.js` 的模块内。你能用多种方式来导入并使用来自该模块的绑定。例如，你可以仅导入一个标识符：
 
-```
+```js
 // 单个导入
 import { sum } from "./example.js";
 
@@ -117,7 +117,7 @@ sum = 1;        // 出错
 
 如果你想从 example 模块导入多个绑定，你可以像下面这样显式的列出它们：
 
-```
+```js
 // 多个导入
 import { sum, multiply, magicNumber } from "./example.js";
 console.log(sum(1, magicNumber));   // 8
@@ -130,7 +130,7 @@ console.log(multiply(1, 2));        // 2
 
 还有一种特殊情况，即允许你将整个模块当作单一对象进行导入，该模块的所有导出都会作为对象的属性存在。例如：
 
-```
+```js
 // 完全导入
 import * as example from "./example.js";
 console.log(example.sum(1,
@@ -142,7 +142,7 @@ console.log(example.multiply(1, 2));    // 2
 
 然而要记住，无论你对同一个模块使用了多少次 `import` 语句，该模块都只会被执行一次。在导出模块的代码执行之后，已被实例化的模块就被保留在内存中，并随时都能被其他 `import` 所引用。研究以下例子：
 
-```
+```js
 import { sum } from "./example.js";
 import { multiply } from "./example.js";
 import { magicNumber } from "./example.js"; 
@@ -154,7 +154,7 @@ import { magicNumber } from "./example.js";
 > 
 > `export` 与 `import` 都有一个重要的限制，那就是它们必须被用在其他语句或表达式的外部。例如，以下代码有语法错误：
 > 
-> ```
+> ```js
 > if (flag) {
 >   export flag;    // 语法错误
 > } 
@@ -164,7 +164,7 @@ import { magicNumber } from "./example.js";
 > 
 > 类似的，你不能在一个语句内部使用 `import` ，也只能将其用在顶级作用域。这意味着以下代码也有语法错误：
 > 
-> ```
+> ```js
 > function tryImport() {
 >   import flag from "./example.js";    // 语法错误
 > } 
@@ -176,7 +176,7 @@ import { magicNumber } from "./example.js";
 
 ES6 的 `import` 语句为变量、函数与类创建了只读绑定，而不像普通变量那样简单引用了原始绑定。尽管导入绑定的模块无法修改绑定的值，但负责导出的模块却能做到这一点。例如，假设你想要使用以下模块：
 
-```
+```js
 export var name = "Nicholas";
 export function setName(newName) {
     name = newName;
@@ -185,7 +185,7 @@ export function setName(newName) {
 
 当你导入了这两个绑定后， `setName()` 函数还可以改变 `name` 的值：
 
-```
+```js
 import { name, setName } from "./example.js";
 
 console.log(name);       // "Nicholas"
@@ -199,7 +199,7 @@ name = "Nicholas";       // error
 
 > 译注：对本小节内容进行补充说明
 > 
-> ```
+> ```js
 > let a = 1;
 > let b = a;
 > console.log(a);       // 1
@@ -219,7 +219,7 @@ name = "Nicholas";       // error
 
 前一种情况下，假设你想用不同的名称来导出一个函数，你可以使用 `as` 关键字来指定新的名称，以便在模块外部用此名称指代目标函数：
 
-```
+```js
 function sum(num1, num2) {
     return num1 + num2;
 }
@@ -229,13 +229,13 @@ export { sum as add };
 
 此处的 `sum()` 函数被作为 `add()` 导出，前者是**本地名称**（ **local name** ），后者则是**导出名称**（ **exported name** ）。这意味着当另一个模块要导入此函数时，它必须改用 `add` 这个名称：
 
-```
+```js
 import { add } from "./example.js"; 
 ```
 
 假若模块导入函数时想使用另一个名称，同样也可以用 `as` 关键字：
 
-```
+```js
 import { add as sum } from "./example.js";
 console.log(typeof add);            // "undefined"
 console.log(sum(1, 2));             // 3 
@@ -251,7 +251,7 @@ console.log(sum(1, 2));             // 3
 
 以下是使用 `default` 关键字的一个简单例子：
 
-```
+```js
 export default function(num1, num2) {
     return num1 + num2;
 } 
@@ -261,7 +261,7 @@ export default function(num1, num2) {
 
 你也能在 `export default` 后面放置一个标识符，以指定默认的导出，正如：
 
-```
+```js
 function sum(num1, num2) {
     return num1 + num2;
 }
@@ -273,7 +273,7 @@ export default sum;
 
 将标识符作为默认导出来指定的第三种方式，是使用重命名语法，如下：
 
-```
+```js
 function sum(num1, num2) {
     return num1 + num2;
 }
@@ -287,7 +287,7 @@ export { sum as default };
 
 你可以使用如下语法来从一个模块中导入默认值：
 
-```
+```js
 // 导入默认值
 import sum from "./example.js";
 
@@ -298,7 +298,7 @@ console.log(sum(1, 2));     // 3
 
 对于既导出了默认值、又导出了一个或更多非默认的绑定的模块，你可以使用单个语句来导入它的所有导出绑定。例如，假设你有这么一个模块：
 
-```
+```js
 export let color = "red";
 
 export default function(num1, num2) {
@@ -308,7 +308,7 @@ export default function(num1, num2) {
 
 你可以像下面这样使用 `import` 语句，来同时导入 `color` 以及作为默认值的函数：
 
-```
+```js
 import sum, { color } from "./example.js";
 
 console.log(sum(1, 2));     // 3
@@ -319,7 +319,7 @@ console.log(color);         // "red"
 
 如同导出默认值，你也能使用重命名语法进行默认值的导入：
 
-```
+```js
 // 等价于上个例子
 import { default as sum, color } from "example";
 
@@ -333,20 +333,20 @@ console.log(color);         // "red"
 
 也许有时你会想将当前模块已导入的内容重新再导出（例如，假设要用几个小模块来创建一个库）。你能使用本章已描述过的模式来将已导入的值再导出，就像这样：
 
-```
+```js
 import { sum } from "./example.js";
 export { sum } 
 ```
 
 此方法能奏效，但还可以使用单个语句来完成相同任务：
 
-```
+```js
 export { sum } from "./example.js"; 
 ```
 
 这种形式的 `export` 会进入指定模块查看 `sum` 的定义，随后将其导出。当然，你也可以选择将一个值用不同名称导出：
 
-```
+```js
 export { sum as add } from "./example.js"; 
 ```
 
@@ -354,7 +354,7 @@ export { sum as add } from "./example.js";
 
 若你想将来自另一个模块的所有值完全导出，可以使用星号（ `*` ）模式：
 
-```
+```js
 export * from "./example.js"; 
 ```
 
@@ -366,7 +366,7 @@ export * from "./example.js";
 
 例如，若你想为所有数组添加一个 `pushAll()` 方法，你可以像下面这样定义一个模块：
 
-```
+```js
 // 没有导出与导入的模块
 Array.prototype.pushAll = function(items) {
 
@@ -382,7 +382,7 @@ Array.prototype.pushAll = function(items) {
 
 这是一个有效的模块，尽管此处没有任何导出与导入。此代码可以作为模块或脚本来使用。由于它没有导出任何东西，你可以使用简化的导入语法来执行此模块的代码，而无须导入任何绑定：
 
-```
+```js
 import "./example.js";
 
 let colors = ["red", "green", "blue"];
@@ -413,7 +413,7 @@ items.pushAll(colors);
 
 `<script>` 元素默认以脚本方式（而非模块）来加载 JS 文件，只要 `type` 属性缺失，或者 `type` 属性含有与 JS 对应的内容类型（例如 `"text/javascript"` ）。 `<script>` 元素能够执行内联脚本，也能加载在 `src` 中指定的文件。为了支持模块，添加了 `"module"` 值作为 `type` 的选项。将 `type` 设置为 `"module"` ，就告诉浏览器要将内联代码或是指定文件中的代码当作模块，而不是当作脚本。此处有个简单范例：
 
-```
+```js
 <!-- load a module JavaScript file -->
 <script type="module" src="module.js"></script>
 
@@ -435,7 +435,7 @@ let result = sum(1, 2); </script>
 
 `defer` 属性是加载脚本文件时的可选项，但在加载模块文件时总是自动应用的。当 HTML 解析到拥有 `src` 属性的 `<script type="module">` 标签时，就会立即开始下载模块文件，但并不会执行它，直到整个网页文档全部解析完为止。模块也会按照它们在 HTML 文件中出现的顺序依次执行，这意味着第一个 `<script type="module">` 总是保证在第二个之前执行，即使其中有些模块不是用 `src` 指定而是包含了内联脚本。例如：
 
-```
+```js
 <!-- this will execute first -->
 <script type="module" src="module1.js"></script>
 
@@ -480,7 +480,7 @@ let result = sum(1, 2); </script>
 
 `async` 属性也能同样被应用到模块上。在 `<script type="module">` 上使用 `async` 会导致模块的执行行为与脚本相似。唯一区别是模块中所有 `import` 导入的资源会在模块自身被执行前先下载。这保证了模块中所有需要的资源会在模块执行前被下载，你只是不能保证模块**何时**会执行。研究以下代码：
 
-```
+```js
 <!-- no guarantee which one of these will execute first -->
 <script type="module" async src="module1.js"></script>
 <script type="module" async src="module2.js"></script> 
@@ -492,14 +492,14 @@ let result = sum(1, 2); </script>
 
 诸如 Web Worker 与 Service Worker 之类的 worker ，会在网页上下文外部执行 JS 代码。创建一个新的 worker 调用，也就会创建 `Worker` （或其他 worker 类）的一个实例，并会向其传入 JS 文件的位置。其默认的加载机制是将文件当作脚本来下载，例如：
 
-```
+```js
 // 用脚本方式加载 script.js
 let worker = new Worker("script.js"); 
 ```
 
 为了支持模块加载， HTML 标准的开发者为这些 worker 构造器添加了第二个参数，此参数是一个有 `type` 属性的对象，该属性的默认值是 `"script"` 。你也可以将 `type` 设置为 `"module"` 以便加载模块文件：
 
-```
+```js
 // 用模块方式加载 module.js
 let worker = new Worker("module.js", { type: "module" }); 
 ```
@@ -519,7 +519,7 @@ worker 模块通常与 worker 脚本一致，但存在两点例外。首先， w
 
 例如，假设你拥有一个位于 `https://www.example.com/modules/module.js` 的模块文件，包含了以下代码：
 
-```
+```js
 // 从 https://www.example.com/modules/example1.js 导入
 import { first } from "./example1.js";
 
@@ -535,7 +535,7 @@ import { fourth } from "https://www2.example.com/example4.js";
 
 此例中每一个模块说明符在浏览器中使用时都是有效的，包括最后一行的完整 URL （你无须确保 `ww2.example.com` 已经正确配置了它的 CORS 响应头来允许跨域加载，这会影响是否能跨域加载，却不会影响语法的有效性）。这些是浏览器默认情况下仅能使用的模块说明符格式（不过未完成的模块加载器规范将会提供对其他格式的支持）。这意味着某些看似正常的模块说明符实际上在浏览器中是无效的，并且会导致错误，正如：
 
-```
+```js
 // 无效：没有以 / 、 ./ 或 ../ 开始
 import { first } from "example.js";
 

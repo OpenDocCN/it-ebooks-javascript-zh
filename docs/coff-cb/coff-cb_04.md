@@ -6,7 +6,7 @@
 
 你希望检查一个变量是否为一个数组。
 
-```
+```js
 myArray = []
 console.log typeof myArray // outputs 'object'
 ```
@@ -17,13 +17,13 @@ console.log typeof myArray // outputs 'object'
 
 使用下面的代码：
 
-```
+```js
 typeIsArray = Array.isArray || ( value ) -> return {}.toString.call( value ) is '[object Array]'
 ```
 
 为了使用这个，像下面这样调用 typeIsArray 就可以了。
 
-```
+```js
 myArray = []
 typeIsArray myArray // outputs true
 ```
@@ -32,7 +32,7 @@ typeIsArray myArray // outputs true
 
 上面方法取自 "the Miller Device"。另外一个方式是使用 Douglas Crockford 的片段。
 
-```
+```js
 typeIsArray = ( value ) ->
     value and
         typeof value is 'object' and
@@ -54,7 +54,7 @@ typeIsArray = ( value ) ->
 
 第一种是使用 JavaScript 的数组方法 concat()：
 
-```
+```js
 array1 = [1, 2, 3]
 array2 = [4, 5, 6]
 array3 = array1.concat array2
@@ -65,7 +65,7 @@ array3 = array1.concat array2
 
 如果你希望在连接两个数组后不产生新的对象，那么你可以使用下面的技术：
 
-```
+```js
 array1 = [1, 2, 3]
 array2 = [4, 5, 6]
 Array::push.apply array1, array2
@@ -77,7 +77,7 @@ array1
 
 在 CoffeeScript 中，我们可以简化上面的方式，通过给数组创建一个新方法 merge()：
 
-```
+```js
 Array::merge = (other) -> Array::push.apply @, other
 
 array1 = [1, 2, 3]
@@ -89,7 +89,7 @@ array1
 
 另一种方法，我可以直接将一个 CoffeeScript splat(array2) 放入 push() 中，避免了使用数组原型。
 
-```
+```js
 array1 = [1, 2, 3]
 array2 = [4, 5, 6]
 array1.push array2...
@@ -99,7 +99,7 @@ array1
 
 一个更加符合语言习惯的方法是在一个数组语言中直接使用 splat 运算符(...)。这可以用来连接任意数量的数组。
 
-```
+```js
 array1 = [1, 2, 3]
 array2 = [4, 5, 6]
 array3 = [array1..., array2...]
@@ -117,7 +117,7 @@ CoffeeScript 缺少了一种用来连接数组的特殊语法，但是 concat() 
 
 你有一组对象，例如：
 
-```
+```js
 cats = [
   {
     name: "Bubbles"
@@ -136,7 +136,7 @@ cats = [
 
 你需要将你的数组转换为一个对象。通过这样使用 reduce：
 
-```
+```js
  # key = The key by which to index the dictionary
 
 Array::toDict = (key) ->
@@ -145,7 +145,7 @@ Array::toDict = (key) ->
 
 使用它时像下面这样：
 
-```
+```js
 catsDict = cats.toDict('name')
   catsDict["Bubbles"]
   # => { age: 1, name: "Bubbles" }
@@ -155,7 +155,7 @@ catsDict = cats.toDict('name')
 
 另一种方法是使用数组推导：
 
-```
+```js
 Array::toDict = (key) ->
   dict = {}
   dict[obj[key]] = obj for obj in this when obj[key]?
@@ -164,7 +164,7 @@ Array::toDict = (key) ->
 
 如果你使用 Underscore.js，你可以创建一个 mixin：
 
-```
+```js
 _.mixin toDict: (arr, key) ->
     throw new Error('_.toDict takes an Array') unless _.isArray arr
     _.reduce arr, ((dict, obj) -> dict[ obj[key] ] = obj if obj[key]?; return dict), {}
@@ -183,7 +183,7 @@ catsDict["Sparkle"]
 
 使用 JavaScript 的数组方法 toString()：
 
-```
+```js
 ["one", "two", "three"].toString()
  # => 'one,two,three'
 ```
@@ -202,24 +202,24 @@ toString() 是一个标准的 JavaScript 方法。不要忘记圆括号。
 
 在 CoffeeScript 中，有两种方式定义数组元素的范围。
 
-```
+```js
 myArray = [1..10]
  # => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
 ```
 
-```
+```js
 myArray = [1...10]
  # => [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
 ```
 
 要想反转元素的范围，则可以写成下面这样。
 
-```
+```js
 myLargeArray = [10..1]
  # => [ 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 ]
 ```
 
-```
+```js
 myLargeArray = [10...1]
  # => [ 10, 9, 8, 7, 6, 5, 4, 3, 2 ]
 ```
@@ -238,14 +238,14 @@ myLargeArray = [10...1]
 
 使用 `Array.filter (ECMAScript 5)： array = [1..10]`
 
-```
+```js
 array.filter (x) -> x > 5
  # => [6,7,8,9,10]
 ```
 
 在 EC5 之前的实现中，可以通过添加一个筛选函数扩展 Array 的原型，该函数接受一个回调并对自身进行过滤，将回调函数返回 true 的元素收集起来。
 
-```
+```js
  # 扩展 Array 的原型
 
 Array::filter = (callback) ->
@@ -279,7 +279,7 @@ filtered_array = array.filter gt_five
 
 使用列表推导，但不要忘记还有 [mapping-arrays](http://coffeescript-cookbook.github.io/chapters/arrays/mapping-arrays) 。
 
-```
+```js
 electric_mayhem = [ { name: "Doctor Teeth", instrument: "piano" },
                     { name: "Janice", instrument: "lead guitar" },
                     { name: "Sgt. Floyd Pepper", instrument: "bass" },
@@ -305,7 +305,7 @@ names = (muppet.name for muppet in electric_mayhem)
 
 使用 map() 和匿名函数，但不要忘了还有列表推导。
 
-```
+```js
 electric_mayhem = [ { name: "Doctor Teeth", instrument: "piano" },
                     { name: "Janice", instrument: "lead guitar" },
                     { name: "Sgt. Floyd Pepper", instrument: "bass" },
@@ -331,14 +331,14 @@ names = electric_mayhem.map (muppet) -> muppet.name
 
 你可以使用 JavaScript 实现，在列表推导基础上使用 Math.max()：
 
-```
+```js
 Math.max [12, 32, 11, 67, 1, 3]... 
  # => 67
 ```
 
 另一种方法，在 ECMAScript 5 中，可以使用 Array 的 reduce 方法，它与旧的 JavaScript 实现兼容。
 
-```
+```js
  # ECMAScript 5 
 
 [12,32,11,67,1,3].reduce (a,b) -> Math.max a, b 
@@ -359,7 +359,7 @@ Math.max 在这里比较两个数值，返回其中较大的一个。省略号 (
 
 可以使用一个匿名函数包含 Array 的 reduce() 和 reduceRight() 方法，保持代码清晰易懂。这里归纳可能会像对数值和字符串应用 + 运算符那么简单。
 
-```
+```js
 [1,2,3,4].reduce (x,y) -> x + y
  # => 10
 
@@ -369,7 +369,7 @@ Math.max 在这里比较两个数值，返回其中较大的一个。省略号 (
 
 或者，也可能更复杂一些，例如把列表中的元素聚集到一个组合对象中。
 
-```
+```js
 people =
     { name: 'alec', age: 10 }
     { name: 'bert', age: 16 }
@@ -394,7 +394,7 @@ Javascript 1.8 中引入了 reduce 和 reduceRight ，而 Coffeescript 为匿名
 
 ### 解决方案
 
-```
+```js
 Array::unique = ->
   output = {}
   output[@[key]] = @[key] for key in [0...@length]
@@ -420,7 +420,7 @@ Array::unique = ->
 
 使用 JavaScript Array 的 reverse() 方法：
 
-```
+```js
 ["one", "two", "three"].reverse()
  # => ["three", "two", "one"]
 ```
@@ -439,7 +439,7 @@ reverse() 是标准的 JavaScript 方法，别忘了带圆括号。
 
 [Fisher-Yates shuffle](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle) 是一种高效、公正的方式来让数组中的元素随机化。这是一个相当简单的方法：在列表的结尾处开始，用一个随机元素交换最后一个元素列表中的最后一个元素。继续下一个并重复操作，直到你到达列表的起始端，最终列表中所有的元素都已打乱。这 [Fisher-Yates shuffle Visualization](http://bost.ocks.org/mike/shuffle/) 可以帮助你理解算法。
 
-```
+```js
 shuffle = (source) ->
   # Arrays with < 2 elements do not shuffle well. Instead make it a noop.
   return source unless source.length >= 2
@@ -461,7 +461,7 @@ shuffle([1..9])
 
 有一个很常见但是错误的打乱数组的方式：通过随机数。
 
-```
+```js
 shuffle = (a) -> a.sort -> 0.5 - Math.random()
 ```
 
@@ -471,7 +471,7 @@ shuffle = (a) -> a.sort -> 0.5 - Math.random()
 
 以上的解决方案处理速度是不一样的。该列表，当转换成 JavaScript 时，比它要复杂得多，变性分配比处理裸变量的速度要慢得多。以下代码并不完善，并且需要更多的源代码空间 … 但会编译量更小，运行更快：
 
-```
+```js
 shuffle = (a) ->
   i = a.length
   while --i > 0
@@ -486,7 +486,7 @@ shuffle = (a) ->
 
 下面的代码将乱序功能添加到数组原型中，这意味着你可以在任何希望的数组中运行它，并以更直接的方式来运行它。
 
-```
+```js
 Array::shuffle ?= ->
   if @length > 1 then for i in [@length-1..1]
     j = Math.floor Math.random() * (i + 1)
@@ -512,7 +512,7 @@ Array::shuffle ?= ->
 
 使用 Array.every (ECMAScript 5)：
 
-```
+```js
 evens = (x for x in [0..10] by 2)
 
 evens.every (x)-> x % 2 == 0
@@ -523,7 +523,7 @@ Array.every 被加入到 Mozilla 的 Javascript 1.6 ，ECMAScript 5 标准。如
 
 对于一个真实例子，假设你有一个多选择列表，如下：
 
-```
+```js
 <select multiple id="my-select-list">
   <option>1</option>
   <option>2</option>
@@ -534,7 +534,7 @@ Array.every 被加入到 Mozilla 的 Javascript 1.6 ，ECMAScript 5 标准。如
 
 现在你要验证用户只选择了数字。让我们利用 array.every ：
 
-```
+```js
 validateNumeric = (item)->
   parseFloat(item) == parseInt(item) && !isNaN(item)
 
@@ -557,7 +557,7 @@ values.every validateNumeric
 
 使用 CoffeeScript 的解构赋值语法：
 
-```
+```js
 a = 1
 b = 3
 
@@ -576,7 +576,7 @@ b
 
 这种语法特别适合在遍历数组的时候只想迭代最短数组的情况：
 
-```
+```js
 ray1 = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
 ray2 = [ 5, 9, 14, 20 ]
 
@@ -599,7 +599,7 @@ intersection ray2, ray1
 
 你有一系列的对象，如：
 
-```
+```js
 cats = [
   {
     name: "Bubbles"
@@ -624,7 +624,7 @@ cats = [
 
 你可以像这样来扩展数组：
 
-```
+```js
 Array::where = (query) ->
     return [] if typeof query isnt "object"
     hit = Object.keys(query).length
@@ -648,7 +648,7 @@ cats.where age:1, favoriteFood:"tuna"
 
 这是一个确定的匹配。我们能够让匹配函数更加灵活：
 
-```
+```js
 Array::where = (query, matcher = (a,b) -> a is b) ->
     return [] if typeof query isnt "object"
     hit = Object.keys(query).length
@@ -681,7 +681,7 @@ cats.where name:"bubbles", (a, b) -> "#{ a }".toLowerCase() is "#{ b }".toLowerC
 
 使用下面的 CoffeeScript 代码：
 
-```
+```js
  # Usage: zip(arr1, arr2, arr3, ...)
 
 zip = () ->

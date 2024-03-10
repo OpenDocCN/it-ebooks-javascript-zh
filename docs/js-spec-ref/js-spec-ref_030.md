@@ -19,7 +19,7 @@ JavaScript 模块化编程，已经成为一个迫切的需求。理想情况下
 
 模块就是实现特定功能的一组方法。只要把不同的函数（以及记录状态的变量）简单地放在一起，就算是一个模块。
 
-```
+```js
 function m1(){
   //...
 }
@@ -37,7 +37,7 @@ function m2(){
 
 为了解决上面的缺点，可以把模块写成一个对象，所有的模块成员都放到这个对象里面。
 
-```
+```js
 var module1 = new Object({
 　_count : 0,
 　m1 : function (){
@@ -51,13 +51,13 @@ var module1 = new Object({
 
 上面的函数 m1()和 m2(），都封装在 module1 对象里。使用的时候，就是调用这个对象的属性。
 
-```
+```js
 module1.m1();
 ```
 
 但是，这样的写法会暴露所有模块成员，内部状态可以被外部改写。比如，外部代码可以直接改变内部计数器的值。
 
-```
+```js
 module1._count = 5;
 ```
 
@@ -65,7 +65,7 @@ module1._count = 5;
 
 使用"立即执行函数"（Immediately-Invoked Function Expression，IIFE），可以达到不暴露私有成员的目的。
 
-```
+```js
 var module1 = (function(){
 　var _count = 0;
 　var m1 = function(){
@@ -83,7 +83,7 @@ var module1 = (function(){
 
 使用上面的写法，外部代码无法读取内部的 _count 变量。
 
-```
+```js
 console.info(module1._count); //undefined
 ```
 
@@ -93,7 +93,7 @@ module1 就是 JavaScript 模块的基本写法。下面，再对这种写法进
 
 如果一个模块很大，必须分成几个部分，或者一个模块需要继承另一个模块，这时就有必要采用"放大模式"（augmentation）。
 
-```
+```js
 var module1 = (function (mod){
 　mod.m3 = function () {
 　　//...
@@ -108,7 +108,7 @@ var module1 = (function (mod){
 
 在浏览器环境中，模块的各个部分通常都是从网上获取的，有时无法知道哪个部分会先加载。如果采用上一节的写法，第一个执行的部分有可能加载一个不存在空对象，这时就要采用"宽放大模式"。
 
-```
+```js
 var module1 = ( function (mod){
 　//...
 　return mod;
@@ -123,7 +123,7 @@ var module1 = ( function (mod){
 
 为了在模块内部调用全局变量，必须显式地将其他变量输入模块。
 
-```
+```js
 var module1 = (function ($, YAHOO) {
 　//...
 })(jQuery, YAHOO);
@@ -135,7 +135,7 @@ var module1 = (function ($, YAHOO) {
 
 可以利用构造函数，封装私有变量。
 
-```
+```js
 function StringBuilder() {
     var buffer = [];
 
@@ -152,7 +152,7 @@ function StringBuilder() {
 
 这种方法将私有变量封装在构造函数中，违反了构造函数与实例对象相分离的原则。并且，非常耗费内存。
 
-```
+```js
 function StringBuilder() {
     this._buffer = [];
 }
@@ -172,7 +172,7 @@ StringBuilder.prototype = {
 
 ## IIFE 封装私有变量
 
-```
+```js
 var obj = function () {  // open IIFE
 
     // public

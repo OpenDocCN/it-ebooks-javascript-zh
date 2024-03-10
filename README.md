@@ -42,7 +42,7 @@
 
 ### Docker
 
-```
+```js
 docker pull apachecn0/it-ebooks-javascript-zh
 docker run -tid -p <port>:80 apachecn0/it-ebooks-javascript-zh
 # 访问 http://localhost:{port} 查看文档
@@ -50,7 +50,7 @@ docker run -tid -p <port>:80 apachecn0/it-ebooks-javascript-zh
 
 ### NPM
 
-```
+```js
 npm install -g it-ebooks-javascript-zh
 it-ebooks-javascript-zh <port>
 # 访问 http://localhost:{port} 查看文档

@@ -17,7 +17,7 @@
 
 Text 节点代表 Element 节点和 Attribute 节点的文本内容。如果一个节点只包含一段文本，那么它就有一个 Text 子节点，代表该节点的文本内容。通常我们使用 Element 节点的 firstChild、nextSibling 等属性获取 Text 节点，或者使用 Document 节点的 createTextNode 方法创造一个 Text 节点。
 
-```
+```js
 // 获取 Text 节点
 var textNode = document.querySelector('p').firstChild;
 
@@ -28,7 +28,7 @@ document.querySelector('div').appendChild(textNode);
 
 浏览器原生提供一个 Text 构造函数。它返回一个 Text 节点。它的参数就是该 Text 节点的文本内容。
 
-```
+```js
 var text1 = new Text();
 var text2 = new Text("This is a text node");
 ```
@@ -43,7 +43,7 @@ Text 节点除了继承 Node 节点的属性和方法，还继承了 CharacterDa
 
 data 属性等同于 nodeValue 属性，用来设置或读取 Text 节点的内容。
 
-```
+```js
 // 读取文本内容
 document.querySelector('p').firstChild.data
 // 等同于
@@ -59,13 +59,13 @@ wholeText 属性将当前 Text 节点与毗邻的 Text 节点，作为一个整�
 
 举例来说，HTML 代码如下。
 
-```
+```js
 <p id="para">A <em>B</em> C</p>
 ```
 
 这时，Text 节点的 wholeText 属性和 data 属性，返回值相同。
 
-```
+```js
 var el = document.getElementById("para");
 el.firstChild.wholeText // "A "
 el.firstChild.data // "A "
@@ -73,7 +73,7 @@ el.firstChild.data // "A "
 
 但是，一旦移除 em 节点，wholeText 属性与 data 属性就会有差异，因为这时其实 P 节点下面包含了两个毗邻的 Text 节点。
 
-```
+```js
 el.removeChild(para.childNodes[1]);
 el.firstChild.wholeText // "A C"
 el.firstChild.data // "A "
@@ -83,7 +83,7 @@ el.firstChild.data // "A "
 
 length 属性返回当前 Text 节点的文本长度。
 
-```
+```js
 (new Text('Hello')).length // 5
 ```
 
@@ -91,7 +91,7 @@ length 属性返回当前 Text 节点的文本长度。
 
 nextElementSibling 属性返回紧跟在当前 Text 节点后面的那个同级 Element 节点。如果取不到这样的节点，则返回 null。
 
-```
+```js
 // HTML 为
 // <div>Hello <em>World</em></div>
 
@@ -120,7 +120,7 @@ replaceData 方法用于替换文本，第一个参数为替换开始位置，�
 
 subStringData 方法用于获取子字符串，第一个参数为子字符串在 Text 节点中的开始位置，第二个参数为子字符串长度。
 
-```
+```js
 // HTML 代码为
 // <p>Hello World</p>
 var pElementText = document.querySelector('p').firstChild;
@@ -141,7 +141,7 @@ pElementText.substringData(7,10);
 
 remove 方法用于移除当前 Text 节点。
 
-```
+```js
 // HTML 代码为
 // <p>Hello World</p>
 
@@ -156,7 +156,7 @@ splitText 方法将 Text 节点一分为二，变成两个毗邻的 Text 节点�
 
 分割后，该方法返回分割位置后方的字符串，而原 Text 节点变成只包含分割位置前方的字符串。
 
-```
+```js
 // html 代码为 <p id="p">foobar</p>
 var p = document.getElementById('p');
 var textnode = p.firstChild;
@@ -170,7 +170,7 @@ normalize 方法可以将毗邻的两个 Text 节点合并。
 
 接上面的例子，splitText 方法将一个 Text 节点分割成两个，normalize 方法可以实现逆操作，将它们合并。
 
-```
+```js
 p.childNodes.length // 2
 
 // 将毗邻的两个 Text 节点合并
@@ -184,7 +184,7 @@ DocumentFragment 节点代表一个文档的片段，本身就是一个完整的
 
 它一般用于构建一个 DOM 结构，然后插入当前文档。document.createDocumentFragment 方法，以及浏览器原生的 DocumentFragment 构造函数，可以创建一个空的 DocumentFragment 节点。然后再使用其他 DOM 方法，向其添加子节点。
 
-```
+```js
 var docFrag = document.createDocumentFragment();
 // or
 var docFrag = new DocumentFragment();
@@ -200,7 +200,7 @@ document.queryselector('ul').appendChild(docFrag);
 
 一旦 DocumentFragment 节点被添加进原文档，它自身就变成了空节点（textContent 属性为空字符串）。如果想要保存 DocumentFragment 节点的内容，可以使用 cloneNode 方法。
 
-```
+```js
 document.queryselector('ul').(docFrag.cloneNode(true));
 ```
 

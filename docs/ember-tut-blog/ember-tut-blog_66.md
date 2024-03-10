@@ -10,7 +10,7 @@
 
 如果你的项目使用命令`ember build --prod`打包后部署到服务器上，进入首页没问题，并且在首页刷新也没问题。但是进入某个子路由后再刷新页面就会出现`404`错误。但是这个错误在开发环境却没有任何问题。这是由于服务器设置的问题。以 nginx 为例。只需要修改：`nginx/conf/vhosts/default.conf`即可*配置文件路由要根据自己 nginx 路径为准*。在此配置文件中加入如下内容：
 
-```
+```js
 location / {  
         rewrite ^ /index.html break;
     }

@@ -8,7 +8,7 @@
 
 下面看一个使用类的例子：
 
-```
+```js
 class Greeter {
     greeting: string;
     constructor(message: string) {
@@ -34,7 +34,7 @@ let greeter = new Greeter("world");
 
 看下面的例子：
 
-```
+```js
 class Animal {
     name:string;
     constructor(theName: string) { this.name = theName; }
@@ -72,7 +72,7 @@ tom.move(34);
 
 包含 constructor 函数的派生类必须调用`super()`，它会执行基类的构造方法。
 
-```
+```js
 Slithering...
 Sammy the Python moved 5m.
 Galloping...
@@ -87,7 +87,7 @@ Tommy the Palomino moved 34m.
 
 你也可以明确的将一个成员标记成`public`。 我们可以用下面的方式来重写上面的`Animal`类：
 
-```
+```js
 class Animal {
     public name: string;
     public constructor(theName: string) { this.name = theName; }
@@ -101,7 +101,7 @@ class Animal {
 
 当成员被标记成`private`时，它就不能在声明它的类的外部访问。比如：
 
-```
+```js
 class Animal {
     private name: string;
     constructor(theName: string) { this.name = theName; }
@@ -116,7 +116,7 @@ TypeScript 使用的是结构性类型系统。 当我们比较两种不同的�
 
 下面来看一个例子，详细的解释了这点：
 
-```
+```js
 class Animal {
     private name: string;
     constructor(theName: string) { this.name = theName; }
@@ -145,7 +145,7 @@ animal = employee; // Error: Animal and Employee are not compatible
 
 `protected`修饰符与`private`修饰符的行为很相似，但有一点不同，`protected`成员在派生类中仍然可以访问。例如：
 
-```
+```js
 class Person {
     protected name: string;
     constructor(name: string) { this.name = name; }
@@ -173,7 +173,7 @@ console.log(howard.name); // error
 
 构造函数也可被标记为`protected`. 这就是说这个类不能在包含它的类之外实例外，但是可以被继承。比如，
 
-```
+```js
 class Person {
     protected name: string;
     protected constructor(theName: string) { this.name = theName; }
@@ -201,7 +201,7 @@ let john = new Person("John"); // Error: The 'Person' constructor is protected
 
 在上面的例子中，我们不得不定义一个受保护的成员`name`和一个构造函数参数`theName`在`Person`类里，并且立刻给`name`和`theName`赋值。 这种情况经常会遇到。*参数属性*可以方便地让我们在一个地方定义并初始化一个成员。 下面的例子是对之前`Animal`类的修改版，使用了参数属性：
 
-```
+```js
 class Animal {
     constructor(private name: string) { }
     move(distanceInMeters: number) {
@@ -220,7 +220,7 @@ TypeScript 支持 getters/setters 来截取对对象成员的访问。 它能帮
 
 下面来看如何把一类改写成使用`get`和`set`。 首先是一个没用使用存取器的例子。
 
-```
+```js
 class Employee {
     fullName: string;
 }
@@ -236,7 +236,7 @@ if (employee.fullName) {
 
 下面这个版本里，我们先检查用户密码是否正确，然后再允许其修改 employee。 我们把对`fullName`的直接访问改成了可以检查密码的`set`方法。 我们也加了一个`get`方法，让上面的例子仍然可以工作。
 
-```
+```js
 let passcode = "secret passcode";
 
 class Employee {
@@ -271,7 +271,7 @@ if (employee.fullName) {
 
 到目前为止，我们只讨论了类的实例成员，那些仅当类被实例化的时候才会被初始化的属性。 我们也可以创建类的静态成员，这些属性存在于类本身上面而不是类的实例上。 在这个例子里，我们使用`static`定义`origin`，因为它是所有网格都会用到的属性。 每个实例想要访问这个属性的时候，都要在 origin 前面加上类名。 如同在实例属性上使用`this.`前缀来访问属性一样，这里我们使用`Grid.`来访问静态属性。
 
-```
+```js
 class Grid {
     static origin = {x: 0, y: 0};
     calculateDistanceFromOrigin(point: {x: number; y: number;}) {
@@ -293,7 +293,7 @@ console.log(grid2.calculateDistanceFromOrigin({x: 10, y: 10}));
 
 抽象类是供其它类继承的基类。 他们一般不会直接被实例化。 不同于接口，抽象类可以包含成员的实现细节。 `abstract`关键字是用于定义抽象类和在抽象类内部定义抽象方法。
 
-```
+```js
 abstract class Animal {
     abstract makeSound(): void;
     move(): void {
@@ -304,7 +304,7 @@ abstract class Animal {
 
 抽象类中的抽象方法不包含具体实现并且必须在派生类中实现。 抽象方法的语法与接口方法相似。 两者都是定义方法签名不包含方法体。 然而，抽象方法必须使用`abstract`关键字并且可以包含访问符。
 
-```
+```js
 abstract class Department {
 
     constructor(public name: string) {
@@ -346,7 +346,7 @@ department.generateReports(); // error: method doesn't exist on declared abstrac
 
 当你在 TypeScript 里定义类的时候，实际上同时定义了很多东西。 首先是类的*实例*的类型。
 
-```
+```js
 class Greeter {
     greeting: string;
     constructor(message: string) {
@@ -366,7 +366,7 @@ console.log(greeter.greet());
 
 我们也创建了一个叫做*构造函数*的值。 这个函数会在我们使用`new`创建类实例的时候被调用。 下面我们来看看，上面的代码被编译成 JavaScript 后是什么样子的：
 
-```
+```js
 let Greeter = (function () {
     function Greeter(message) {
         this.greeting = message;
@@ -386,7 +386,7 @@ console.log(greeter.greet());
 
 让我们来改写一下这个例子，看看它们之前的区别：
 
-```
+```js
 class Greeter {
     static standardGreeting = "Hello, there";
     greeting: string;
@@ -418,7 +418,7 @@ console.log(greeter2.greet());
 
 如上一节里所讲的，类定义会创建两个东西：类实例的类型和一个构造函数。 因为类可以创建出类型，所以你能够在可以使用接口的地方使用类。
 
-```
+```js
 class Point {
     x: number;
     y: number;
@@ -469,7 +469,7 @@ let point3d: Point3d = {x: 1, y: 2, z: 3};
 
 *   `myModules.d.ts`
 
-```
+```js
 // In a .d.ts file or .ts file that is not a module:
 declare module "SomeModule" {
     export function fn(): string;
@@ -478,7 +478,7 @@ declare module "SomeModule" {
 
 *   `myOtherModule.ts`
 
-```
+```js
 /// <reference path="myModules.d.ts" />
 import * as m from "SomeModule"; 
 ```
@@ -491,7 +491,7 @@ import * as m from "SomeModule";
 
 *   `shapes.ts`
 
-```
+```js
 export namespace Shapes {
     export class Triangle { /* ... */ }
     export class Square { /* ... */ }
@@ -502,7 +502,7 @@ export namespace Shapes {
 
 *   `shapeConsumer.ts`
 
-```
+```js
 import * as shapes from "./shapes";
 let t = new shapes.Shapes.Triangle(); // shapes.Shapes? 
 ```
@@ -515,14 +515,14 @@ TypeScript 里模块的一个特点是不同的模块永远也不会在相同的
 
 *   `shapes.ts`
 
-```
+```js
 export class Triangle { /* ... */ }
 export class Square { /* ... */ } 
 ```
 
 *   `shapeConsumer.ts`
 
-```
+```js
 import * as shapes from "./shapes";
 let t = new shapes.Triangle(); 
 ```

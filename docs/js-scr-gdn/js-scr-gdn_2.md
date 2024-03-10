@@ -8,26 +8,26 @@
 
 ### 函数声明
 
-```
+```js
 function foo() {} 
 ```
 
 上面的方法会在执行前被 解析(hoisted)，因此它存在于当前上下文的*任意*一个地方， 即使在函数定义体的上面被调用也是对的。
 
-```
+```js
 foo(); // 正常运行，因为 foo 在代码运行前已经被创建
 function foo() {} 
 ```
 
 ### 函数赋值表达式
 
-```
+```js
 var foo = function() {}; 
 ```
 
 这个例子把一个*匿名*的函数赋值给变量 `foo`。
 
-```
+```js
 foo; // 'undefined'
 foo(); // 出错：TypeError
 var foo = function() {}; 
@@ -41,7 +41,7 @@ var foo = function() {};
 
 另外一个特殊的情况是将命名函数赋值给一个变量。
 
-```
+```js
 var foo = function bar() {
     bar(); // 正常运行
 }
@@ -58,7 +58,7 @@ JavaScript 有一套完全不同于其它语言的对 `this` 的处理机制。 
 
 ### 全局范围内
 
-```
+```js
 this; 
 ```
 
@@ -68,7 +68,7 @@ this;
 
 ### 函数调用
 
-```
+```js
 foo(); 
 ```
 
@@ -78,7 +78,7 @@ foo();
 
 ### 方法调用
 
-```
+```js
 test.foo(); 
 ```
 
@@ -86,7 +86,7 @@ test.foo();
 
 ### 调用构造函数
 
-```
+```js
 new foo(); 
 ```
 
@@ -94,7 +94,7 @@ new foo();
 
 ### 显式的设置 `this`
 
-```
+```js
 function foo(a, b, c) {}
 
 var bar = {};
@@ -112,7 +112,7 @@ foo.call(bar, 1, 2, 3); // 传递到 foo 的参数是：a = 1, b = 2, c = 3
 
 尽管大部分的情况都说的过去，不过第一个规则（**[译者注](http://cnblogs.com/sanshi/)：**这里指的应该是第二个规则，也就是直接调用函数时，`this` 指向全局对象） 被认为是 JavaScript 语言另一个错误设计的地方，因为它**从来**就没有实际的用途。
 
-```
+```js
 Foo.method = function() {
     function test() {
         // this 将会被设置为全局对象（译者注：浏览器环境中也就是 window 对象）
@@ -125,7 +125,7 @@ Foo.method = function() {
 
 为了在 `test` 中获取对 `Foo` 对象的引用，我们需要在 `method` 函数内部创建一个局部变量指向 `Foo` 对象。
 
-```
+```js
 Foo.method = function() {
     var that = this;
     function test() {
@@ -141,7 +141,7 @@ Foo.method = function() {
 
 另一个看起来奇怪的地方是函数别名，也就是将一个方法**赋值**给一个变量。
 
-```
+```js
 var test = someObject.methodTest;
 test(); 
 ```
@@ -150,7 +150,7 @@ test();
 
 虽然 `this` 的晚绑定特性似乎并不友好，但这确实是基于原型继承赖以生存的土壤。
 
-```
+```js
 function Foo() {}
 Foo.prototype.method = function() {};
 
@@ -168,7 +168,7 @@ new Bar().method();
 
 ### 模拟私有变量
 
-```
+```js
 function Counter(start) {
     var count = start;
     return {
@@ -193,7 +193,7 @@ foo.get(); // 5
 
 因为 JavaScript 中不可以对作用域进行引用或赋值，因此没有办法在外部访问 `count` 变量。 唯一的途径就是通过那两个闭包。
 
-```
+```js
 var foo = new Counter(4);
 foo.hack = function() {
     count = 1337;
@@ -206,7 +206,7 @@ foo.hack = function() {
 
 一个常见的错误出现在循环中使用闭包，假设我们需要在每次循环中调用循环序号
 
-```
+```js
 for(var i = 0; i < 10; i++) {
     setTimeout(function() {
         console.log(i);  
@@ -224,7 +224,7 @@ for(var i = 0; i < 10; i++) {
 
 为了正确的获得循环序号，最好使用 匿名包装器（**[译者注](http://cnblogs.com/sanshi/)：**其实就是我们通常说的自执行匿名函数）。
 
-```
+```js
 for(var i = 0; i < 10; i++) {
     (function(e) {
         setTimeout(function() {
@@ -240,7 +240,7 @@ for(var i = 0; i < 10; i++) {
 
 有另一个方法完成同样的工作，那就是从匿名包装器中返回一个函数。这和上面的代码效果一样。
 
-```
+```js
 for(var i = 0; i < 10; i++) {
     setTimeout((function(e) {
         return function() {
@@ -264,7 +264,7 @@ JavaScript 中每个函数内都能访问一个特别变量 `arguments`。这个
 
 下面的代码将会创建一个新的数组，包含所有 `arguments` 对象中的元素。
 
-```
+```js
 Array.prototype.slice.call(arguments); 
 ```
 
@@ -274,7 +274,7 @@ Array.prototype.slice.call(arguments);
 
 下面是将参数从一个函数传递到另一个函数的推荐做法。
 
-```
+```js
 function foo() {
     bar.apply(null, arguments);
 }
@@ -285,7 +285,7 @@ function bar(a, b, c) {
 
 另一个技巧是同时使用 `call` 和 `apply`，创建一个快速的解绑定包装器。
 
-```
+```js
 function Foo() {}
 
 Foo.prototype.method = function(a, b, c) {
@@ -303,7 +303,7 @@ Foo.method = function() {
 
 **[译者注](http://cnblogs.com/sanshi/)**：上面的 `Foo.method` 函数和下面代码的效果是一样的:
 
-```
+```js
 Foo.method = function() {
     var args = Array.prototype.slice.call(arguments);
     Foo.prototype.method.apply(args[0], args.slice(1));
@@ -316,7 +316,7 @@ Foo.method = function() {
 
 因此，改变形参的值会影响到 `arguments` 对象的值，反之亦然。
 
-```
+```js
 function foo(a, b, c) {
     arguments[0] = 2;
     a; // 2                                                           
@@ -341,7 +341,7 @@ foo(1, 2, 3);
 
 **[译者注](http://cnblogs.com/sanshi/)：**在 [MDC](https://developer.mozilla.org/en/JavaScript/Strict_mode) 中对 `strict mode` 模式下 `arguments` 的描述有助于我们的理解，请看下面代码：
 
-```
+```js
 // 阐述在 ES5 的严格模式下 `arguments` 的特性
 function f(a) {
   "use strict";
@@ -355,7 +355,7 @@ console.assert(pair[1] === 17);
 
 然而，的确有一种情况会显著的影响现代 JavaScript 引擎的性能。这就是使用 `arguments.callee`。
 
-```
+```js
 function foo() {
     arguments.callee; // do something with this function object
     arguments.callee.caller; // and the calling function object
@@ -382,7 +382,7 @@ JavaScript 中的构造函数和其它语言中的构造函数是不同的。 �
 
 如果被调用的函数没有显式的 `return` 表达式，则隐式的会返回 `this` 对象 - 也就是新创建的对象。
 
-```
+```js
 function Foo() {
     this.bla = 1;
 }
@@ -398,7 +398,7 @@ var test = new Foo();
 
 显式的 `return` 表达式将会影响返回结果，但**仅限**于返回的是一个对象。
 
-```
+```js
 function Bar() {
     return 2;
 }
@@ -416,7 +416,7 @@ new Test(); // 返回的对象
 
 **[译者注](http://cnblogs.com/sanshi/)：**`new Bar()` 返回的是新创建的对象，而不是数字的字面值 2。 因此 `new Bar().constructor === Bar`，但是如果返回的是数字对象，结果就不同了，如下所示
 
-```
+```js
 function Bar() {
     return new Number(2);
 }
@@ -425,14 +425,14 @@ new Bar().constructor === Number
 
 **[译者注](http://cnblogs.com/sanshi/)：**这里得到的 `new Test()`是函数返回的对象，而不是通过`new`关键字新创建的对象，因此：
 
-```
+```js
 (new Test()).value === undefined
 (new Test()).foo === 1 
 ```
 
 如果 `new` 被遗漏了，则函数**不会**返回新创建的对象。
 
-```
+```js
 function Foo() {
     this.bla = 1; // 获取设置全局参数
 }
@@ -445,7 +445,7 @@ Foo(); // undefined
 
 为了不使用 `new` 关键字，构造函数必须显式的返回一个值。
 
-```
+```js
 function Bar() {
     var value = 1;
     return {
@@ -470,7 +470,7 @@ Bar();
 
 **[译者注](http://cnblogs.com/sanshi/)：**上面两种方式创建的对象不能访问 `Bar` 原型链上的属性，如下所示：
 
-```
+```js
 var bar1 = new Bar();
 typeof(bar1.method); // "function"
 typeof(bar1.foo); // "undefined"
@@ -486,7 +486,7 @@ typeof(bar2.foo); // "undefined"
 
 为了创建新对象，我们可以创建一个工厂方法，并且在方法内构造一个新对象。
 
-```
+```js
 function Foo() {
     var obj = {};
     obj.value = 'blub';
@@ -517,7 +517,7 @@ function Foo() {
 
 尽管 JavaScript 支持一对花括号创建的代码段，但是并不支持块级作用域； 而仅仅支持 *函数作用域*。
 
-```
+```js
 function test() { // 一个作用域
     for(var i = 0; i < 10; i++) { // 不是一个作用域
         // count
@@ -530,7 +530,7 @@ function test() { // 一个作用域
 
 **[译者注](http://cnblogs.com/sanshi/)：**如果 `return` 对象的左括号和 `return` 不在一行上就会出错。
 
-```
+```js
 // 译者注：下面输出 undefined
 function add(a, b) {
     return 
@@ -545,7 +545,7 @@ JavaScript 中没有显式的命名空间定义，这就意味着所有对象都
 
 ### 隐式的全局变量
 
-```
+```js
 // 脚本 A
 foo = '42';
 
@@ -557,7 +557,7 @@ var foo = '42'
 
 再次强调，上面的效果**完全不同**，不使用 `var` 声明变量将会导致隐式的全局变量产生。
 
-```
+```js
 // 全局作用域
 var foo = 42;
 function test() {
@@ -570,7 +570,7 @@ foo; // 21
 
 在函数 `test` 内不使用 `var` 关键字声明 `foo` 变量将会覆盖外部的同名变量。 起初这看起来并不是大问题，但是当有成千上万行代码时，不使用 `var` 声明变量将会带来难以跟踪的 BUG。
 
-```
+```js
 // 全局作用域
 var items = [/* 数组 */];
 for(var i = 0; i < 10; i++) {
@@ -591,7 +591,7 @@ function subLoop() {
 
 JavaScript 中局部变量只可能通过两种方式声明，一个是作为函数参数，另一个是通过 `var` 关键字声明。
 
-```
+```js
 // 全局变量
 var foo = 1;
 var bar = 2;
@@ -613,7 +613,7 @@ test(10);
 
 JavaScript 会**提升**变量声明。这意味着 `var` 表达式和 `function` 声明都将会被提升到当前作用域的顶部。
 
-```
+```js
 bar();
 var bar = function() {};
 var someValue = 42;
@@ -634,7 +634,7 @@ function test(data) {
 
 上面代码在运行之前将会被转化。JavaScript 将会把 `var` 表达式和 `function` 声明提升到当前作用域的顶部。
 
-```
+```js
 // var 表达式被移动到这里
 var bar, someValue; // 缺省值是 'undefined'
 
@@ -665,7 +665,7 @@ test();
 
 如果没有提升规则（hoisting）的知识，下面的代码看起来会抛出异常 `ReferenceError`。
 
-```
+```js
 // 检查 SomeImportantThing 是否已经被初始化
 if (!SomeImportantThing) {
     var SomeImportantThing = {};
@@ -674,7 +674,7 @@ if (!SomeImportantThing) {
 
 实际上，上面的代码正常运行，因为 `var` 表达式会被提升到*全局作用域*的顶部。
 
-```
+```js
 var SomeImportantThing;
 
 // 其它一些代码，可能会初始化 SomeImportantThing，也可能不会
@@ -687,7 +687,7 @@ if (!SomeImportantThing) {
 
 **[译者注](http://cnblogs.com/sanshi/)：**在 Nettuts+ 网站有一篇介绍 hoisting 的[文章](http://net.tutsplus.com/tutorials/javascript-ajax/quick-tip-javascript-hoisting-explained/)，其中的代码很有启发性。
 
-```
+```js
 // 译者注：来自 Nettuts+ 的一段代码，生动的阐述了 JavaScript 中变量声明提升规则
 var myvar = 'my value';  
 
@@ -716,7 +716,7 @@ JavaScript 中的所有作用域，包括*全局作用域*，都有一个特别�
 
 只有一个全局作用域导致的常见错误是命名冲突。在 JavaScript 中，这可以通过 *匿名包装器* 轻松解决。
 
-```
+```js
 (function() {
     // 函数创建一个命名空间
 
@@ -729,7 +729,7 @@ JavaScript 中的所有作用域，包括*全局作用域*，都有一个特别�
 
 匿名函数被认为是 表达式；因此为了可调用性，它们首先会被执行。
 
-```
+```js
 ( // 小括号内的函数首先被执行
 function() {}
 ) // 并且返回函数对象
@@ -738,7 +738,7 @@ function() {}
 
 有一些其他的调用函数表达式的方法，比如下面的两种方式语法不同，但是效果一模一样。
 
-```
+```js
 // 另外两种方式
 +function(){}();
 (function(){}()); 

@@ -9,7 +9,7 @@
 
 比如
 
-```
+```js
 $.trim('hello world  ') 
 ```
 
@@ -21,7 +21,7 @@ $.trim('hello world  ')
 
 比如
 
-```
+```js
 $('.mytab').tab({
     change: function(index){
         console.log('current index = ' + index);
@@ -35,7 +35,7 @@ $('.mytab').tab({
 
 比如
 
-```
+```js
 <div class='mytab'>
 </div>
 

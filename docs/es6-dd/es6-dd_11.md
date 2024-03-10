@@ -20,7 +20,7 @@
 
 尽管在[那篇文章](http://www.infoq.com/cn/articles/es6-in-depth-generators)中我们进行过详细解释，但我们始终未把所有特性结合起来给大家讲解示例。现在就让我们出发吧！
 
-```
+```js
  function* somewords() {
       yield "hello";
       yield "world";
@@ -40,7 +40,7 @@
 
 for loop 女士独自站在舞台上，戴着一顶安全帽，手里拿着一个笔记板，上面记载着所有的事情。
 
-```
+```js
  for loop：
                 （电话响起）
                 somewords()！ 
@@ -49,7 +49,7 @@ for loop 女士独自站在舞台上，戴着一顶安全帽，手里拿着一�
 generator 出现：这是一位高大的、有着一丝不苟绅士外表的黄铜机器人。
 它看起来足够友善，但给人的感觉仍然是冷冰冰的金属。
 
-```
+```js
  for loop：
             （潇洒地拍了拍她的手）
           好吧！我们去找些事儿做吧。
@@ -59,28 +59,28 @@ generator 出现：这是一位高大的、有着一丝不苟绅士外表的黄�
 
 generator 动了起来，就像突然拥有了生命。
 
-```
+```js
  generator：
        {value: "hello", done: false} 
 ```
 
 然而猝不及防的，它以一个滑稽的姿势停止了动作。
 
-```
+```js
  for loop：
                    alert！ 
 ```
 
 alert 小子飞快冲进舞台，眼睛大睁，上气不接下气。我们感觉的到他一向如此。
 
-```
+```js
  for loop：
              对 user 说“hello”。 
 ```
 
 alert 小子转身冲下舞台。
 
-```
+```js
  alert：
             （舞台下，大声尖叫）
                一切都静止了！
@@ -90,7 +90,7 @@ alert 小子转身冲下舞台。
 
 停留了几秒钟后，alert 小子跑回舞台，穿过所有人滑停在 for loop 女士身边。
 
-```
+```js
  alert：
                  user 说 ok。
                   for loop：
@@ -102,14 +102,14 @@ alert 小子转身冲下舞台。
 
 generator 又一次焕发生机。
 
-```
+```js
  generator：
        {value: "world", done: false} 
 ```
 
 它换了个姿势又一次冻结。
 
-```
+```js
  for loop：
                    alert！
                    alert：
@@ -123,7 +123,7 @@ generator 又一次焕发生机。
 
 又一次暂停，然后 alert 突然跋涉回到舞台，垂头丧气的。
 
-```
+```js
  alert：
             user 再一次说 ok，但是…
               但是请阻止这个页面
@@ -132,7 +132,7 @@ generator 又一次焕发生机。
 
 他噘着嘴离开了。
 
-```
+```js
  for loop：
             （潇洒地拍了拍她的手）
            好吧！我们去找些事儿做吧。
@@ -142,7 +142,7 @@ generator 又一次焕发生机。
 
 generator 第三次焕发生机。
 
-```
+```js
  generator：
                  （庄严的）
        {value: undefined, done: true} 
@@ -150,7 +150,7 @@ generator 第三次焕发生机。
 
 它的头低下了，光芒从它的眼里消失。它不再移动。
 
-```
+```js
  for loop
                我的午餐时间到了。 
 ```
@@ -189,7 +189,7 @@ generator 第三次焕发生机。
 
 你或许曾使用过这样的模式：
 
-```
+```js
  function dothings() {
       setup();
       try {
@@ -205,7 +205,7 @@ generator 第三次焕发生机。
 
 那么生成器中的清理操作看起来是什么样的呢？
 
-```
+```js
  function* producevalues() {
       setup();
       try {
@@ -247,7 +247,7 @@ generator 第三次焕发生机。
 
 事实上，生成器的`.next()`方法接受一个可选参数，参数稍后会作为`yield`表达式的返回值出现在生成器中。那就是说，`yield`语句与`return`语句不同，它是一个只有当生成器恢复时才会有值的表达式。
 
-```
+```js
  var results = yield getdataandlatte(request.areacode);
 ```
 
@@ -260,7 +260,7 @@ generator 第三次焕发生机。
 
 下面这段代码完整地展示了这一行代码完整的上下文会话：
 
-```
+```js
  function* handle(request) {
       var results = yield getdataandlatte(request.areacode);
       results.coffee.drink();
@@ -275,7 +275,7 @@ generator 第三次焕发生机。
 
 这个行政助理生成器运行器可能是什么样的？它大可不必很复杂，就像这样：
 
-```
+```js
  function rungeneratoronce(g, result) {
       var status = g.next(result);
       if (status.done) {
@@ -291,7 +291,7 @@ generator 第三次焕发生机。
 
 为了让这段代码运行起来，我们必须创建一个生成器并且运行一次，像这样：
 
-```
+```js
  rungeneratoronce(handle(request), undefined);
 ```
 
@@ -322,7 +322,7 @@ generator 第三次焕发生机。
 
 我再展示一个特性。假设我们写一个简单的生成器函数联结两个可迭代对象：
 
-```
+```js
  function* concat(iter1, iter2) {
       for (var value of iter1) {
         yield value;
@@ -335,7 +335,7 @@ generator 第三次焕发生机。
 
 es6 支持这样的简写方式：
 
-```
+```js
  function* concat(iter1, iter2) {
       yield* iter1;
       yield* iter2;
@@ -346,7 +346,7 @@ es6 支持这样的简写方式：
 
 这个语法也可以用来解决另一个有趣的问题：在生成器中调用生成器。在普通函数中，我们可以从将一个函数重构为另一个函数并保留所有行为。很显然我们也想重构生成器，但我们需要一种调用提取出来的子例程的方法，我们还需要确保，子例程能够生成之前生成的每一个值。`yield*`可以帮助我们实现这一目标。
 
-```
+```js
  function* factoredoutchunkofcode() { ... }
     function* refactoredfunction() {
       ...

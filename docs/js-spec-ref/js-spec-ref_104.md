@@ -56,7 +56,7 @@ process 对象提供一系列属性，用于返回系统信息。
 
 stdout 属性指向标准输出（文件描述符 1）。它的 write 方法等同于 console.log，可用在标准输出向用户显示内容。
 
-```
+```js
 console.log = function(d) {
   process.stdout.write(d + '\n');
 };
@@ -64,7 +64,7 @@ console.log = function(d) {
 
 下面代码表示将一个文件导向标准输出。
 
-```
+```js
 var fs = require('fs');
 
 fs.createReadStream('wow.txt')
@@ -73,7 +73,7 @@ fs.createReadStream('wow.txt')
 
 上面代码中，由于 process.stdout 和 process.stdin 与其他进程的通信，都是流（stream）形式，所以必须通过 pipe 管道命令中介。
 
-```
+```js
 var fs = require('fs');
 var zlib = require('zlib');
 
@@ -88,7 +88,7 @@ fs.createReadStream('wow.txt')
 
 stdin 代表标准输入（文件描述符 0）。
 
-```
+```js
 process.stdin.pipe(process.stdout)
 ```
 
@@ -96,7 +96,7 @@ process.stdin.pipe(process.stdout)
 
 由于 stdin 和 stdout 都部署了 stream 接口，所以可以使用 stream 接口的方法。
 
-```
+```js
 process.stdin.setEncoding('utf8');
 
 process.stdin.on('readable', function() {
@@ -121,21 +121,21 @@ argv 属性返回一个数组，由命令行执行脚本时的各个参数组成
 
 请看下面的例子，新建一个脚本文件 argv.js。
 
-```
+```js
 // argv.js
 console.log("argv: ",process.argv);
 ```
 
 在命令行下调用这个脚本，会得到以下结果。
 
-```
+```js
 $ node argv.js a b c
 [ 'node', '/path/to/argv.js', 'a', 'b', 'c' ]
 ```
 
 上面代码表示，argv 返回数组的成员依次是命令行的各个部分，真正的参数实际上是从`process.argv[2]`开始。要得到真正的参数部分，可以把 argv.js 改写成下面这样。
 
-```
+```js
 // argv.js
 var myArgs = process.argv.slice(2);
 console.log(myArgs);
@@ -143,7 +143,7 @@ console.log(myArgs);
 
 execPath 属性返回执行当前脚本的 Node 二进制文件的绝对路径。
 
-```
+```js
 > process.execPath
 '/usr/local/bin/node'
 >
@@ -151,7 +151,7 @@ execPath 属性返回执行当前脚本的 Node 二进制文件的绝对路径�
 
 execArgv 属性返回一个数组，成员是命令行下执行脚本时，在 Node 可执行文件与脚本文件之间的命令行参数。
 
-```
+```js
 # script.js 的代码为
 # console.log(process.execArgv);
 $ node --harmony script.js --version
@@ -175,7 +175,7 @@ process 对象提供以下方法：
 
 cwd 方法返回进程的当前目录，chdir 方法用来切换目录。
 
-```
+```js
 > process.cwd()
 '/home/aaa'
 
@@ -188,7 +188,7 @@ cwd 方法返回进程的当前目录，chdir 方法用来切换目录。
 
 process.nextTick()将任务放到当前执行栈的尾部。
 
-```
+```js
 process.nextTick(function () {
     console.log('下一次 Event Loop 即将开始!');
 });
@@ -196,7 +196,7 @@ process.nextTick(function () {
 
 上面代码可以用`setTimeout(f,0)`改写，效果接近，但是原理不同。`setTimeout(f,0)`是将任务放到当前任务队列的尾部，在下一次 Event Loop 时执行。另外，nextTick 的效率更高，因为不用检查是否到了指定时间。
 
-```
+```js
 setTimeout(function () {
    console.log('已经到了下一轮 Event Loop！');
 }, 0)
@@ -206,7 +206,7 @@ setTimeout(function () {
 
 process.exit 方法用来退出当前进程，它可以接受一个数值参数。如果参数大于 0，表示执行失败；如果等于 0 表示执行成功。
 
-```
+```js
 if (err) {
   process.exit(1);
 } else {
@@ -220,7 +220,7 @@ process.exit()执行时，会触发 exit 事件。
 
 process.on 方法用来监听各种事件，并指定回调函数。
 
-```
+```js
 process.on('uncaughtException', function(err){
   console.log('got an error: %s', err.message);
   process.exit(1);
@@ -238,7 +238,7 @@ process 支持的事件有以下一些。
 *   data 事件：数据输出输入时触发
 *   SIGINT 事件：接收到系统信号时触发
 
-```
+```js
 process.on('SIGINT', function () {
   console.log('Got a SIGINT. Goodbye cruel world');
   process.exit(0);
@@ -247,13 +247,13 @@ process.on('SIGINT', function () {
 
 使用时，向该进程发出系统信号，就会导致进程退出。
 
-```
+```js
 $ kill -s SIGINT [process_id]
 ```
 
 SIGTERM 信号表示内核要求当前进程停止，进程可以自行停止，也可以忽略这个信号。
 
-```
+```js
 var http = require('http');
 
 var server = http.createServer(function (req, res) {
@@ -272,7 +272,7 @@ process.on('SIGTERM', function () {
 
 process.kill 方法用来对指定 ID 的线程发送信号，默认为 SIGINT 信号。
 
-```
+```js
 process.on('SIGTERM', function(){
     console.log('terminating');
     process.exit(1);
@@ -296,7 +296,7 @@ setTimeout(function(){
 
 当前进程退出时，会触发 exit 事件，可以对该事件指定回调函数。
 
-```
+```js
 process.on('exit', function () {
   fs.writeFileSync('/tmp/myfile', '需要保存到硬盘的信息');
 });
@@ -304,7 +304,7 @@ process.on('exit', function () {
 
 注意，此时回调函数只能执行同步操作，不能包含异步操作，因为执行完回调函数，进程就会退出，无法监听到回调函数的操作结果。
 
-```
+```js
 process.on('exit', function(code) {
   // 不会执行
   setTimeout(function() {
@@ -327,7 +327,7 @@ beforeExit 事件与 exit 事件的主要区别是，beforeExit 的监听函数�
 
 当前进程抛出一个没有被捕捉的错误时，会触发 uncaughtException 事件。
 
-```
+```js
 process.on('uncaughtException', function (err) {
   console.error('An uncaught error occurred!');
   console.error(err.stack);
@@ -338,7 +338,7 @@ process.on('uncaughtException', function (err) {
 
 抛出错误之前部署的异步操作，还是会继续执行。只有完成以后，Node 进程才会退出。
 
-```
+```js
 process.on('uncaughtException', function(err) {
   console.log('Caught exception: ' + err);
 });
@@ -357,7 +357,7 @@ nonexistentFunc();
 
 操作系统内核向 Node 进程发出信号，会触发信号事件。实际开发中，主要对 SIGTERM 和 SIGINT 信号部署监听函数，这两个信号在非 Windows 平台会导致进程退出，但是只要部署了监听函数，Node 进程收到信号后就不会退出。
 
-```
+```js
 // 读取标准输入，这主要是为了不让当前进程退出
 process.stdin.resume();
 

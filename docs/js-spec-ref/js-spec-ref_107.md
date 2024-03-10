@@ -38,7 +38,7 @@ Stream 接口最大特点就是通过事件通信，具有 readable、writable�
 
 Node 的 I/O 操作都是异步的，所以与磁盘和网络的交互，都要通过回调函数。一个典型的写文件操作，可能像下面这样。
 
-```
+```js
 var http = require('http');
 var fs = require('fs');
 
@@ -54,7 +54,7 @@ server.listen(8000);
 
 由于参数 req 和 res 都部署了 Stream 接口，可以使用`fs.createReadStream()`替代`fs.readFile()`，就能解决这个问题。
 
-```
+```js
 var http = require('http');
 var fs = require('fs');
 
@@ -69,7 +69,7 @@ Stream 接口的最大特点，就是数据会发出 node 和 data 事件，内�
 
 数据流通过 pipe 方法，可以方便地导向其他具有 Stream 接口的对象。
 
-```
+```js
 var fs = require('fs');
 var zlib = require('zlib');
 
@@ -80,7 +80,7 @@ fs.createReadStream('wow.txt')
 
 上面代码先打开文本文件 wow.txt，然后压缩，再导向标准输出。
 
-```
+```js
 fs.createReadStream('wow.txt')
   .pipe(zlib.createGzip())
   .pipe(fs.createWriteStream('wow.gz'));
@@ -90,7 +90,7 @@ fs.createReadStream('wow.txt')
 
 下面代码新建一个 Stream 实例，然后指定写入事件和终止事件的回调函数，再将其接到标准输入之上。
 
-```
+```js
 var stream = require('stream');
 var Stream = stream.Stream;
 
@@ -110,7 +110,7 @@ process.stdin.pipe(ws);
 
 调用上面的脚本，会产生以下结果。
 
-```
+```js
 $ node pipe_out.js
 hello
 input=hello
@@ -120,7 +120,7 @@ bye
 
 上面代码调用脚本下，键入 hello，会输出`input=hello`。然后按下 ctrl-d，会输出 bye。使用管道命令，可以看得更清楚。
 
-```
+```js
 $ echo hello | node pipe_out.js
 input=hello
 
@@ -156,7 +156,7 @@ Stream 接口分成三类。
 
 每当系统有新的数据，该接口可以监听到 data 事件，从而回调函数。
 
-```
+```js
 var fs = require('fs');
 var readableStream = fs.createReadStream('file.txt');
 var data = '';
@@ -176,7 +176,7 @@ readableStream.on('end', function() {
 
 除了 data 事件，监听 readable 事件，也可以读到数据。
 
-```
+```js
 var fs = require('fs');
 var readableStream = fs.createReadStream('file.txt');
 var data = '';
@@ -211,7 +211,7 @@ read 方法从系统缓存读取并返回数据。如果读不到数据，则返
 
 只在“暂停态”时，该方法才有必要手动调用。“流动态”时，该方法是自动调用的，直到系统缓存之中的数据被读光。
 
-```
+```js
 var readable = getReadableStreamSomehow();
 readable.on('readable', function() {
   var chunk;
@@ -229,7 +229,7 @@ readable.on('readable', function() {
 
 该方法会正确处理多字节的字符，而缓存的方法`buf.toString(encoding)`不会。所以如果想要从数据流读取字符串，应该总是使用该方法。
 
-```
+```js
 var readable = getReadableStreamSomehow();
 readable.setEncoding('utf8');
 readable.on('data', function(chunk) {
@@ -242,7 +242,7 @@ readable.on('data', function(chunk) {
 
 resume 方法会使得“可读数据流”继续释放 data 事件，即转为流动态。
 
-```
+```js
 var readable = getReadableStreamSomehow();
 readable.resume();
 readable.on('end', function(chunk) {
@@ -256,7 +256,7 @@ readable.on('end', function(chunk) {
 
 pause 方法使得流动态的数据流，停止释放 data 事件，转而进入暂停态。任何此时已经可以读到的数据，都将停留在系统缓存。
 
-```
+```js
 var readable = getReadableStreamSomehow();
 readable.on('data', function(chunk) {
   console.log('读取%d 字节的数据', chunk.length);
@@ -273,7 +273,7 @@ readable.on('data', function(chunk) {
 
 该方法返回一个布尔值，表示“可读数据流”被客户端手动暂停（即调用了 pause 方法），目前还没有调用 resume 方法。
 
-```
+```js
 var readable = new stream.Readable
 
 readable.isPaused() // === false
@@ -287,7 +287,7 @@ readable.isPaused() // === false
 
 pipe 方法是自动传送数据的机制，就像管道一样。它从“可读数据流”读出所有数据，将其写出指定的目的地。整个过程是自动的。
 
-```
+```js
 var fs = require('fs');
 var readableStream = fs.createReadStream('file1.txt');
 var writableStream = fs.createWriteStream('file2.txt');
@@ -299,7 +299,7 @@ readableStream.pipe(writableStream);
 
 pipe 方法返回目的地的数据流，因此可以使用链式写法，将多个数据流操作连在一起。
 
-```
+```js
 var fs = require('fs');
 var zlib = require('zlib');
 
@@ -312,13 +312,13 @@ fs.createReadStream('input.txt.gz')
 
 下面的写法模拟了 Unix 系统的 cat 命令，将标准输出写入标准输入。
 
-```
+```js
 process.stdin.pipe(process.stdout);
 ```
 
 当来源地的数据流读取完成，默认会调用目的地的 end 方法，就不再能够写入。对 pipe 方法传入第二个参数`{ end: false }`，可以让目的地的数据流保持打开。
 
-```
+```js
 reader.pipe(writer, { end: false });
 reader.on('end', function() {
   writer.end('Goodbye\n');
@@ -331,7 +331,7 @@ reader.on('end', function() {
 
 该方法移除 pipe 方法指定的数据流目的地。如果没有参数，则移除所有的 pipe 方法目的地。如果有参数，则移除该参数指定的目的地。如果没有匹配参数的目的地，则不会产生任何效果。
 
-```
+```js
 var readable = getReadableStreamSomehow();
 var writable = fs.createWriteStream('file.txt');
 readable.pipe(writable);
@@ -351,7 +351,7 @@ setTimeout(function() {
 
 readable 事件在数据流能够向外提供数据时触发。
 
-```
+```js
 var readable = getReadableStreamSomehow();
 readable.on('readable', function() {
   // there is some data to read now
@@ -362,7 +362,7 @@ readable.on('readable', function() {
 
 对于那些没有显式暂停的数据流，添加 data 事件监听函数，会将数据流切换到流动态，尽快向外提供数据。
 
-```
+```js
 var readable = getReadableStreamSomehow();
 readable.on('data', function(chunk) {
   console.log('got %d bytes of data', chunk.length);
@@ -373,7 +373,7 @@ readable.on('data', function(chunk) {
 
 无法再读取到数据时，会触发 end 事件。也就是说，只有当前数据被完全读取完，才会触发 end 事件，比如不停地调用 read 方法。
 
-```
+```js
 var readable = getReadableStreamSomehow();
 readable.on('data', function(chunk) {
   console.log('got %d bytes of data', chunk.length);
@@ -408,7 +408,7 @@ readable.on('end', function() {
 
 下面是 fs 模块的可写数据流的例子。
 
-```
+```js
 var fs = require('fs');
 var readableStream = fs.createReadStream('file1.txt');
 var writableStream = fs.createWriteStream('file2.txt');
@@ -440,7 +440,7 @@ setDefaultEncoding 方法用于将写入的数据编码成新的格式。它返�
 
 end 方法用于终止“可写数据流”。该方法可以接受三个参数，全部都是可选参数。第一个参数是最后所要写入的数据，可以是字符串，也可以是 stream 对象；第二个参数是写入编码；第三个参数是一个回调函数，finish 事件触发时，会调用这个回调函数。
 
-```
+```js
 var file = fs.createWriteStream('example.txt');
 file.write('hello, ');
 file.end('world!');
@@ -450,7 +450,7 @@ file.end('world!');
 
 调用 end 方法之后，再写入数据会报错。
 
-```
+```js
 var file = fs.createWriteStream('example.txt');
 file.end('world!');
 file.write('hello, '); // 报错
@@ -462,7 +462,7 @@ file.write('hello, '); // 报错
 
 `writable.write(chunk)`返回 false 以后，当缓存数据全部写入完成，可以继续写入时，会触发 drain 事件。
 
-```
+```js
 function writeOneMillionTimes(writer, data, encoding, callback) {
   var i = 1000000;
   write();
@@ -489,7 +489,7 @@ function writeOneMillionTimes(writer, data, encoding, callback) {
 
 调用 end 方法时，所有缓存的数据释放，触发 finish 事件。该事件的回调函数没有参数。
 
-```
+```js
 var writer = getWritableStreamSomehow();
 for (var i = 0; i < 100; i ++) {
   writer.write('hello, #' + i + '!\n');
@@ -506,7 +506,7 @@ writer.on('finish', function() {
 
 该事件的回调函数，接受发出该事件的“可读数据流”对象作为参数。
 
-```
+```js
 var writer = getWritableStreamSomehow();
 var reader = getReadableStreamSomehow();
 writer.on('pipe', function(src) {
@@ -522,7 +522,7 @@ reader.pipe(writer);
 
 该事件的回调函数，接受发出该事件的“可读数据流”对象作为参数。
 
-```
+```js
 var writer = getWritableStreamSomehow();
 var reader = getReadableStreamSomehow();
 writer.on('unpipe', function(src) {
@@ -543,7 +543,7 @@ reader.unpipe(writer);
 
 HTTP 对象使用 Stream 接口，实现网络数据的读写。
 
-```
+```js
 var http = require('http');
 
 var server = http.createServer(function (req, res) {
@@ -588,7 +588,7 @@ server.listen(1337);
 
 data 事件表示读取或写入了一块数据。
 
-```
+```js
 req.on('data', function(buf){
   // Do something with the Buffer
 });
@@ -596,7 +596,7 @@ req.on('data', function(buf){
 
 使用 req.setEncoding 方法，可以设定字符串编码。
 
-```
+```js
 req.setEncoding('utf8');
 req.on('data', function(str){
     // Do something with the String
@@ -605,7 +605,7 @@ req.on('data', function(str){
 
 end 事件，表示读取或写入数据完毕。
 
-```
+```js
 var http = require('http');
 
 http.createServer(function(req, res){
@@ -623,7 +623,7 @@ http.createServer(function(req, res){
 
 system 模块提供了 pump 方法，有点像 Linux 系统的管道功能，可以将一个数据流，原封不动得转给另一个数据流。所以，上面的例子也可以用 pump 方法实现。
 
-```
+```js
 var http = require('http'),
     sys = require('sys');
 
@@ -637,7 +637,7 @@ http.createServer(function(req, res){
 
 fs 模块的 createReadStream 方法用于新建读取数据流，createWriteStream 方法用于新建写入数据流。使用这两个方法，可以做出一个用于文件复制的脚本 copy.js。
 
-```
+```js
 // copy.js
 
 var fs = require('fs');
@@ -665,13 +665,13 @@ writeStream.on('error', function (err) {
 
 上面代码非常容易理解，使用的时候直接提供源文件路径和目标文件路径，就可以了。
 
-```
+```js
 node cp.js src.txt dest.txt
 ```
 
 Streams 对象都具有 pipe 方法，起到管道作用，将一个数据流输入另一个数据流。所以，上面代码可以重写成下面这样：
 
-```
+```js
 var fs = require('fs');
 console.log(process.argv[2], '->', process.argv[3]);
 
@@ -691,7 +691,7 @@ readStream.on('end', function () {
 
 下面是压缩后发送文件的代码。
 
-```
+```js
 http.createServer(function (req, res) {
   // set the content headers
   fs.createReadStream('filename.txt')
@@ -702,7 +702,7 @@ http.createServer(function (req, res) {
 
 上面的代码没有部署错误处理机制，一旦发生错误，就无法处理。所以，需要加上 error 事件的监听函数。
 
-```
+```js
 http.createServer(function (req, res) {
   // set the content headers
   fs.createReadStream('filename.txt')
@@ -719,7 +719,7 @@ http.createServer(function (req, res) {
 
 上面的代码还是存在问题，如果客户端中断下载，写入的数据流就会收不到 close 事件，一直处于等待状态，从而造成内存泄漏。因此，需要使用[on-finished 模块](https://github.com/jshttp/on-finished)用来处理这种情况。
 
-```
+```js
 http.createServer(function (req, res) {
   var stream = fs.createReadStream('filename.txt')
 

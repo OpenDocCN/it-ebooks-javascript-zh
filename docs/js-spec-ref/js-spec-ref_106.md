@@ -19,7 +19,7 @@ Events 模块是 node.js 对“发布/订阅”模式（publish/subscribe）的�
 
 下面是一个实例，先建立一个消息中心，然后通过 on 方法，为各种事件指定回调函数，从而将程序转为事件驱动型，各个模块之间通过事件联系。
 
-```
+```js
 var EventEmitter = require("events").EventEmitter;
 
 var ee = new EventEmitter();
@@ -36,7 +36,7 @@ ee.emit("someEvent");
 
 默认情况下，Node.js 允许同一个事件最多可以指定 10 个回调函数。
 
-```
+```js
 ee.on("someEvent", function () { console.log("event 1"); });
 ee.on("someEvent", function () { console.log("event 2"); });
 ee.on("someEvent", function () { console.log("event 3"); });
@@ -44,7 +44,7 @@ ee.on("someEvent", function () { console.log("event 3"); });
 
 超过 10 个回调函数，会发出一个警告。这个门槛值可以通过 setMaxListeners 方法改变。
 
-```
+```js
 ee.setMaxListeners(20);
 ```
 
@@ -52,7 +52,7 @@ ee.setMaxListeners(20);
 
 EventEmitter 实例的 emit 方法，用来触发事件。它的第一个参数是事件名称，其余参数都会依次传入回调函数。
 
-```
+```js
 var EventEmitter = require('events').EventEmitter;
 var myEmitter = new EventEmitter;
 
@@ -68,7 +68,7 @@ myEmitter.emit('connection', 6);
 
 Events 模块的作用，还在于其他模块可以部署 EventEmitter 接口，从而也能够订阅和发布消息。
 
-```
+```js
 var EventEmitter = require('events').EventEmitter;
 
 function Dog(name) {
@@ -94,7 +94,7 @@ setInterval(function(){
 
 Node 内置模块 util 的 inherits 方法，提供了另一种继承 EventEmitter 的写法。
 
-```
+```js
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
 
@@ -123,7 +123,7 @@ module.exports = Radio;
 
 上面代码中，Radio 是一个构造函数，它的实例继承了 EventEmitter 接口。下面是使用这个模块的例子。
 
-```
+```js
 var Radio = require('./radio.js');
 
 var station = {
@@ -150,7 +150,7 @@ Events 模块默认支持两个事件。
 *   newListener 事件：添加新的回调函数时触发。
 *   removeListener 事件：移除回调时触发。
 
-```
+```js
 ee.on("newListener", function (evtName){
   console.log("New Listener: " + evtName);
 });
@@ -177,7 +177,7 @@ ee.removeListener("save-user", foo);
 
 该方法类似于 on 方法，但是回调函数只触发一次。
 
-```
+```js
 var EventEmitter = require('events').EventEmitter;
 var myEmitter = new EventEmitter;
 
@@ -194,7 +194,7 @@ myEmitter.emit('message', 'welcome to nodejs');
 
 下面代码指定，一旦服务器连通，只调用一次的回调函数。
 
-```
+```js
 server.once('connection', function (stream) {
   console.log('Ah, we have our first user!');
 });
@@ -206,7 +206,7 @@ server.once('connection', function (stream) {
 
 该方法用于移除回调函数。它接受两个参数，第一个是事件名称，第二个是回调函数名称。这就是说，不能用于移除匿名函数。
 
-```
+```js
 var EventEmitter = require('events').EventEmitter;
 
 var emitter = new EventEmitter;
@@ -226,7 +226,7 @@ setTimeout(function(){
 
 另一个例子是使用 removeListener 方法模拟 once 方法。
 
-```
+```js
 var EventEmitter = require('events').EventEmitter;
 
 var emitter = new EventEmitter;
@@ -243,7 +243,7 @@ emitter.on("firstConnection", onlyOnce);
 
 该方法用于移除某个事件的所有回调函数。
 
-```
+```js
 var EventEmitter = require('events').EventEmitter;
 
 var emitter = new EventEmitter;
@@ -255,7 +255,7 @@ emitter.removeAllListeners("firstConnection");
 
 如果不带参数，则表示移除所有事件的所有回调函数。
 
-```
+```js
 emitter.removeAllListeners();
 ```
 
@@ -263,7 +263,7 @@ emitter.removeAllListeners();
 
 该方法接受一个事件名称作为参数，返回该事件所有回调函数组成的数组。
 
-```
+```js
 var EventEmitter = require('events').EventEmitter;
 
 var ee = new EventEmitter;

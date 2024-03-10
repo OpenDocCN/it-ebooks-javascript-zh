@@ -4,7 +4,7 @@
 
 简单地来说，计算属性就是将函数声明为属性，就类似于调用了一个函数，`Ember`会自动调用这个函数。计算属性最大的特点就是能自动检测变化，及时更新数据。
 
-```
+```js
 Person = Ember.Object.extend({  
     firstName: null,
     lastName: null,
@@ -29,7 +29,7 @@ console.log(piter.get('fullName'));  // output >>   chen, ubuntuvim
 
 在`Ember`程序中，计算属性还能调用另外一个计算属性，形成计算属性链，也可以用于扩展某个方法。在上一实例的基础上增加一个`description()`方法。
 
-```
+```js
 Person = Ember.Object.extend({  
     firstName: null,
     lastName: null,
@@ -61,7 +61,7 @@ console.log(piter.get('description'));  // output >>   chen, ubuntuvim
 
 注意要把重写的属性作为参数传入`computed`方法，要区别计算属性的定义方法，定义的时候`computed`方法的最后一个参数是一个`function`，而重写的时候最后一个参数是一个`hash`。
 
-```
+```js
 //    重写计算属性的 get、set 方法
 Person = Ember.Object.extend({  
     firstName: null,
@@ -106,7 +106,7 @@ console.log(jack.get('lastName'));
 
 我们经常会遇到这种情况：某个计算属性值是依赖某个数组或者其他对象的，比如在`Ember`的`todos`这个例子中有这样的一段代码。
 
-```
+```js
 export default Ember.Controller.extend({  
   todos: [
     Ember.Object.create({ isDone: true }),
@@ -130,7 +130,7 @@ export default Ember.Controller.extend({
 
 比如下面代码演示的结果；
 
-```
+```js
 Task = Ember.Object.extend({  
   isDone: false  //  默认为 false
 }); 
@@ -199,7 +199,7 @@ console.log('5,>> Not complete lenght is ' + count);  //  output 1
 
 上述的情况中，我们对数组对象的是关注点是在对象的属性上，但是实际中往往很多情况我们并不关系对象内的属性是否变化了，而是把数组元素作为一个整体对象处理（比如数组元素个数的变化）。相比上述的代码下面的代码检测的是数组对象元素的变化，而不是对象的`isDone`属性的变化。在这种情况你可以看看下面例子，在例子中使用键`[]`代替键`@each`。从键的变化也可以看出他们的不同之处。
 
-```
+```js
 Task = Ember.Object.extend({  
   isDone: false,  //  默认为 false
   name: 'taskName',
@@ -237,7 +237,7 @@ console.log('Get '+wl.get('indexOfSelectedTodo').toString()+' by index ' + index
 
 `Ember.computed`这个组件中有很多使用键`[]`实现的方法。当你想创建一个计算属性是数组的时候特别适用。你可以使用`Ember.computed.map`来构建你的计算属性。
 
-```
+```js
 const Hamster = Ember.Object.extend({  
   chores: null,
   excitingChores: Ember.computed('chores.[]', function() { //告诉 Ember chores 是一个数组
@@ -261,7 +261,7 @@ console.log(hamster.get('excitingChores'));
 
 `Ember`还提供了另外一种方式去定义数组类型的计算属性。
 
-```
+```js
 const Hamster = Ember.Object.extend({  
   chores: null,
   excitingChores: Ember.computed('chores.[]', function() {

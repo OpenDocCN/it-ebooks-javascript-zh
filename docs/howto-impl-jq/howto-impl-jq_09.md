@@ -10,7 +10,7 @@
 
 只有必须先明白了如何实现一个事件委托,我们才能更好的去实现 on 和 off.在我看来,on 和 off 里最难实现的就是他的事件委托.
 
-```
+```js
 function delegate(agent,type,selector,fn) {
     agent.addEventListener(type,function(e) {
 
@@ -41,7 +41,7 @@ function delegate(agent,type,selector,fn) {
 
 我们先拆解下分析.
 
-```
+```js
 function filiter(agent,selector,target) {
     var nodes = agent.querySelectorAll(selector);
     for (var i = 0; i < nodes.length; i++) {
@@ -54,7 +54,7 @@ function filiter(agent,selector,target) {
 
 先看这个方法,这其实就是一个元素过滤,作用就是为了过滤出我们委托的元素具体是谁.target 就是我们具体的委托元素
 
-```
+```js
 agent.addEventListener(type,function(e) {
 
     var target = e.target;

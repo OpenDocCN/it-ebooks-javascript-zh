@@ -31,7 +31,7 @@
 
 JS 在 ES5 及更早版本中都不存在类。与类最接近的是：创建一个构造器，然后将方法指派到该构造器的原型上。这种方式通常被称为创建一个自定义类型。例如：
 
-```
+```js
 function PersonType(name) {
     this.name = name;
 }
@@ -59,7 +59,7 @@ console.log(person instanceof Object);      // true
 
 类声明以 `class` 关键字开始，其后是类的名称；剩余部分的语法看起来就像对象字面量中的方法简写，并且在方法之间不需要使用逗号。作为范例，此处有个简单的类声明：
 
-```
+```js
 class PersonClass {
 
     // 等价于 PersonType 构造器
@@ -102,7 +102,7 @@ console.log(typeof PersonClass.prototype.sayName);  // "function"
 
 这样看来，上例中的 `PersonClass` 声明实际上就直接等价于以下未使用类语法的代码：
 
-```
+```js
 // 直接等价于 PersonClass
 let PersonType2 = (function() {
  "use strict";
@@ -144,7 +144,7 @@ let PersonType2 = (function() {
 > 
 > 只有在类的内部，类名才被视为是使用 `const` 声明的。这意味着你可以在外部重写类名，但不能在类的方法内部这么做。例如：
 > 
-> ```
+> ```js
 > class Foo {
 >   constructor() {
 >       Foo = "bar";    // 执行时抛出错误
@@ -165,7 +165,7 @@ let PersonType2 = (function() {
 
 此处是与上例中的 `PersonClass` 等效的类表达式，随后的代码使用了它：
 
-```
+```js
 let PersonClass = class {
 
     // 等价于 PersonType 构造器
@@ -203,7 +203,7 @@ console.log(typeof PersonClass.prototype.sayName);  // "function"
 
 上一节的示例使用了一个匿名的类表达式，不过就像函数表达式那样，你也可以为类表达式命名。为此需要在 `class` 关键字后添加标识符，就像这样：
 
-```
+```js
 let PersonClass = class PersonClass2 {
 
     // 等价于 PersonType 构造器
@@ -223,7 +223,7 @@ console.log(typeof PersonClass2);       // "undefined"
 
 此例中的类表达式被命名为 `PersonClass2` 。 `PersonClass2` 标识符只在类定义内部存在，因此只能用在类方法内部（例如本例的 `sayName()` 内）。在类的外部， `typeof PersonClass2` 的结果为 `"undefined"` ，这是因为外部不存在 `PersonClass2` 绑定。要理解为何如此，请查看未使用类语法的等价声明：
 
-```
+```js
 // 直接等价于 PersonClass 具名的类表达式
 let PersonClass = (function() {
  "use strict";
@@ -267,7 +267,7 @@ let PersonClass = (function() {
 
 ES6 延续了传统，让类同样成为一级公民。这就使得类可以被多种方式所使用。例如，它能作为参数传入函数：
 
-```
+```js
 function createObject(classDef) {
     return new classDef();
 }
@@ -286,7 +286,7 @@ obj.sayHi();        // "Hi!"
 
 类表达式的另一个有趣用途是立即调用类构造器，以创建单例（ Singleton ）。为此，你必须使用 `new` 来配合类表达式，并在表达式后面添加括号。例如：
 
-```
+```js
 let person = new class {
 
     constructor(name) {
@@ -310,7 +310,7 @@ person.sayName();       // "Nicholas"
 
 自有属性需要在类构造器中创建，而类还允许你在原型上定义访问器属性。为了创建一个 getter ，要使用 `get` 关键字，并要与后方标识符之间留出空格；创建 setter 用相同方式，只是要换用 `set` 关键字。例如：
 
-```
+```js
 class CustomHTMLElement {
 
     constructor(element) {
@@ -334,7 +334,7 @@ console.log(descriptor.enumerable); // false
 
 此代码中的 `CustomHTMLElement` 类用于包装一个已存在的 DOM 元素。它的属性 `html` 拥有 getter 与 setter ，委托了元素自身的 `innerHTML` 方法。该访问器属性被创建在 `CustomHTMLElement.prototype` 上，并且像其他类属性那样被创建为不可枚举属性。非类的等价表示如下：
 
-```
+```js
 // 直接等价于上个范例
 let CustomHTMLElement = (function() {
  "use strict";
@@ -370,7 +370,7 @@ let CustomHTMLElement = (function() {
 
 对象字面量与类之间的相似点还不仅前面那些。类方法与类访问器属性也都能使用需计算的名称。语法相同于对象字面量中的需计算名称：无须使用标识符，而是用方括号来包裹一个表达式。例如：
 
-```
+```js
 let methodName = "sayName";
 
 class PersonClass {
@@ -392,7 +392,7 @@ me.sayName();           // "Nicholas"
 
 访问器属性能以相同方式使用需计算的名称，就像这样：
 
-```
+```js
 let propertyName = "html";
 
 class CustomHTMLElement {
@@ -419,7 +419,7 @@ class CustomHTMLElement {
 
 第八章介绍了生成器，你已学会如何在对象字面量上定义一个生成器：只要在方法名称前附加一个星号（ `*` ）。这一语法对类同样有效，允许将任何方法变为一个生成器。此处有个范例：
 
-```
+```js
 class MyClass {
 
     *createIterator() {
@@ -438,7 +438,7 @@ let iterator = instance.createIterator();
 
 既然生成器方法很有用，那么在表示集合的自定义类中定义一个默认迭代器，那就更好。你可以使用 `Symbol.iterator` 来定义生成器方法，从而定义出类的默认迭代器，就像这样：
 
-```
+```js
 class Collection {
 
     constructor() {
@@ -473,7 +473,7 @@ for (let x of collection) {
 
 直接在构造器上添加额外方法来模拟静态成员，这在 ES5 及更早版本中是另一个通用的模式。例如：
 
-```
+```js
 function PersonType(name) {
     this.name = name;
 }
@@ -493,7 +493,7 @@ var person = PersonType.create("Nicholas");
 
 在其他编程语言中，工厂方法 `PersonType.create()` 会被认定为一个静态方法，它的数据不依赖 `PersonType` 的任何实例。 ES6 的类简化了静态成员的创建，只要在方法与访问器属性的名称前添加正式的 `static` 标注。作为一个例子，此处有个与上例等价的类：
 
-```
+```js
 class PersonClass {
 
     // 等价于 PersonType 构造器
@@ -523,7 +523,7 @@ let person = PersonClass.create("Nicholas");
 
 ES6 之前，实现自定义类型的继承是个繁琐的过程。严格的继承要求有多个步骤。例如，研究以下范例：
 
-```
+```js
 function Rectangle(length, width) {
     this.length = length;
     this.width = width;
@@ -557,7 +557,7 @@ console.log(square instanceof Rectangle);   // true
 
 类让继承工作变得更轻易，使用熟悉的 `extends` 关键字来指定当前类所需要继承的函数，即可。生成的类的原型会被自动调整，而你还能调用 `super()` 方法来访问基类的构造器。此处是与上个例子等价的 ES6 代码：
 
-```
+```js
 class Rectangle {
     constructor(length, width) {
         this.length = length;
@@ -588,7 +588,7 @@ console.log(square instanceof Rectangle);   // true
 
 继承了其他类的类被称为**派生类**（ **derived classes** ）。如果派生类指定了构造器，就需要使用 `super()` ，否则会造成错误。若你选择不使用构造器， `super()` 方法会被自动调用，并会使用创建新实例时提供的所有参数。例如，下列两个类是完全相同的：
 
-```
+```js
 class Square extends Rectangle {
     // 没有构造器
 }
@@ -614,7 +614,7 @@ class Square extends Rectangle {
 
 派生类中的方法总是会屏蔽基类的同名方法。例如，你可以将 `getArea()` 方法添加到 `Square` 类，以便重定义它的功能：
 
-```
+```js
 class Square extends Rectangle {
     constructor(length) {
         super(length, length);
@@ -629,7 +629,7 @@ class Square extends Rectangle {
 
 由于 `getArea()` 已经被定义为 `Square` 的一部分， `Rectangle.prototype.getArea()` 方法就不能在 `Square` 的任何实例上被调用。当然，你总是可以使用 `super.getArea()` 方法来调用基类中的同名方法，就像这样：
 
-```
+```js
 class Square extends Rectangle {
     constructor(length) {
         super(length, length);
@@ -648,7 +648,7 @@ class Square extends Rectangle {
 
 如果基类包含静态成员，那么这些静态成员在派生类中也是可用的。继承的工作方式类似于其他语言，但对于 JS 而言则是新概念。此处有个范例：
 
-```
+```js
 class Rectangle {
     constructor(length, width) {
         this.length = length;
@@ -685,7 +685,7 @@ console.log(rect instanceof Square);        // false
 
 在 ES6 中派生类的最强大能力，或许就是能够从表达式中派生类。只要一个表达式能够返回一个具有 `[[Construct]]` 属性以及原型的函数，你就可以对其使用 `extends` 。例如：
 
-```
+```js
 function Rectangle(length, width) {
     this.length = length;
     this.width = width;
@@ -710,7 +710,7 @@ console.log(x instanceof Rectangle);    // true
 
 `extends` 后面能接受任意类型的表达式，这带来了巨大可能性，例如动态地决定所要继承的类：
 
-```
+```js
 function Rectangle(length, width) {
     this.length = length;
     this.width = width;
@@ -737,7 +737,7 @@ console.log(x instanceof Rectangle);    // true
 
 `getBase()` 函数作为类声明的一部分被直接调用，它返回了 `Rectangle` ，使得此例的功能等价于前一个例子。并且由于可以动态地决定基类，那也就能创建不同的继承方式。例如，你可以有效地创建混入：
 
-```
+```js
 let SerializableMixin = {
     serialize() {
         return JSON.stringify(this);
@@ -784,7 +784,7 @@ console.log(x.serialize());             // "{"length":3,"width":3}"
 
 几乎从 JS 数组出现那天开始，开发者就想通过继承机制来创建他们自己的特殊数组类型。在 ES5 及早期版本中，这是不可能做到的。试图使用传统继承并不能产生功能正确的代码，例如：
 
-```
+```js
 // 内置数组的行为
 var colors = [];
 colors[0] = "red";
@@ -825,7 +825,7 @@ console.log(colors[0]);             // "red"
 
 以下范例实际展示了基于类的特殊数组：
 
-```
+```js
 class MyArray extends Array {
     // 空代码块
 }
@@ -844,7 +844,7 @@ console.log(colors[0]);             // undefined
 
 继承内置对象一个有趣的方面是：任意能返回内置对象实例的方法，在派生类上却会自动返回派生类的实例。因此，若你拥有一个继承了 `Array` 的派生类 `MyArray` ，诸如 `slice()` 之类的方法都会返回 `MyArray` 的实例。例如：
 
-```
+```js
 class MyArray extends Array {
     // 空代码块
 }
@@ -870,7 +870,7 @@ console.log(subitems instanceof MyArray);   // true
 
 以上每个类型都拥有默认的 `Symbol.species` 属性，其返回值为 `this` ，意味着该属性总是会返回自身的构造器函数。若你准备在一个自定义类上实现此功能，代码就像这样：
 
-```
+```js
 // 几个内置类型使用 species 的方式类似于此
 class MyClass {
     static get [Symbol.species]() {
@@ -889,7 +889,7 @@ class MyClass {
 
 在此例中， `Symbol.species` 知名符号被用于定义 `MyClass` 的一个静态访问器属性。注意此处只有 getter 而没有 setter ，这是因为修改类的 species 是不允许的。任何对 `this.constructor[Symbol.species]` 的调用都会返回 `MyClass` ， `clone()` 方法使用了该定义来返回一个新的实例，而没有直接使用 `MyClass` ，这就允许派生类重写这个值。例如：
 
-```
+```js
 class MyClass {
     static get [Symbol.species]() {
         return this;
@@ -929,7 +929,7 @@ console.log(clone2 instanceof MyDerivedClass2);     // false
 
 例如， `Array` 使用了 `Symbol.species` 来指定方法所使用的类，让其返回值为一个数组。在 `Array` 派生出的类中，你可以决定这些继承的方法应返回何种类型的对象，正如：
 
-```
+```js
 class MyArray extends Array {
     static get [Symbol.species]() {
         return Array;
@@ -952,7 +952,7 @@ console.log(subitems instanceof MyArray);   // false
 
 在第三章你已学到了 `new.target` ，以及在调用函数的方式不同时它的值是如何变动的。你也可以在类构造器中使用 `new.target` ，来判断类是被如何被调用的。在简单情况下， `new.target` 就等于本类的构造器函数，正如下例；
 
-```
+```js
 class Rectangle {
     constructor(length, width) {
         console.log(new.target === Rectangle);
@@ -967,7 +967,7 @@ var obj = new Rectangle(3, 4);      // 输出 true
 
 此代码说明在 `new Rectangle(3, 4)` 被调用时， `new.target` 就等于 `Rectangle` 。类构造器被调用时不能缺少 `new` ，因此 `new.target` 属性就始终会在类构造器内被定义。不过这个值并不总是相同的。研究以下代码：
 
-```
+```js
 class Rectangle {
     constructor(length, width) {
         console.log(new.target === Rectangle);
@@ -988,7 +988,7 @@ var obj = new Square(3);      // 输出 false
 
 `Square` 调用了 `Rectangle` 构造器，因此当 `Rectangle` 构造器被调用时， `new.target` 等于 `Square` 。这很重要，因为构造器能根据如何被调用而有不同行为，并且这给了更改这种行为的能力。例如，你可以使用 `new.target` 来创建一个抽象基类（一种不能被实例化的类），如下：
 
-```
+```js
 // 静态的基类
 class Shape {
     constructor() {

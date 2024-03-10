@@ -19,7 +19,7 @@ SVG 图像可以用 Adobe 公司的 Illustrator 软件、开源软件 Inkscape �
 
 SVG 插入网页的方法有多种，可以用在 img、object、embed、iframe 等标签，以及 CSS 的 background-image 属性。
 
-```
+```js
 <img src="circle.svg">
 <object id="object" data="circle.svg" type="image/svg+xml"></object>
 <embed id="embed" src="icon.svg" type="image/svg+xml">
@@ -30,7 +30,7 @@ SVG 插入网页的方法有多种，可以用在 img、object、embed、iframe 
 
 此外，SVG 文件还可以插入其他 DOM 元素，比如 div 元素，请看下面的例子（使用了 jQuery 函数库）。
 
-```
+```js
 <div id="stage"></div>
 
 <script>
@@ -47,7 +47,7 @@ $("#stage").load('icon.svg',function(response){
 
 SVG 文件采用 XML 格式，就是普通的文本文件。
 
-```
+```js
 <svg width="300" height="180">
   <circle cx="30"  cy="50" r="25" />
   <circle cx="90"  cy="50" r="25" class="red" />
@@ -57,7 +57,7 @@ SVG 文件采用 XML 格式，就是普通的文本文件。
 
 上面的 svg 文件，定义了三个圆，它们的 cx、cy、r 属性分别为 x 坐标、y 坐标和半径。利用 class 属性，可以为这些圆指定样式。
 
-```
+```js
 .red {
   fill: red; /* not background-color! */
 }
@@ -73,7 +73,7 @@ SVG 文件采用 XML 格式，就是普通的文本文件。
 
 除了 circle 标签表示圆，SVG 文件还可以使用表示其他形状的标签。
 
-```
+```js
 <svg>
   <line x1="0" y1="0" x2="200" y2="0" style="stroke:rgb(0,0,0);stroke-width:1"/></line>
   <rect x="0" y="0" height="100" width="200" style="stroke: #70d5dd; fill: #dd524b" />
@@ -87,7 +87,7 @@ SVG 文件采用 XML 格式，就是普通的文本文件。
 
 g 标签用于将多个形状组成一组，表示 group。
 
-```
+```js
 <svg width="300" height="180">
   <g transform="translate(5, 15)">
     <text x="0" y="0">Howdy!</text>
@@ -103,7 +103,7 @@ g 标签用于将多个形状组成一组，表示 group。
 
 如果使用 img 标签插入 SVG 文件，则无法获取 SVG DOM。使用 object、iframe、embed 标签，可以获取 SVG DOM。
 
-```
+```js
 var svgObject = document.getElementById("object").contentDocument;
 var svgIframe = document.getElementById("iframe").contentDocument;
 var svgEmbed = document.getElementById("embed").getSVGDocument();
@@ -111,7 +111,7 @@ var svgEmbed = document.getElementById("embed").getSVGDocument();
 
 由于 svg 文件就是一般的 XML 文件，因此可以用 DOM 方法，选取页面元素。
 
-```
+```js
 // 改变填充色
 document.getElementById("theCircle").style.fill = "red";
 
@@ -130,7 +130,7 @@ document.getElementById("theCircle").addEventListener("click", function() {
 
 假定网页中有一个 svg 元素。
 
-```
+```js
 <div id="svg-container">
     <svg   xml:space="preserve" width="500" height="440">
         <!-- svg code -->
@@ -140,7 +140,7 @@ document.getElementById("theCircle").addEventListener("click", function() {
 
 使用 XMLSerializer 实例的 serializeToString 方法，获取 svg 元素的代码。
 
-```
+```js
 var svgString = new XMLSerializer().serializeToString(document.querySelector('svg'));
 ```
 
@@ -148,7 +148,7 @@ var svgString = new XMLSerializer().serializeToString(document.querySelector('sv
 
 首先，需要新建一个 img 对象，将 svg 图像指定到该 img 对象的 src 属性。
 
-```
+```js
 var img = new Image();
 var svg = new Blob([svgString], {type: "image/svg+xml;charset=utf-8"});
 
@@ -160,7 +160,7 @@ img.src = url;
 
 然后，当图像加载完成后，再将它绘制到 canvas 元素。
 
-```
+```js
 img.onload = function() {
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
@@ -181,7 +181,7 @@ img.onload = function() {
 
 上面的图形，可以画成一个坐标系，Date 作为横轴，Amount 作为纵轴，四行数据画成一个数据点。
 
-```
+```js
 <svg width="350" height="160">
   <g class="layer" transform="translate(60,10)">
     <circle r="5" cx="0"   cy="105" />

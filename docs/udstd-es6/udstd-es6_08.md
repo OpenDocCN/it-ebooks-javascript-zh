@@ -36,7 +36,7 @@ ES6 向 JS 添加了 Set 与 Map ，本章将论述这两种集合类型你所�
 
 在 ES5 中，开发者使用对象属性来模拟 Set 与 Map ，就像这样：
 
-```
+```js
 let set = Object.create(null);
 
 set.foo = true;
@@ -52,7 +52,7 @@ if (set.foo) {
 
 使用对象模拟 Set 与模拟 Map 之间唯一真正的区别是所存储的值。例如，以下例子将对象作为 Map 使用：
 
-```
+```js
 let map = Object.create(null);
 
 map.foo = "bar";
@@ -69,7 +69,7 @@ console.log(value);         // "bar"
 
 尽管在简单情况下将对象作为 Set 与 Map 来使用都是可行的，但一旦接触到对象属性的局限性，此方式就会遇到更多麻烦。例如，由于对象属性的类型必须为字符串，你就必须保证任意两个键不能被转换为相同的字符串。研究以下代码：
 
-```
+```js
 let map = Object.create(null);
 
 map[5] = "foo";
@@ -79,7 +79,7 @@ console.log(map["5"]);      // "foo"
 
 本例将字符串值 `"foo"` 赋值到数值类型的键 `5` 上，而数值类型的键会在内部被转换为字符串，因此 `map["5"]` 与 `map[5]` 实际上引用了同一个属性。当你想将数值与字符串都作为键来使用时，这种内部转换会引起问题。而若使用对象作为键，就会出现另一个问题，例如：
 
-```
+```js
 let map = Object.create(null),
     key1 = {},
     key2 = {};
@@ -95,7 +95,7 @@ console.log(map[key2]);     // "foo"
 
 当键的值为假值时， Map 也遇到了自身的特殊问题。在需要布尔值的位置（例如在 `if` 语句内），任何假值都会被自动转换为 false 。这种转换单独说来并不是问题——只要对如何使用值的问题足够小心。例如，查看以下代码：
 
-```
+```js
 let map = Object.create(null);
 
 map.count = 1;
@@ -120,7 +120,7 @@ ES6 新增了 `Set` 类型，这是一种无重复值的有序列表。 Set 允�
 
 Set 使用 `new Set()` 来创建，而调用 `add()` 方法就能向 Set 中添加项目，检查 `size` 属性还能查看其中包含有多少项：
 
-```
+```js
 let set = new Set();
 set.add(5);
 set.add("5");
@@ -130,7 +130,7 @@ console.log(set.size);    // 2
 
 Set 不会使用强制类型转换来判断值是否重复。这意味着 Set 可以同时包含数值 `5` 与 字符串 `"5"` ，将它们都作为相对独立的项（在 Set 内部的比较使用了第四章讨论过的 `Object.is()` 方法，来判断两个值是否相等）。你还可以向 Set 添加多个对象，它们不会被合并为同一项：
 
-```
+```js
 let set = new Set(),
     key1 = {},
     key2 = {};
@@ -145,7 +145,7 @@ console.log(set.size);    // 2
 
 如果 `add()` 方法用相同值进行了多次调用，那么在第一次之后的调用实际上会被忽略：
 
-```
+```js
 let set = new Set();
 set.add(5);
 set.add("5");
@@ -156,7 +156,7 @@ console.log(set.size);    // 2
 
 你可以使用数组来初始化一个 Set ，并且 `Set` 构造器会确保不重复地使用这些值。例如：
 
-```
+```js
 let set = new Set([1, 2, 3, 4, 5, 5, 5, 5]);
 console.log(set.size);    // 5 
 ```
@@ -167,7 +167,7 @@ console.log(set.size);    // 5
 
 你可以使用 `has()` 方法来测试某个值是否存在于 Set 中，就像这样：
 
-```
+```js
 let set = new Set();
 set.add(5);
 set.add("5");
@@ -182,7 +182,7 @@ console.log(set.has(6));    // false
 
 也可以从 Set 中将值移除。你可以使用 `delete()` 方法来移除单个值，或调用 `clear()` 方法来将所有值从 Set 中移除。以下代码展示了二者的作用：
 
-```
+```js
 let set = new Set();
 set.add(5);
 set.add("5");
@@ -222,7 +222,7 @@ Set 版本的 `forEach()` 方法与数组版本有个奇怪差异：前者传给
 
 除了参数特点的差异外，在 Set 上使用 `forEach()` 方法与在数组上基本相同。这里有些代码展示了该方法如何工作：
 
-```
+```js
 let set = new Set([1, 2]);
 
 set.forEach(function(value, key, ownerSet) {
@@ -233,7 +233,7 @@ set.forEach(function(value, key, ownerSet) {
 
 此代码在 Set 的每一项上进行迭代，并对传递给 `forEach()` 的回调函数的值进行了输出。回调函数每次执行时， `key` 与 `value` 总是相同的，同时 `ownerSet` 也始终等于 `set` 。此代码输出：
 
-```
+```js
 1 1
 true
 2 2
@@ -242,7 +242,7 @@ true
 
 与使用数组相同，如果想在回调函数中使用 `this` ，你可以给 `forEach()` 传入一个 `this` 值作为第二个参数：
 
-```
+```js
 let set = new Set([1, 2]);
 
 let processor = {
@@ -261,7 +261,7 @@ processor.process(set);
 
 本例中 `processor.process()` 方法在 Set 上调用了 `forEach()` ，并传递了当前 `this` 作为回调函数的 `this` 值。 这个传递十分必要，这样 `this.output()` 就能正确地解析到 `processor.output()` 方法。此处 `forEach()` 的回调函数仅使用了第一个参数 `value` ，其余参数则被省略了。你也可以使用箭头函数来达到相同效果，而无须传入第二个参数，就像这样：
 
-```
+```js
 let set = new Set([1, 2]);
 
 let processor = {
@@ -284,7 +284,7 @@ processor.process(set);
 
 将数组转换为 Set 相当容易，因为可以将数组传递给 `Set` 构造器；而使用扩展运算符也能简单地将 Set 转换回数组。第三章介绍的扩展运算符（ `...` ），能将数组中的项分割开并作为函数的分离参数。你同样能将扩展运算符用于可迭代对象（例如 Set ），将它们转换为数组。例如：
 
-```
+```js
 let set = new Set([1, 2, 3, 3, 3, 4, 5]),
     array = [...set];
 
@@ -295,7 +295,7 @@ console.log(array);             // [1,2,3,4,5]
 
 当已经存在一个数组，而你想用它创建一个无重复值的新数组时，该方法十分有用。例如：
 
-```
+```js
 function eliminateDuplicates(items) {
     return [...new Set(items)];
 }
@@ -312,7 +312,7 @@ console.log(noDuplicates);      // [1,2,3,4,5]
 
 由于 `Set` 类型存储对象引用的方式，它也可以被称为 Strong Set 。对象存储在 `Set` 的一个实例中时，实际上相当于把对象存储在变量中。只要对于 `Set` 实例的引用仍然存在，所存储的对象就无法被垃圾回收机制回收，从而无法释放内存。例如：
 
-```
+```js
 let set = new Set(),
     key = {};
 
@@ -336,7 +336,7 @@ key = [...set][0];
 
 Weak Set 使用 `WeakSet` 构造器来创建，并包含 `add()` 方法、 `has()` 方法以及 `delete()` 方法。以下例子使用了这三个方法：
 
-```
+```js
 let set = new WeakSet(),
     key = {};
 
@@ -352,7 +352,7 @@ console.log(set.has(key));      // false
 
 使用 Weak Set 很像在使用正规的 Set 。你可以在 Weak Set 上添加、移除或检查引用，也可以给构造器传入一个可迭代对象来初始化 Weak Set 的值：
 
-```
+```js
 let key1 = {},
     key2 = {},
     set = new WeakSet([key1, key2]);
@@ -367,7 +367,7 @@ console.log(set.has(key2));     // true
 
 Weak Set 与正规 Set 之间最大的区别是对象的弱引用。此处有个例子说明了这种差异：
 
-```
+```js
 let set = new WeakSet(),
     key = {};
 
@@ -400,7 +400,7 @@ ES6 的 `Map` 类型是键值对的有序列表，而键和值都可以是任意
 
 你可以调用 `set()` 方法并给它传递一个键与一个关联的值，来给 Map 添加项；此后使用键名来调用 `get()` 方法便能提取对应的值。例如：
 
-```
+```js
 let map = new Map();
 map.set("title", "Understanding ES6");
 map.set("year", 2016);
@@ -413,7 +413,7 @@ console.log(map.get("year"));       // 2016
 
 你也可以将对象作为键，这也是从前使用对象属性来创建 Map 的变通方法所无法做到的。此处有个例子：
 
-```
+```js
 let map = new Map(),
     key1 = {},
     key2 = {};
@@ -437,7 +437,7 @@ Map 与 Set 共享了几个方法，这是有意的，允许你使用相似的�
 
 Map 同样拥有 `size` 属性，用于指明包含了多少个键值对。以下代码用不同方式使用了这三种方法以及 `size` 属性：
 
-```
+```js
 let map = new Map();
 map.set("name", "Nicholas");
 map.set("age", 25);
@@ -471,7 +471,7 @@ console.log(map.size);          // 0
 
 依然与 Set 类似，你能将数组传递给 `Map` 构造器，以便使用数据来初始化一个 Map 。该数组中的每一项也必须是数组，内部数组的首个项会作为键，第二项则为对应值。因此整个 Map 就被这些双项数组所填充。例如：
 
-```
+```js
 let map = new Map([["name", "Nicholas"], ["age", 25]]);
 
 console.log(map.has("name"));   // true
@@ -493,7 +493,7 @@ Map 的 `forEach()` 方法类似于 Set 与数组的同名方法，它接受一�
 
 回调函数的这些参数更紧密契合了数组 `forEach()` 方法的行为，即：第一个参数是值、第二个参数则是键（数组中的键是数值索引）。此处有个示例：
 
-```
+```js
 let map = new Map([ ["name", "Nicholas"], ["age", 25]]);
 
 map.forEach(function(value, key, ownerMap) {
@@ -504,7 +504,7 @@ map.forEach(function(value, key, ownerMap) {
 
 `forEach()` 的回调函数输出了传给它的信息。其中 `value` 与 `key` 被直接输出， `ownerMap` 与 `map` 进行了比较，说明它们是相等的。这就输出了：
 
-```
+```js
 name Nicholas
 true
 age 25
@@ -529,7 +529,7 @@ Weak Map 的最佳用武之地，就是在浏览器中创建一个关联到特�
 
 ES6 的 `WeakMap` 类型是键值对的无序列表，其中键必须是非空的对象，值则允许是任意类型。 `WeakMap` 的界面与 `Map` 的非常相似，都使用 `set()` 与 `get()` 方法来分别添加与提取数据：
 
-```
+```js
 let map = new WeakMap(),
     element = document.querySelector(".element");
 
@@ -553,7 +553,7 @@ element = null;
 
 为了初始化 Weak Map ，需要把一个由数组构成的数组传递给 `WeakMap` 构造器。就像正规 Map 构造器那样，每个内部数组都应当有两个项，第一项是作为键的非空的对象，第二项则是对应的值（任意类型）。例如：
 
-```
+```js
 let key1 = {},
     key2 = {},
     map = new WeakMap([[key1, "Hello"], [key2, 42]]);
@@ -570,7 +570,7 @@ console.log(map.get(key2));     // 42
 
 Weak Map 只有两个附加方法能用来与键值对交互。 `has()` 方法用于判断指定的键是否存在于 Map 中，而 `delete()` 方法则用于移除一个特定的键值对。 `clear()` 方法不存在，这是因为没必要对键进行枚举，并且枚举 Weak Map 也是不可能的，这与 Weak Set 相同。以下例子同时用到了 `has()` 与 `delete()` 方法：
 
-```
+```js
 let map = new WeakMap(),
     element = document.querySelector(".element");
 
@@ -590,7 +590,7 @@ console.log(map.get(element));   // undefined
 
 虽然大多数开发者认为 Weak Map 的主要用途是关联数据与 DOM 元素，但仍然还存在许多可能的用法（并且毫无疑问，仍有一些用法尚未被发现）。 Weak Map 的一个实际应用就是在对象实例中存储私有数据。在 ES6 中对象的所有属性都是公开的，因此若想让数据对于对象自身可访问、而在其他条件下不可访问，那么你就需要使用一些创造力。研究以下例子：
 
-```
+```js
 function Person(name) {
     this._name = name;
 }
@@ -604,7 +604,7 @@ Person.prototype.getName = function() {
 
 在 ES5 中能够创建几乎真正私有的数据，只要在创建对象时使用类似下面的模式：
 
-```
+```js
 var Person = (function() {
 
     var privateData = {},
@@ -632,7 +632,7 @@ var Person = (function() {
 
 此方式的最大问题在于 `privateData` 中的数据永不会消失，因为在对象实例被销毁时没有任何方法可以获知该数据， `privateData` 对象就将永远包含多余的数据。这个问题现在可以换用 Weak Map 来解决了，如下：
 
-```
+```js
 let Person = (function() {
 
     let privateData = new WeakMap();

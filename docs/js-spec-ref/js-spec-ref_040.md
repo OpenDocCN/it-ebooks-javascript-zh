@@ -27,7 +27,7 @@
 
 通过 script 标签，可以直接将 JavaScript 代码嵌入网页。
 
-```
+```js
 <script>
 // some JavaScript code
 </script>
@@ -37,19 +37,19 @@
 
 script 标签也可以指定加载外部的脚本文件。
 
-```
+```js
 <script src="example.js"></script>
 ```
 
 如果脚本文件使用了非英语字符，还应该注明编码。
 
-```
+```js
 <script charset="utf-8" src="example.js"></script>
 ```
 
 加载外部脚本和直接添加代码块，这两种方法不能混用。下面代码的 console.log 语句直接被忽略。
 
-```
+```js
 <script charset="utf-8" src="example.js">
   console.log('Hello World!');
 </script>
@@ -59,7 +59,7 @@ script 标签也可以指定加载外部的脚本文件。
 
 除了上面两种方法，HTML 语言允许在某些元素的事件属性和 a 元素的 href 属性中，直接写入 JavaScript。
 
-```
+```js
 <div onclick="alert('Hello')"></div>
 
 <a href="javascript:alert('Hello')"></a>
@@ -83,7 +83,7 @@ script 标签也可以指定加载外部的脚本文件。
 
 将脚本文件都放在网页尾部加载，还有一个好处。在 DOM 结构生成之前就调用 DOM，JavaScript 会报错，如果脚本都在网页尾部加载，就不存在这个问题，因为这时 DOM 肯定已经生成了。
 
-```
+```js
 <head>
     <script>
         console.log(document.body.innerHTML); 
@@ -95,7 +95,7 @@ script 标签也可以指定加载外部的脚本文件。
 
 一种解决方法是设定 DOMContentLoaded 事件的回调函数。
 
-```
+```js
 <head>
     <script>
         document.addEventListener("DOMContentLoaded", function(event) {
@@ -107,14 +107,14 @@ script 标签也可以指定加载外部的脚本文件。
 
 另一种解决方法是，使用 script 标签的 onload 属性。当 script 标签指定的外部脚本文件下载和解析完成，会触发一个 load 事件，可以为这个事件指定回调函数。
 
-```
+```js
 <script src="jquery.min.js" onload="console.log(document.body.innerHTML)">
 </script>
 ```
 
 但是，如果将脚本放在页面底部，就可以完全按照正常的方式写，上面两种方式都不需要。
 
-```
+```js
 <body>
     <!-- 其他代码  -->
     <script>
@@ -127,7 +127,7 @@ script 标签也可以指定加载外部的脚本文件。
 
 如果有多个 script 标签，比如下面这样。
 
-```
+```js
 <script src="1.js"></script>
 <script src="2.js"></script>
 ```
@@ -142,7 +142,7 @@ script 标签也可以指定加载外部的脚本文件。
 
 为了解决脚本文件下载阻塞网页渲染的问题，一个方法是加入 defer 属性。
 
-```
+```js
 <script src="1.js" defer></script>
 <script src="2.js" defer></script>
 ```
@@ -162,7 +162,7 @@ defer 属性的运行过程是这样的。
 
 解决“阻塞效应”的另一个方法是加入 async 属性。
 
-```
+```js
 <script src="1.js" async></script>
 <script src="2.js" async></script>
 ```
@@ -183,7 +183,7 @@ defer 属性和 async 属性到底应该使用哪一个？一般来说，如果�
 
 除了用静态的 script 标签，还可以动态嵌入 script 标签。
 
-```
+```js
 ['1.js', '2.js'].forEach(function(src) {
   var script = document.createElement('script');
   script.src = src;
@@ -195,7 +195,7 @@ defer 属性和 async 属性到底应该使用哪一个？一般来说，如果�
 
 如果想避免这个问题，可以设置 async 属性为 false。
 
-```
+```js
 ['1.js', '2.js'].forEach(function(src) {
   var script = document.createElement('script');
   script.src = src;
@@ -208,7 +208,7 @@ defer 属性和 async 属性到底应该使用哪一个？一般来说，如果�
 
 我们可以把上面的写法，封装成一个函数。
 
-```
+```js
 (function() {
   var script,
   scripts = document.getElementsByTagName('script')[0];
@@ -230,19 +230,19 @@ defer 属性和 async 属性到底应该使用哪一个？一般来说，如果�
 
 如果不指定协议，浏览器默认采用 HTTP 协议下载。
 
-```
+```js
 <script src="example.js"></script>
 ```
 
 上面的 example.js 默认就是采用 http 协议下载，如果要采用 HTTPs 协议下载，必需写明（假定服务器支持）。
 
-```
+```js
 <script src="https://example.js"></script>
 ```
 
 但是有时我们会希望，根据页面本身的协议来决定加载协议，这时可以采用下面的写法。
 
-```
+```js
 <script src="//example.js"></script>
 ```
 

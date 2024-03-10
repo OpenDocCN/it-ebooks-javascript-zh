@@ -2,7 +2,7 @@
 
 在有路由嵌套的情况下，你可能需要在两个不同的`controller`之间通信。 按照惯例先做准备工作：
 
-```
+```js
 ember g route post  
 ember g route post/comments  
 ember g model post 
@@ -10,7 +10,7 @@ ember g model post
 
 比如下面的路由设置：
 
-```
+```js
 //  router.js
 
 import Ember from 'ember';  
@@ -36,7 +36,7 @@ export default Router;
 
 为了实现这个功能，可以把`postController`注入到`commentController`中。
 
-```
+```js
 //  app/controllers/comments.js
 
 import Ember from 'ember';
@@ -48,7 +48,7 @@ export default Ember.Controller.extend({
 
 一旦`comments`路由被访问，`postController`就会获取控制器对应的`model`，并且这个`model`是只读的。为了能获取到模型`post`还需要增加一个引用`postController.model`。
 
-```
+```js
 //  app/controllers/comments.js
 
 import Ember from 'ember';
@@ -61,7 +61,7 @@ export default Ember.Controller.extend({
 
 最后可以直接在`comment`模板中显示模型`post`和`comment`的信息。
 
-```
+```js
 <h1>Comments for {{post.title}}</h1>  
 <ul>  
     {{#each model as |comment|}}

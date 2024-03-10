@@ -6,7 +6,7 @@
 
 Singleton 模式指的是一个“类”只能创造一个实例。由于 JavaScript 语言没有类，单个对象可以直接生成，所以实际上，没有必要部署 Singleton 模式。但是，还是可以做到的。
 
-```
+```js
 var someClass = {
 
     _singleton: null,
@@ -30,7 +30,7 @@ var instance = someClass.getSingleton();
 
 为了保证实例不被改写，可以关闭它的写入开关。
 
-```
+```js
 Object.defineProperty(namespace, "singleton",
         { writable: false, configurable: false, value: { ... } });
 ```

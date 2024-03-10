@@ -21,7 +21,7 @@ npm 有两层含义。一层含义是 Node.js 的开放式模块登记和管理�
 
 npm 不需要单独安装。在安装 node 的时候，会连带一起安装 npm。但是，node 附带的 npm 可能不是最新版本，最好用下面的命令，更新到最新版本。
 
-```
+```js
 $ npm install npm@latest -g
 ```
 
@@ -29,7 +29,7 @@ $ npm install npm@latest -g
 
 node 安装完成后，可以用下面的命令，查看一下 npm 的帮助文件。
 
-```
+```js
 # npm 命令列表
 $ npm help
 
@@ -39,7 +39,7 @@ $ npm -l
 
 下面的命令分别查看 npm 的版本和配置。
 
-```
+```js
 $ npm -v
 $ npm config list -l
 ```
@@ -48,7 +48,7 @@ $ npm config list -l
 
 `npm info`命令可以查看每个模块的具体信息。比如，查看 underscore 模块信息的命令是：
 
-```
+```js
 $ npm info underscore
 { name: 'underscore',
   description: 'JavaScript\'s functional programming helper library.',
@@ -72,7 +72,7 @@ $ npm info underscore
 
 上面命令返回一个 JavaScript 对象，包含了 underscore 模块的详细信息。这个对象的每个成员，都可以直接从 info 命令查询。
 
-```
+```js
 $ npm info underscore description
 JavaScript's functional programming helper library.
 
@@ -87,7 +87,7 @@ $ npm info underscore version
 
 向 npm 仓库搜索某个模块，使用 search 命令（可使用正则搜索）。
 
-```
+```js
 $ npm search <搜索词>
 ```
 
@@ -97,7 +97,7 @@ $ npm search <搜索词>
 
 `npm list`命令列出当前目录安装的所有模块。如果使用 global 参数，就是列出全局安装的模块。
 
-```
+```js
 $ npm list
 $ npm -global list
 ```
@@ -110,13 +110,13 @@ Node 模块采用`npm install`命令安装。每个模块可以“全局安装�
 
 默认情况下，`npm install`命令是“本地安装”某个模块。
 
-```
+```js
 $ npm install <package name>
 ```
 
 npm 也支持直接输入 github 地址。
 
-```
+```js
 $ npm install git://github.com/package/path.git
 $ npm install git://github.com/package/path.git#0.1.0
 ```
@@ -125,14 +125,14 @@ $ npm install git://github.com/package/path.git#0.1.0
 
 使用 global 参数，可以“全局安装”某个模块。global 参数可以被简化成 g 参数。
 
-```
+```js
 $ sudo npm install -global [package name]
 $ sudo npm install -g [package name]
 ```
 
 install 命令总是安装模块的最新版本，如果要安装模块的特定版本，可以在模块名后面加上@和版本号。
 
-```
+```js
 $ npm install sax@latest
 $ npm install sax@0.1.1
 $ npm install sax@">=0.1.0 <0.2.0"
@@ -143,7 +143,7 @@ install 命令可以使用不同参数，指定所安装的模块属于哪一种
 *   --save：模块名将被添加到 dependencies，可以简化为参数`-S`。
 *   --save-dev: 模块名将被添加到 devDependencies，可以简化为参数`-D`。
 
-```
+```js
 $ npm install sax --save
 $ npm install node-tap --save-dev
 # 或者
@@ -153,7 +153,7 @@ $ npm install node-tap -D
 
 `npm install`默认会安装 dependencies 字段和 devDependencies 字段中的所有模块，如果使用 production 参数，可以只安装 dependencies 字段的模块。
 
-```
+```js
 $ npm install --production
 # 或者
 $ NODE_ENV=production npm install
@@ -161,7 +161,7 @@ $ NODE_ENV=production npm install
 
 一旦安装了某个模块，就可以在代码中用 require 命令调用这个模块。
 
-```
+```js
 var backbone = require('backbone')
 
 console.log(backbone.VERSION)
@@ -181,7 +181,7 @@ npm 允许使用特殊符号，指定所要使用的版本范围，假定当前�
 
 对于~和^，要注意区分。前者表示接受当前小版本（如果省略小版本号，则是当前大版本）的最新补丁包，后者表示接受当前大版本的最新小版本和最新补丁包。
 
-```
+```js
 ~2.2.1 // 接受 2.2.1，不接受 2.3.0
 ².2.1 // 接受 2.2.1 和 2.3.0
 
@@ -194,7 +194,7 @@ npm 允许使用特殊符号，指定所要使用的版本范围，假定当前�
 
 还可以使用数学运算符（比如>, = or <=等），指定版本范围。
 
-```
+```js
 >2.1
 1.0.0 - 1.2.0
 >1.0.0-alpha
@@ -208,25 +208,25 @@ npm 允许使用特殊符号，指定所要使用的版本范围，假定当前�
 
 npm update 命令可以升级本地安装的模块。
 
-```
+```js
 npm update [package name]
 ```
 
 加上 global 参数，可以升级全局安装的模块。
 
-```
+```js
 npm update -global [package name]
 ```
 
 npm uninstall 命令，删除本地安装的模块。
 
-```
+```js
 npm uninstall [package name]
 ```
 
 加上 global 参数，可以删除全局安装的模块。
 
-```
+```js
 sudo npm uninstall [package name] -global
 ```
 
@@ -238,7 +238,7 @@ sudo npm uninstall [package name] -global
 
 `npm shrinkwrap`命令就是用来彻底锁定所有模块的版本。
 
-```
+```js
 $ npm shrinkwrap
 ```
 
@@ -248,7 +248,7 @@ $ npm shrinkwrap
 
 如果执行`npm shrinkwrap`的时候，加上参数 dev，还可以记录 devDependencies 字段中模块的准确版本。
 
-```
+```js
 $ npm shrinkwrap --dev
 ```
 
@@ -260,7 +260,7 @@ $ npm shrinkwrap --dev
 
 `npm prune`命令可以移除所有不在 dependencies 字段内的模块。所有指定模块名，则移除单个模块。
 
-```
+```js
 $ npm prune
 $ npm package <package name>
 ```
@@ -269,7 +269,7 @@ $ npm package <package name>
 
 package.json 文件有一项 scripts，用于指定脚本命令，供 npm 直接调用。
 
-```
+```js
 {
   "name": "myproject",
   "devDependencies": {
@@ -290,7 +290,7 @@ package.json 文件有一项 scripts，用于指定脚本命令，供 npm 直接
 
 如果直接运行`npm run`不给出任何参数，就会列出 scripts 属性下所有命令。
 
-```
+```js
 Available scripts in the user-service package:
   lint
      jshint **.js
@@ -300,7 +300,7 @@ Available scripts in the user-service package:
 
 下面是另一个 package.json 文件的例子。
 
-```
+```js
 "scripts": {
   "watch": "watchify client/main.js -o public/app.js -v",
   "build": "browserify client/main.js -o public/app.js",
@@ -311,7 +311,7 @@ Available scripts in the user-service package:
 
 上面代码在 scripts 项，定义了四个别名，每个别名都有对应的脚本命令。
 
-```
+```js
 npm run watch
 npm run build
 npm run start
@@ -320,20 +320,20 @@ npm run test
 
 其中，start 和 test 属于特殊命令，可以省略 run。
 
-```
+```js
 npm start
 npm test
 ```
 
 如果希望一个操作的输出，是另一个操作的输入，可以借用 Linux 系统的管道命令，将两个操作连在一起。
 
-```
+```js
 "build-js": "browserify browser/main.js | uglifyjs -mc > static/bundle.js"
 ```
 
 但是，更方便的写法是引用其他`npm run`命令。
 
-```
+```js
 "build": "npm run build-js && npm run build-css"
 ```
 
@@ -341,7 +341,7 @@ npm test
 
 下面是一个流操作的例子。
 
-```
+```js
 "devDependencies": {
   "autoprefixer": "latest",
   "cssmin": "latest"
@@ -354,7 +354,7 @@ npm test
 
 写在 scripts 属性中的命令，也可以在`node_modules/.bin`目录中直接写成 bash 脚本。
 
-```
+```js
 #!/bin/bash
 
 cd site/main;
@@ -363,13 +363,13 @@ browserify browser/main.js | uglifyjs -mc > static/bundle.js
 
 假定上面的脚本文件名为 build.sh，并且权限为可执行，就可以在 scripts 属性中引用该文件。
 
-```
+```js
 "build-js": "bin/build.sh"
 ```
 
 `npm run`为每条命令提供了 pre 和 post 两个钩子（hook）。以`npm run lint`为例，执行这条命令之前，npm 会先查看有没有定义 prelint 和 postlint 两个钩子，如果有的话，就会先执行`npm run prelint`，然后执行`npm run lint`，最后执行`npm run postlint`。所有命令都是这样，包括`npm test`（即实际存在`npm run pretest`、`npm run test`、`npm run posttest`三条命令）。如果执行过程出错，就不会执行排在后面的命令，即如果 pretest 命令执行出错，就不会接着执行 test 和 posttest 命令。不能在 pre 命令之前再加 pre，即 prepretest 命令不起作用。另外，还可以为一些内部命令指定 pre 和 post 的钩子：install、uninstall、publish、update。
 
-```
+```js
 "scripts": {
   "lint": "jshint **.js",
   "build": "browserify index.js > myproject.min.js",
@@ -383,7 +383,7 @@ browserify browser/main.js | uglifyjs -mc > static/bundle.js
 
 `npm run`命令还可以添加参数。
 
-```
+```js
 "scripts": {
   "test": "mocha test/"
 }
@@ -399,31 +399,31 @@ browserify browser/main.js | uglifyjs -mc > static/bundle.js
 
 先在模块目录（src/myModule）下运行 npm link 命令。
 
-```
+```js
 src/myModule$ npm link
 ```
 
 上面的命令会在 npm 的全局模块目录内（比如/usr/local/lib/node_modules/），生成一个符号链接文件，该文件的名字就是 package.json 文件中指定的文件名。
 
-```
+```js
 /usr/local/lib/node_modules/myModule -> src/myModule
 ```
 
 然后，切换到你需要放置该模块的项目目录，再次运行 npm link 命令，并指定模块名。
 
-```
+```js
 src/myProject$ npm link myModule
 ```
 
 上面命令等同于生成了本地模块的符号链接。
 
-```
+```js
 src/myProject/node_modules/myModule -> /usr/local/lib/node_modules/myModule
 ```
 
 然后，就可以在你的项目中，加载该模块了。
 
-```
+```js
 var myModule = require('myModule');
 ```
 
@@ -431,13 +431,13 @@ var myModule = require('myModule');
 
 npm link 命令有一个简写形式，显示连接模块的本地目录。
 
-```
+```js
 $ src/myProject$ npm link ../myModule
 ```
 
 上面的命令等同于下面几条命令。
 
-```
+```js
 $ src/myProject$ cd ../myModule
 $ src/myModule$ npm link
 $ src/myModule$ cd ../myProject
@@ -446,7 +446,7 @@ $ src/myProject$ npm link myModule
 
 如果你的项目不再需要该模块，可以在项目目录内使用 npm unlink 命令，删除符号链接。
 
-```
+```js
 src/myProject$ npm unlink myModule
 ```
 
@@ -454,13 +454,13 @@ src/myProject$ npm unlink myModule
 
 首先在主目录下新建配置文件.npmrc，然后在该文件中将 prefix 变量定义到主目录下面。
 
-```
+```js
 prefix = /home/yourUsername/npm
 ```
 
 然后在主目录下新建 npm 子目录。
 
-```
+```js
 $ mkdir ~/npm
 ```
 
@@ -468,7 +468,7 @@ $ mkdir ~/npm
 
 最后，将这个路径在.bash_profile 文件（或.bashrc 文件）中加入 PATH 变量。
 
-```
+```js
 export PATH=~/npm/bin:$PATH
 ```
 
@@ -476,7 +476,7 @@ export PATH=~/npm/bin:$PATH
 
 在发布你的模块之前，需要先设定个人信息。
 
-```
+```js
 $ npm set init.author.name “张三”
 $ npm set init.author.email “zhangsan@email.com”
 $ npm set init.author.url “http://your.url.com"
@@ -486,7 +486,7 @@ $ npm set init.author.url “http://your.url.com"
 
 然后，向 npm 系统申请用户名。
 
-```
+```js
 $ npm adduser
 ```
 
@@ -494,13 +494,13 @@ $ npm adduser
 
 如果已经注册过，就使用下面的命令登录。
 
-```
+```js
 $ npm login
 ```
 
 最后，使用 npm publish 命令发布。
 
-```
+```js
 $ npm publish
 ```
 
@@ -508,7 +508,7 @@ $ npm publish
 
 `npm version`命令用来修改项目的版本号。当你完成代码修改，要发布新版本的时候，就用这个命令更新一下软件的版本。
 
-```
+```js
 $ npm version <update_type> -m "<message>"
 ```
 
@@ -520,7 +520,7 @@ $ npm version <update_type> -m "<message>"
 
 下面是一个例子。
 
-```
+```js
 $ npm version patch -m "Version %s - xxxxxx"
 ```
 

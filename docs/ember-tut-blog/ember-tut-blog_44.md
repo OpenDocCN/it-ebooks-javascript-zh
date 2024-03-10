@@ -2,7 +2,7 @@
 
 模型也是一个类，它定义了向用户展示的属性和数据行为。模型的定义非常简单，只需要继承[DS.Model](http://emberjs.com/api/data/classes/DS.Model.html)类即可，或者你也可以直接使用[Ember CLI](http://ember-cli.com/user-guide)命令创建。比如使用命令模型 `ember g model person`定义了一个模型类`person`。
 
-```
+```js
 //  app/models/person.js
 
 import DS from 'ember-data';
@@ -18,7 +18,7 @@ export default DS.Model.extend({
 
 上面定义的模型类`person`还没有任何属性，下面为这个类添加几个属性。
 
-```
+```js
 //  app/models/person.js
 
 import DS from 'ember-data';
@@ -32,7 +32,7 @@ export default DS.Model.extend({
 
 上述代码定义了 3 个属性，但是还未给属性指定类型，默认都是`string`类型。这些属性名与你连接的服务器上的数据`key`是一致的。甚至你还可以在模型中定义[计算属性](http://blog.ddlisting.com/2016/03/17/ember-js-ru-men-zhi-nan-ji-suan-shu-xing-compute-properties/)。
 
-```
+```js
 //  app/models/person.js
 
 import DS from 'ember-data';
@@ -56,7 +56,7 @@ export default DS.Model.extend({
 
 不仅可以指定属性类型，你还可以指定属性的默认值，在[attr()](http://emberjs.com/api/data/classes/DS.html#method_attr)方法的第二个参数指定。比如下面的代码：
 
-```
+```js
 //  app/models/person.js
 
 import DS from 'ember-data';
@@ -80,7 +80,7 @@ export default DS.Model.extend({
 
 声明一对一关联使用[DS.belongsTo](http://emberjs.com/api/data/classes/DS.html#method_belongsTo)设置。比如下面的两个模型。
 
-```
+```js
 //  app/models/user.js
 import DS from 'ember-data';
 
@@ -89,7 +89,7 @@ export default DS.Model.extend({
 }); 
 ```
 
-```
+```js
 //  app/models/profile.js
 import DS from ‘ember-data’;  
 export default DS.Model.extend({  
@@ -101,7 +101,7 @@ export default DS.Model.extend({
 
 声明一对多关联使用[DS.belongsTo](http://emberjs.com/api/data/classes/DS.html#method_belongsTo)（多的一方使用）和[DS.hasMany](http://emberjs.com/api/data/classes/DS.html#method_hasMany)（少的一方使用）设置。比如下面的两个模型。
 
-```
+```js
 //  app/models/post.js
 import DS from ‘ember-data’;  
 export default DS.Model.extend({  
@@ -111,7 +111,7 @@ export default DS.Model.extend({
 
 这个模型是一的一方。下面的模型是多的一方；
 
-```
+```js
 //  app/models/comment.js
 import DS from ‘ember-data’;  
 export default DS.Model.extend({  
@@ -125,7 +125,7 @@ export default DS.Model.extend({
 
 声明一对多关联使用[DS.hasMany](http://emberjs.com/api/data/classes/DS.html#method_hasMany)设置。比如下面的两个模型。
 
-```
+```js
 //  app/models/post.js
 import DS from ‘ember-data’;  
 export default DS.Model.extend({  
@@ -133,7 +133,7 @@ export default DS.Model.extend({
 }); 
 ```
 
-```
+```js
 //  app/model/tag.js
 import DS from ‘ember-data’;  
 export default DS.Model.extend({  
@@ -149,7 +149,7 @@ export default DS.Model.extend({
 
 然而，有时候同一个模型中会有多个与此关联模型。这时你可以在反向端用[DS.hasMany](http://emberjs.com/api/data/classes/DS.html#method_hasMany)的`inverse`选项指定其关联的模型：
 
-```
+```js
 //  app/model/comment.js
 import DS from 'ember-data';  
 export default DS.Model.extend({  
@@ -162,7 +162,7 @@ export default DS.Model.extend({
 
 在一个模型中同时与 3 个`post`关联了。
 
-```
+```js
 //  app/models/post.js
 import DS from ‘ember-data’;  
 export default DS.Model.extend({  
@@ -178,7 +178,7 @@ export default DS.Model.extend({
 
 当你想定义一个自反关系的模型时（模型本身的一对一关系），你必须要显式使用`inverse`指定关联的模型。如果没有逆向关系则把`inverse`值设置为`null`。
 
-```
+```js
 //  app/models/folder.js
 import DS from ‘ember-data’;  
 export default DS.Model.extend({  
@@ -195,7 +195,7 @@ export default DS.Model.extend({
 
 如果仅有关联关系没有逆向关系直接把`inverse`设置为`null`。
 
-```
+```js
 //  app/models/folder.js
 import DS from ‘ember-data’;  
 export default DS.Model.extend({  
@@ -205,7 +205,7 @@ export default DS.Model.extend({
 
 #### 2，一对一
 
-```
+```js
 //  app/models/user.js
 import DS from ‘ember-data’;  
 export default DS.Model.extend({  

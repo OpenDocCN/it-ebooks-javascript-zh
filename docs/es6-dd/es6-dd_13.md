@@ -17,7 +17,7 @@
 
 按照目前常见的 JS 编码风格，我们首先应该以函数的形式创建一个构造函数，然后给该函数添加任何我们可能想要的属性，然后用一个对象替换构造函数的`prototype`属性。这个`prototype`对象将包含构造函数创建的实例的所有初始化属性。下面是一个简单的示例，可以直接作为样板文件（boilerplate）重复使用：
 
-```
+```js
  function Circle(radius) {
         this.radius = radius;
         Circle.circlesMade++;
@@ -61,7 +61,7 @@ ES6 提供一种向对象添加特殊属性的新语法，可以帮助我们清�
 
 其中一些功能在以前无法实现，例如：我们不能通过给`obj.prop`赋值来定义 getter 或 setter。因此，我们亟需新语法来编写以下代码：
 
-```
+```js
  var obj = {
         // 现在不再使用 function 关键字给对象添加方法
         // 而是直接使用属性名作为函数名称。
@@ -84,7 +84,7 @@ ES6 提供一种向对象添加特殊属性的新语法，可以帮助我们清�
 
 现在，我们可以用这种新语法重写上面的代码片段：
 
-```
+```js
  function Circle(radius) {
         this.radius = radius;
         Circle.circlesMade++;
@@ -129,7 +129,7 @@ ES6 提供一种向对象添加特殊属性的新语法，可以帮助我们清�
 
 将所有的概念组合到一起后，我们可以重写 Circle 类并实现所有功能：
 
-```
+```js
  class Circle {
         constructor(radius) {
             this.radius = radius;

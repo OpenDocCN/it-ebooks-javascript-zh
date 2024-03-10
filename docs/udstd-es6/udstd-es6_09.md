@@ -38,7 +38,7 @@
 
 如果你曾用 JS 编写过程序，那么或许写过如下代码：
 
-```
+```js
 var colors = ["red", "green", "blue"];
 
 for (var i = 0, len = colors.length; i < len; i++) {
@@ -58,7 +58,7 @@ for (var i = 0, len = colors.length; i < len; i++) {
 
 记住这些后，在 ES5 中创建一个迭代器就相当简单了：
 
-```
+```js
 function createIterator(items) {
 
     var i = 0;
@@ -99,7 +99,7 @@ console.log(iterator.next());           // "{ value: undefined, done: true }"
 
 **生成器**（ **generator** ）是能返回一个迭代器的函数。生成器函数由放在 `function` 关键字之后的一个星号（ `*` ）来表示，并能使用新的 `yield` 关键字。将星号紧跟在 `function` 关键字之后，或是在中间留出空格，都是没问题的，正如下例：
 
-```
+```js
 // 生成器
 function *createIterator() {
     yield 1;
@@ -121,7 +121,7 @@ console.log(iterator.next().value);     // 3
 
 `yield` 关键字可以和值或是表达式一起使用，因此你可以通过生成器给迭代器添加项目，而不是机械化地将项目一个个列出。作为一个例子，此处给出了在 `for` 循环内使用 `yield` 的方法：
 
-```
+```js
 function *createIterator(items) {
     for (let i = 0; i < items.length; i++) {
         yield items[i];
@@ -145,7 +145,7 @@ console.log(iterator.next());           // "{ value: undefined, done: true }"
 
 > `yield` 关键字只能用在生成器内部，用于其他任意位置都是语法错误，即使在生成器内部的函数中也不行，正如此例：
 > 
-> ```
+> ```js
 > function *createIterator(items) {
 > 
 >   items.forEach(function(item) {
@@ -162,7 +162,7 @@ console.log(iterator.next());           // "{ value: undefined, done: true }"
 
 你可以使用函数表达式来创建一个生成器，只要在 `function` 关键字与圆括号之间使用一个星号（ `*` ）即可。例如：
 
-```
+```js
 let createIterator = function *(items) {
     for (let i = 0; i < items.length; i++) {
         yield items[i];
@@ -188,7 +188,7 @@ console.log(iterator.next());           // "{ value: undefined, done: true }"
 
 由于生成器就是函数，因此也可以被添加到对象中。例如，你可以在 ES5 风格的对象字面量中使用函数表达式来创建一个生成器：
 
-```
+```js
 var o = {
 
     createIterator: function *(items) {
@@ -203,7 +203,7 @@ let iterator = o.createIterator([1, 2, 3]);
 
 你也可以使用 ES6 方法的速记法，只要在方法名之前加上一个星号（ `*` ）：
 
-```
+```js
 var o = {
 
     *createIterator(items) {
@@ -228,7 +228,7 @@ let iterator = o.createIterator([1, 2, 3]);
 
 `for-of` 循环在循环每次执行时会调用可迭代对象的 `next()` 方法，并将结果对象的 `value` 值存储在一个变量上。循环过程会持续到结果对象的 `done` 属性变成 `true` 为止。此处有个范例：
 
-```
+```js
 let values = [1, 2, 3];
 
 for (let num of values) {
@@ -238,7 +238,7 @@ for (let num of values) {
 
 此代码输出了如下内容：
 
-```
+```js
 1
 2
 3 
@@ -254,7 +254,7 @@ for (let num of values) {
 
 你可以使用 `Symbol.iterator` 来访问对象上的默认迭代器，就像这样：
 
-```
+```js
 let values = [1, 2, 3];
 let iterator = values[Symbol.iterator]();
 
@@ -268,7 +268,7 @@ console.log(iterator.next());           // "{ value: undefined, done: true }"
 
 既然 `Symbol.iterator` 指定了默认迭代器，你就可以使用它来检测一个对象是否能进行迭代，正如下例：
 
-```
+```js
 function isIterable(object) {
     return typeof object[Symbol.iterator] === "function";
 }
@@ -289,7 +289,7 @@ console.log(isIterable(new WeakSet())); // false
 
 开发者自定义对象默认情况下不是可迭代对象，但你可以创建一个包含生成器的 `Symbol.iterator` 属性，让它们成为可迭代对象。例如：
 
-```
+```js
 let collection = {
     items: [],
     *[Symbol.iterator]() {
@@ -311,7 +311,7 @@ for (let x of collection) {
 
 此代码输出了如下内容：
 
-```
+```js
 1
 2
 3 
@@ -343,7 +343,7 @@ ES6 具有三种集合对象类型：数组、 Map 与 Set 。这三种类型都
 
 这里有一些使用此迭代器的范例：
 
-```
+```js
 let colors = [ "red", "green", "blue" ];
 let tracking = new Set([1234, 5678, 9012]);
 let data = new Map();
@@ -366,7 +366,7 @@ for (let entry of data.entries()) {
 
 调用 `console.log()` 输出了以下内容：
 
-```
+```js
 [0, "red"]
 [1, "green"]
 [2, "blue"]
@@ -383,7 +383,7 @@ for (let entry of data.entries()) {
 
 `values()` 迭代器仅仅能返回存储在集合内的值，例如：
 
-```
+```js
 let colors = [ "red", "green", "blue" ];
 let tracking = new Set([1234, 5678, 9012]);
 let data = new Map();
@@ -406,7 +406,7 @@ for (let value of data.values()) {
 
 此代码输出了如下内容：
 
-```
+```js
 "red"
 "green"
 "blue"
@@ -423,7 +423,7 @@ for (let value of data.values()) {
 
 `keys()` 迭代器能返回集合中的每一个键。对于数组来说，它只返回了数值类型的键，永不返回数组的其他自有属性； Set 的键与值是相同的，因此它的 `keys()` 与 `values()` 返回了相同的迭代器；对于 Map ， `keys()` 迭代器返回了每个不重复的键。这里有个例子演示了这三种情况：
 
-```
+```js
 let colors = [ "red", "green", "blue" ];
 let tracking = new Set([1234, 5678, 9012]);
 let data = new Map();
@@ -446,7 +446,7 @@ for (let key of data.keys()) {
 
 本例输出了如下内容：
 
-```
+```js
 0
 1
 2
@@ -463,7 +463,7 @@ for (let key of data.keys()) {
 
 当 `for-of` 循环没有显式指定迭代器时，每种集合类型都有一个默认的迭代器供循环使用。 `values()` 方法是数组与 Set 的默认迭代器，而 `entries()` 方法则是 Map 的默认迭代器。在 `for-of` 循环中使用集合对象时，这些默认迭代器会让处理更容易一些。作为例子，研究如下代码：
 
-```
+```js
 let colors = [ "red", "green", "blue" ];
 let tracking = new Set([1234, 5678, 9012]);
 let data = new Map();
@@ -489,7 +489,7 @@ for (let entry of data) {
 
 此处没有指定迭代器，因此默认的迭代器函数会被使用。数组、 Set 与 Map 的默认迭代器反映了这些对象是如何被初始化的，于是此代码就输出了如下内容：
 
-```
+```js
 "red"
 "green"
 "blue"
@@ -506,7 +506,7 @@ for (let entry of data) {
 > 
 > Map 默认构造器的行为有助于在 `for-of` 循环中使用解构，正如此例：
 > 
-> ```
+> ```js
 > let data = new Map();
 > 
 > data.set("title", "Understanding ES6");
@@ -530,7 +530,7 @@ var message = "A 𠮷 B";
 for (let i=0; i < message.length; i++) {
     console.log(message[i]);
 } 
-```
+```js
 
 此代码使用了方括号表示法与 `length` 属性来迭代字符串并打印字符，该字符串包含一个 Unicode 字符，输出结果有点出人意料：
 
@@ -541,7 +541,7 @@ A
 (blank)
 (blank)
 B 
-```
+```js
 
 > 译注： `(blank)` 代表空行。
 
@@ -555,7 +555,7 @@ var message = "A 𠮷 B";
 for (let c of message) {
     console.log(c);
 } 
-```
+```js
 
 此代码输出了如下内容：
 
@@ -565,7 +565,7 @@ A
 𠮷
 (blank)
 B 
-```
+```js
 
 作用对象是字符，让本次的结果更符合预期：循环成功地打印出了这个 Unicode 字符以及其余字符。
 
@@ -581,7 +581,7 @@ var divs = document.getElementsByTagName("div");
 for (let div of divs) {
     console.log(div.id);
 } 
-```
+```js
 
 此代码调用 `getElementsByTagName()` 来获取一个包含 `document` 对象中的所有 `<div>` 元素的 `NodeList` 。接下来 `for-of` 循环迭代了每个元素并打印出它们的 ID ，实际上这段代码与在标准数组上使用时并无二致。
 
@@ -594,7 +594,7 @@ let set = new Set([1, 2, 3, 3, 3, 4, 5]),
     array = [...set];
 
 console.log(array);             // [1,2,3,4,5] 
-```
+```js
 
 此代码在数组字面量中使用扩展运算符，以便将 `set` 中的值填充到数组。扩展运算符能作用于所有可迭代对象，并且会使用默认迭代器来判断需要使用哪些值。所有的值都从迭代器中被读取出来并插入数组，遵循迭代器返回值的顺序。此例工作正常是由于 Set 是可迭代对象，但这种方式同样还能用于任意的可迭代对象。此处有另一个例子：
 
@@ -603,7 +603,7 @@ let map = new Map([ ["name", "Nicholas"], ["age", 25]]),
     array = [...map];
 
 console.log(array);         // [ ["name", "Nicholas"], ["age", 25]] 
-```
+```js
 
 此处的扩展运算符将 `map` 转换为一个由数组构成的数组。由于 Map 的默认迭代器返回的是键值对，最终的数组看起来与调用 `new Map()` 时所传入的参数一模一样。
 
@@ -616,7 +616,7 @@ let smallNumbers = [1, 2, 3],
 
 console.log(allNumbers.length);     // 7
 console.log(allNumbers);    // [0, 1, 2, 3, 100, 101, 102] 
-```
+```js
 
 此处的扩展运算符使用 `smallNumbers` 与 `bigNumbers` 中的数据来创建 `allNumbers` 数组。在 `allNumbers` 被创建时，值在其中的排列顺序与数组被添加的顺序一致： 首先是 `0` ，其次是来自 `smallNumbers` 数组的元素，最后是来自 `bigNumbers` 数组的元素。原始数组并没有被改变，只是它们的值被复制到了 `allNumbers` 数组中。
 
@@ -645,7 +645,7 @@ console.log(iterator.next());           // "{ value: 1, done: false }"
 console.log(iterator.next(4));          // "{ value: 6, done: false }"
 console.log(iterator.next(5));          // "{ value: 8, done: false }"
 console.log(iterator.next());           // "{ value: undefined, done: true }" 
-```
+```js
 
 对于 `next()` 的首次调用是一个特殊情况，传给它的任意参数都会被忽略。由于传递给 `next()` 的参数会成为 `yield` 语句的值，该 `yield` 语句指的是上次生成器中断执行处的语句；而 `next()` 方法第一次被调用时，生成器函数才刚刚开始执行，没有所谓的“上一次中断处的 `yield` 语句”可供赋值。因此在第一次调用 `next()` 时，不存在任何向其传递参数的理由。
 
@@ -685,7 +685,7 @@ let iterator = createIterator();
 console.log(iterator.next());                   // "{ value: 1, done: false }"
 console.log(iterator.next(4));                  // "{ value: 6, done: false }"
 console.log(iterator.throw(new Error("Boom"))); // 从生成器中抛出了错误 
-```
+```js
 
 在本例中，前两个 `yield` 表达式照常被运算，但当 `throw()` 被调用时，一个错误在 `let second` 运算之前就被抛出了。这有效停止了代码执行，类似于直接抛出错误，其中唯一区别是错误在何处被抛出。示意图 8-2 演示了每一步所执行的是什么代码。
 
@@ -716,7 +716,7 @@ console.log(iterator.next());                   // "{ value: 1, done: false }"
 console.log(iterator.next(4));                  // "{ value: 6, done: false }"
 console.log(iterator.throw(new Error("Boom"))); // "{ value: 9, done: false }"
 console.log(iterator.next());                   // "{ value: undefined, done: true }" 
-```
+```js
 
 本例使用一个 `try-catch` 块包裹了第二个 `yield` 语句。尽管这个 `yield` 自身的执行不会出错，但在对 `second` 变量赋值之前，错误就在此时被抛出，于是 `catch` 部分捕捉错误并将这个变量赋值为 6 ，然后再继续执行到下一个 `yield` 处并返回了 9 。
 
@@ -742,7 +742,7 @@ let iterator = createIterator();
 
 console.log(iterator.next());           // "{ value: 1, done: false }"
 console.log(iterator.next());           // "{ value: undefined, done: true }" 
-```
+```js
 
 此代码中的生成器在一个 `yield` 语句后跟随了一个 `return` 语句。这个 `return` 表明将不会再有任何值，也因此剩余的 `yield` 语句就不会再执行（它们是不可到达的）。
 
@@ -759,7 +759,7 @@ let iterator = createIterator();
 console.log(iterator.next());           // "{ value: 1, done: false }"
 console.log(iterator.next());           // "{ value: 42, done: true }"
 console.log(iterator.next());           // "{ value: undefined, done: true }" 
-```
+```js
 
 此处，当第二次调用 `next()` 方法时，值 `42` 被返回在 `value` 字段中，此时 `done` 字段的值才第一次变为了 `true` 。第三次调用 `next()` 返回了一个对象，其 `value` 属性再次变回 `undefined` ，你在 `return` 语句中指定的任意值都只会在结果对象中出现一次，此后 `value` 字段就会被重置为 `undefined` 。
 
@@ -794,7 +794,7 @@ console.log(iterator.next());           // "{ value: "red", done: false }"
 console.log(iterator.next());           // "{ value: "green", done: false }"
 console.log(iterator.next());           // "{ value: true, done: false }"
 console.log(iterator.next());           // "{ value: undefined, done: true }" 
-```
+```js
 
 此例中的 `createCombinedIterator()` 生成器依次委托了 `createNumberIterator()` 与 `createColorIterator()` 。返回的迭代器从外部看来就是一个单一的迭代器，用于产生所有的值。每次对 `next()` 的调用都会委托给合适的生成器，直到使用 `createNumberIterator()` 与 `createColorIterator()` 创建的迭代器全部清空为止。然后最终的 `yield` 会被执行以返回 `true` 。
 
@@ -826,7 +826,7 @@ console.log(iterator.next());           // "{ value: "repeat", done: false }"
 console.log(iterator.next());           // "{ value: "repeat", done: false }"
 console.log(iterator.next());           // "{ value: "repeat", done: false }"
 console.log(iterator.next());           // "{ value: undefined, done: true }" 
-```
+```js
 
 此处 `createCombinedIterator()` 生成器委托了 `createNumberIterator()` 并将它的返回值赋值给了 `result` 变量。由于 `createNumberIterator()` 包含 `return 3` 语句，该返回值就是 `3` 。 `result` 变量接下来会作为参数传递给 `createRepeatingIterator()` 生成器，指示同一个字符串需要被重复几次（在本例中是三次）。
 
@@ -860,7 +860,7 @@ console.log(iterator.next());           // "{ value: "repeat", done: false }"
 console.log(iterator.next());           // "{ value: "repeat", done: false }"
 console.log(iterator.next());           // "{ value: "repeat", done: false }"
 console.log(iterator.next());           // "{ value: undefined, done: true }" 
-```
+```js
 
 在此代码中，额外的 `yield` 语句明确地将 `createNumberIterator()` 生成器的返回值进行了输出。
 
@@ -885,7 +885,7 @@ fs.readFile("config.json", function(err, contents) {
     doSomethingWith(contents);
     console.log("Done");
 }); 
-```
+```js
 
 能使用文件名与一个回调函数去调用 `fs.readFile()` 方法，在读取操作结束之后，回调函数就会被调用。此回调函数查看是否存在错误，若否则处理返回的 `contents` 数据。当你拥有数量少而有限的任务需要完成时，这么做很有效；然而当你需要嵌套回调函数，或者要按顺序处理一系列的异步任务时，此方式就会非常麻烦了。在这种场合下，生成器与 `yield` 会很有用。
 
@@ -916,7 +916,7 @@ function run(taskDef) {
     step();
 
 } 
-```
+```js
 
 `run()` 函数接受一个任务定义（即一个生成器函数）作为参数，它会调用生成器来创建一个迭代器，并将迭代器存放在 `task` 变量上。 `task` 变量放在函数的外层，因此它可以被函数内的其他函数访问到，在后面的章节你会发现这么做的好处。第一次对 `next()` 的调用启动了迭代器，并将结果存储下来以便稍后使用。 `step()` 函数查看 `result.done` 是否为 false ，如果是就在递归调用自身之前调用 `next()` 方法。每次调用 `next()` 都会把返回的结果保存在 `result` 变量上，它总是会被最新的信息所重写。对于 `step()` 的初始调用启动了处理过程，该过程会查看 `result.done` 来判断是否还有更多要做的工作。
 
@@ -930,7 +930,7 @@ run(function*() {
     yield;
     console.log(3);
 }); 
-```
+```js
 
 此例只是将三个数值输出到控制台，单纯用于表明对 `next()` 的所有调用都已被执行。然而，仅仅使用几次 yield 并不太有意义，下一步是要把值传进迭代器并获取返回数据。
 
@@ -961,7 +961,7 @@ function run(taskDef) {
     step();
 
 } 
-```
+```js
 
 现在 `result.value` 作为参数被传递给了 `next()` ，这样就能在 `yield` 调用之间传递数据了，就像这样：
 
@@ -973,7 +973,7 @@ run(function*() {
     value = yield value + 3;
     console.log(value);         // 4
 }); 
-```
+```js
 
 此例向控制台输出了两个值： 1 与 4 。数值 1 由 `yield 1` 语句而来，随之 1 又被传回给了 `value` 变量。数值 4 是在 `value` 上加了 3 的结果，并将运算结果再度赋值给 `value` 。现在数据在对 `yield` 的调用之间流动了起来，仅需再来个微小改动，就能支持异步调用。
 
@@ -989,7 +989,7 @@ function fetchData() {
         callback(null, "Hi!");
     };
 } 
-```
+```js
 
 此例的目的是：任何打算让任务运行器调用的函数，都应当返回一个能够执行回调函数的函数。 `fetchData()` 函数所返回的函数能接受一个回调函数作为其参数，当返回的函数被调用时，它会执行回调函数并附加一点额外数据（即 `"Hi!"` 字符串）。该回调函数需要由任务运行器提供，以确保回调函数能与当前的迭代器正确交互。虽然 `fetchData()` 函数是同步的，但你能延迟对回调函数的调用，从而轻易地将它改造为异步函数，就像这样：
 
@@ -1001,7 +1001,7 @@ function fetchData() {
         }, 50);
     };
 } 
-```
+```js
 
 此版本的 `fetchData()` 在调用回调函数之前引入了 50 毫秒的延迟，说明此模式在同步或异步代码上都能同样良好运作。你只要保证每个需要被 `yield` 调用的函数都遵循此模式。
 
@@ -1043,7 +1043,7 @@ function run(taskDef) {
     step();
 
 } 
-```
+```js
 
 当 `result.value` 是个函数时（使用 `===` 运算符来判断），它会被使用一个回调函数进行调用。该回调函数遵循了 Node.js 的惯例，将任何潜在错误作为第一个参数（ `err` ）传入，而处理结果则作为第二个参数。若 `err` 非空，也就表示有错误发生，需要使用该错误对象去调用 `task.throw()` ，而不是调用 `task.next()` ，这样错误就会在恰当的位置被抛出；若不存在错误， `data` 参数将会被传入 `task.next()` ，而其调用结果也会被保存下来。接下来，调用 `step()` 来继续处理过程。若 `result.value` 并非函数，它就会被直接传递给 `next()` 方法。
 
@@ -1057,7 +1057,7 @@ function readFile(filename) {
         fs.readFile(filename, callback);
     };
 } 
-```
+```js
 
 这个 `readFile()` 方法接受单个参数，即文件名，并返回一个能执行回调函数的函数。此回调函数会被直接传递给 `fs.readFile()` 方法，后者会在操作完成后执行回调。接下来你就可以使用 `yield` 来运行这个任务，如下：
 

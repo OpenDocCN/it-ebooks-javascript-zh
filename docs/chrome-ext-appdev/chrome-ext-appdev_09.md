@@ -12,7 +12,7 @@ Chrome 将其平台上的程序分为扩展与应用，并且使用了同样的�
 
 除此之外，Chrome 应用还分为 Hosted App（托管应用）和 Packaged App（打包应用），这两者也是有明显区别的。相对而言，Hosted App 更像是一个高级的书签，这种应用只提供一个图标和 Manifest 文件，在 Manifest 中声明了此应用的启动页面 URL，以及包含的其他页面 URL 和这些页面请求的高级权限。比如下面的例子创建了一个启动页面为 http://mail.google.com/mail/，包含 mail.google.com/mail/和 www.google.com/mail/且请求`unlimitedStorage`和`notifications`权限的应用。
 
-```
+```js
 {
     "name": "Google Mail",
     "description": "Read your gmail",
@@ -60,7 +60,7 @@ CSP 的可选属性值有`'self'`、`'unsafe-inline'`、`'unsafe-eval'`、`'none
 
 Chrome 应用默认的 CSP 规则为：
 
-```
+```js
 default-src 'self';
 connect-src *;
 style-src 'self' data: chrome-extension-resource: 'unsafe-inline';
@@ -74,13 +74,13 @@ media-src *;
 
 这么做显然会大大提高 Chrome 应用的安全性，防止被黑客利用盗取用户的数据，但也显然带来了新的问题。从 Chrome 应用的 CSP 规则中我们发现其不允许通过嵌入式框架引用外部资源，那么如果我们真的需要将一个外部页面展示在 Chrome 应用中怎么办呢？Google 提供了`webview`标签代替`iframe`标签，使用`webview`标签必须指定大小和引用 URL。
 
-```
+```js
 <webview src="http://news.google.com/" width="640" height="480"></webview> 
 ```
 
 同样 Chrome 应用也不允许引用外部的图片，但是我们可以通过 XHR 请求外部图片资源（XHR 是可以请求到任何资源的，只要在 Manifest 中声明权限），然后通过转换成 blob URL 再添加到应用中。
 
-```
+```js
 var xhr = new XMLHttpRequest();
 xhr.open('GET', 'https://supersweetdomainbutnotcspfriendly.com/image.png', true);
 xhr.responseType = 'blob';
@@ -95,7 +95,7 @@ xhr.send();
 
 最后如果无法避免使用`inline-script`和`eval`等方式执行 JavaScript 代码，我们可以将“违规”的页面放入沙箱中执行，方法是在 Manifest 的 sandbox 中列出需要在沙箱中执行的页面。
 
-```
+```js
 "sandbox": {
     "pages": ["sandboxed.html"]
 } 
@@ -155,7 +155,7 @@ Event Page 就是 Chrome 应用的后台脚本，它用于监听各种事件。�
 
 每一个应用都会有一个 Event Page，可以通过 Event Page 监听`onLaunched`事件，然后创建一个窗口。在 Manifest 的`app`属性中，通过`background`域定义 Event Page。
 
-```
+```js
 "app": {
     "background": {
         "scripts": ["background.js"]
@@ -167,7 +167,7 @@ Event Page 就是 Chrome 应用的后台脚本，它用于监听各种事件。�
 
 ^(1 从 Chrome 36 开始，`create`方法的选项对象不再支持`bounds`、`minWidth`、`maxWidth`、`minHeight`和`maxHeight`属性，请使用`innerBounds`和`outerBounds`属性代替。`innerBounds`和`outerBounds`的属性值包括`width`、`height`、`left`、`top`、`minWidth`、`maxWidth`、`minHeight`和`maxHeight`。)
 
-```
+```js
 chrome.app.runtime.onLaunched.addListener(function() {
     chrome.app.window.create('main.html', {
         id: 'MyWindowID',
@@ -189,7 +189,7 @@ chrome.app.runtime.onLaunched.addListener(function() {
 
 Chrome 应用可以使用`chrome.storage`存储数据，如：
 
-```
+```js
 chrome.runtime.onInstalled.addListener(function() {
     chrome.storage.local.set(object items, function callback);
 }); 
@@ -197,7 +197,7 @@ chrome.runtime.onInstalled.addListener(function() {
 
 数据保存在用户本地时，可能会面临数据永远丢失的风险——当用户卸载应用或者重新安装操作系统后，应用保存在本地的数据都会永久丢失。为防止这种风险，可以选择使用一种在线的存储方式，最简单的方法就是使用 Chrome storage API 中的`sync`域储存数据：
 
-```
+```js
 chrome.runtime.onInstalled.addListener(function() {
     chrome.storage.sync.set(items, function(){...});
 }); 
@@ -230,7 +230,7 @@ Chrome 应用中创建的窗口与 Chrome 浏览器中的窗口没有任何关�
 
 创建这个窗口的代码为：
 
-```
+```js
 chrome.app.window.create('blank.html', {
     id: 'default'
 }); 
@@ -251,7 +251,7 @@ Chrome 默认的应用窗口非常简洁，但在实际使用时需要注意在�
 
 最简单的方法是用 CSS 为`body`添加一个边框：
 
-```
+```js
 body {
     border: black 1px solid;
 } 
@@ -259,7 +259,7 @@ body {
 
 或者为`body`指定一个背景颜色，而不使用窗口默认的白色：
 
-```
+```js
 body {
     background: #EEE;
 } 
@@ -267,7 +267,7 @@ body {
 
 在创建窗口时也可以指定窗口的大小，如：
 
-```
+```js
 chrome.app.window.create('main.html', {
     id: 'main',
     bounds: {
@@ -281,7 +281,7 @@ chrome.app.window.create('main.html', {
 
 通过`bounds`指定的尺寸是不包含窗口外框的，如标题栏等，只是窗口内嵌入页面的显示尺寸。如果不希望用户调整窗口尺寸可以指定窗口的`resizable`属性值为`false`：
 
-```
+```js
 chrome.app.window.create('main.html', {
     id: 'main',
     bounds: {
@@ -294,7 +294,7 @@ chrome.app.window.create('main.html', {
 
 也可以指定窗口可调节尺寸的范围，比如：
 
-```
+```js
 chrome.app.window.create('main.html', {
     id: 'main',
     bounds: {
@@ -310,7 +310,7 @@ chrome.app.window.create('main.html', {
 
 除了指定窗口大小，还可以指定窗口位置，如果不指定，则默认显示在屏幕中心。
 
-```
+```js
 chrome.app.window.create('main.html', {
     id: 'main',
     bounds: {
@@ -324,7 +324,7 @@ chrome.app.window.create('main.html', {
 
 其他的特性还包括新建窗口状态（最大化、最小化、正常或者全屏）和窗口是否总是在最前面，在声明`app.window.alwaysOnTop`权限的情况下，下面的代码创建了一个总是在最前面的全屏窗口：
 
-```
+```js
 chrome.app.window.create('main.html', {
     id: 'main',
     state: 'fullscreen',
@@ -336,7 +336,7 @@ chrome.app.window.create('main.html', {
 
 最后窗口的`hidden`属性是非常重要的，它可以让窗口在后台静默运行，类似于后台脚本，但在需要时可以使用`show`方法重新显示出来，具体有关隐藏窗口的内容将在后面的内容中详细讲解。下面的代码创建了一个隐藏的窗口：
 
-```
+```js
 chrome.app.window.create('main.html', {
     id: 'main',
     hidden: true
@@ -345,7 +345,7 @@ chrome.app.window.create('main.html', {
 
 窗口创建完成后我们也可以使用回调函数获取刚刚创建窗口的属性：
 
-```
+```js
 chrome.app.window.create('main.html', {'id': 'main'}, function(appWindow){
     console.log(appWindow);
 }); 
@@ -357,7 +357,7 @@ chrome.app.window.create('main.html', {'id': 'main'}, function(appWindow){
 
 将窗口的`frame`属性值定为`'none'`，新建的窗口将不显示标题栏，如：
 
-```
+```js
 chrome.app.window.create('blank.html', {
     id: 'blank',
     frame: 'none'
@@ -373,7 +373,7 @@ chrome.app.window.create('blank.html', {
 
 我们可以在 HTML 中指定可以拖拽的元素，这样当鼠标在这些元素上的时候就可以拖拽整个窗口了，下面对 blank.html 进行改进一下：
 
-```
+```js
 <html>
 <head>
 <title>A more free style window</title>
@@ -408,7 +408,7 @@ body {
 
 在介绍自定义窗口控制按钮之前需要先了解获取当前窗口的方法，因为所有控制函数都是当前窗口对象的子元素。
 
-```
+```js
 var current_window = chrome.app.window.current(); 
 ```
 
@@ -416,13 +416,13 @@ var current_window = chrome.app.window.current();
 
 窗口对象的`close`方法可以关闭当前窗口，如：
 
-```
+```js
 current_window.close(); 
 ```
 
 同样还可以最大化窗口、最小化窗口、还原窗口或全屏窗口：
 
-```
+```js
 current_window.maximize();
 current_window.minimize();
 current_window.restore();
@@ -431,7 +431,7 @@ current_window.fullscreen();
 
 也可以获取当前窗口是否处于某种状态：
 
-```
+```js
 var is_maximize = current_window.isMaximized();
 var is_minimize = current_window.isMinimized();
 var is_fullscreen = current_window.isFullscreen(); 
@@ -441,7 +441,7 @@ var is_fullscreen = current_window.isFullscreen();
 
 下面给 blank.html 页面添加上控制按钮。首先在`title_bar`的右侧添加三个圆形的按钮，分别对应最小化、最大化（还原）和关闭。
 
-```
+```js
 <div id="title_bar">A more free style window
     <a id="close" href="#"></a>
     <a id="maximize" href="#"></a>
@@ -451,7 +451,7 @@ var is_fullscreen = current_window.isFullscreen();
 
 然后在样式表中添加这三个按钮的显示样式：
 
-```
+```js
 #title_bar a {
     display: inline-block;
     float: right;
@@ -473,7 +473,7 @@ var is_fullscreen = current_window.isFullscreen();
 
 现在看起来虽然感觉好多了，但是当鼠标悬浮在按钮上时并没有反馈交互，所以我们还应该更加细化一下设计。继续在样式表中添加交互特性：
 
-```
+```js
 #title_bar a:hover {
     background: black;
 } 
@@ -486,7 +486,7 @@ var is_fullscreen = current_window.isFullscreen();
 
 下面来为这三个按钮绑定事件。最小化和关闭按钮都很容易：
 
-```
+```js
 var current_window = chrome.app.window.current();
 
 document.getElementById('minimize').onclick = function(){
@@ -500,7 +500,7 @@ document.getElementById('close').onclick = function(){
 
 对于最大化的按钮，因为同时也是还原窗口的按钮，所以当用户点击时要进行判断：
 
-```
+```js
 document.getElementById('maximize').onclick = function(){
     current_window.isMaximized() ?
         current_window.restore() :
@@ -514,7 +514,7 @@ document.getElementById('maximize').onclick = function(){
 
 下面是改进后完整的 HTML 代码：
 
-```
+```js
 <html>
 <head>
 <title>A more free style window</title>
@@ -565,7 +565,7 @@ body {
 
 下面是完整的 JavaScript 代码：
 
-```
+```js
 var current_window = chrome.app.window.current();
 
 document.getElementById('minimize').onclick = function(){
@@ -591,13 +591,13 @@ document.getElementById('maximize').onclick = function(){
 
 调用`chrome.app.window.get`方法时需要指定窗口`id`：
 
-```
+```js
 var main_window = chrome.app.window.get('main'); 
 ```
 
 以下是窗口对象的完整结构，其中除`id`为字符串、`contentWindow`为 JavaScript window object，其他均为函数。
 
-```
+```js
 {
     focus: 将焦点放在窗口上,
     fullscreen: 将窗口全屏,
@@ -627,7 +627,7 @@ var main_window = chrome.app.window.get('main');
 
 在 6.4 节中提到了用隐藏窗口的方法防止应用被 Chrome 关闭，下面对之前的代码进行更改。首先将关闭按钮绑定的事件改为隐藏：
 
-```
+```js
 var current_window = chrome.app.window.current();
 
 document.getElementById('close').onclick = current_window.hide(); 
@@ -635,7 +635,7 @@ document.getElementById('close').onclick = current_window.hide();
 
 其次将 Event Page 中启动事件改写成先判断窗口是否存在，如果存在则调用`show`方法显示，否则创建：
 
-```
+```js
 chrome.app.runtime.onLaunched.addListener(function() {
     var main_window = chrome.app.window.get('main');
     if(main_window){
@@ -665,7 +665,7 @@ chrome.app.runtime.onLaunched.addListener(function() {
 
 应用窗口有 6 种事件，其中有 4 种用于监听窗口状态，分别是`onFullscreened`、`onMaximized`、`onMinimized`和`onRestored`：
 
-```
+```js
 chrome.app.window.onFullscreened.addListener(function(){
     //do something when the window is set to fullscreen.
 });
@@ -685,7 +685,7 @@ chrome.app.window.onRestored.addListener(function(){
 
 另外两种事件一个用于监听窗口尺寸变化，另一个用于监听窗口被关闭：
 
-```
+```js
 chrome.app.window.onBoundsChanged.addListener(function(){
     //do something when the window is resized.
 });
@@ -703,7 +703,7 @@ chrome.app.window.onClosed.addListener(function(){
 
 首先来创建 Manifest 文件：
 
-```
+```js
 {
     "app": {
         "background": {
@@ -728,7 +728,7 @@ chrome.app.window.onClosed.addListener(function(){
 
 下面编写 background.js 脚本，根据 6.5 的内容可以直接写出如下代码：
 
-```
+```js
 chrome.app.runtime.onLaunched.addListener(function() {
     chrome.app.window.create('main.html', {
         'id': 'main',
@@ -746,7 +746,7 @@ chrome.app.runtime.onLaunched.addListener(function() {
 
 下面是 main.html 的代码：
 
-```
+```js
 <html>
 <head>
 <title>Performance Monitor</title>
@@ -829,7 +829,7 @@ body {
 
 control.js 的代码：
 
-```
+```js
 var current_window = chrome.app.window.current();
 
 document.getElementById('minimize').onclick = function(){
@@ -843,7 +843,7 @@ document.getElementById('close').onclick = function(){
 
 下面来编写 main.js，这个脚本用来定时获取数据并进行展示。
 
-```
+```js
 function getCpuUsage(callback){
     chrome.system.cpu.getInfo(function(info){
         var total = 0;

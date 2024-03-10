@@ -39,7 +39,7 @@
 
 ES6 为数组新增创建方法的目的之一，是帮助开发者在使用 `Array` 构造器时避开 JS 语言的一个怪异点。调用 `new Array()` 构造器时，根据传入参数的类型与数量的不同，实际上会导致一些不同的结果，例如：
 
-```
+```js
 let items = new Array(2);
 console.log(items.length);          // 2
 console.log(items[0]);              // undefined
@@ -64,7 +64,7 @@ console.log(items[1]);              // "2"
 
 ES6 引入了 `Array.of()` 方法来解决这个问题。该方法的作用非常类似 `Array` 构造器，但在使用单个数值参数的时候并不会导致特殊结果。 `Array.of()` 方法总会创建一个包含所有传入参数的数组，而不管参数的数量与类型。下面几个例子演示了 `Array.of()` 的用法：
 
-```
+```js
 let items = Array.of(1, 2);
 console.log(items.length);          // 2
 console.log(items[0]);              // 1
@@ -81,7 +81,7 @@ console.log(items[0]);              // "2"
 
 在使用 `Array.of()` 方法创建数组时，只需将想要包含在数组内的值作为参数传入。第一个例子创建了一个包含两个项的数组，第二个数组只包含了单个数值项，而最后一个数组则包含了单个字符串项。这个结果类似于使用数组字面量写法，通常你都可以在原生数组上使用字面量写法来代替 `Array.of()` ，但若想向函数传递参数，使用 `Array.of()` 而非 `Array` 构造器能够确保行为一致。例如：
 
-```
+```js
 function createArray(arrayCreator, value) {
     return arrayCreator(value);
 }
@@ -97,7 +97,7 @@ let items = createArray(Array.of, value);
 
 在 JS 中将非数组对象转换为真正的数组总是很麻烦。例如，若想将类数组的 `arguments` 对象当做数组来使用，那么你首先需要对其进行转换。在 ES5 中，进行这种转换需要编写一个函数，类似下面这样：
 
-```
+```js
 function makeArray(arrayLike) {
     var result = [];
 
@@ -117,7 +117,7 @@ function doSomething() {
 
 该方式手动创建了一个 `result` 数组，并将 `arguments` 对象的所有项复制到该数组中。这种方式虽然有效，却为一个简单操作书写了过多的代码。开发者最终发现他们可以调用数组原生的 `slice()` 方法来减少代码量，就像这样：
 
-```
+```js
 function makeArray(arrayLike) {
     return Array.prototype.slice.call(arrayLike);
 }
@@ -135,7 +135,7 @@ function doSomething() {
 
 将可迭代对象或者类数组对象作为第一个参数传入， `Array.from()` 就能返回一个数组。这里有个简单的例子：
 
-```
+```js
 function doSomething() {
     var args = Array.from(arguments);
 
@@ -151,7 +151,7 @@ function doSomething() {
 
 如果你想实行进一步的数组转换，你可以向 `Array.from()` 方法传递一个映射用的函数作为第二个参数。此函数会将类数组对象的每一个值转换为目标形式，并将其存储在目标数组的对应位置上。例如：
 
-```
+```js
 function translate() {
     return Array.from(arguments, (value) => value + 1);
 }
@@ -163,7 +163,7 @@ console.log(numbers);               // 2,3,4
 
 此代码将 `(value) => value + 1` 作为映射函数传递给了 `Array.from()` 方法，对每个项进行了一次 +1 处理。如果映射函数需要在对象上工作，你可以手动传递第三个参数给 `Array.from()` 方法，从而指定映射函数内部的 `this` 值。
 
-```
+```js
 let helper = {
     diff: 1,
 
@@ -187,7 +187,7 @@ console.log(numbers);               // 2,3,4
 
 `Array.from()` 方法不仅可用于类数组对象，也可用于可迭代对象，这意味着该方法可以将任意包含 `Symbol.iterator` 属性的对象转换为数组。例如：
 
-```
+```js
 let numbers = {
     *[Symbol.iterator]() {
         yield 1;
@@ -217,7 +217,7 @@ ES6 延续了 ES5 的工作，为数组增加了几个新方法。 `find()` 与 
 
 二者唯一的区别是： `find()` 方法会返回匹配的值，而 `findIndex()` 方法则会返回匹配位置的索引。这里有个示例：
 
-```
+```js
 let numbers = [25, 30, 35, 40, 45];
 
 console.log(numbers.find(n => n > 33));         // 35
@@ -232,7 +232,7 @@ console.log(numbers.findIndex(n => n > 33));    // 2
 
 `fill()` 方法能使用特定值填充数组中的一个或多个元素。当只使用一个参数的时候，该方法会用该参数的值填充整个数组，例如：
 
-```
+```js
 let numbers = [1, 2, 3, 4];
 
 numbers.fill(1);
@@ -242,7 +242,7 @@ console.log(numbers.toString());    // 1,1,1,1
 
 此代码中的 `numbers.fill(1)` 调用将 `numbers` 数组中的所有元素都填充为 `1` 。若你不想改变数组中的所有元素，而只想改变其中一部分，那么可以使用可选的起始位置参数与结束位置参数（不包括结束位置的那个元素），就像这样：
 
-```
+```js
 let numbers = [1, 2, 3, 4];
 
 numbers.fill(1, 2);
@@ -264,7 +264,7 @@ console.log(numbers.toString());    // 1,0,0,1
 
 例如，将数组的前两个元素复制到数组的最后两个位置，你可以这么做：
 
-```
+```js
 let numbers = [1, 2, 3, 4];
 
 // 从索引 2 的位置开始粘贴
@@ -278,7 +278,7 @@ console.log(numbers.toString());    // 1,2,1,2
 
 默认情况下， `copyWithin()` 方法总是会一直复制到数组末尾，不过你还可以提供一个可选参数来限制到底有多少元素会被覆盖。这第三个参数指定了复制停止的位置（不包含该位置自身），这里有个范例：
 
-```
+```js
 let numbers = [1, 2, 3, 4];
 
 // 从索引 2 的位置开始粘贴
@@ -326,20 +326,20 @@ JS 数值使用 IEEE 754 标准格式存储，使用 64 位来存储一个数值
 
 **数组缓冲区**（**array buffer**）是内存中包含一定数量字节的区域，而所有的类型化数组都基于数组缓冲区。创建数组缓冲区类似于在 C 语言中使用 `malloc()` 来分配内存，而不需要指定这块内存包含什么。你可以像下例这样使用 `ArrayBuffer` 构造器来创建一个数组缓冲区：
 
-```
+```js
 let buffer = new ArrayBuffer(10);   // 分配了 10 个字节 
 ```
 
 调用 `ArrayBuffer` 构造器时，只需要传入单个数值用于指定缓冲区包含的字节数，而本例就创建了一个 10 字节的缓冲区。当数组缓冲区被创建完毕后，你就可以通过检查 `byteLength` 属性来获取缓冲区的字节数：
 
-```
+```js
 let buffer = new ArrayBuffer(10);   // 分配了 10 个字节
 console.log(buffer.byteLength);     // 10 
 ```
 
 你还可以使用 `slice()` 方法来创建一个新的、包含已有缓冲区部分内容的数组缓冲区。该 `slice()` 方法类似于数组上的同名方法，可以使用起始位置与结束位置参数，返回由原缓冲区元素组成的一个新的 `ArrayBuffer` 实例。例如：
 
-```
+```js
 let buffer = new ArrayBuffer(10);   // 分配了 10 个字节
 
 let buffer2 = buffer.slice(4, 6);
@@ -358,14 +358,14 @@ console.log(buffer2.byteLength);    // 2
 
 使用 `DataView` ，首先需要创建 `ArrayBuffer` 的一个实例，再在上面创建一个新的 `ArrayBuffer` 视图。这里有个例子：
 
-```
+```js
 let buffer = new ArrayBuffer(10),
     view = new DataView(buffer); 
 ```
 
 本例中的 `view` 对象可以使用 `buffer` 对象的所有 10 个字节。而你也可以在缓冲区的一个部分上创建视图，只需要指定可选参数——字节偏移量、以及所要包含的字节数。当未提供最后一个参数时，该 `DataView` 视图会默认包含从偏移位置开始、到缓冲区末尾为止的元素。例如：
 
-```
+```js
 let buffer = new ArrayBuffer(10),
     view = new DataView(buffer, 5, 2);      // 包含位置 5 与位置 6 的字节 
 ```
@@ -382,7 +382,7 @@ let buffer = new ArrayBuffer(10),
 
 使用这些属性，你就可以查出所操作视图的准确位置，例如：
 
-```
+```js
 let buffer = new ArrayBuffer(10),
     view1 = new DataView(buffer),           // 包含所有字节
     view2 = new DataView(buffer, 5, 2);     // 包含位置 5 与位置 6 的字节
@@ -429,7 +429,7 @@ console.log(view2.byteLength);              // 2
 
 为了弄懂“set”与“get”方法如何使用，可研究下面的例子：
 
-```
+```js
 let buffer = new ArrayBuffer(2),
     view = new DataView(buffer);
 
@@ -444,7 +444,7 @@ console.log(view.getInt8(1));       // -1
 
 视图允许你使用任意格式对任意位置进行读写，而无须考虑这些数据此前是使用什么格式存储的，这非常有意思。例如，向缓冲区写入两个 int8 值，并将其作为一个 int16 值读取出来，这是完全可行的，如同下面这个例子：
 
-```
+```js
 let buffer = new ArrayBuffer(2),
     view = new DataView(buffer);
 
@@ -458,7 +458,7 @@ console.log(view.getInt8(1));       // -1
 
 该代码使用 `view.getInt16(0)` 读取了该视图的所有字节，并将其解析为数值 1535 。为了理解这个范例，可以参阅下面的示意图，它揭示了每个 `setInt8()` 操作对缓冲区造成的变化：
 
-```
+```js
 new ArrayBuffer(2)      0000000000000000
 view.setInt8(0, 5);     0000010100000000
 view.setInt8(1, -1);    0000010111111111 
@@ -494,7 +494,7 @@ ES6 的类型化数组实际上也是针对数组缓冲区的特定类型视图�
 > 
 > 每一种类型化数组都由一定数量的元素构成，而“元素大小”则代表每个类型的单个元素所包含的字节数。这个数字被存储在类型化数组每个构造器与每个实例的 `BYTES_PER_ELEMENT` 属性中，方便你查询元素的大小：
 > 
-> ```
+> ```js
 > console.log(UInt8Array.BYTES_PER_ELEMENT);      // 1
 > console.log(UInt16Array.BYTES_PER_ELEMENT);     // 2
 > 
@@ -506,7 +506,7 @@ ES6 的类型化数组实际上也是针对数组缓冲区的特定类型视图�
 
 类型化数组的构造器可以接受多种类型的参数，因此存在几种创建类型化数组的方式。第一种方式是使用与创建 `DataView` 时相同的参数，即：一个数组缓冲区、一个可选的字节偏移量、以及一个可选的字节数量。例如：
 
-```
+```js
 let buffer = new ArrayBuffer(10),
     view1 = new Int8Array(buffer),
     view2 = new Int8Array(buffer, 5, 2);
@@ -523,7 +523,7 @@ console.log(view2.byteLength);              // 2
 
 第二种方式是传递单个数值给类型化数组的构造器，此数值表示该数组包含的元素数量（而不是分配的字节数）。构造器将会创建一个新的缓冲区，分配正确的字节数以便容纳指定数量的数组元素，而你也可以使用 `length` 属性来获取这个元素数量。例如：
 
-```
+```js
 let ints = new Int16Array(2),
     floats = new Float32Array(5);
 
@@ -547,7 +547,7 @@ console.log(floats.length);         // 5
 
 在上述任意可能中，新的类型化数组都会从原对象获取数据。若想用一些值来初始化一个类型化数组，这种方式就特别有用，就像这样：
 
-```
+```js
 let ints1 = new Int16Array([25, 50]),
     ints2 = new Int32Array(ints1);
 
@@ -570,7 +570,7 @@ console.log(ints2[1]);              // 50
 
 类型化数组与常规数组有好几个相似点，并且正如你已经在本章看到的那样，类型化数组在很多场景中都可以像常规数组那样被使用。例如，你可以使用 `length` 属性来获取类型化数组包含的元素数量，还可以使用数值类型的索引值来直接访问类型化数组的元素。举个例子：
 
-```
+```js
 let ints = new Int16Array([25, 50]);
 
 console.log(ints.length);          // 2
@@ -616,7 +616,7 @@ console.log(ints[1]);              // 2
 
 注意：虽然这些方法的表现与数组原型上的对应方法相似，但它们并不完全相同。类型化数组的方法会进行额外的类型检查以确保安全，并且返回值会是某种类型化数组，而不是常规数组（归结于 `Symbol.species` 属性）。这里有个例子用于演示其中的区别：
 
-```
+```js
 let ints = new Int16Array([25, 50]),
     mapped = ints.map(v => v * 2);
 
@@ -633,7 +633,7 @@ console.log(mapped instanceof Int16Array);  // true
 
 与常规数组相同，类型化数组也拥有三个迭代器，它们是 `entries()` 方法、 `keys()` 方法与 `values()` 方法。这就意味着你可以对类型化数组使用扩展运算符，或者对其使用 `for-of` 循环，就像对待常规数组。举个例子：
 
-```
+```js
 let ints = new Int16Array([25, 50]),
     intsArray = [...ints];
 
@@ -648,7 +648,7 @@ console.log(intsArray[1]);                  // 50
 
 最后，所有的类型化数组都包含静态的 `of()` 与 `from()` 方法，作用类似于 `Array.of()` 与 `Array.from()` 方法。其中的区别是类型化数组的版本会返回类型化数组，而不返回常规数组。下面的例子使用这两个方法创建了几个类型化数组：
 
-```
+```js
 let ints = Int16Array.of(25, 50),
     floats = Float32Array.from([1.5, 2.5]);
 
@@ -670,7 +670,7 @@ console.log(floats[1]);         // 2.5
 
 二者最重要的区别就是类型化数组并不是常规数组，类型化数组并不是从 `Array` 对象派生的，使用 `Array.isArray()` 去检测会返回 `false` ，例如：
 
-```
+```js
 let ints = new Int16Array([25, 50]);
 
 console.log(ints instanceof Array);     // false
@@ -683,7 +683,7 @@ console.log(Array.isArray(ints));       // false
 
 常规数组可以被伸展或是收缩，然而类型化数组却会始终保持自身大小不变。你可以对常规数组一个不存在的索引位置进行赋值，但在类型化数组上这么做则会被忽略。这里有个例子：
 
-```
+```js
 let ints = new Int16Array([25, 50]);
 
 console.log(ints.length);          // 2
@@ -700,7 +700,7 @@ console.log(ints[2]);              // undefined
 
 类型化数组也会对数据类型进行检查以保证只使用有效的值，当无效的值被传入时，将会被替换为 0 ，例如：
 
-```
+```js
 let ints = new Int16Array(["hi"]);
 
 console.log(ints.length);       // 1
@@ -711,7 +711,7 @@ console.log(ints[0]);           // 0
 
 所有在类型化数组上修改项目值的方法都会受到相同的限制，例如当 `map()` 方法使用的映射函数返回一个无效值的时候，类型化数组会使用 `0` 来代替返回值：
 
-```
+```js
 let ints = new Int16Array([25, 50]),
     mapped = ints.map(v => "hi");
 
@@ -744,7 +744,7 @@ console.log(mapped instanceof Array);       // false
 
 `set()` 方法接受一个数组参数（无论是类型化的还是常规的）、以及一个可选的偏移量参数，后者指示了从什么位置开始插入数据（默认值为 0 ）。数组参数中的数据会被复制到目标类型化数组中，并会确保数据值有效。这里有个例子：
 
-```
+```js
 let ints = new Int16Array(4);
 
 ints.set([25, 50]);
@@ -757,7 +757,7 @@ console.log(ints.toString());   // 25,50,75,100
 
 `subarray()` 方法接受一个可选的开始位置索引参数、以及一个可选的结束位置索引参数（像 `slice()` 方法一样，结束位置的元素不会被包含在结果中），并会返回一个新的类型化数组。你可以同时省略这两个参数，从而创建原类型化数组的一个复制品。例如：
 
-```
+```js
 let ints = new Int16Array([25, 50, 75, 100]),
     subints1 = ints.subarray(),
     subints2 = ints.subarray(2),

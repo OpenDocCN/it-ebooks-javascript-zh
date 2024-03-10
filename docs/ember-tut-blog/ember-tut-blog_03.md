@@ -6,7 +6,7 @@
 
 当你想扩展一个类你可以直接使用`reopen()`方法为一个已经定义好的类添加属性、方法。如果是使用`extend()`方法你需要重新定义一个子类，然后在子类中添加新的属性、方法。 前一篇所过，调用`create()`方法时候不能传入计算属性并且不推荐在此方法中新定义、重写方法，但是使用`reopen()`方法可以弥补`create()`方法的补足。与`extend()`方法非常相似，下面的代码演示了它们的不同之处。
 
-```
+```js
 Parent = Ember.Object.extend({  
     name: 'ubuntuvim',
     fun1() {
@@ -100,7 +100,7 @@ c2.common();
 
 使用`reopenClass()`方法可以扩展`static`类型的属性、方法。
 
-```
+```js
 Parent = Ember.Object.extend();   
 
 //  使用 reopenClass()方法添加新的 static 属性、方法

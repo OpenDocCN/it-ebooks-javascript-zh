@@ -10,7 +10,7 @@
 
 我们需要在纹理坐标传递过程中添加更多的信息，然后将他们传递到片段着色器中。
 
-```
+```js
 attribute vec2 a_texCoord;
 ...
 varying vec2 v_texCoord;
@@ -25,7 +25,7 @@ void main() {
 
 然后，我们提供一个片段着色器来查找颜色纹理。
 
-```
+```js
 <script id="2d-fragment-shader" type="x-shader/x-fragment">
 precision mediump float;
 
@@ -44,7 +44,7 @@ void main() {
 
 最后，我们需要加载一个图片，然后创建一个问题，将该图片传递到纹理里面。因为，是在浏览器里面显示，所以图片是异步加载，所以我们安置我们的代码来等待纹理的加载。一旦，加载完成就可以绘制。
 
-```
+```js
 function main() {
   var image = new Image();
   image.src = "http://someimage/on/our/server";  // MUST BE SAME DOMAIN!!!
@@ -95,7 +95,7 @@ function render(image) {
 
 下面我们对这个图片进行一些操作，来交换图片中的红色和蓝色。
 
-```
+```js
 ...
 gl_FragColor = texture2D(u_image, v_texCoord).bgra;
 ... 
@@ -109,7 +109,7 @@ gl_FragColor = texture2D(u_image, v_texCoord).bgra;
 
 这里有个片段着色器来平均纹理中每个像素的左侧和右侧的像素。
 
-```
+```js
 <script id="2d-fragment-shader" type="x-shader/x-fragment">
 precision mediump float;
 
@@ -135,7 +135,7 @@ void main() {
 
 然后,我们需要通过 JavaScript 传递出纹理的大小。
 
-```
+```js
 ...
 var textureSizeLocation = gl.getUniformLocation(program, "u_textureSize");
 ...
@@ -152,7 +152,7 @@ gl.uniform2f(textureSizeLocation, image.width, image.height);
 
 在我们的例子中我们要在着色器中做这样工作，这里是一个新的片段着色器。
 
-```
+```js
 <script id="2d-fragment-shader" type="x-shader/x-fragment">
 precision mediump float;
 
@@ -187,7 +187,7 @@ void main() {
 
 在 JavaScript 中，我们需要提供一个卷积内核和它的权重。
 
-```
+```js
  function computeKernelWeight(kernel) {
    var weight = kernel.reduce(function(prev, curr) {
    return prev + curr;
@@ -223,7 +223,7 @@ void main() {
 
 一种比较灵活的方式是使用两种或更多的纹理和渲染效果来交替渲染,每次应用一个效果，然后反复应用。
 
-```
+```js
 Original Image -> [Blur]-> Texture 1
 Texture 1  -> [Sharpen] -> Texture 2
 Texture 2  -> [Edge Detect] -> Texture 1
@@ -235,7 +235,7 @@ Texture 2  -> [Normal]  -> Canvas
 
 首先让我们把[旧的纹理创建代码](http://webglfundamentals.org/webgl/lessons/webgl-image-processing.html)写成一个函数。
 
-```
+```js
  function createAndSetupTexture(gl) {
 var texture = gl.createTexture();
 gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -257,7 +257,7 @@ return texture;
 
 然后，我们使用这两个函数来生成两种问题，并且附在两个帧缓存中。
 
-```
+```js
 // create 2 textures and attach them to framebuffers.
   var textures = [];
   var framebuffers = [];
@@ -283,7 +283,7 @@ gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
 
 现在，我们生成一些核的集合，然后存储到列表里来应用。
 
-```
+```js
  // Define several convolution kernels
   var kernels = {
 normal: [
@@ -319,7 +319,7 @@ emboss: [
 
 最后，我们应用每一个，然后交替渲染。
 
-```
+```js
 // start with the original image
   gl.bindTexture(gl.TEXTURE_2D, originalImageTexture);
 
@@ -372,7 +372,7 @@ WebGL 不得不将[投影矩阵](http://webglfundamentals.org/webgl/lessons/webg
 
 最后，在[原始例子](http://webglfundamentals.org/webgl/lessons/webgl-fundamentals.html)中，当需要渲染的时候，我们会翻转 Y 坐标。这是因为 WebGL 会以 0 来显示面板。 0 表示是左侧底部的坐标，这不同于 2D 图像的顶部左侧的坐标。当渲染为帧缓存时就不需要了。这是因为帧缓存并不会显示出来。其部分是顶部还是底部是无关紧要的。所有重要的就是像素 0，0 在帧缓存里就对应着 0。为了解决这一问题，我们可以通过是否在着色器中添加更多输入信息的方法来设置是否快读交替。
 
-```
+```js
 <script id="2d-vertex-shader" type="x-shader/x-vertex">
 ...
 uniform float u_flipY;
@@ -388,7 +388,7 @@ void main() {
 
 当我们渲染的时候，就可以设置它。
 
-```
+```js
  var flipYLocation = gl.getUniformLocation(program, "u_flipY");
   ...
   // don't flip

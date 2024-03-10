@@ -4,7 +4,7 @@
 
 ### 双向绑定
 
-```
+```js
 // 双向绑定
 Wife = Ember.Object.extend({  
   householdIncome: 800
@@ -39,7 +39,7 @@ console.log('wife householdIncome = ' + wife.get('householdIncome'));
 
 单向绑定只会在一个方向上传播变化。相对双向绑定来说，单向绑定做了性能优化，对于双向绑定来说如果你只是在一个方向上设置关联其实就是一个单向绑定。
 
-```
+```js
 var user = Ember.Object.create({  
   fullName: 'Kara Gates'
 });

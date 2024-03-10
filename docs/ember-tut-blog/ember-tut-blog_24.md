@@ -4,7 +4,7 @@
 
 ### 1，普通 model 关联
 
-```
+```js
 //  app/router.js
 
 //  ……
@@ -18,7 +18,7 @@ export default Router;
 
 对于`posts`这个路由如果要加载名为`post`的`model`要怎么做呢？代码实现很简单，其实在前面的代码也已经写过了。你只需要重写`model`回调，在回调中返回获取到的`model`即可。
 
-```
+```js
 //  app/routes/posts.js
 
 import Ember from 'ember';
@@ -44,7 +44,7 @@ export default Ember.Route.extend({
 
 一旦在路由中定义了动态段 Ember 就会从 URL 中提取动态段的值作为`model`回调的第一个参数。
 
-```
+```js
 //  app/router.js
 // ……
 
@@ -59,7 +59,7 @@ export default Router;
 
 这段代码定义了一个动态段`:post_id`，记得动态段是以`:`”开头。然后在`model`回调中使用动态段获取数据。
 
-```
+```js
 //  app/routes/posts.js
 
 import Ember from 'ember';  
@@ -76,7 +76,7 @@ export default Ember.Route.extend({
 
 #### 1，首先创建一个 model：ember g model post
 
-```
+```js
 import DS from 'ember-data';
 
 export default DS.Model.extend({  
@@ -90,7 +90,7 @@ export default DS.Model.extend({
 
 #### 2，在 posts 下增加一个子路由
 
-```
+```js
 Router.map(function() {  
     this.route('posts', function() {
         this.route('post', { path: '/:post_id'});
@@ -100,14 +100,14 @@ Router.map(function() {
 
 然后用[Ember CLI](http://ember-cli.com/user-guide)命令（`ember g route posts/post`）在创建路由`post`，同时也会自动创建出子模板`post.hbs`。创建完成之后会得到如下两个文件：
 
-```
+```js
 1.app/routes/posts/post.js  
 2.app/templates/posts/post.hbs 
 ```
 
 修改路由`posts.js`，在`model`回调中返回设定的数据。
 
-```
+```js
 //  app/routes/posts.js
 
 import Ember from 'ember';
@@ -140,7 +140,7 @@ export default Ember.Route.extend({
 
 修改`posts.hbs`，遍历显示所有的数据。
 
-```
+```js
 <ul>  
     {{#each model as |item|}}
         <li>
@@ -155,7 +155,7 @@ export default Ember.Route.extend({
 
 修改子路由`post.js`，使得子路由根据动态段返回匹配的数据。
 
-```
+```js
 // app/routes/posts/post.js
 
 import Ember from 'ember';
@@ -170,7 +170,7 @@ export default Ember.Route.extend({
 
 注意打印信息语句`console.log()`;，然后接着修改子模板`post.hbs`。
 
-```
+```js
 <!-- app/templates/posts/post.hbs -->
 
 <h2>{{model.title}}</h2>  
@@ -195,7 +195,7 @@ export default Ember.Route.extend({
 
 对于在一个`mode`l 回调中同时返回多个模型的情况也是时常存在的。对于这种情况你需要在`model`回调中修改返回值为`Ember.RSVP.hash`对象类型。比如下面的代码就是同时返回了两个模型的数据：一个是`song`，一个是`album`。
 
-```
+```js
 //  app/routes/favorites.js
 
 import Ember from 'ember';
@@ -212,7 +212,7 @@ export default Ember.Route.extend({
 
 然后在模板`favorites.hbs`中就可以使用`{{#each}}`把两个数据集遍历出来。遍历的方式与普通的遍历方式一样。
 
-```
+```js
 <!--  app/templates/favorites.hbs -->
 
 <h2>Song list</h2>  

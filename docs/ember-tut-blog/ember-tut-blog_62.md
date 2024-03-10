@@ -10,7 +10,7 @@ Ember 提供了默认的缓存`store`，当界面需要获取某个数据的时�
 
 通常我们会通过`{{link-to}}`进入到某个路由，通常会通过`id`查询，此时我们可以设置查询的参数，让每次查询都发请求。
 
-```
+```js
 // app/routes/auction.js
 
 export default Ember.Route.extend({
@@ -28,7 +28,7 @@ export default Ember.Route.extend({
 
 可以通过重写适配器来实现缓存控制。
 
-```
+```js
 // app/adapters/application.js
 
 export default DS.RESTAdapter.extend({

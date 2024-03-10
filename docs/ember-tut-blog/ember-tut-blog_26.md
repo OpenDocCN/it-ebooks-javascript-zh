@@ -10,7 +10,7 @@
 
 如果你想在路由切换的时候不加载`model`你可以调用`beforeModel`回调，在这个回调中实现路由的切换。
 
-```
+```js
 beforeModel() {  
     this.transitionTo('posts');
 } 
@@ -20,7 +20,7 @@ beforeModel() {
 
 有些情况下你需要先根据`model`回调获取到的数据然后判断跳转到某个路由上。此时你可以使用`afterModel`回调方法。
 
-```
+```js
 afterModel: function(model, transition) {  
     if (model.get(‘length’) === 1) {
         this.transitionTo('post', model.get('firstObject'));
@@ -32,7 +32,7 @@ afterModel: function(model, transition) {
 
 ### 3，重定向到子路由
 
-```
+```js
 Router.map(function() {  
     this.route('posts', function() {
         this.route('post', { path: '/:post_id'});
@@ -42,7 +42,7 @@ Router.map(function() {
 
 子路由的重定向有些许不同，如果你需要重定向到上面这个段代码的子路由`posts.post`上，如果是使用`beforeModel`、`model`、`afterModel`回调重定向到`posts.post`父路由`posts`会重新在执行一次，再次执行父路由这种方式就显得有点多余了，特别父路由需要加载的数据比较多的时候，会影响到加载的效率。 如果是这种情况我们可以使用`redirect`回调，此回调不会再次执行父路由。仅仅是实现路由切换而已。
 
-```
+```js
 redirect: function(model, transition) {  
     if (model.get('length') === 1) {
         this.transitionTo('posts.post', model.get('firstObject'));

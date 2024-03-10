@@ -10,7 +10,7 @@
 
 得到演示所需要的文件后回到正题，开始介绍`handlebars`的条件判断表达式。 为了演示先在`route`文件添加模拟条件代码：
 
-```
+```js
 //  app/routes/handlebars-condition-exp-route.js
 
 import Ember from 'ember';
@@ -28,7 +28,7 @@ export default Ember.Route.extend({
 
 ### 1，`if`表达式
 
-```
+```js
 <!-- app/templates/handlbars-conditions-exp-route.hbs -->
 
 <!-- if 判断标签，当 model 的值不为 false, undefined, null or [] 的时候显示标签内的内容 -->  
@@ -41,7 +41,7 @@ Welcome back, <b>{{model.name}}</b> !
 
 每个条件表达式都要以`#`开头并且要有对应的关闭标签，但是对于`if`标签来说不是必须要关闭标签的，这里简单举个例子：
 
-```
+```js
 <!-- 没有关闭关闭标签的 if 用法 -->  
 <div class="{{if flag 'show' 'hide'}}">  
 测试内容
@@ -56,7 +56,7 @@ Welcome back, <b>{{model.name}}</b> !
 
 ### 2，`if……else……`表达式
 
-```
+```js
 <!-- app/templates/handlebars-conditions-exp-route.hbs -->  
 <!-- if……else……判断 -->  
 {{#if model.isAtWork}}
@@ -74,7 +74,7 @@ This is else block...
 
 `unless`表达式类似于非操作，当`model.isReading`值为`false`的时候会输出表达式里面的内容。
 
-```
+```js
 <!-- app/templates/handlebars-conditions-exp-route.hbs -->  
 <!-- 非判断 -->  
 {{#unless model.isReading}}
@@ -88,7 +88,7 @@ unless.....
 
 `handlebars`表达式可以直接在嵌入到`HTML`标签内。
 
-```
+```js
 <!-- app/templates/handlebars-conditions-exp-route.hbs -->  
 <!-- 可以把表达式直接嵌入在某个标签中，当 enable 的值为 true 则结果是增加了一个类(css 的类)enable，否则增加'disable' -->  
 <span class={{if enable 'enable' 'disable'}}>enable or disable</span> 

@@ -27,7 +27,7 @@ JavaScript 语言对异步编程的实现，就是回调函数。所谓回调函
 
 读取文件进行处理，是这样写的。
 
-```
+```js
 fs.readFile('/etc/passwd', function (err, data) {
   if (err) throw err;
   console.log(data);
@@ -43,7 +43,7 @@ fs.readFile('/etc/passwd', function (err, data) {
 
 回调函数本身并没有问题，它的问题出现在多个回调函数嵌套。假定读取 A 文件之后，再读取 B 文件，代码如下。
 
-```
+```js
 fs.readFile(fileA, function (err, data) {
   fs.readFile(fileB, function (err, data) {
     // ...
@@ -56,7 +56,7 @@ fs.readFile(fileA, function (err, data) {
 
 Promise 就是为了解决这个问题而提出的。它不是新的语法功能，而是一种新的写法，允许将回调函数的横向加载，改成纵向加载。采用 Promise，连续读取多个文件，写法如下。
 
-```
+```js
 var readFile = require('fs-readfile-promise');
 
 readFile(fileA)
@@ -100,7 +100,7 @@ Promise 的最大问题是代码冗余，原来的任务被 Promise 包装了一
 
 举例来说，读取文件的协程写法如下。
 
-```
+```js
 function asnycJob() {
   // ...其他代码
   var f = yield readFile(fileA);
@@ -119,7 +119,7 @@ Generator 函数是协程在 ES6 的实现，最大特点就是可以交出函�
 
 整个 Generator 函数就是一个封装的异步任务，或者说是异步任务的容器。异步操作需要暂停的地方，都用 yield 语句注明。Generator 函数的执行方法如下。
 
-```
+```js
 function* gen(x){
   var y = yield x + 2;
   return y;
@@ -141,7 +141,7 @@ Generator 函数可以暂停执行和恢复执行，这是它能封装异步任�
 
 next 方法返回值的 value 属性，是 Generator 函数向外输出数据；next 方法还可以接受参数，这是向 Generator 函数体内输入数据。
 
-```
+```js
 function* gen(x){
   var y = yield x + 2;
   return y;
@@ -157,7 +157,7 @@ g.next(2) // { value: 2, done: true }
 
 Generator 函数内部还可以部署错误处理代码，捕获函数体外抛出的错误。
 
-```
+```js
 function* gen(x){
   try {
     var y = yield x + 2;
@@ -180,7 +180,7 @@ g.throw（'出错了'）;
 
 下面看看如何使用 Generator 函数，执行一个真实的异步任务。
 
-```
+```js
 var fetch = require('node-fetch');
 
 function* gen(){
@@ -195,7 +195,7 @@ function* gen(){
 
 执行这段代码的方法如下。
 
-```
+```js
 var g = gen();
 var result = g.next();
 
@@ -219,7 +219,7 @@ Thunk 函数早在上个世纪 60 年代就诞生了。
 
 那时，编程语言刚刚起步，计算机学家还在研究，编译器怎么写比较好。一个争论的焦点是"求值策略"，即函数的参数到底应该何时求值。
 
-```
+```js
 var x = 1;
 
 function f(m){
@@ -234,7 +234,7 @@ f(x + 5)
 
 一种意见是"传值调用"（call by value），即在进入函数体之前，就计算`x + 5`的值（等于 6），再将这个值传入函数 f 。C 语言就采用这种策略。
 
-```
+```js
 f(x + 5)
 // 传值调用时，等同于
 f(6)
@@ -243,7 +243,7 @@ f(6)
 
 另一种意见是"传名调用"（call by name），即直接将表达式`x + 5`传入函数体，只在用到它的时候求值。Hskell 语言采用这种策略。
 
-```
+```js
 f(x + 5)
 // 传名调用时，等同于
 (x + 5) * 2
@@ -252,7 +252,7 @@ f(x + 5)
 
 传值调用和传名调用，哪一种比较好？回答是各有利弊。传值调用比较简单，但是对参数求值的时候，实际上还没用到这个参数，有可能造成性能损失。
 
-```
+```js
 function f(a, b){
   return b;
 }
@@ -267,7 +267,7 @@ f(3 * x * x - 2 * x - 1, x);
 
 编译器的"传名调用"实现，往往是将参数放到一个临时函数之中，再将这个临时函数传入函数体。这个临时函数就叫做 Thunk 函数。
 
-```
+```js
 function f(m){
   return m * 2;
 }
@@ -292,7 +292,7 @@ function f(thunk){
 
 JavaScript 语言是传值调用，它的 Thunk 函数含义有所不同。在 JavaScript 语言中，Thunk 函数替换的不是表达式，而是多参数函数，将其替换成单参数的版本，且只接受回调函数作为参数。
 
-```
+```js
 // 正常版本的 readFile（多参数版本）
 fs.readFile(fileName, callback);
 
@@ -312,7 +312,7 @@ var Thunk = function (fileName){
 
 任何函数，只要参数有回调函数，就能写成 Thunk 函数的形式。下面是一个简单的 Thunk 函数转换器。
 
-```
+```js
 var Thunk = function(fn){
   return function (){
     var args = Array.prototype.slice.call(arguments);
@@ -327,7 +327,7 @@ var Thunk = function(fn){
 
 使用上面的转换器，生成`fs.readFile`的 Thunk 函数。
 
-```
+```js
 var readFileThunk = Thunk(fs.readFile);
 readFileThunk(fileA)(callback);
 
@@ -339,14 +339,14 @@ readFileThunk(fileA)(callback);
 
 首先是安装。
 
-```
+```js
 $ npm install thunkify
 
 ```
 
 使用方式如下。
 
-```
+```js
 var thunkify = require('thunkify');
 var fs = require('fs');
 
@@ -359,7 +359,7 @@ read('package.json')(function(err, str){
 
 Thunkify 的源码与上一节那个简单的转换器非常像。
 
-```
+```js
 function thunkify(fn){
   return function(){
     var args = new Array(arguments.length);
@@ -391,7 +391,7 @@ function thunkify(fn){
 
 它的源码主要多了一个检查机制，变量 called 确保回调函数只运行一次。这样的设计与下文的 Generator 函数相关。请看下面的例子。
 
-```
+```js
 function f(a, b, callback){
   var sum = a + b;
   callback(sum);
@@ -412,7 +412,7 @@ ft(1, 2)(console.log);
 
 以读取文件为例。下面的 Generator 函数封装了两个异步操作。
 
-```
+```js
 var fs = require('fs');
 var thunkify = require('thunkify');
 var readFile = thunkify(fs.readFile);
@@ -430,7 +430,7 @@ var gen = function* (){
 
 这种方法就是 Thunk 函数，因为它可以在回调函数里，将执行权交还给 Generator 函数。为了便于理解，我们先看如何手动执行上面这个 Generator 函数。
 
-```
+```js
 var g = gen();
 
 var r1 = g.next();
@@ -453,7 +453,7 @@ r1.value(function(err, data){
 
 Thunk 函数真正的威力，在于可以自动执行 Generator 函数。下面就是一个基于 Thunk 函数的 Generator 执行器。
 
-```
+```js
 function run(fn) {
   var gen = fn();
 
@@ -474,7 +474,7 @@ run(gen);
 
 有了这个执行器，执行 Generator 函数方便多了。不管有多少个异步操作，直接传入 run 函数即可。当然，前提是每一个异步操作，都要是 Thunk 函数，也就是说，跟在 yield 命令后面的必须是 Thunk 函数。
 
-```
+```js
 var gen = function* (){
   var f1 = yield readFile('fileA');
   var f2 = yield readFile('fileB');
@@ -498,7 +498,7 @@ Thunk 函数并不是 Generator 函数自动执行的唯一方案。因为自动
 
 比如，有一个 Generator 函数，用于依次读取两个文件。
 
-```
+```js
 var gen = function* (){
   var f1 = yield readFile('/etc/fstab');
   var f2 = yield readFile('/etc/shells');
@@ -510,7 +510,7 @@ var gen = function* (){
 
 co 模块可以让你不用编写 Generator 函数的执行器。
 
-```
+```js
 var co = require('co');
 co(gen);
 
@@ -520,7 +520,7 @@ co(gen);
 
 co 函数返回一个 Promise 对象，因此可以用 then 方法添加回调函数。
 
-```
+```js
 co(gen).then(function (){
   console.log('Generator 函数执行完成');
 })
@@ -549,7 +549,7 @@ co 模块其实就是将两种自动执行器（Thunk 函数和 Promise 对象�
 
 还是沿用上面的例子。首先，把 fs 模块的 readFile 方法包装成一个 Promise 对象。
 
-```
+```js
 var fs = require('fs');
 
 var readFile = function (fileName){
@@ -572,7 +572,7 @@ var gen = function* (){
 
 然后，手动执行上面的 Generator 函数。
 
-```
+```js
 var g = gen();
 
 g.next().value.then(function(data){
@@ -585,7 +585,7 @@ g.next().value.then(function(data){
 
 手动执行其实就是用 then 方法，层层添加回调函数。理解了这一点，就可以写出一个自动执行器。
 
-```
+```js
 function run(gen){
   var g = gen();
 
@@ -612,7 +612,7 @@ co 就是上面那个自动执行器的扩展，它的源码只有几十行，�
 
 首先，co 函数接受 Generator 函数作为参数，返回一个 Promise 对象。
 
-```
+```js
 function co(gen) {
   var ctx = this;
 
@@ -624,7 +624,7 @@ function co(gen) {
 
 在返回的 Promise 对象里面，co 先检查参数 gen 是否为 Generator 函数。如果是，就执行该函数，得到一个内部指针对象；如果不是就返回，并将 Promise 对象的状态改为 resolved。
 
-```
+```js
 function co(gen) {
   var ctx = this;
 
@@ -638,7 +638,7 @@ function co(gen) {
 
 接着，co 将 Generator 函数的内部指针对象的 next 方法，包装成 onFulefilled 函数。这主要是为了能够捕捉抛出的错误。
 
-```
+```js
 function co(gen) {
   var ctx = this;
 
@@ -663,7 +663,7 @@ function co(gen) {
 
 最后，就是关键的 next 函数，它会反复调用自身。
 
-```
+```js
 function next(ret) {
   if (ret.done) return resolve(ret.value);
   var value = toPromise.call(ctx, ret.value);
@@ -690,7 +690,7 @@ co 支持并发的异步操作，即允许某些操作同时进行，等到它�
 
 这时，要把并发的操作都放在数组或对象里面，跟在 yield 语句后面。
 
-```
+```js
 // 数组的写法
 co(function* () {
   var res = yield [
@@ -713,7 +713,7 @@ co(function* () {
 
 下面是另一个例子。
 
-```
+```js
 co(function* () {
   var values = [n1, n2, n3];
   yield values.map(somethingAsync);
@@ -736,7 +736,7 @@ async 函数是什么？一句话，async 函数就是 Generator 函数的语法
 
 前文有一个 Generator 函数，依次读取两个文件。
 
-```
+```js
 var fs = require('fs');
 
 var readFile = function (fileName){
@@ -759,7 +759,7 @@ var gen = function* (){
 
 写成 async 函数，就是下面这样。
 
-```
+```js
 var asyncReadFile = async function (){
   var f1 = await readFile('/etc/fstab');
   var f2 = await readFile('/etc/shells');
@@ -775,7 +775,7 @@ async 函数对 Generator 函数的改进，体现在以下三点。
 
 （1）内置执行器。Generator 函数的执行必须靠执行器，所以才有了 co 模块，而 async 函数自带执行器。也就是说，async 函数的执行，与普通函数一模一样，只要一行。
 
-```
+```js
 var result = asyncReadFile();
 
 ```
@@ -788,7 +788,7 @@ var result = asyncReadFile();
 
 async 函数的实现，就是将 Generator 函数和自动执行器，包装在一个函数里。
 
-```
+```js
 async function fn(args){
   // ...
 }
@@ -807,7 +807,7 @@ function fn(args){
 
 下面给出 spawn 函数的实现，基本就是前文自动执行器的翻版。
 
-```
+```js
 function spawn(genF) {
   return new Promise(function(resolve, reject) {
     var gen = genF();
@@ -840,7 +840,7 @@ async 函数是非常新的语法功能，新到都不属于 ES6，而是属于 
 
 下面是一个例子。
 
-```
+```js
 async function getStockPriceByName(name) {
   var symbol = await getStockSymbol(name);
   var stockPrice = await getStockPrice(symbol);
@@ -857,7 +857,7 @@ getStockPriceByName('goog').then(function (result){
 
 下面的例子，指定多少毫秒后输出一个值。
 
-```
+```js
 function timeout(ms) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
@@ -879,7 +879,7 @@ asyncPrint('hello world', 50);
 
 await 命令后面的 Promise 对象，运行结果可能是 rejected，所以最好把 await 命令放在 try...catch 代码块中。
 
-```
+```js
 async function myFunction() {
   try {
     await somethingThatReturnsAPromise();
@@ -900,7 +900,7 @@ async function myFunction() {
 
 await 命令只能用在 async 函数之中，如果用在普通函数，就会报错。
 
-```
+```js
 async function dbFuc(db) {
   let docs = [{}, {}, {}];
 
@@ -914,7 +914,7 @@ async function dbFuc(db) {
 
 上面代码会报错，因为 await 用在普通函数之中了。但是，如果将 forEach 方法的参数改成 async 函数，也有问题。
 
-```
+```js
 async function dbFuc(db) {
   let docs = [{}, {}, {}];
 
@@ -928,7 +928,7 @@ async function dbFuc(db) {
 
 上面代码可能不会正常工作，原因是这时三个`db.post`操作将是并发执行，也就是同时执行，而不是继发执行。正确的写法是采用 for 循环。
 
-```
+```js
 async function dbFuc(db) {
   let docs = [{}, {}, {}];
 
@@ -941,7 +941,7 @@ async function dbFuc(db) {
 
 如果确实希望多个请求并发执行，可以使用 Promise.all 方法。
 
-```
+```js
 async function dbFuc(db) {
   let docs = [{}, {}, {}];
   let promises = docs.map((doc) => db.post(doc));
@@ -975,7 +975,7 @@ ES6 将 await 增加为保留字。使用这个词作为标识符，在 ES5 是�
 
 首先是 Promise 的写法。
 
-```
+```js
 function chainAnimationsPromise(elem, animations) {
 
   // 变量 ret 用来保存上一个动画的返回值
@@ -1007,7 +1007,7 @@ function chainAnimationsPromise(elem, animations) {
 
 接着是 Generator 函数的写法。
 
-```
+```js
 function chainAnimationsGenerator(elem, animations) {
 
   return spawn(function*() {
@@ -1030,7 +1030,7 @@ function chainAnimationsGenerator(elem, animations) {
 
 最后是 Async 函数的写法。
 
-```
+```js
 async function chainAnimationsAsync(elem, animations) {
   var ret = null;
   try {

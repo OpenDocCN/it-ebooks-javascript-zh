@@ -33,13 +33,13 @@
 
 JavaScript 原生提供一个 Object 对象（注意起首的 O 是大写），所有其他对象都继承自这个对象。Object 本身也是一个构造函数，可以直接通过它来生成新对象。
 
-```
+```js
 var o = new Object();
 ```
 
 Object 作为构造函数使用时，可以接受一个参数。如果该参数是一个对象，则直接返回这个对象；如果是一个原始类型的值，则返回该值对应的包装对象。
 
-```
+```js
 var o1 = {a:1};
 var o2 = new Object(o1);
 o1 === o2 // true
@@ -56,7 +56,7 @@ new Object(123) instanceof Number
 
 比如，在 Object 对象上面定义一个 print 方法，显示其他对象的内容。
 
-```
+```js
 Object.print = function(o){ console.log(o) };
 
 var o = new Object();
@@ -69,7 +69,7 @@ Object.print(o)
 
 所有构造函数都有一个 prototype 属性，指向一个原型对象。凡是定义在 Object.prototype 对象上面的属性和方法，将被所有实例对象共享。（关于 prototype 属性的详细解释，参见《面向对象编程》一章。）
 
-```
+```js
 Object.prototype.print = function(){ console.log(this)};
 
 var o = new Object();
@@ -87,7 +87,7 @@ o.print() // Object
 
 Object 本身当作工具方法使用时，可以将任意值转为对象。其中，原始类型的值转为对应的包装对象（参见《原始类型的包装对象》一节）。
 
-```
+```js
 Object() // 返回一个空对象
 Object(undefined) // 返回一个空对象
 Object(null) // 返回一个空对象
@@ -105,7 +105,7 @@ Object(function(){}) // 返回原函数
 
 如果 Object 函数的参数是一个对象，它总是返回原对象。利用这一点，可以写一个判断变量是否为对象的函数。
 
-```
+```js
 function isObject(value) {
     return value === Object(value);
 }
@@ -115,7 +115,7 @@ function isObject(value) {
 
 Object.keys 方法和 Object.getOwnPropertyNames 方法很相似，一般用来遍历对象的属性。它们的参数都是一个对象，都返回一个数组，该数组的成员都是对象自身的（而不是继承的）所有属性名。它们的区别在于，Object.keys 方法只返回可枚举的属性（关于可枚举性的详细解释见后文），Object.getOwnPropertyNames 方法还返回不可枚举的属性名。
 
-```
+```js
 var o = {
     p1: 123,
     p2: 456
@@ -130,7 +130,7 @@ Object.getOwnPropertyNames(o)
 
 上面的代码表示，对于一般的对象来说，这两个方法返回的结果是一样的。只有涉及不可枚举属性时，才会有不一样的结果。
 
-```
+```js
 var a = ["Hello", "World"];
 
 Object.keys(a) 
@@ -144,7 +144,7 @@ Object.getOwnPropertyNames(a)
 
 由于 JavaScript 没有提供计算对象属性个数的方法，所以可以用这两个方法代替。
 
-```
+```js
 Object.keys(o).length
 Object.getOwnPropertyNames(o).length
 ```
@@ -155,7 +155,7 @@ Object.getOwnPropertyNames(o).length
 
 Object.observe 方法用于观察对象属性的变化。
 
-```
+```js
 var o = {};
 
 Object.observe(o, function(changes) {
@@ -217,7 +217,7 @@ Object 实例对象的方法，主要有以下六个。
 
 valueOf 方法的作用是返回一个对象的值，默认情况下返回对象本身。
 
-```
+```js
 var o = new Object();
 
 o.valueOf() === o // true
@@ -227,7 +227,7 @@ o.valueOf() === o // true
 
 valueOf 方法的主要用途是，JavaScript 自动类型转换时会默认调用这个方法（详见上一章《数据类型转换》一节）。
 
-```
+```js
 var o = new Object();
 
 1 + o // "1[object Object]"
@@ -235,7 +235,7 @@ var o = new Object();
 
 上面代码将对象 o 与数字 1 相加，这时 JavaScript 就会默认调用 valueOf()方法。所以，如果自定义 valueOf 方法，就可以得到想要的结果。
 
-```
+```js
 var o = new Object();
 o.valueOf = function (){return 2;};
 
@@ -248,7 +248,7 @@ o.valueOf = function (){return 2;};
 
 toString 方法的作用是返回一个对象的字符串形式。
 
-```
+```js
 var o1 = new Object();
 o1.toString() // "[object Object]"
 
@@ -260,7 +260,7 @@ o2.toString() // "[object Object]"
 
 字符串[object Object]本身没有太大的用处，但是通过自定义 toString 方法，可以让对象在自动类型转换时，得到想要的字符串形式。
 
-```
+```js
 var o = new Object();
 
 o.toString = function (){ return 'hello' }; 
@@ -272,7 +272,7 @@ o + ' ' + 'world' // "hello world"
 
 数组、字符串和函数都分别部署了自己版本的 toString 方法。
 
-```
+```js
 [1,2,3].toString() // "1,2,3"
 
 '123'.toString() // "123"
@@ -284,7 +284,7 @@ o + ' ' + 'world' // "hello world"
 
 toString 方法的主要用途是返回对象的字符串形式，除此之外，还有一个重要的作用，就是判断一个值的类型。
 
-```
+```js
 var o = {};
 o.toString() // "[object Object]"
 ```
@@ -300,7 +300,7 @@ o.toString() // "[object Object]"
 *   null：返回[object Null]。
 *   对象：返回"[object " + 构造函数的名称 + "]" 。
 
-```
+```js
 Object.prototype.toString.call(2) // "[object Number]"
 Object.prototype.toString.call('') // "[object String]"
 Object.prototype.toString.call(true) // "[object Boolean]"
@@ -313,7 +313,7 @@ Object.prototype.toString.call([]) // "[object Array]"
 
 可以利用这个特性，写出一个比 typeof 运算符更准确的类型判断函数。
 
-```
+```js
 var type = function (o){
     var s = Object.prototype.toString.call(o);
         return s.match(/\[object (.*?)\]/)[1].toLowerCase();
@@ -330,7 +330,7 @@ type(new Date()); // "date"
 
 在上面这个 type 函数的基础上，还可以加上专门判断某种类型数据的方法。
 
-```
+```js
 ['Null',
  'Undefined',
  'Object',
@@ -363,7 +363,7 @@ ECMAScript 5 对于对象的属性，提出了一个精确的描述模型。
 
 在 JavaScript 内部，每个属性都有一个对应的 attributes 对象，保存该属性的一些元信息。使用 Object.getOwnPropertyDescriptor 方法，可以读取 attributes 对象。
 
-```
+```js
 var o = { p: 'a' };
 
 Object.getOwnPropertyDescriptor(o, 'p') 
@@ -394,13 +394,13 @@ attributes 对象包含如下元信息：
 
 Object.defineProperty 方法允许通过定义 attributes 对象，来定义或修改一个属性，然后返回修改后的对象。它的格式如下：
 
-```
+```js
 Object.defineProperty(object, propertyName, attributesObject)
 ```
 
 Object.defineProperty 方法接受三个参数，第一个是属性所在的对象，第二个是属性名（它应该是一个字符串），第三个是属性的描述对象。比如，新建一个 o 对象，并定义它的 p 属性，可以这样写：
 
-```
+```js
 var o = Object.defineProperty({}, "p", {
         value: 123,
         writable: false,
@@ -419,7 +419,7 @@ o.p
 
 如果一次性定义或修改多个属性，可以使用 Object.defineProperties 方法。
 
-```
+```js
 var o = Object.defineProperties({}, {
         p1: { value: 123, enumerable: true },
         p2: { value: "abc", enumerable: true },
@@ -436,7 +436,7 @@ o.p3 // "123abc"
 
 上面代码中的 p3 属性，定义了取值函数 get。这时需要注意的是，一旦定义了取值函数 get（或存值函数 set），就不能将 writable 设为 true，或者同时定义 value 属性，否则会报错。
 
-```
+```js
 var o = {};
 
 Object.defineProperty(o, "p", {
@@ -453,7 +453,7 @@ Object.defineProperty() 和 Object.defineProperties() 的第三个参数，是�
 
 writable 属性为 false，表示对应的属性的值将不得改写。
 
-```
+```js
 var o = {};
 
 Object.defineProperty(o, "p", {
@@ -475,7 +475,7 @@ Object.defineProperty(o, "p", {
 
 configurable 属性为 false，将无法删除该属性，也无法修改 attributes 对象（value 属性除外）。
 
-```
+```js
 var o = {};
 
 Object.defineProperty(o, "p", {
@@ -490,7 +490,7 @@ o.p // bar
 
 enumerable 属性为 false，表示对应的属性不会出现在 for...in 循环和 Object.keys 方法中。
 
-```
+```js
 var o = {
     p1: 10,
     p2: 13,
@@ -519,7 +519,7 @@ for (var i in o) {
 
 因此，enumerable 可以用来设置“秘密”属性。
 
-```
+```js
 var o = {a:1, b:2};
 
 o.c = 3;
@@ -547,7 +547,7 @@ JSON.stringify(o // => "{a:1,b:2,c:3}"
 
 考虑到 JSON.stringify 方法会排除 enumerable 为 false 的值，有时可以利用这一点，为对象添加注释信息。
 
-```
+```js
 var car = {
   id: 123,
   color: red,
@@ -571,7 +571,7 @@ JSON.stringify(car) //  '{id: 123, color: "red", owner: 12}'
 
 Object.getOwnPropertyNames 方法返回直接定义在某个对象上面的全部属性的名称，而不管该属性是否可枚举。
 
-```
+```js
 var o = Object.defineProperties({}, {
         p1: { value: 1, enumerable: true },
         p2: { value: 2, enumerable: false }
@@ -583,7 +583,7 @@ Object.getOwnPropertyNames(o)
 
 一般来说，系统原生的属性（即非用户自定义的属性）都是不可枚举的。
 
-```
+```js
 // 比如，数组实例自带 length 属性是不可枚举的
 Object.keys([]) // []
 Object.getOwnPropertyNames([]) // [ 'length' ]
@@ -606,7 +606,7 @@ Object.getOwnPropertyNames(Object.prototype)
 
 对象实例的 propertyIsEnumerable 方法用来判断一个属性是否可枚举。
 
-```
+```js
 var o = {};
 o.p = 123;
 
@@ -620,7 +620,7 @@ o.propertyIsEnumerable("toString") // false
 
 可配置性（configurable）决定了是否可以修改属性的描述对象。也就是说，当 configure 为 false 的时候，value、writable、enumerable 和 configurable 都不能被修改了。
 
-```
+```js
 var o = Object.defineProperty({}, 'p', {
         value: 1,
         writable: false, 
@@ -645,7 +645,7 @@ Object.defineProperties(o,'p',{configurable: true})
 
 需要注意的是，writable 只有在从 false 改为 true 会报错，从 true 改为 false 则是允许的。
 
-```
+```js
 var o = Object.defineProperty({}, 'p', {
         writable: true
 });
@@ -656,7 +656,7 @@ Object.defineProperty(o,'p', {writable: false})
 
 至于 value，只要 writable 和 configurable 有一个为 true，就可以改动。
 
-```
+```js
 var o1 = Object.defineProperty({}, 'p', {
         value: 1,
         writable: true,
@@ -678,7 +678,7 @@ Object.defineProperty(o2,'p', {value: 2})
 
 可配置性决定了一个变量是否可以被删除（delete）。
 
-```
+```js
 var o = Object.defineProperties({}, {
         p1: { value: 1, configurable: true },
         p2: { value: 2, configurable: false }
@@ -695,7 +695,7 @@ o.p2 // 2
 
 需要注意的是，当使用 var 命令声明变量时，变量的 configurable 为 false。
 
-```
+```js
 var a1 = 1;
 
 Object.getOwnPropertyDescriptor(this,'a1')
@@ -709,7 +709,7 @@ Object.getOwnPropertyDescriptor(this,'a1')
 
 而不使用 var 命令声明变量时（或者使用属性赋值的方式声明变量），变量的可配置性为 true。
 
-```
+```js
 a2 = 1;
 
 Object.getOwnPropertyDescriptor(this,'a2')
@@ -737,7 +737,7 @@ Object.getOwnPropertyDescriptor(this,'a3')
 
 这种差异意味着，如果一个变量是使用 var 命令生成的，就无法用 delete 命令删除。也就是说，delete 只能删除对象的属性。
 
-```
+```js
 var a1 = 1;
 a2 = 1;
 
@@ -752,7 +752,7 @@ a2 // ReferenceError: a2 is not defined
 
 可写性（writable）决定了属性的值（value）是否可以被改变。
 
-```
+```js
 var o = {}; 
 
 Object.defineProperty(o, "a", { value : 37, writable : false });
@@ -770,7 +770,7 @@ o.a // 37
 
 关于可写性，还有一种特殊情况。就是如果原型对象的某个属性的可写性为 false，那么派生对象将无法自定义这个属性。
 
-```
+```js
 var proto = Object.defineProperty({}, 'foo', {
     value: 'a',
     writable: false
@@ -784,7 +784,7 @@ o.foo // 'a'
 
 上面代码中，对象 proto 的 foo 属性不可写，结果 proto 的派生对象 o，也不可以再自定义这个属性了。在严格模式下，这样做还会抛出一个错误。但是，有一个规避方法，就是通过覆盖 attributes 对象，绕过这个限制，原因是这种情况下，原型链会被完全忽视。
 
-```
+```js
 Object.defineProperty(o, 'foo', { value: 'b' });
 
 o.foo // 'b'
@@ -794,7 +794,7 @@ o.foo // 'b'
 
 除了直接定义以外，属性还可以用存取器（accessor）定义。其中，存值函数称为 setter，使用 set 命令；取值函数称为 getter，使用 get 命令。
 
-```
+```js
 var o = {
   get p() {
     return "getter";
@@ -807,14 +807,14 @@ var o = {
 
 上面代码中，o 对象内部的 get 和 set 命令，分别定义了 p 属性的取值函数和存值函数。定义了这两个函数之后，对 p 属性取值时，取值函数会自动调用；对 p 属性赋值时，存值函数会自动调用。
 
-```
+```js
 o.p // getter
 o.p = 123 // setter: 123
 ```
 
 存取器往往用于，某个属性的值需要依赖对象内部数据的场合。
 
-```
+```js
 var o ={
   $n : 5,
   get next(){return this.$n++ },
@@ -834,7 +834,7 @@ o.next //10
 
 下面是另一个存取器的例子。
 
-```
+```js
 var user = {}
 var nameValue = 'Joe';
 
@@ -854,7 +854,7 @@ nameValue //Bob
 
 存取器也可以使用 Object.create 方法定义。
 
-```
+```js
 var o = Object.create(Object.prototype, {
   foo: {
     get: function () {
@@ -871,7 +871,7 @@ var o = Object.create(Object.prototype, {
 
 利用存取器，可以实现数据对象与 DOM 对象的双向绑定。
 
-```
+```js
 Object.defineProperty(user, 'name', {
   get: function() {
     return document.getElementById("foo").value;
@@ -893,7 +893,7 @@ JavaScript 提供了三种方法，精确控制一个对象的读写状态，防
 
 Object.preventExtensions 方法可以使得一个对象无法再添加新的属性。
 
-```
+```js
 var o = new Object();
 
 Object.preventExtensions(o);
@@ -907,7 +907,7 @@ o.p // undefined
 
 如果是在严格模式下，则会抛出一个错误。
 
-```
+```js
 (function () { 
   'use strict'; 
   o.p = '1'
@@ -917,7 +917,7 @@ o.p // undefined
 
 不过，对于使用了 preventExtensions 方法的对象，可以用 delete 命令删除它的现有属性。
 
-```
+```js
 var o = new Object();
 o.p = 1;
 
@@ -931,7 +931,7 @@ o.p // undefined
 
 Object.isExtensible 方法用于检查一个对象是否使用了 preventExtensions 方法。也就是说，该方法可以用来检查是否可以为一个对象添加属性。
 
-```
+```js
 var o = new Object();
 
 Object.isExtensible(o)
@@ -948,7 +948,7 @@ Object.isExtensible(o)
 
 Object.seal 方法使得一个对象既无法添加新属性，也无法删除旧属性。
 
-```
+```js
 var o = { p:"hello" };
 
 Object.seal(o);
@@ -962,7 +962,7 @@ o.x // undefined
 
 Object.seal 还把现有属性的 attributes 对象的 configurable 属性设为 false，使得 attributes 对象不再能改变。
 
-```
+```js
 var o = { p: 'a' };
 
 // seal 方法之前
@@ -983,7 +983,7 @@ Object.defineProperty(o, 'p', { enumerable: false })
 
 可写性（writable）有点特别。如果 writable 为 false，使用 Object.seal 方法以后，将无法将其变成 true；但是，如果 writable 为 true，依然可以将其变成 false。
 
-```
+```js
 var o1 = Object.defineProperty({}, 'p', {writable: false});
 Object.seal(o1);
 Object.defineProperty(o1,'p',{writable:true}) 
@@ -1004,7 +1004,7 @@ Object.getOwnPropertyDescriptor(o2, 'p')
 
 至于属性对象的 value 是否可改变，是由 writable 决定的。
 
-```
+```js
 var o = { p: 'a' };
 Object.seal(o);
 o.p = 'b';
@@ -1017,7 +1017,7 @@ o.p // 'b'
 
 Object.isSealed 方法用于检查一个对象是否使用了 Object.seal 方法。
 
-```
+```js
 var o = { p: 'a' };
 
 Object.seal(o);
@@ -1026,7 +1026,7 @@ Object.isSealed(o) // true
 
 另外，这时 isExtensible 方法也返回 false。
 
-```
+```js
 var o = { p: 'a' };
 
 Object.seal(o);
@@ -1037,7 +1037,7 @@ Object.isExtensible(o) // false
 
 Object.freeze 方法可以使得一个对象无法添加新属性、无法删除旧属性、也无法改变属性的值，使得这个对象实际上变成了常量。
 
-```
+```js
 var o = {p:"hello"};
 
 Object.freeze(o);
@@ -1051,7 +1051,7 @@ o.t // undefined
 
 上面代码中，对现有属性重新赋值（o.p = "world"）或者添加一个新属性，并不会报错，只是默默地失败。但是，如果是在严格模式下，就会报错。
 
-```
+```js
 var o = {p:"hello"};
 
 Object.freeze(o);
@@ -1069,7 +1069,7 @@ Object.freeze(o);
 
 Object.isFrozen 方法用于检查一个对象是否使用了 Object.freeze()方法。
 
-```
+```js
 var o = {p:"hello"};
 
 Object.freeze(o);
@@ -1080,7 +1080,7 @@ Object.isFrozen(o) // true
 
 需要注意的是，使用上面这些方法锁定对象的可写性，但是依然可以通过改变该对象的原型对象，来为它增加属性。
 
-```
+```js
 var o = new Object();
 
 Object.preventExtensions(o);
@@ -1095,7 +1095,7 @@ o.t
 
 一种解决方案是，把原型也冻结住。
 
-```
+```js
 var o = Object.seal(
             Object.create(Object.freeze({x:1}),
                 {y: {value: 2, writable: true}})

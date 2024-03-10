@@ -2,7 +2,7 @@
 
 Chrome 应用通过`sockets`接口支持 TCP 和 UDP 协议，使网络通信成为可能。使用`sockets`接口时，声明权限比较特殊，并不在`permissions`中声明，而是直接在 Manifest 的`sockets`中声明：
 
-```
+```js
 "sockets": {
     "udp": {
         "send": ["host-pattern1", ...],
@@ -32,7 +32,7 @@ UDP 协议是一个简单的面向数据报的传输层协议，它是一种不�
 
 Chrome 提供`sockets.udp`接口使 Chrome 应用可以进行 UDP 通信。要使用`sockets.udp`接口需要在`sockets`域中声明`udp`权限：
 
-```
+```js
 "sockets": {
     "udp": {
         "send": ["192.168.1.106:8000", ":8001"],
@@ -49,7 +49,7 @@ Chrome 提供`sockets.udp`接口使 Chrome 应用可以进行 UDP 通信。要�
 
 **创建 socket**
 
-```
+```js
 var socketOption = {
     persistent: true,
     name: 'udpSocket',
@@ -69,7 +69,7 @@ chrome.sockets.udp.create(socketOption, function(socketInfo){
 
 此处说的属性是指创建 socket 时提到的`socketOptions`。通过`update`方法可以更新 socket 的属性：
 
-```
+```js
 chrome.sockets.udp.update(socketId, newSocketOption, function(){
     //do something when update complete
 }); 
@@ -79,7 +79,7 @@ chrome.sockets.udp.update(socketId, newSocketOption, function(){
 
 当一个 socket 被阻止后，将不会触发消息接收事件，解除阻止后将恢复正常。
 
-```
+```js
 //Blocking socket receiving data
 var isPaused = true;
 
@@ -94,7 +94,7 @@ chrome.sockets.udp.setPaused(socketId, isPaused, function(){
 
 绑定固定端口用以接收 UDP 消息：
 
-```
+```js
 var localAddress = '10.60.37.105';
 var localPort = 6259;
 
@@ -110,7 +110,7 @@ chrome.sockets.udp.bind(socketId, localAddress, localPort, function(code){
 
 当一个 socket 不再被使用了我们应该关闭它。
 
-```
+```js
 chrome.socket.udp.close(socketId, function(){
     //do something after close a socket
 }); 
@@ -118,7 +118,7 @@ chrome.socket.udp.close(socketId, function(){
 
 下面我们来试着封装一个`udp`类，并在之后的内容逐步扩充它：
 
-```
+```js
 function udp(){
     var _udp = chrome.sockets.udp;
     this.option = {},
@@ -159,7 +159,7 @@ function udp(){
 
 调用时指定 socket 属性、绑定 IP 和端口就可以进行初始化了：
 
-```
+```js
 var udpSocket = new udp();
 udpSocket.option = {
     persistent: true
@@ -182,7 +182,7 @@ udpSocket.init(function(code){
 
 Socket 发送的数据类型为`ArrayBuffer`，对`ArrayBuffer`不熟悉的读者请参阅 7.6.1 节的内容。
 
-```
+```js
 chrome.sockets.udp.send(socketId, data, address, port, function(){
     //do something after send some data
 }); 
@@ -194,7 +194,7 @@ chrome.sockets.udp.send(socketId, data, address, port, function(){
 
 当 socket 接收到数据时，就会触发`onReceive`事件：
 
-```
+```js
 chrome.socket.udp.onReceive.addListener(function(info){
     //We'll do something with info later
 }); 
@@ -206,7 +206,7 @@ chrome.socket.udp.onReceive.addListener(function(info){
 
 当网络出现问题时，会触发`onReceiveError`事件，同时 socket 会被阻断：
 
-```
+```js
 chrome.sockets.udp.onReceiveError.addListener(function(info){
     //We'll do something with info later
 }); 
@@ -216,7 +216,7 @@ chrome.sockets.udp.onReceiveError.addListener(function(info){
 
 现在我们来把 8.1.1 中的`udp`类完善一下，由于篇幅限制，将只写出添加或改动的部分：
 
-```
+```js
 function udp(){
     this.send = function(address, port, data, callback){
         _udp.send(this.socketId, data, address, port, callback);
@@ -266,7 +266,7 @@ function udp(){
 
 要使用多播，需要在`sockets`的`udp`中声明`multicastMembership`权限：
 
-```
+```js
 "sockets": {
     "udp": {
         "multicastMembership": "*";
@@ -276,7 +276,7 @@ function udp(){
 
 如果提示 Invalid host:port pattern，这是 Chrome 的 Bug，解决方法是`multicastMembership`的值设定成空字符串：
 
-```
+```js
 "sockets": {
     "udp": {
         "multicastMembership": "";
@@ -286,7 +286,7 @@ function udp(){
 
 **加入组**
 
-```
+```js
 chrome.sockets.udp.joinGroup(socketId, address, function(code){
     //if a negative value is returned, an error occurred
     //otherwise do something after join a group
@@ -295,7 +295,7 @@ chrome.sockets.udp.joinGroup(socketId, address, function(code){
 
 **离开组**
 
-```
+```js
 chrome.sockets.udp.leaveGroup(socketId, address, function(code){
     //if a negative value is returned, an error occurred
     //otherwise do something after leave a group
@@ -304,7 +304,7 @@ chrome.sockets.udp.leaveGroup(socketId, address, function(code){
 
 **设置多播的 TTL**
 
-```
+```js
 chrome.sockets.udp.setMulticastTimeToLive(socketId, ttl, function(code){
     //if a negative value is returned, an error occurred
     //otherwise do something after set multicast TTL
@@ -315,7 +315,7 @@ chrome.sockets.udp.setMulticastTimeToLive(socketId, ttl, function(code){
 
 这个模式定义了当主机本身处于多播的目标组中时，是否接收来自自身的数据。如果一台主机中多个程序加入了同一个多播组，但回环模式设置矛盾时，Windows 会不接收来自本机自身的数据，而基于 Unix 的系统则不接收来自程序自身的数据。
 
-```
+```js
 chrome.sockets.udp.setMulticastLoopbackMode(sockedId, enabled, function(code){
     //if a negative value is returned, an error occurred
     //otherwise do something after set multicast loopback mode
@@ -324,7 +324,7 @@ chrome.sockets.udp.setMulticastLoopbackMode(sockedId, enabled, function(code){
 
 让我们把多播的功能加入到 udp 类中：
 
-```
+```js
 function udp(){
     this.joinGroup = function(address, callback){
         _udp.joinGroup(this.socketId, address, function(code){
@@ -380,7 +380,7 @@ function udp(){
 
 **获取指定 socket**
 
-```
+```js
 chrome.sockets.udp.getInfo(socketId, function(socketInfo){
     //do something with socketInfo
 }); 
@@ -390,7 +390,7 @@ chrome.sockets.udp.getInfo(socketId, function(socketInfo){
 
 **获取全部活动的 socket**
 
-```
+```js
 chrome.sockets.udp.getSockets(function(socketInfoArray){
     //do something with socketInfoArray
 }); 
@@ -400,7 +400,7 @@ chrome.sockets.udp.getSockets(function(socketInfoArray){
 
 **获取指定 socket 加入的组**
 
-```
+```js
 chrome.sockets.udp.getJoinedGroups(socketId, function(groupArray){
     //do something with groupArray
 }); 
@@ -410,7 +410,7 @@ chrome.sockets.udp.getJoinedGroups(socketId, function(groupArray){
 
 将以上方法加入到`udp`类中：
 
-```
+```js
 function udp(){
     this.getInfo = function(callback){
         _udp.getInfo(this.socketId, callback);
@@ -432,7 +432,7 @@ function udp(){
 
 这个应用利用 UDP 的多播功能，进行一对多通信，来实现局域网聊天。首先需要在 Manifest 的`sockets`中声明`udp`的权限：
 
-```
+```js
 {
     "app": {
         "background": {
@@ -462,7 +462,7 @@ Event Page 中指定的 udp.js 就是我们在之前写好的`udp`类。下面�
 
 首先当应用运行时开始创建 UDP 连接并加入到多播组：
 
-```
+```js
 var udpSocket = new udp();
 udpSocket.localPort = 8943;
 udpSocket.receive = receiveMsg;
@@ -475,7 +475,7 @@ udpSocket.init(function(){
 
 下面需要 background 来监听来自前端页面发来的指令：
 
-```
+```js
 chrome.runtime.onMessage.addListener(function(message, sender, callback){
     if(message.action == 'send'){
         var buf = str2ab(message.msg);
@@ -488,7 +488,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, callback){
 
 下面我们来编写接收消息的函数：
 
-```
+```js
 function receiveMsg(info){
     var msg = ab2str(info.data);
     chrome.runtime.sendMessage({action:'receive', msg:msg});
@@ -497,7 +497,7 @@ function receiveMsg(info){
 
 最后来编写`ArrayBuffer`和`String`类型数据互换的两个函数：
 
-```
+```js
 function str2ab(str){
     var buf = new ArrayBuffer(str.length*2);
     bufView = new Uint16Array(buf);
@@ -514,7 +514,7 @@ function ab2str(buf){
 
 UDP 通信相关的内容写好了，接下来创建前端窗口：
 
-```
+```js
 chrome.app.runtime.onLaunched.addListener(function(){
     chrome.app.window.create('main.html', {
         'id': 'main',
@@ -528,7 +528,7 @@ chrome.app.runtime.onLaunched.addListener(function(){
 
 前端窗口 main.html 的 HTML 代码：
 
-```
+```js
 <html>
 <head>
 <title>Local Messager</title>
@@ -575,7 +575,7 @@ body {
 
 main.js 的代码：
 
-```
+```js
 document.getElementById('msg').onkeyup = function(e){
     if(e.keyCode==13){
         chrome.runtime.sendMessage({
@@ -608,7 +608,7 @@ TCP 是一种面向连接的、可靠的、基于字节流的传输层通信协�
 
 Chrome 提供`sockets.tcp`接口使 Chrome 应用可以进行 TCP 通信。要使用`sockets.tcp`接口需要在`sockets`域中声明`tcp`权限：
 
-```
+```js
 "sockets": {
     "tcp": {
         "connect": ["192.168.1.100:80", ":8080"]
@@ -622,7 +622,7 @@ Chrome 提供`sockets.tcp`接口使 Chrome 应用可以进行 TCP 通信。要�
 
 **创建 socket**
 
-```
+```js
 var socketOption = {
     persistent: true,
     name: 'tcpSocket',
@@ -642,7 +642,7 @@ chrome.sockets.tcp.create(socketOption, function(socketInfo){
 
 此处说的属性是指创建 socket 时提到的 socketOptions。通过 update 方法可以更新 socket 的属性：
 
-```
+```js
 chrome.sockets.tcp.update(socketId, newSocketOption, function(){
     //do something when update complete
 }); 
@@ -652,7 +652,7 @@ chrome.sockets.tcp.update(socketId, newSocketOption, function(){
 
 当一个 socket 被阻止后，将不会触发消息接收事件，解除阻止后将恢复正常。
 
-```
+```js
 //Blocking socket receiving data
 var isPaused = true;
 
@@ -665,7 +665,7 @@ chrome.sockets.tcp.setPaused(socketId, isPaused, function(){
 
 **长连接**
 
-```
+```js
 chrome.sockets.tcp.setKeepAlive(socketId, enable, delay, function(code){
     //if a negative value is returned, an error occurred
     //otherwise do something after set keep-alive
@@ -678,7 +678,7 @@ chrome.sockets.tcp.setKeepAlive(socketId, enable, delay, function(code){
 
 纳格算法以减少封包传送量来增进 TCP/IP 网络的效能。可以通过 setNoDelay 方法禁用或启用。
 
-```
+```js
 chrome.sockets.tcp.setNoDelay(socketId, noDelay, function(code){
     //if a negative value is returned, an error occurred
     //otherwise do something after set no delay
@@ -689,7 +689,7 @@ chrome.sockets.tcp.setNoDelay(socketId, noDelay, function(code){
 
 **断开连接**
 
-```
+```js
 chrome.sockets.tcp.disconnect(socketId, function(){
     //do something after disconnect a connection
 }); 
@@ -699,7 +699,7 @@ chrome.sockets.tcp.disconnect(socketId, function(){
 
 当一个 socket 不再被使用了我们应该关闭它。
 
-```
+```js
 chrome.socket.tcp.close(socketId, function(){
     //do something after close a socket
 }); 
@@ -707,7 +707,7 @@ chrome.socket.tcp.close(socketId, function(){
 
 下面我们来试着封装一个`tcp`类，并在之后的内容逐步扩充它：
 
-```
+```js
 function tcp(){
     var _tcp = chrome.sockets.tcp;
     this.option = {},
@@ -770,7 +770,7 @@ function tcp(){
 
 调用时指定 socket 属性就可以进行初始化了：
 
-```
+```js
 var tcpSocket = new tcp();
 tcpSocket.option = {
     persistent: true
@@ -784,7 +784,7 @@ tcpSocket.init(function(){
 
 **连接**
 
-```
+```js
 chrome.sockets.tcp.connect(socketId, peerAddress, peerPort, function(code){
     //if a negative value is returned, an error occurred
     //otherwise do something after bind a port
@@ -795,7 +795,7 @@ chrome.sockets.tcp.connect(socketId, peerAddress, peerPort, function(code){
 
 Socket 发送的数据类型为`ArrayBuffer`，对`ArrayBuffer`不熟悉的读者请参阅 7.6.1 节的内容。
 
-```
+```js
 chrome.sockets.tcp.send(socketId, data, function(info){
     //if info.resultCode is a negative value, an error occurred
     //otherwise do something after send some data
@@ -808,7 +808,7 @@ chrome.sockets.tcp.send(socketId, data, function(info){
 
 当 socket 接收到数据时，就会触发`onReceive`事件：
 
-```
+```js
 chrome.socket.tcp.onReceive.addListener(function(info){
     //We'll do something with info later
 }); 
@@ -820,7 +820,7 @@ chrome.socket.tcp.onReceive.addListener(function(info){
 
 当网络出现问题时，会触发`onReceiveError`事件，同时 socket 会被阻断：
 
-```
+```js
 chrome.sockets.tcp.onReceiveError.addListener(function(info){
     //We'll do something with info later
 }); 
@@ -830,7 +830,7 @@ chrome.sockets.tcp.onReceiveError.addListener(function(info){
 
 现在我们来把 8.2.1 中的`tcp`类完善一下，由于篇幅限制，将只写出添加或改动的部分：
 
-```
+```js
 function tcp(){
     this.connect = function(address, port, callback){
         _tcp.connect(this.socketId, address, port, function(){
@@ -861,7 +861,7 @@ function tcp(){
 
 **获取指定 socket**
 
-```
+```js
 chrome.sockets.tcp.getInfo(socketId, function(socketInfo){
     //do something with socketInfo
 }); 
@@ -871,7 +871,7 @@ chrome.sockets.tcp.getInfo(socketId, function(socketInfo){
 
 **获取全部活动的 socket**
 
-```
+```js
 chrome.sockets.tcp.getSockets(function(socketInfoArray){
     //do something with socketInfoArray
 }); 
@@ -881,7 +881,7 @@ chrome.sockets.tcp.getSockets(function(socketInfoArray){
 
 将以上方法加入到`tcp`类中：
 
-```
+```js
 function tcp(){
     this.getInfo = function(callback){
         _tcp.getInfo(this.socketId, callback);
@@ -899,7 +899,7 @@ TCP Server 可以绑定指定端口并被动地接收信息。
 
 Chrome 提供`sockets.tcpServer`接口使 Chrome 应用可以作为 TCP 服务器。要使用`sockets.tcpServer`接口需要在`sockets`域中声明`tcpServer`权限：
 
-```
+```js
 "sockets": {
     "tcpServer": {
         "listen": ":80"
@@ -913,7 +913,7 @@ Chrome 提供`sockets.tcpServer`接口使 Chrome 应用可以作为 TCP 服务�
 
 **创建 socket**
 
-```
+```js
 var socketOption = {
     persistent: true,
     name: 'tcpSocket'
@@ -932,7 +932,7 @@ chrome.sockets.tcpServer.create(socketOption, function(socketInfo){
 
 此处说的属性是指创建 socket 时提到的`socketOptions`。通过`update`方法可以更新 socket 的属性：
 
-```
+```js
 chrome.sockets.tcpServer.update(socketId, newSocketOption, function(){
     //do something when update complete
 }); 
@@ -942,7 +942,7 @@ chrome.sockets.tcpServer.update(socketId, newSocketOption, function(){
 
 当一个 socket 被阻止后，将不会触发消息接收事件，解除阻止后将恢复正常。
 
-```
+```js
 //Blocking socket receiving data
 var isPaused = true;
 
@@ -955,7 +955,7 @@ chrome.sockets.tcpServer.setPaused(socketId, isPaused, function(){
 
 **断开连接**
 
-```
+```js
 chrome.sockets.tcpServer.disconnect(socketId, function(){
     //do something after disconnect a connection
 }); 
@@ -965,7 +965,7 @@ chrome.sockets.tcpServer.disconnect(socketId, function(){
 
 当一个 socket 不再被使用了我们应该关闭它。
 
-```
+```js
 chrome.socket.tcpServer.close(socketId, function(){
     //do something after close a socket
 }); 
@@ -973,7 +973,7 @@ chrome.socket.tcpServer.close(socketId, function(){
 
 下面我们来试着封装一个`tcpServer`类，并在之后的内容逐步扩充它：
 
-```
+```js
 function tcpServer(){
     var _tcpServer = chrome.sockets.tcpServer;
     this.option = {},
@@ -1010,7 +1010,7 @@ function tcpServer(){
 
 调用时指定 socket 属性就可以进行初始化了：
 
-```
+```js
 var tcpSocket = new tcpServer();
 tcpSocket.option = {
     persistent: true
@@ -1024,7 +1024,7 @@ tcpSocket.init(function(){
 
 **监听端口**
 
-```
+```js
 chrome.sockets.tcpServer.listen(socketId, address, port, backlog, function(code){
     //if a negative value is returned, an error occurred
     //otherwise do something after listen complete
@@ -1035,7 +1035,7 @@ chrome.sockets.tcpServer.listen(socketId, address, port, backlog, function(code)
 
 **接受连接**
 
-```
+```js
 chrome.sockets.tcpServer.onAccept.addListener(function(info){
     //do something when a connection has been made to the server socket
 }); 
@@ -1047,7 +1047,7 @@ chrome.sockets.tcpServer.onAccept.addListener(function(info){
 
 当网络出现问题时，会触发`onAcceptError`事件，同时 socket 会被阻断：
 
-```
+```js
 chrome.sockets.tcpServer.onAcceptError.addListener(function(info){
     //do something with info
 }); 
@@ -1057,7 +1057,7 @@ chrome.sockets.tcpServer.onAcceptError.addListener(function(info){
 
 现在我们来把 8.3.1 中的`tcpServer`类完善一下，由于篇幅限制，将只写出添加或改动的部分：
 
-```
+```js
 function tcpServer(){
     this.listen = function(address, port, callback){
         _tcpServer.listen(this.socketId, address, port, function(code){
@@ -1097,7 +1097,7 @@ function tcpServer(){
 
 **获取指定 socket**
 
-```
+```js
 chrome.sockets.tcpServer.getInfo(socketId, function(socketInfo){
     //do something with socketInfo
 }); 
@@ -1107,7 +1107,7 @@ chrome.sockets.tcpServer.getInfo(socketId, function(socketInfo){
 
 **获取全部活动的 socket**
 
-```
+```js
 chrome.sockets.tcpServer.getSockets(function(socketInfoArray){
     //do something with socketInfoArray
 }); 
@@ -1117,7 +1117,7 @@ chrome.sockets.tcpServer.getSockets(function(socketInfoArray){
 
 将以上方法加入到`tcpServer`类中：
 
-```
+```js
 function tcpServer(){
     this.getInfo = function(callback){
         _tcpServer.getInfo(this.socketId, callback);
@@ -1135,7 +1135,7 @@ function tcpServer(){
 
 HTTP 服务器需要监听 TCP 连接同时使用 TCP 与客户端进行通信，所以需要`tcp`和`tcpServer`权限：
 
-```
+```js
 {
     "app": {
         "background": {
@@ -1164,7 +1164,7 @@ HTTP 服务器需要监听 TCP 连接同时使用 TCP 与客户端进行通信�
 
 首先需要创建`tcpServerSocket`：
 
-```
+```js
 var tcpServerSocket = new tcpServer();
 tcpServerSocket.option = {
     persistent: true
@@ -1179,7 +1179,7 @@ tcpServerSocket.init(function(){
 
 创建完成后来编写监听连接的函数`handleAccept`：
 
-```
+```js
 function handleAccept(info){
     if(info.socketId==this.socketId){
         var _tcp = chrome.sockets.tcp;
@@ -1209,7 +1209,7 @@ function handleAccept(info){
 
 之后设定了`keep-alive`属性，并解除了此 TCP socket 的阻止状态开始接收数据。接收到的数据通过`handleRequest`函数来处理。下面来编写`handleRequest`函数：
 
-```
+```js
 function handleRequest(info){
     var header = ab2str(info.data);
     header = header.split("\r\n").join('<br />');
@@ -1235,7 +1235,7 @@ function handleRequest(info){
 
 最后来编写`ArrayBuffer`和字符串直接转换的函数，本例中使用到的转换函数与 8.1.5 节中所使用的略有不同：
 
-```
+```js
 function str2ab(str){
     var buf = new ArrayBuffer(str.length);
     bufView = new Uint8Array(buf);
@@ -1263,13 +1263,13 @@ WebSocket 与本章前三节介绍的内容不同，它是 HTML5 原生支持的
 
 在使用 WebSocket 通信前需要先连接到外部的 WebSocket 服务器：
 
-```
+```js
 var connection = new WebSocket('ws://127.0.0.1'); 
 ```
 
 当连接打开后会触发`onopen`事件：
 
-```
+```js
 connection.onopen = function(){
     //do something when the connection is open
 } 
@@ -1277,7 +1277,7 @@ connection.onopen = function(){
 
 向服务器发送数据使用`send`方法：
 
-```
+```js
 connection.send(data); 
 ```
 
@@ -1285,7 +1285,7 @@ connection.send(data);
 
 当接收到来自服务器的数据时会触发`onmessage`事件：
 
-```
+```js
 connection.onmessage = function(result){
     //do something with result
 } 
@@ -1295,7 +1295,7 @@ connection.onmessage = function(result){
 
 当 WebSocket 连接发生异常时会触发`onerror`事件：
 
-```
+```js
 connection.onerror = function(error){
     console.log(error);
 }; 

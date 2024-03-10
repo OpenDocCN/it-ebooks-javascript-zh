@@ -18,7 +18,7 @@ Notification API 是浏览器的通知接口，用于在用户的桌面（而不
 
 下面的代码用于检查浏览器是否支持这个 API。
 
-```
+```js
 if (window.Notification) {
   // 支持
 } else {
@@ -28,7 +28,7 @@ if (window.Notification) {
 
 目前，Chrome 和 Firefox 在桌面端部署了这个 API，Firefox 和 Blackberry 在手机端部署了这个 API。
 
-```
+```js
 if(window.Notification && Notification.permission !== "denied") {
     Notification.requestPermission(function(status) {
         var n = new Notification('通知标题', { body: '这里是通知内容！' }); 
@@ -52,7 +52,7 @@ Notification.permission 属性，用于读取用户给予的权限，它是一�
 
 Notification.requestPermission 方法用于让用户做出选择，到底是否接收通知。它的参数是一个回调函数，该函数可以接收用户授权状态作为参数。
 
-```
+```js
 Notification.requestPermission(function (status) {
   if (status === "granted") {
     var n = new Notification("Hi!");
@@ -70,7 +70,7 @@ Notification.requestPermission(function (status) {
 
 Notification 对象作为构造函数使用时，用来生成一条通知。
 
-```
+```js
 var notification = new Notification(title, options);
 ```
 
@@ -86,7 +86,7 @@ Notification 构造函数的 title 属性是必须的，用来指定通知的标
 
 下面是一个生成 Notification 实例对象的例子。
 
-```
+```js
 var notification = new Notification('收到新邮件', {
   body: '您总共有 3 封未读邮件。'
 });
@@ -106,7 +106,7 @@ Notification 实例会触发以下事件。
 
 这些事件有对应的 onshow、onclick、onclose、onerror 方法，用来指定相应的回调函数。addEventListener 方法也可以用来为这些事件指定回调函数。
 
-```
+```js
 notification.onshow = function() {
   console.log('Notification shown');
 };
@@ -116,7 +116,7 @@ notification.onshow = function() {
 
 Notification 实例的 close 方法用于关闭通知。
 
-```
+```js
 var n = new Notification("Hi!");
 
 // 手动关闭

@@ -24,7 +24,7 @@
 
 使用 `var` 关键字声明的变量，无论其实际声明位置在何处，都会被视为声明于所在函数的顶部（如果声明不在任意函数内，则视为在全局作用域的顶部）。这就是所谓的**变量提升**（ **hoisting** ）。为了说明变量提升的含义，请参考如下函数定义：
 
-```
+```js
 function getValue(condition) {
 
     if (condition) {
@@ -46,7 +46,7 @@ function getValue(condition) {
 
 如果你不太熟悉 JS ，或许会认为仅当 `condition` 的值为 true 时，变量 `value` 才会被创建。但实际上，value 无论如何都会被创建。 JS 引擎在后台对 `getValue` 函数进行了调整，就像这样：
 
-```
+```js
 function getValue(condition) {
 
     var value;
@@ -81,7 +81,7 @@ JS 的初学者经常需要花点时间才能习惯变量提升，而如果不�
 
 `let` 声明的语法与 `var` 的语法一致。你基本上可以用 `let` 来代替 `var` 进行变量声明，但会将变量的作用域限制在当前代码块中（其他细微差别会在稍后讨论）。由于 `let` 声明并不会被提升到当前代码块的顶部，因此你需要手动将 `let` 声明放置到顶部，以便让变量在整个代码块内部可用。这里有个范例：
 
-```
+```js
 function getValue(condition) {
 
     if (condition) {
@@ -107,7 +107,7 @@ function getValue(condition) {
 
 如果一个标识符已经在代码块内部被定义，那么在此代码块内使用同一个标识符进行 `let` 声明就会导致抛出错误。例如：
 
-```
+```js
 var count = 30;
 
 // 语法错误
@@ -116,7 +116,7 @@ let count = 40;
 
 在本例中，`count` 变量被声明了两次：一次使用 `var` ，另一次使用 `let` 。因为 `let` 不能在同一作用域内重复声明一个已有标识符，此处的 `let` 声明就会抛出错误。另一方面，在嵌套的作用域内使用 `let` 声明一个同名的新变量，则不会抛出错误，以下代码对此进行了演示：
 
-```
+```js
 var count = 30;
 
 // 不会抛出错误
@@ -134,7 +134,7 @@ if (condition) {
 
 在 ES6 中里也可以使用 `const` 语法进行声明。使用 `const` 声明的变量会被认为是**常量**（ **constant** ），意味着它们的值在被设置完成后就不能再被改变。正因为如此，所有的 `const` 变量都需要在声明时进行初始化，示例如下：
 
-```
+```js
 // 有效的常量
 const maxItems = 30;
 
@@ -148,7 +148,7 @@ const name;
 
 常量声明与 `let` 声明一样，都是块级声明。这意味着常量在声明它们的语句块外部是无法访问的，并且声明也不会被提升，示例如下：
 
-```
+```js
 if (condition) {
     const maxItems = 5;
 
@@ -162,7 +162,7 @@ if (condition) {
 
 与 `let` 的另一个相似之处，是 `const` 声明会在同一作用域（全局或是函数作用域）内定义一个已有变量时会抛出错误，无论是该变量此前是用 `var` 声明的，还是用 `let` 声明的。例如以下代码：
 
-```
+```js
 var message = "Hello!";
 let age = 25;
 
@@ -175,7 +175,7 @@ const age = 30;
 
 尽管有上述相似之处，但 `let` 与 `const` 之间仍然有个必须牢记的重大区别：试图对之前用 `const` 声明的常量进行赋值会抛出错误，无论是在严格模式还是非严格模式下：
 
-```
+```js
 const maxItems = 5;
 
 maxItems = 6;      // 抛出错误 
@@ -187,7 +187,7 @@ maxItems = 6;      // 抛出错误
 
 `const` 声明会阻止对于变量绑定与变量自身值的修改，这意味着 `const` 声明并不会阻止对变量成员的修改。例如：
 
-```
+```js
 const person = {
     name: "Nicholas"
 };
@@ -207,7 +207,7 @@ person = {
 
 使用 `let` 或 `const` 声明的变量，在达到声明处之前都是无法访问的，试图访问会导致一个引用错误，即使在通常是安全的操作时（例如使用 `typeof` 运算符），也是如此。示例如下：
 
-```
+```js
 if (condition) {
     console.log(typeof value);  // 引用错误
     let value = "blue";
@@ -220,7 +220,7 @@ if (condition) {
 
 使用 `let` 或 `const` 声明的变量，若试图在定义位置之前使用它，无论如何都不能避免暂时性死区。而且正如上例所演示的，这甚至影响了通常安全的 `typeof` 运算符。然而，你可以在变量被定义的代码块之外对该变量使用 `typeof` ，尽管其结果可能并非预期。考虑以下代码：
 
-```
+```js
 console.log(typeof value);     // "undefined"
 
 if (condition) {
@@ -236,7 +236,7 @@ if (condition) {
 
 开发者最需要使用变量的块级作用域的场景，或许就是在 `for` 循环内，也就是想让一次性的循环计数器仅能在循环内部使用。例如，以下代码在 JS 中并不罕见：
 
-```
+```js
 for (var i = 0; i < 10; i++) {
     process(items[i]);
 }
@@ -247,7 +247,7 @@ console.log(i);                     // 10
 
 在其他默认使用块级作用域的语言中，这个例子能够照预期工作，也就是只有 `for` 才能访问变量 `i` 。然而在 JS 中，循环结束后 `i` 仍然可被访问，因为 `var` 声明导致了变量提升。若像如下代码那样换为使用 `let` ，则会看到预期行为：
 
-```
+```js
 for (let i = 0; i < 10; i++) {
     process(items[i]);
 }
@@ -262,7 +262,7 @@ console.log(i);
 
 长期以来， `var` 的特点使得循环变量在循环作用域之外仍然可被访问，于是在循环内创建函数就变得很有问题。考虑如下代码：
 
-```
+```js
 var funcs = [];
 
 for (var i = 0; i < 10; i++) {
@@ -278,7 +278,7 @@ funcs.forEach(function(func) {
 
 为了修正这个问题，开发者在循环内使用立即调用函数表达式（IIFEs），以便在每次迭代中强制创建变量的一个新副本，示例如下：
 
-```
+```js
 var funcs = [];
 
 for (var i = 0; i < 10; i++) {
@@ -300,7 +300,7 @@ funcs.forEach(function(func) {
 
 `let` 声明通过有效模仿上例中 IIFE 的作用而简化了循环。在每次迭代中，都会创建一个新的同名变量并对其进行初始化。这意味着你可以完全省略 IIFE 而获得预期的结果，就像这样：
 
-```
+```js
 var funcs = [];
 
 for (let i = 0; i < 10; i++) {
@@ -316,7 +316,7 @@ funcs.forEach(function(func) {
 
 与使用 `var` 声明以及 IIFE 相比，这里代码能达到相同效果，但无疑更加简洁。在循环中 `let` 声明每次都创建了一个新的 `i` 变量，因此在循环内部创建的函数获得了各自的 `i` 副本，而每个 `i` 副本的值都在每次循环迭代声明变量的时候被确定了。这种方式在 `for-in` 和 `for-of` 循环中同样适用，如下所示：
 
-```
+```js
 var funcs = [],
     object = {
         a: true,
@@ -343,7 +343,7 @@ funcs.forEach(function(func) {
 
 ES6 规范没有明确禁止在循环中使用 `const` 声明，然而它会根据循环方式的不同而有不同行为。在常规的 `for` 循环中，你可以在初始化时使用 `const` ，但循环会在你试图改变该变量的值时抛出错误。例如：
 
-```
+```js
 var funcs = [];
 
 // 在一次迭代后抛出错误
@@ -358,7 +358,7 @@ for (const i = 0; i < 10; i++) {
 
 而另一方面， `const` 变量在 `for-in` 或 `for-of` 循环中使用时，与 `let` 变量效果相同。因此下面代码不会导致出错：
 
-```
+```js
 var funcs = [],
     object = {
         a: true,
@@ -384,7 +384,7 @@ funcs.forEach(function(func) {
 
 `let` 与 `const` 不同于 `var` 的另一个方面是在全局作用域上的表现。当在全局作用域上使用 `var` 时，它会创建一个新的全局变量，并成为全局对象（在浏览器中是 `window` ）的一个属性。这意味着使用 `var` 可能会无意覆盖一个已有的全局属性，就像这样：
 
-```
+```js
 // 在浏览器中
 var RegExp = "Hello!";
 console.log(window.RegExp);     // "Hello!"
@@ -397,7 +397,7 @@ console.log(window.ncz);        // "Hi!"
 
 然而若你在全局作用域上使用 `let` 或 `const` ，虽然在全局作用域上会创建新的绑定，但不会有任何属性被添加到全局对象上。这也就意味着你不能使用 `let` 或 `const` 来覆盖一个全局变量，你只能将其屏蔽。这里有个范例：
 
-```
+```js
 // 在浏览器中
 let RegExp = "Hello!";
 console.log(RegExp);                    // "Hello!"

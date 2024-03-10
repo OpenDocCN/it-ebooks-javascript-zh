@@ -18,7 +18,7 @@
 
 最后我们再来看看代码
 
-```
+```js
 Kodo.deleEvents = []; //事件委托存放的事件
 Kodo.deleId = 0; //事件委托的唯一标识
 
@@ -103,7 +103,7 @@ on: function(type, selector, fn) {
 
 off 本身是可以传 2 个参数的，第一个参数为事件 type，第二个参数是委托元素 selector
 
-```
+```js
 off: function(type, selector) {
     if (arguments.length == 0) {
         //如果没传参数，清空所有事件
@@ -124,7 +124,7 @@ off: function(type, selector) {
 
 最后看看我们修改过后的 delegate 方法
 
-```
+```js
 function delegate(agent, type, selector) {
     var id = agent.deleId; //先获取被委托元素的 deleId
     agent.addEventListener(type, function(e) {
@@ -156,7 +156,7 @@ function delegate(agent, type, selector) {
 
 以上就是整个委托的过程！
 
-```
+```js
  f("you").on('star','me',function(){
     console.log('success!');
 }); 

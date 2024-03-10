@@ -6,7 +6,7 @@
 
 如果你的后端使用的是 Ember 约定的规则那么可用使用适配器`adapters/application.js`。适配器`application`优先级比默认的适配器高，但是比指定的模型适配器优先级低。模型适配器定义规则是：`adapter-modelName.js`。比如下面的代码定义了一个模型适配器`adapter-post`。
 
-```
+```js
 //  app/adapters/adapter-post.js
 
 import Ember from 'ember';  
@@ -31,7 +31,7 @@ Ember 内置的是配有如下几种：
 
 `JSONAPIAdapter`适配器非常智能，它能够自动确定 URL 链接是那个模型。比如，如果你需要通过`id`获取`post`：
 
-```
+```js
 this.store.find('post', 1).then(function(post) {  
     //  处理 post
 }); 
@@ -49,7 +49,7 @@ this.store.find('post', 1).then(function(post) {
 
 为了适配复数名字的模型属性名称，可以是使用[Ember Inflector](https://github.com/stefanpenner/ember-inflector)绑定别名。
 
-```
+```js
 let inflector = Ember.Inflector.inflector;  
 inflector.irregular('formula', 'formulae');  
 inflector.uncountable('advice'); 
@@ -61,7 +61,7 @@ inflector.uncountable('advice');
 
 使用属性`namespace`可以设置 URL 的前缀。
 
-```
+```js
 app/adapters/application.js  
 import Ember from 'ember';  
 export default DS.JSONAPIAdapter.extend({  
@@ -75,7 +75,7 @@ export default DS.JSONAPIAdapter.extend({
 
 默认情况下适配器会转到当前域名下。如果你想让 URL 转到新的域名可以使用属性 host 设置。
 
-```
+```js
 app/adapters/application.js  
 import Ember from 'ember';  
 export default DS.JSONAPIAdapter.extend({  
@@ -91,7 +91,7 @@ export default DS.JSONAPIAdapter.extend({
 
 默认情况下 Ember 会尝试去根据复数的模型类名、中划线分隔的模型类名生成 URL。如果需要改变这个默认的规则可以使用属性`pathForType`设置。
 
-```
+```js
 // app/adapters/application.js
 import Ember from ‘ember’;  
 export default DS.JSONAPIAdapter.extend({  
@@ -107,7 +107,7 @@ export default DS.JSONAPIAdapter.extend({
 
 有些请求需要设置请求头信息，比如提供`API`的`key`。可以以键值对的方式设置头部信息，Ember Data 会为每个请求都加上这个头信息设置。
 
-```
+```js
 app/adapters/application.js  
 import Ember from 'ember';  
 export default DS.JSONAPIAdapter.extend({  
@@ -120,7 +120,7 @@ export default DS.JSONAPIAdapter.extend({
 
 更强大地方是你可以在`header`中使用计算属性，动态设置请求头信息。下面的代码是将一个`session`对象设置到适配器中。
 
-```
+```js
 app/adapters/application.js  
 import Ember from ‘ember’;  
 export default DS.JSONAPIAdapter.extend({  
@@ -136,7 +136,7 @@ export default DS.JSONAPIAdapter.extend({
 
 你还可以使用`volatile()`方法设置计算属性为非缓存属性，这样每次发送请求都会重新计算`header`里的值。
 
-```
+```js
 // app/adapters/application.js
 import Ember from ‘ember’;  
 export default DS.JSONAPIAdapter.extend({  

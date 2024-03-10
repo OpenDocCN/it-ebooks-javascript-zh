@@ -12,7 +12,7 @@
 
 例如，我们希望计算器可以实现加法和减法的功能，并且可以正确进行正数和负数的运算。我们的 spec 文档如下列所示。
 
-```
+```js
  # calculatorSpec.coffee
 
 describe 'Calculator', ->
@@ -45,7 +45,7 @@ describe 'Calculator', ->
 
 Jasmine 可以使用 spec runner 的 HTML 文档在 web 浏览器中运行你的测试。 spec runner 是一个简单地 HTML 页面，连接着 Jasmine 以及你的代码所需要的必要的 JavaScript 和 CSS 文件。示例如下。
 
-```
+```js
  1 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
  2   "http://www.w3.org/TR/html4/loose.dtd">
  3 <html>
@@ -115,7 +115,7 @@ Jasmine 可以使用 spec runner 的 HTML 文档在 web 浏览器中运行你的
 
 看来我们的测试是失败的，因为 jasmine 无法找到 Calculator 变量。那是因为它还没有被创建。现在让我们来创建一个新文件命名为 js/calculator.coffee 。
 
-```
+```js
  # calculator.coffee
 
 window.Calculator = class Calculator
@@ -133,7 +133,7 @@ window.Calculator = class Calculator
 
 实现我们的方法来看是否可以通过测试。
 
-```
+```js
  # calculator.coffee
 
 window.Calculator = class Calculator
@@ -158,7 +158,7 @@ window.Calculator = class Calculator
 
 幸运的是 Jasmine 拥有一个 beforeEach 函数,就是为了这一目的设置的。
 
-```
+```js
 describe 'Calculator', ->
     calculator = null
 
@@ -202,7 +202,7 @@ Nodeunit 是一种 JavaScript 对于单元测试库（ Unit Testing libraries �
 
 例如，我们希望我们的计算器可以进行加法和减法，并且对于正负数均可以正确计算，我们的测试如下。
 
-```
+```js
  # test/calculator.test.coffee
 
 Calculator = require '../calculator'
@@ -238,7 +238,7 @@ exports.CalculatorTest =
 
 首先创建一个 package.json 文件
 
-```
+```js
 {
   "name": "calculator",
   "version": "0.0.1",
@@ -254,7 +254,7 @@ exports.CalculatorTest =
 
 接下来从一个终端运行。
 
-```
+```js
 $ npm install
 ```
 
@@ -262,13 +262,13 @@ $ npm install
 
 使用代码行可以简便地运行测试文件：
 
-```
+```js
 $ npm test
 ```
 
 测试失败，因为我们并没有 calculator.coffee
 
-```
+```js
 suki@Yuzuki:nodeunit_testing (master)$ npm test
 npm WARN package.json calculator@0.0.1 No README.md file found!
 
@@ -285,7 +285,7 @@ npm ERR! not ok code 0
 
 我们创建一个简单文件
 
-```
+```js
  # calculator.coffee
 
 class Calculator
@@ -295,7 +295,7 @@ module.exports = Calculator
 
 并且重新运行测试套件。
 
-```
+```js
 suki@Yuzuki:nodeunit_testing (master)$ npm test
 npm WARN package.json calculator@0.0.1 No README.md file found!
 
@@ -332,7 +332,7 @@ npm ERR! not ok code 0
 
 让我们对方法进行实现来观察测试是否可以通过。
 
-```
+```js
  # calculator.coffee
 
 class Calculator
@@ -348,7 +348,7 @@ module.exports = Calculator
 
 当我们重新运行测试时可以看到全部通过：
 
-```
+```js
 suki@Yuzuki:nodeunit_testing (master)$ npm test
 npm WARN package.json calculator@0.0.1 No README.md file found!
 
@@ -372,7 +372,7 @@ OK: 4 assertions (27ms)
 
 通常在其他的 xUnit 库中，Nodeunit 会提供一个 setUp（以及 tearDown ）功能会在测试前调用。
 
-```
+```js
 Calculator = require '../calculator'
 
 exports.CalculatorTest =

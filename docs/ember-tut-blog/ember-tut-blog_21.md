@@ -6,7 +6,7 @@
 
 在介绍路由这一章之前，重新创建了一个项目用于演示，依然是使用[Ember CLI](http://ember-cli.com/user-guide)创建项目。下面是创建命名并且运行项目，测试项目是否创建成功。
 
-```
+```js
 ember new chapter3_routes  
 cd chapter3_routes  
 ember server 

@@ -6,13 +6,13 @@
 
 **旧版本实现方式**
 
-```
+```js
 {{input type="text" value=email action="clearTipInfo" on="focus-in"}} 
 ```
 
 **新版本实现方式**
 
-```
+```js
 {{input type="text" value=email focus-in="clearTipInfo"}} 
 ```
 

@@ -14,7 +14,7 @@
 
 官方不支持了，那怎么办呢！！简单啊，直接使用原生 HTML 不就完了，别搞那么复杂，反正我是直接使用原生的`<select>`标签实现，简单又熟悉。下面是我的实现代码：
 
-```
+```js
 <!-- app/templates/application.hbs -->  
 <h2 id="title">下拉组件 select 使用</h2>
 
@@ -41,7 +41,7 @@
 
 `
 
-```
+```js
 // app/controllers/application.js
 
 import Ember from 'ember';
@@ -62,7 +62,7 @@ export default Ember.Controller.extend({
 
 然而，如果你是按照官网教程那么使用我也不知道怎么去获取下拉框的值！！比如下面的代码：
 
-```
+```js
 {{view "select" content=names value=defaultValue
     optionValuePath="content.value" optionLabelPath="content.label"
     selectionBinding="selectChange"}} 
@@ -72,14 +72,14 @@ export default Ember.Controller.extend({
 
 如果一定要用这个组件怎么办！！网上提供了很多扩展插件，找了其中觉得很不错一款[power-select](http://www.ember-power-select.com/docs)，非常好用，关键是文档也很好！！下面是我的实例：
 
-```
+```js
 使用插件获取 ember 的 select 组件选中值<br>
 {{#power-select options=names selected=defaultValue onchange=(action 'obtain') as |item|}}
     {{item}}
 {{/power-select}} 
 ```
 
-```
+```js
 // app/controllers/application.js
 
 import Ember from 'ember';

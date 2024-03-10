@@ -20,7 +20,7 @@ Decision:
 
 对于基本类型的常量, 只需转换命名.
 
-```
+```js
 /**
  * The number of seconds in a minute.
  * @type {number}
@@ -30,7 +30,7 @@ goog.example.SECONDS_IN_A_MINUTE = 60;
 
 对于非基本类型, 使用 `@const` 标记.
 
-```
+```js
 /**
  * The number of seconds in each of the given units.
  * @type {Object.<number>}
@@ -57,7 +57,7 @@ goog.example.SECONDS_TABLE = {
 
 而且有些情况下, 漏掉分号会很危险:
 
-```
+```js
 // 1.
 MyClass.prototype.myMethod = function() {
   return 42;
@@ -110,7 +110,7 @@ JavaScript 的语句以分号作为结束符, 除非可以非常准确推断某�
 
 不要写成:
 
-```
+```js
 if (x) {
   function foo() {}
 } 
@@ -118,7 +118,7 @@ if (x) {
 
 虽然很多 JS 引擎都支持块内声明函数, 但它不属于 ECMAScript 规范 (见 [ECMA-262](http://www.ecma-international.org/publications/standards/Ecma-262.htm), 第 13 和 14 条). 各个浏览器糟糕的实现相互不兼容, 有些也与未来 ECMAScript 草案相违背. ECMAScript 只允许在脚本的根语句或函数中声明函数. 如果确实需要在块中定义函数, 建议使用函数表达式来初始化变量:
 
-```
+```js
 if (x) {
   var foo = function() {}
 } 
@@ -156,7 +156,7 @@ if (x) {
 
 没有任何理由去封装基本类型, 另外还存在一些风险:
 
-```
+```js
 var x = new Boolean(false);
 if (x) {
   alert('hi');  // Shows 'hi'.
@@ -165,7 +165,7 @@ if (x) {
 
 除非明确用于类型转换, 其他情况请千万不要这样做！
 
-```
+```js
 var x = Boolean(0);
 if (x) {
   alert('hi');  // This will never be alerted.
@@ -186,7 +186,7 @@ typeof new Boolean(0) == 'object';
 
 使用[the Closure 库](http://code.google.com/closure/library/)中的 `goog.inherits()` 或其他类似的用于继承的函数, 会是更好的选择.
 
-```
+```js
 function D() {
   goog.base(this)
 }
@@ -205,7 +205,7 @@ D.prototype.method = function() {
 
 有很多方法可以给构造器添加方法或成员, 我们更倾向于使用如下的形式:
 
-```
+```js
 Foo.prototype.bar = function() {
   /* ... */
 }; 
@@ -223,7 +223,7 @@ Foo.prototype.bar = function() {
 
 有一点需要牢记, 闭包保留了一个指向它封闭作用域的指针, 所以, 在给 DOM 元素附加闭包时, 很可能会产生循环引用, 进一步导致内存泄漏. 比如下面的代码:
 
-```
+```js
 function foo(element, a, b) {
   element.onclick = function() { /* uses a and b */ };
 } 
@@ -233,7 +233,7 @@ function foo(element, a, b) {
 
 这种情况下, 可将代码重构为:
 
-```
+```js
 function foo(element, a, b) {
   element.onclick = bar(a, b);
 }
@@ -257,7 +257,7 @@ function bar(a, b) {
 
 解析序列化串是指将字节流转换成内存中的数据结构. 比如, 你可能会将一个对象输出成文件形式:
 
-```
+```js
 users = [
   {
     name: 'Eric',
@@ -277,7 +277,7 @@ users = [
 
 类似的, `eval()` 对 RPC 响应值进行解码. 例如, 你在使用 `XMLHttpRequest` 发出一个 RPC 请求后, 通过 eval () 将服务端的响应文本转成 JavaScript 对象:
 
-```
+```js
 var userOnline = false;
 var user = 'nusrat';
 var xmlhttp = new XMLHttpRequest();
@@ -301,7 +301,7 @@ if (xmlhttp.status == 200) {
 
 下面的代码是干嘛的?
 
-```
+```js
 with (foo) {
   var x = 3;
   return x;
@@ -333,7 +333,7 @@ with (foo) {
 
 对 `Array` 用 `for-in` 循环有时会出错. 因为它并不是从 `0` 到 `length - 1` 进行遍历, 而是所有出现在对象及其原型链的键值. 下面就是一些失败的使用案例:
 
-```
+```js
 function printArray(arr) {
   for (var key in arr) {
     print(arr[key]);
@@ -359,7 +359,7 @@ printArray(a);  // This is wrong again.
 
 而遍历数组通常用最普通的 for 循环.
 
-```
+```js
 function printArray(arr) {
   var l = arr.length;
   for (var i = 0; i < l; i++) {
@@ -386,7 +386,7 @@ function printArray(arr) {
 
 不要这样写长字符串:
 
-```
+```js
 var myString = 'A rather long string of English text, an error message \
                 actually that just keeps going and going -- an error \
                 message to make the Energizer bunny blush (right through \
@@ -407,7 +407,7 @@ var myString = 'A rather long string of English text, an error message \
 
 使用 Array 构造器很容易因为传参不恰当导致错误.
 
-```
+```js
 // Length is 3.
 var a1 = new Array(x1, x2, x3);
 
@@ -427,7 +427,7 @@ var a4 = new Array();
 
 为了避免这些歧义，我们应该使用更易读的直接量来声明.
 
-```
+```js
 var a = [x1, x2, x3];
 var a2 = [x1, x2];
 var a3 = [x1];
@@ -436,7 +436,7 @@ var a4 = [];
 
 虽然 Object 构造器没有上述类似的问题, 但鉴于可读性和一致性考虑, 最好还是在字面上更清晰地指明.
 
-```
+```js
 var o = new Object();
 
 var o2 = new Object();
@@ -448,7 +448,7 @@ o2['strange key'] = 3;
 
 应该写成:
 
-```
+```js
 var o = {};
 
 var o2 = {
@@ -477,7 +477,7 @@ var o2 = {
 
 不要这样子写:
 
-```
+```js
 var f = function () {
     /*@cc_on if (@_jscript) { return 2* @*/  3; /*@ } @*/
 }; 

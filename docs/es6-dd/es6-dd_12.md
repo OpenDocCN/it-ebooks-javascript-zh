@@ -6,7 +6,7 @@
 
 请看这样一段代码：
 
-```
+```js
  var obj = new Proxy({}, {
       get: function (target, key, receiver) {
         console.log(`getting ${key}!`);
@@ -21,7 +21,7 @@
 
 代码乍一看有些复杂，使用了一些陌生的特性，稍后我会详细讲解每一部分。现在，一起来看一下我们创建的对象：
 
-```
+```js
  > obj.count = 1;
         setting count!
     > ++obj.count;
@@ -146,7 +146,7 @@
 
 ES6 规范定义了一个全新的全局构造函数：[代理](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy)（[Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy)）。它可以接受两个参数：*目标对象（target）*与*句柄对象（handler）*。请看一个简单的示例：
 
-```
+```js
  var target = {}, handler = {};
     var proxy = new Proxy(target, handler);
 ```
@@ -157,13 +157,13 @@ ES6 规范定义了一个全新的全局构造函数：[代理](https://develope
 
 现在，让我们尝试执行一条能够触发调用`proxy.[[Set]]()`方法的语句。
 
-```
+```js
  proxy.color = "pink";
 ```
 
 好的，刚刚都发生了什么？`proxy.[[Set]]()`应该调用`target.[[Set]]()`方法，然后在*目标*上创建一个新的属性。实际的结果如何？
 
-```
+```js
  > target.color
         "pink"
 ```
@@ -180,7 +180,7 @@ ES6 规范定义了一个全新的全局构造函数：[代理](https://develope
 
 举个例子，你可以定义一个[`handler.set()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/set)方法来拦截所有给对象属性赋值的行为：
 
-```
+```js
  var target = {};
     var handler = {
       set: function (target, key, value, receiver) {
@@ -202,7 +202,7 @@ ES6 规范定义了一个全新的全局构造函数：[代理](https://develope
 
 我们的第一个实践，创建一个`Tree()`函数来实现以下特性：
 
-```
+```js
  > var tree = Tree();
     > tree
         { }
@@ -220,7 +220,7 @@ ES6 规范定义了一个全新的全局构造函数：[代理](https://develope
 
 这里是我的解决方案：
 
-```
+```js
  function Tree() {
       return new Proxy({}, handler);
     }
@@ -242,7 +242,7 @@ ES6 规范定义了一个全新的全局构造函数：[代理](https://develope
 
 这一次我们的赋值语句更复杂：我们需要实现一个函数，`readOnlyView(object)`，它可以接受任何对象作为参数，并返回一个与此对象行为一致的代理，该代理不可被变更，就像这样：
 
-```
+```js
  > var newMath = readOnlyView(Math);
     > newMath.min(54, 40);
         40
@@ -256,7 +256,7 @@ ES6 规范定义了一个全新的全局构造函数：[代理](https://develope
 
 即使我们不会阻断内部方法的行为，但仍然要对其进行干预，所以第一步是拦截可能修改目标对象的五种内部方法。
 
-```
+```js
  function NOPE() {
       throw new Error("can't modify read-only view");
     }
@@ -281,7 +281,7 @@ ES6 规范定义了一个全新的全局构造函数：[代理](https://develope
 
 我们需要添加一个`handler.get()`方法来堵上漏洞：
 
-```
+```js
  var handler = {
       ...
       // 在只读视图中包裹其它结果。

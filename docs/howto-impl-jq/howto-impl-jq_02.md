@@ -8,7 +8,7 @@
 
 首先 3 个 class 不用说了
 
-```
+```js
 hasClass : function(cls) {
     var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
     for (var i = 0; i < this.length; i++) {
@@ -37,7 +37,7 @@ removeClass : function(cls) {
 
 然后新增一个
 
-```
+```js
 css : function(attr,val) {//链式测试
     console.log(this.length);
     for(var i = 0;i < this.length; i++) {

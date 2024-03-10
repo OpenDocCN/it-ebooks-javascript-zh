@@ -10,7 +10,7 @@
 
 使用 Javascript 的 Math object 来提供通常需要的数学常数。
 
-```
+```js
 Math.PI
  # => 3.141592653589793
 
@@ -68,7 +68,7 @@ Math.LOG10E
 
 以下的代码来源于：[`gist.github.com/1032685`](https://gist.github.com/1032685)
 
-```
+```js
  ###
 
 Author: Jason Giedymin <jasong _a_t_ apache -dot- org>
@@ -169,7 +169,7 @@ console.log "[#{calc_value}] took #{diff} ms."
 
 以下的代码来源于：[`gist.github.com/1036533`](https://gist.github.com/1036533)
 
-```
+```js
  ###
 
 Author: Jason Giedymin <jasong _a_t_ apache -dot- org>
@@ -235,7 +235,7 @@ testSingle()
 
 编写你自己的随机数生成器。当然有很多方法可以做到这一点，这里给出一个简单的示例。 *该发生器绝对不可以以加密为目的！*
 
-```
+```js
 class Rand
   # 如果没有种子创建，使用当前时间作为种子
   constructor: (@seed) ->
@@ -280,7 +280,7 @@ JavaScript 和 CoffeeScript 都不提供可产生随机数的发生器。编写�
 
 不要把发生器的输出结果变成模数。如果你需要一个整数的范围，应使用分割的方法。线性同余发生器的低位是不具有随机性的。特别的是，它总是从偶数种子产生奇数，反之亦然。所以如果你需要一个随机的 0 或者 1，不要使用：
 
-```
+```js
  # NOT random! Do not do this!
 
 r.randn() % 2
@@ -298,7 +298,7 @@ r.randn() % 2
 
 使用 JavaScript 的 Math.random() 来获得浮点数，满足 0<=X<1.0 。使用乘法和 Math.floor 得到在一定范围内的数字。
 
-```
+```js
 probability = Math.random()
 0.0 <= probability < 1.0
  # => true
@@ -339,7 +339,7 @@ range = Math.random() * (max - min) + min
 
 使用 JavaScript 的 Math.PI 和一个简单的公式来转换两者。
 
-```
+```js
  # 弧度转换成度
 
 radiansToDegrees = (radians) ->
@@ -367,7 +367,7 @@ degreesToRadians(1)
 
 使用以下的函数。
 
-```
+```js
 randomInt = (lower, upper) ->
   [lower, upper] = [0, lower]     unless upper?           # 用一个参数调用
   [lower, upper] = [upper, lower] if lower > upper        # Lower 必须小于 upper
@@ -390,7 +390,7 @@ randomInt = (lower, upper) ->
 
 使用 JavaScript 的 Math 对象来提供常用的数学函数。
 
-```
+```js
  # Math.pow(x, y) 返回 x^y
 
 Math.pow(2, 4)

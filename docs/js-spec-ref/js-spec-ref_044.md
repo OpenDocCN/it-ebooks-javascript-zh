@@ -28,7 +28,7 @@ Ajax 指的是不刷新页面，发出异步请求，向服务器端要求数据
 
 XMLHttpRequest 对象用于从 JavaScript 发出 HTTP 请求，下面是典型用法。
 
-```
+```js
 // 新建一个 XMLHttpRequest 实例对象
 var xhr = new XMLHttpRequest();
 
@@ -63,7 +63,7 @@ open 方法用于指定发送 HTTP 请求的参数，它有三个参数如下：
 
 下面发送 POST 请求的例子。
 
-```
+```js
 xhr.open('POST', encodeURI('someURL'));
 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 xhr.onload = function() {};
@@ -82,7 +82,7 @@ send 方法用于实际发出 HTTP 请求。如果不带参数，就表示 HTTP 
 
 在 XHR 2 之中，send 方法可以发送许多类型的数据。
 
-```
+```js
 void send();
 void send(ArrayBuffer data);
 void send(Blob data);
@@ -95,7 +95,7 @@ Blob 类型可以用来发送二进制数据，这使得通过 Ajax 上传文件
 
 FormData 类型可以用于构造表单数据。
 
-```
+```js
 var formData = new FormData();
 
 formData.append('username', '张三');
@@ -107,7 +107,7 @@ xhr.send(formData);
 
 上面的代码构造了一个 formData 对象，然后使用 send 方法发送。它的效果与点击下面表单的 submit 按钮是一样的。
 
-```
+```js
 <form id='registration' name='registration' action='/register'>
     <input type='text' name='username' value='张三'>
     <input type='email' name='email' value='zhangsan@example.com'>
@@ -118,7 +118,7 @@ xhr.send(formData);
 
 FormData 对象还可以对现有表单添加数据，这为我们操作表单提供了极大的灵活性。
 
-```
+```js
 function sendForm(form) {
     var formData = new FormData(form);
     formData.append('csrf', 'e69a18d7db1286040586e6da1950128c');
@@ -139,7 +139,7 @@ sendForm(form);
 
 FormData 对象也能用来模拟 File 控件，进行文件上传。
 
-```
+```js
 function uploadFiles(url, files) {
   var formData = new FormData();
 
@@ -171,13 +171,13 @@ document.querySelector('input[type="file"]').addEventListener('change', function
 
 假定网页上有一个 progress 元素。
 
-```
+```js
 <progress min="0" max="100" value="0">0% complete</progress>
 ```
 
 文件上传时，对 upload 属性指定 progress 事件回调函数，即可获得上传的进度。
 
-```
+```js
 function upload(blobOrFile) {
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/server', true);
@@ -200,7 +200,7 @@ upload(new Blob(['hello world'], {type: 'text/plain'}));
 
 下面是一个上传 ArrayBuffer 对象的例子。
 
-```
+```js
 function sendArrayBuffer() {
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/server', true);
@@ -226,7 +226,7 @@ responseText 属性表示服务器返回的文本数据。
 
 setRequestHeader 方法用于设置 HTTP 头信息。
 
-```
+```js
 xhr.setRequestHeader('Content-Type', 'application/json');
 
 xhr.setRequestHeader('Content-Length', JSON.stringify(data).length);
@@ -242,7 +242,7 @@ xhr.send(JSON.stringify(data));
 
 传统上，如果希望从服务器取回二进制数据，就要使用这个方法，人为将数据类型伪装成文本数据。
 
-```
+```js
 var xhr = new XMLHttpRequest();
 xhr.open('GET', '/path/to/image.png', true);
 
@@ -280,7 +280,7 @@ XHR 2 允许用户自行设置这个属性，也就是指定返回数据的类�
 
 text 类型适合大多数情况，而且直接处理文本也比较方便，document 类型适合返回 XML 文档的情况，blob 类型适合读取二进制数据，比如图片文件。
 
-```
+```js
 var xhr = new XMLHttpRequest();
 xhr.open('GET', '/path/to/image.png', true);
 xhr.responseType = 'blob';
@@ -297,7 +297,7 @@ xhr.send();
 
 如果将这个属性设为 ArrayBuffer，就可以按照数组的方式处理二进制数据。
 
-```
+```js
 var xhr = new XMLHttpRequest();
 xhr.open('GET', '/path/to/image.png', true);
 xhr.responseType = 'arraybuffer';
@@ -320,7 +320,7 @@ XHR2 支持 Ajax 的返回类型为文档，即 xhr.responseType="document" 。�
 
 通常，我们使用 file 控件实现文件上传。
 
-```
+```js
 <form id="file-form" action="handler.php" method="POST">
   <input type="file" id="file-select" name="photos[]" multiple/>
   <button type="submit" id="upload-button">上传</button>
@@ -331,14 +331,14 @@ XHR2 支持 Ajax 的返回类型为文档，即 xhr.responseType="document" 。�
 
 file 对象的 files 属性，返回一个 FileList 对象，包含了用户选中的文件。
 
-```
+```js
 var fileSelect = document.getElementById('file-select');
 var files = fileSelect.files;
 ```
 
 然后，新建一个 FormData 对象的实例，用来模拟发送到服务器的表单数据，把选中的文件添加到这个对象上面。
 
-```
+```js
 var formData = new FormData();
 
 for (var i = 0; i < files.length; i++) {
@@ -354,7 +354,7 @@ for (var i = 0; i < files.length; i++) {
 
 上面代码中的 FormData 对象的 append 方法，除了可以添加文件，还可以添加二进制对象（Blob）或者字符串。
 
-```
+```js
 // Files
 formData.append(name, file, filename);
 
@@ -369,7 +369,7 @@ append 方法的第一个参数是表单的控件名，第二个参数是实际�
 
 最后，使用 Ajax 方法向服务器上传文件。
 
-```
+```js
 var xhr = new XMLHttpRequest();
 
 xhr.open('POST', 'handler.php', true);
@@ -387,7 +387,7 @@ xhr.send(formData);
 
 除了使用 FormData 接口上传，也可以直接使用 File API 上传。
 
-```
+```js
 var file = document.getElementById('test-input').files[0];
 var xhr = new XMLHttpRequest();
 
@@ -402,7 +402,7 @@ xhr.send(file);
 
 JSONP 是一种常见做法，用于服务器与客户端之间的数据传输，主要为了规避浏览器的同域限制。因为 Ajax 只能向当前网页所在的域名发出 HTTP 请求（除非使用下文要提到的 CORS，但并不是所有服务器都支持 CORS），所以 JSONP 就采用在网页中动态插入 script 元素的做法，向服务器请求脚本文件。
 
-```
+```js
 function addScriptTag(src){
     var script = document.createElement('script');
     script.setAttribute("type","text/javascript");
@@ -425,19 +425,19 @@ function foo(data) {
 
 请看下面的例子，假定访问 [`example.com/ip`](http://example.com/ip) ，返回如下 JSON 数据：
 
-```
+```js
 {"ip":"8.8.8.8"}
 ```
 
 现在服务器允许客户端请求时使用 callback 参数指定回调函数。访问 [`example.com/ip?callback=foo`](http://example.com/ip?callback=foo) ，返回的数据变成：
 
-```
+```js
 foo({"ip":"8.8.8.8"})
 ```
 
 这时，如果客户端定义了 foo 函数，该函数就会被立即调用，而作为参数的 JSON 数据被视为 JavaScript 对象，而不是字符串，因此避免了使用 JSON.parse 的步骤。
 
-```
+```js
 function foo(data) {
     console.log('Your public IP address is: ' + data.ip);
 };
@@ -445,7 +445,7 @@ function foo(data) {
 
 jQuery 的 getJSON 方法就是 JSONP 的一个应用。
 
-```
+```js
 $.getJSON( "http://example.com/api", function (data){ .... })
 ```
 
@@ -457,7 +457,7 @@ CORS 的全称是“跨域资源共享”（Cross-origin resource sharing），�
 
 所有主流浏览器都支持该方法，不过 IE8 和 IE9 的该方法不是部署在 XMLHttpRequest 对象，而是部署在 XDomainRequest 对象。检查浏览器是否支持的代码如下：
 
-```
+```js
 var request = new XMLHttpRequest();
 
 if("withCredentials" in request) {
@@ -469,7 +469,7 @@ CORS 的原理其实很简单，就是增加一条 HTTP 头信息的查询，询
 
 “预检”的专用 HTTP 头信息是 Origin。假定用户正在浏览来自 www.example.com 的网页，该网页需要向 Google 请求数据，这时浏览器会向该域名询问是否同意跨域请求，发出的 HTTP 头信息如下：
 
-```
+```js
 OPTIONS /resources/post-here/ HTTP/1.1
 Host: www.google.com
 User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en-US; rv:1.9.1b3pre) Gecko/20081130 Minefield/3.1b3pre
@@ -485,7 +485,7 @@ Access-Control-Request-Headers: X-PINGOTHER
 
 上面的 HTTP 请求，它的动词是 OPTIONS，表示这是一个“预检”请求。除了提供浏览器信息，里面关键的一行是 Origin 头信息。
 
-```
+```js
 Origin: http://www.example.com
 ```
 
@@ -493,14 +493,14 @@ Origin: http://www.example.com
 
 预检请求中，浏览器还告诉服务器，实际发出请求，将使用 HTTP 动词 POST，以及一个自定义的头信息 X-PINGOTHER。
 
-```
+```js
 Access-Control-Request-Method: POST
 Access-Control-Request-Headers: X-PINGOTHER
 ```
 
 服务器收到预检请求之后，做出了回应。
 
-```
+```js
 HTTP/1.1 200 OK
 Date: Mon, 01 Dec 2008 01:15:39 GMT
 Server: Apache/2.0.61 (Unix)
@@ -518,7 +518,7 @@ Content-Type: text/plain
 
 上面的 HTTP 回应里面，关键的是 Access-Control-Allow-Origin 头信息。这表示服务器同意 www.example.com 的跨域请求。
 
-```
+```js
 Access-Control-Allow-Origin: http://www.example.com
 ```
 
@@ -526,13 +526,13 @@ Access-Control-Allow-Origin: http://www.example.com
 
 如果服务器端对所有网站都开放，可以返回一个星号（*）通配符。
 
-```
+```js
 Access-Control-Allow-Origin: *
 ```
 
 服务器还告诉浏览器，允许的 HTTP 动词是 POST、GET、OPTIONS，也允许自定义的头信息 X-PINGOTHER，
 
-```
+```js
 Access-Control-Allow-Methods: POST, GET, OPTIONS
 Access-Control-Allow-Headers: X-PINGOTHER
 Access-Control-Max-Age: 1728000
@@ -544,14 +544,14 @@ Access-Control-Max-Age: 1728000
 
 CORS 机制默认不发送 cookie 和 HTTP 认证信息，除非在 Ajax 请求中打开 withCredentials 属性。
 
-```
+```js
 var request = new XMLHttpRequest();
 request.withCredentials = true;
 ```
 
 同时，服务器返回 HTTP 头信息时，也必须打开 Access-Control-Allow-Credentials 选项。否则，浏览器会忽略服务器返回的回应。
 
-```
+```js
 Access-Control-Allow-Credentials: true
 ```
 
@@ -567,7 +567,7 @@ Ajax 操作所用的 XMLHttpRequest 对象，已经有十多年的历史，它�
 
 检查浏览器是否部署了这个 API 的代码如下。
 
-```
+```js
 if (fetch in window){
   // 支持
 } else {
@@ -577,7 +577,7 @@ if (fetch in window){
 
 下面是一个 Fetch API 的简单例子。
 
-```
+```js
 var URL = 'http://some/path';
 
 fetch(URL).then(function(response) {
@@ -591,7 +591,7 @@ fetch(URL).then(function(response) {
 
 下面比较 XMLHttpRequest 写法与 Fetch 写法的不同。
 
-```
+```js
 function reqListener() {
   var data = JSON.parse(this.responseText);
   console.log(data);
@@ -610,7 +610,7 @@ oReq.send();
 
 同样的操作用 Fetch 实现如下。
 
-```
+```js
 fetch('./api/some.json')
   .then(function(response) {
     if (response.status !== 200) {
@@ -633,7 +633,7 @@ fetch 方法的第一个参数可以是 URL 字符串，也可以是后文要讲
 
 response 对象还有一个 ok 属性，如果返回的状态码在 200 到 299 之间（即请求成功），这个属性为 true，否则为 false。因此，上面的代码可以写成下面这样。
 
-```
+```js
 fetch("./api/some.json").then(function(response) {
   if (response.ok) {
     response.json().then(function(data) {
@@ -649,7 +649,7 @@ fetch("./api/some.json").then(function(response) {
 
 response 对象除了 json 方法，还包含了 HTTP 回应的元数据。
 
-```
+```js
 fetch('users.json').then(function(response) {
   console.log(response.headers.get('Content-Type'));
   console.log(response.headers.get('Date'));
@@ -668,7 +668,7 @@ fetch('users.json').then(function(response) {
 
 如果需要在 CORS 机制下发出跨域请求，需要指明状态。
 
-```
+```js
 fetch('http://some-site.com/cors-enabled/some.json', {mode: 'cors'})
   .then(function(response) {
     return response.text();
@@ -683,7 +683,7 @@ fetch('http://some-site.com/cors-enabled/some.json', {mode: 'cors'})
 
 除了指定模式，fetch 方法的第二个参数还可以用来配置其他值，比如指定 cookie 连同 HTTP 请求一起发出。
 
-```
+```js
 fetch(url, {
   credentials: 'include'
 })
@@ -691,7 +691,7 @@ fetch(url, {
 
 发出 POST 请求的写法如下。
 
-```
+```js
 fetch("http://www.example.org/submit.php", {
   method: "POST",
   headers: {
@@ -715,7 +715,7 @@ fetch("http://www.example.org/submit.php", {
 
 Fetch API 引入三个新的对象（也是构造函数）：Headers, Request 和 Response。其中，Headers 对象用来构造/读取 HTTP 数据包的头信息。
 
-```
+```js
 var content = "Hello World";
 var reqHeaders = new Headers();
 reqHeaders.append("Content-Type", "text/plain");
@@ -725,7 +725,7 @@ reqHeaders.append("X-Custom-Header", "ProcessThisImmediately");
 
 Headers 对象的实例，除了使用 append 方法添加属性，也可以直接通过构造函数一次性生成。
 
-```
+```js
 reqHeaders = new Headers({
   "Content-Type": "text/plain",
   "Content-Length": content.length.toString(),
@@ -735,7 +735,7 @@ reqHeaders = new Headers({
 
 Headers 对象实例还提供了一些工具方法。
 
-```
+```js
 reqHeaders.has("Content-Type") // true
 reqHeaders.has("Set-Cookie") // false
 reqHeaders.set("Content-Type", "text/html")
@@ -750,7 +750,7 @@ reqHeaders.getAll("X-Custom-Header") // []
 
 生成 Header 实例以后，可以将它作为第二个参数，传入 Request 方法。
 
-```
+```js
 var headers = new Headers();
 headers.append('Accept', 'application/json');
 var request = new Request(URL, {headers: headers});
@@ -762,7 +762,7 @@ fetch(request).then(function(response) {
 
 同样地，Headers 实例可以用来构造 Response 方法。
 
-```
+```js
 var headers = new Headers({
   'Content-Type': 'application/json',
   'Cache-Control': 'max-age=3600'
@@ -784,7 +784,7 @@ response.json().then(function(json) {
 
 Request 对象用来构造 HTTP 请求。
 
-```
+```js
 var req = new Request("/index.html");
 req.method // "GET"
 req.url // "http://example.com/index.html"
@@ -792,7 +792,7 @@ req.url // "http://example.com/index.html"
 
 Request 对象的第二个参数，表示配置对象。
 
-```
+```js
 var uploadReq = new Request("/uploadImage", {
   method: "POST",
   headers: {
@@ -806,7 +806,7 @@ var uploadReq = new Request("/uploadImage", {
 
 下面是另一个例子。
 
-```
+```js
 var req = new Request(URL, {method: 'GET', cache: 'reload'});
 fetch(req).then(function(response) {
   return response.json();
@@ -821,7 +821,7 @@ Request 对象实例有两个属性是只读的，不能手动设置。一个是
 
 Request 对象实例的 mode 属性，用来设置是否跨域，合法的值有以下三种：same-origin、no-cors（默认值）、cors。当设置为 same-origin 时，只能向同域的 URL 发出请求，否则会报错。
 
-```
+```js
 var arbitraryUrl = document.getElementById("url-input").value;
 fetch(arbitraryUrl, { mode: "same-origin" }).then(function(res) {
   console.log("Response succeeded?", res.ok);
@@ -834,7 +834,7 @@ fetch(arbitraryUrl, { mode: "same-origin" }).then(function(res) {
 
 如果 mode 属性为 no-cors，就与默认的浏览器行为没有不同，类似 script 标签加载外部脚本文件、img 标签加载外部图片。如果 mode 属性为 cors，就可以向部署了 CORS 机制的服务器，发出跨域请求。
 
-```
+```js
 var u = new URLSearchParams();
 u.append('method', 'flickr.interestingness.getList');
 u.append('api_key', '<insert api key here>');
@@ -859,7 +859,7 @@ apiCall.then(function(response) {
 
 Request 对象的一个很有用的功能，是在其他 Request 实例的基础上，生成新的 Request 实例。
 
-```
+```js
 var postReq = new Request(req, {method: 'POST'});
 ```
 
@@ -890,7 +890,7 @@ Request 对象和 Response 对象都有 body 属性，表示请求的内容。bo
 *   URLSearchParams
 *   FormData
 
-```
+```js
 var form = new FormData(document.getElementById('login-form'));
 fetch("/login", {
   method: "POST",
@@ -910,7 +910,7 @@ Request 对象和 Response 对象都提供以下方法，用来读取 body。
 
 注意，上面这些方法都只能使用一次，第二次使用就会报错，也就是说，body 属性只能读取一次。Request 对象和 Response 对象都有 bodyUsed 属性，返回一个布尔值，表示 body 是否被读取过。
 
-```
+```js
 var res = new Response("one time use");
 console.log(res.bodyUsed); // false
 res.text().then(function(v) {
@@ -929,7 +929,7 @@ res.text().catch(function(e) {
 
 如果希望多次使用 body 属性，可以使用 Response 对象和 Request 对象的 clone 方法。它必须在 body 还没有读取前调用，返回一个前的 body，也就是说，需要使用几次 body，就要调用几次 clone 方法。
 
-```
+```js
 addEventListener('fetch', function(evt) {
   var sheep = new Response("Dolly");
   console.log(sheep.bodyUsed); // false

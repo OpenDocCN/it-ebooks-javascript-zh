@@ -84,7 +84,7 @@ console.log(text.charCodeAt(2));    // 97
 console.log(text.codePointAt(0));   // 134071
 console.log(text.codePointAt(1));   // 57271
 console.log(text.codePointAt(2));   // 97 
-```
+```js
 
 `codePointAt()` 方法的返回值一般与 `charCodeAt()` 相同，除非操作对象并不是 BMP 字符。 `text` 字符串的第一个字符不是 BMP 字符，因此它占用了两个码元，意味着该字符串的 `length` 属性是 3 而不是 2 。 `charCodeAt()` 方法只返回了位置 0 的第一个码元；而 `codePointAt()` 返回的是完整的代码点，即使它占用了多个码元。对于位置 1 （第一个字符的第二个码元）和位置 2 （ `"a"` 字符）来说，两个方法返回的值则是相同的。
 
@@ -97,7 +97,7 @@ function is32Bit(c) {
 
 console.log(is32Bit("𠮷"));         // true
 console.log(is32Bit("a"));          // false 
-```
+```js
 
 16 位字符的上边界用十六进制表示就是 `FFFF` ，因此任何大于该数字的代码点必须用两个码元（共 32 位）来表示。
 
@@ -107,7 +107,7 @@ console.log(is32Bit("a"));          // false
 
 ```
 console.log(String.fromCodePoint(134071));  // "𠮷" 
-```
+```js
 
 可以将 `String.fromCodePoint()` 视为 `String.fromCharCode()` 的完善版本。两者处理 BMP 字符时会返回相同结果，只有处理 BMP 范围之外的字符时才会有差异。
 
@@ -140,7 +140,7 @@ normalized.sort(function(first, second) {
         return 1;
     }
 }); 
-```
+```js
 
 此代码将 `values` 数组中的字符串转换为一种标准形式，以便让转换后的数组可以被正确排序。你也可以在比较过程中调用 `normalize()` 来对原始数组进行排序。如下所示：
 
@@ -157,7 +157,7 @@ values.sort(function(first, second) {
         return 1;
     }
 }); 
-```
+```js
 
 关于此代码最需要重点注意的是： `first` 与 `second` 再一次使用同一方式被标准化了。这两个例子使用了默认值（即 NFC ），不过你还能轻易指定其他任意一种，就像这样：
 
@@ -174,7 +174,7 @@ values.sort(function(first, second) {
         return 1;
     }
 }); 
-```
+```js
 
 如果你之前从未担心过 Unicode 标准化方面的问题，那么可能暂时还不太会用到这个方法。然而若你曾经开发过国际化的应用，你就一定会发现 `normalize()` 方法非常有用。
 
@@ -194,7 +194,7 @@ var text = "𠮷";
 console.log(text.length);           // 2
 console.log(/^.$/.test(text));      // false
 console.log(/^.$/u.test(text));     // true 
-```
+```js
 
 正则表达式 `/^.$/` 会匹配只包含单个字符的任意输入字符串。当不使用 `u` 标志时，该正则表达式只匹配码元，所以不能匹配由两个码元表示的这个日文字符。启用 `u` 标志后，正则表达式就会比较字符而不是码元，所以这个日文字符就会被匹配到。
 
@@ -220,7 +220,7 @@ console.log(codePointLength("𠮷bc"));   // 3
 
 既然 `u` 标志是一项语法变更，在不兼容 ES6 的 JS 引擎中试图使用它就会抛出语法错误。使用一个函数来判断是否支持 `u` 标志是最安全的方式，像这样：
 
-```
+```js
 function hasRegExpU() {
     try {
         var pattern = new RegExp(".", "u");
@@ -249,7 +249,7 @@ JS 字符串的特性总是落后于其它语言，例如，直到 ES5 中字符
 
 每个方法都接受两个参数：需要搜索的文本，以及可选的搜索起始位置索引。当提供了第二个参数时， `includes()` 与 `startsWith()` 方法会从该索引位置开始尝试匹配；而 `endsWith()` 方法会将字符串长度减去该参数，以此为起点开始尝试匹配。当第二个参数未提供时， `includes()` 与 `startsWith()` 方法会从字符串起始处开始查找，而 `endsWith()` 方法则从尾部开始。实际上，第二个参数减少了搜索字符串的次数。以下是使用这些方法的演示：
 
-```
+```js
 var msg = "Hello world!";
 
 console.log(msg.startsWith("Hello"));       // true
@@ -275,7 +275,7 @@ console.log(msg.includes("o", 8));          // false
 
 ES6 还为字符串添加了一个 `repeat()` 方法，它接受一个参数作为字符串的重复次数，返回一个将初始字符串重复指定次数的新字符串。例如：
 
-```
+```js
 console.log("x".repeat(3));         // "xxx"
 console.log("hello".repeat(2));     // "hellohello"
 console.log("abc".repeat(4));       // "abcabcabcabc" 
@@ -283,7 +283,7 @@ console.log("abc".repeat(4));       // "abcabcabcabc"
 
 此方法比相同目的的其余方法更加方便，在操纵文本时特别有用，尤其是在需要产生缩进的代码格式化工具中，像这样：
 
-```
+```js
 // indent 使用了一定数量的空格
 var indent = " ".repeat(4),
     indentLevel = 0;
@@ -304,7 +304,7 @@ ES6 也为正则表达式的功能进行了一些有益改动，这不适合纳�
 
 在 Firefox 实现了对正则表达式 `y` 标志的专有扩展之后，ES6 将该实现标准化。 `y` 标志影响正则表达式搜索时的粘连（ `sticky` ）属性，它表示从正则表达式的 `lastIndex` 属性值的位置开始检索字符串中的匹配字符。如果在该位置没有匹配成功，那么正则表达式将停止检索。为了明白它是如何工作的，考虑如下的代码：
 
-```
+```js
 var text = "hello1 hello2 hello3",
     pattern = /hello\d\s?/,
     result = pattern.exec(text),
@@ -336,7 +336,7 @@ console.log(stickyResult[0]);   // Error! stickyResult is null
 
 一旦匹配操作成功，粘连标志就会将匹配结果之后的那个字符的索引值保存在 `lastIndex` 中；若匹配未成功，那么 `lastIndex` 的值将重置为 0 。全局标志的行为与其相同，如下所示：
 
-```
+```js
 var text = "hello1 hello2 hello3",
     pattern = /hello\d\s?/,
     result = pattern.exec(text),
@@ -375,7 +375,7 @@ console.log(stickyPattern.lastIndex);   // 14
 
 和正则表达式其他标志相同，你可以根据一个属性来检测 `y` 标志是否存在。此时你需要检查的是 `sticky` 属性，如下：
 
-```
+```js
 var pattern = /hello\d/y;
 
 console.log(pattern.sticky);    // true 
@@ -385,7 +385,7 @@ console.log(pattern.sticky);    // true
 
 与 `u` 标志相似， `y` 标志也是个语法变更，所以在旧版 JS 引擎中它会造成语法错误。你可以用如下方法来检测它是否被支持：
 
-```
+```js
 function hasRegExpY() {
     try {
         var pattern = new RegExp(".", "y");
@@ -402,14 +402,14 @@ function hasRegExpY() {
 
 在 ES5 中，你可以将正则表达式传递给 `RegExp` 构造器来复制它，就像这样：
 
-```
+```js
 var re1 = /ab/i,
     re2 = new RegExp(re1); 
 ```
 
 `re2` 变量只是 `re1` 的一个副本。但如果你向 `RegExp` 构造器传递了第二个参数，即正则表达式的标志，那么该代码就无法工作，正如该范例：
 
-```
+```js
 var re1 = /ab/i,
 
     // ES5 中会抛出错误, ES6 中可用
@@ -418,7 +418,7 @@ var re1 = /ab/i,
 
 如果你在 ES5 环境中运行这段代码，那么你会收到一条错误信息，表示在第一个参数已经是正则表达式的情况下不能再使用第二个参数。 ES6 则修改了这个行为，允许使用第二个参数，并且让它覆盖第一个参数中的标志。例如：
 
-```
+```js
 var re1 = /ab/i,
 
     // ES5 中会抛出错误, ES6 中可用
@@ -440,7 +440,7 @@ console.log(re2.test("AB"));            // false
 
 在新增了一个标志并且对如何使用标志进行更改之余， ES6 还新增了一个与之关联的属性。在 ES5 中，你可以使用 `source` 属性来获取正则表达式的文本，但若想获取标志字符串，你必须解析 `toString()` 方法的输出，就像下面展示的那样：
 
-```
+```js
 function getFlags(re) {
     var text = re.toString();
     return text.substring(text.lastIndexOf("/") + 1, text.length);
@@ -458,7 +458,7 @@ ES6 新增了 `flags` 属性用于配合 `source` 属性，让标志的获取变
 
 后期加入 ES6 的 `flags` 属性，会返回正则表达式中所有标志组成的字符串形式。例如：
 
-```
+```js
 var re = /ab/g;
 
 console.log(re.source);     // "ab"
@@ -485,7 +485,7 @@ JS 的字符串相对其他语言来说功能总是有限的。例如，本章�
 
 #### 基本语法
 
-模板字面量的最简单语法，是使用反引号（ ``` ）来包裹普通字符串，而不是用双引号或单引号。参考以下例子：
+模板字面量的最简单语法，是使用反引号（ ```js ）来包裹普通字符串，而不是用双引号或单引号。参考以下例子：
 
 ```
 let message = `Hello world!`;
@@ -493,7 +493,7 @@ let message = `Hello world!`;
 console.log(message);               // "Hello world!"
 console.log(typeof message);        // "string"
 console.log(message.length);        // 12 
-```
+```js
 
 此代码说明了 `message` 变量包含的是一个普通的 JS 字符串。模板字面量语法被用于创建一个字符串值，并被赋值给了 `message` 变量。
 
@@ -505,7 +505,7 @@ let message = `\`Hello\` world!`;
 console.log(message);               // "`Hello` world!"
 console.log(typeof message);        // "string"
 console.log(message.length);        // 14 
-```
+```js
 
 在模板字面量中无需对双引号或单引号进行转义。
 
@@ -522,7 +522,7 @@ var message = "Multiline \
 string";
 
 console.log(message);       // "Multiline string" 
-```
+```js
 
 `message` 字符串打印输出时不会有换行，因为反斜线被视为续延符号而不是新行的符号。为了在输出中显示换行，你需要手动包含它：
 
@@ -532,7 +532,7 @@ string";
 
 console.log(message);       // "Multiline
                             //  string" 
-```
+```js
 
 在所有主流的 JS 引擎中，此代码都会输出两行，但是该行为被认定为一个 bug ，并且许多开发者都建议应避免这么做。
 
@@ -546,7 +546,7 @@ var message = [
 
 let message = "Multiline \n" +
     "string"; 
-```
+```js
 
 关于 JS 缺失的多行字符串功能，开发者的所有解决方法都不够完美。
 
@@ -561,7 +561,7 @@ string`;
 console.log(message);           // "Multiline
                                 //  string"
 console.log(message.length);    // 16 
-```
+```js
 
 反引号之内的所有空白符都是字符串的一部分，因此需要留意缩进。例如：
 
@@ -572,7 +572,7 @@ let message = `Multiline
 console.log(message);           // "Multiline
                                 //                 string"
 console.log(message.length);    // 31 
-```
+```js
 
 此代码中，模板字面量第二行前面的所有空白符都被视为字符串自身的一部分。如果让多行文本保持合适的缩进对你来说很重要，请考虑将多行模板字面量的第一行空置并在此后进行缩进，如下所示：
 
@@ -581,7 +581,7 @@ let html = `
 <div>
     <h1>Title</h1>
 </div>`.trim(); 
-```
+```js
 
 此代码从第一行开始创建模板字面量，但在第二行之前并没有包含任何文本。 HTML 标签的缩进增强了可读性，之后再调用 trim() 方法移除了起始的空行。
 
@@ -593,7 +593,7 @@ let html = `
 > console.log(message);           // "Multiline
 > //  string"
 > console.log(message.length);    // 16 
-> ```
+> ```js
 
 #### 制造替换位
 
@@ -606,7 +606,7 @@ let name = "Nicholas",
     message = `Hello, ${name}.`;
 
 console.log(message);       // "Hello, Nicholas." 
-```
+```js
 
 替换位 `${name}` 会访问本地变量 `name` ，并将其值插入到 `message` 字符串中。 `message` 变量会立即保留该替换位的结果。
 
@@ -620,7 +620,7 @@ let count = 10,
     message = `${count} items cost $${(count * price).toFixed(2)}.`;
 
 console.log(message);       // "10 items cost $2.50." 
-```
+```js
 
 此代码在模板字面量的一部分执行了一次计算， `count` 与 `price` 变量相乘，再使用 `.toFixed()` 方法将结果格式化为两位小数。而在第二个替换位之前的美元符号被照常输出，因为没有左花括号紧随其后。
 
@@ -633,7 +633,7 @@ let name = "Nicholas",
     }.`;
 
 console.log(message);        // "Hello, my name is Nicholas." 
-```
+```js
 
 此例在第一个模板字面量中套入了第二个。在首个 `${` 之后使用了另一个模板字面量，第二个 `${` 标示了嵌入到内层模板字面量的表达式的开始，该表达式为被插入结果的 `name` 变量。
 
@@ -641,7 +641,7 @@ console.log(message);        // "Hello, my name is Nicholas."
 
 现在你已了解模板字面量在无须连接的情况下，是如何创建多行字符串以及将值插入字符串。不过模板字面量真正的力量来源于标签化模板。一个**模板标签**（ **template tag** ）能对模板字面量进行转换并返回最终的字符串值，标签在模板的起始处被指定，即在第一个 ``` 之前，如下所示：
 
-```
+```js
 let message = tag`Hello world`; 
 ```
 
@@ -653,7 +653,7 @@ let message = tag`Hello world`;
 
 标签函数的参数一般定义为剩余参数形式，以便更容易处理数据，如下：
 
-```
+```js
 function tag(literals, ...substitutions) {
     // 返回一个字符串
 } 
@@ -661,7 +661,7 @@ function tag(literals, ...substitutions) {
 
 为了更好地理解传递给标签的是什么参数，可研究下例：
 
-```
+```js
 let count = 10,
     price = 0.25,
     message = passthru`${count} items cost $${(count * price).toFixed(2)}.`; 
@@ -679,7 +679,7 @@ let count = 10,
 
 使用这种模式，可以交替使用 `literals` 与 `substitutions` 数组来创建一个结果字符串：以 `literals` 中的首个元素开始，后面紧跟着 `substitutions` 中的首个元素，如此反复，直到结果字符串被创建完毕。你可以像下例这样交替使用两个数组中的值来模拟模板字面量的默认行为：
 
-```
+```js
 function passthru(literals, ...substitutions) {
     let result = "";
 
@@ -710,7 +710,7 @@ console.log(message);       // "10 items cost $2.50."
 
 模板标签也能访问字符串的原始信息，主要指的是可以访问字符在转义之前的形式。获取原始字符串值的最简单方式是使用内置的 `String.raw()` 标签。例如：
 
-```
+```js
 let message1 = `Multiline\nstring`,
     message2 = String.raw`Multiline\nstring`;
 
@@ -723,7 +723,7 @@ console.log(message2);          // "Multiline\\nstring"
 
 字符串的原始信息同样会被传递给模板标签。标签函数的第一个参数为包含额外属性 `raw` 的数组，而 `raw` 属性则是含有与每个字面量值等价的原始值的数组。例如， `literals[0]` 的值总是等价于包含字符串原始信息的 `literals.raw[0]` 的值。知道这些之后，你可以用如下代码来模拟 `String.raw()`：
 
-```
+```js
 function raw(literals, ...substitutions) {
     let result = "";
 

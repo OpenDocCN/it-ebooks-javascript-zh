@@ -19,7 +19,7 @@ JS 使用 IEEE 754 编码系统来表示整型与浮点型，多年以来这引�
 
 首先， ES6 新增了 `Number.isInteger()` 方法，用于判断一个值是否能在 JS 中表示整型。虽然 JS 使用了 IEEE 754 来同时表示浮点型与整型这两种数值，但它们的存储方式仍有差异。 `Number.isInteger()` 方法利用了这个差异，当使用一个值来调用此方法时， JS 引擎会查看该值的底层表示以判断它是不是一个整型。这意味着看起来像浮点型的数值实际上可能被存储为整型，此时 `Number.isInteger()` 便会返回 `true` 。例如：
 
-```
+```js
 console.log(Number.isInteger(25));      // true
 console.log(Number.isInteger(25.0));    // true
 console.log(Number.isInteger(25.1));    // false 
@@ -31,7 +31,7 @@ console.log(Number.isInteger(25.1));    // false
 
 IEEE 754 只能精确表示 -2⁵³ 与 2⁵³ 之间的整型数，在该“安全”范围之外，多个不同的数值就有可能对应同一个二进制表示。这意味着 JS 只能在 IEEE 754 的精确范围内保证对整型数的安全表示。例如，研究以下例子：
 
-```
+```js
 console.log(Math.pow(2, 53));      // 9007199254740992
 console.log(Math.pow(2, 53) + 1);  // 9007199254740992 
 ```
@@ -40,7 +40,7 @@ console.log(Math.pow(2, 53) + 1);  // 9007199254740992
 
 ES6 引进了 `Number.isSafeInteger()` 以便更好识别该语言所能精确表示的整型；同时新增的还有 `Number.MAX_SAFE_INTEGER` 与 `Number.MIN_SAFE_INTEGER` 属性，分别用于表示整型数的上下边界。 `Number.isSafeInteger()` 方法能确认一个值是整型、并且它落在安全范围之内，正如此例：
 
-```
+```js
 var inside = Number.MAX_SAFE_INTEGER,
     outside = inside + 1;
 
@@ -85,7 +85,7 @@ ES6 的游戏与图形的新重点引导它将类型化数组（ typed array ）
 
 ES6 提供了比之前版本更好的 Unicode 支持，同时也修改了能被用于标识符的字符范围。在 ES5 中已经能在标识符里使用 Unicode 转义序列，例如：
 
-```
+```js
 // 在 ES5 与 ES6 中都有效
 var \u0061 = "abc";
 
@@ -97,7 +97,7 @@ console.log(a);          // "abc"
 
 在此例的 `var` 语句之后，你用 `\u0061` 或 `a` 都能访问这个变量。在 ES6 中，你还能在标识符里使用 Unicode 代码点转义序列，就像这样：
 
-```
+```js
 // 在 ES5 与 ES6 中都有效
 var \u{61} = "abc";
 
@@ -129,7 +129,7 @@ ES 规范更推荐使用 `Object.getPrototypeOf()` 与 `Object.setPrototypeOf()`
 
 > 译注：这代表以下两种写法并不等价——
 > 
-> ```
+> ```js
 > let a = {
 >    ["__proto__"]: Number
 > }; 
@@ -137,7 +137,7 @@ ES 规范更推荐使用 `Object.getPrototypeOf()` 与 `Object.setPrototypeOf()`
 > 
 > 以及
 > 
-> ```
+> ```js
 > let a = {
 >    __proto__: Number
 > }; 
@@ -147,7 +147,7 @@ ES 规范更推荐使用 `Object.getPrototypeOf()` 与 `Object.setPrototypeOf()`
 
 你应当规避 `__proto__` 属性，不过规范文档定义它的方式却很有意思。在 ES6 引擎中， `Object.prototype.__proto__` 被定义为一个访问器属性，其 `get` 方法会调用 `Object.getPrototypeOf()` ，而 `set` 方法则会调用 `Object.setPrototypeOf()` 。这样在使用 `__proto__` 与使用 `Object.getPrototypeOf()` / `Object.setPrototypeOf()` 之间就几乎没有真正区别，唯一例外是 `__proto__` 能在对象字面量中直接使用，用于设置对象的原型。以下是使用它的范例：
 
-```
+```js
 let person = {
     getGreeting() {
         return "Hello";

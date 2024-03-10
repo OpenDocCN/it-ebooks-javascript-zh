@@ -16,19 +16,19 @@
 
 Bower 基于 node.js，所以安装之前，必须先确保已安装 node.js。
 
-```
+```js
 $ sudo npm install bower --global
 ```
 
 运行上面的命令以后，Bower 就已经安装在你的系统中了。运行帮助命令，查看 Bower 是否安装成功。
 
-```
+```js
 $ bower help
 ```
 
 下面的命令可以更新或卸载 Bower。
 
-```
+```js
 # 更新
 $ sudo npm update -g bower
 
@@ -42,13 +42,13 @@ $ sudo npm uninstall --global bower
 
 在项目根目录下，运行下面的命令，进行初始化。
 
-```
+```js
 $ bower init
 ```
 
 通过回答几个问题，就会自动生成 bower.json 文件。这是项目的配置文件，下面是一个例子。
 
-```
+```js
 {
   "name": "app-name",
   "version": "0.1.0",
@@ -65,13 +65,13 @@ $ bower init
 
 有了 bower.json 文件以后，就可以用 bower install 命令，一下子安装所有库。
 
-```
+```js
 $ bower install
 ```
 
 bower.json 文件存放在库的根目录下，它的作用是（1）保存项目的库信息，供项目安装时使用，（2）向 Bower.com 提交你的库，该网站会读取 bower.json，列入在线索引。
 
-```
+```js
 $ bower register <my-package-name> <git-endpoint>
 
 # 实例：在 bower.com 登记 jquery
@@ -84,13 +84,13 @@ $ bower register jquery git://github.com/jquery/jquery
 
 bower install 命令用于安装某个库，需要指明库的名字。
 
-```
+```js
 $ bower install backbone
 ```
 
 Bower 会使用库的名字，去在线索引中搜索该库的网址。某些情况下，如果一个库很新（或者你不想使用默认网址），可能需要我们手动指定该库的网址。
 
-```
+```js
 $ bower install git://github.com/documentcloud/backbone.git
 $ bower install http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js
 $ bower install ./some/path/relative/to/this/directory/backbone.js
@@ -100,7 +100,7 @@ $ bower install ./some/path/relative/to/this/directory/backbone.js
 
 默认情况下，会安装该库的最新版本，但是也可以手动指定版本号。
 
-```
+```js
 $ bower install jquery-ui#1.10.1
 ```
 
@@ -114,13 +114,13 @@ $ bower install jquery-ui#1.10.1
 
 bower search 命令用于使用关键字，从在线索引中搜索相关库。
 
-```
+```js
 bower search jquery
 ```
 
 上面命令会得到下面这样的结果。
 
-```
+```js
 Search results:
 
     jquery git://github.com/components/jquery.git
@@ -135,7 +135,7 @@ Search results:
 
 bower info 命令用于查看某个库的详细信息。
 
-```
+```js
 bower info jquery-ui
 ```
 
@@ -145,7 +145,7 @@ bower info jquery-ui
 
 bower update 用于更新一个库，将其更新为最新版本。
 
-```
+```js
 $ bower update jquery-ui
 ```
 
@@ -153,7 +153,7 @@ $ bower update jquery-ui
 
 bower uninstall 命令用于卸载指定的库。
 
-```
+```js
 $ bower uninstall jquery-ui
 ```
 
@@ -163,7 +163,7 @@ $ bower uninstall jquery-ui
 
 bower list 或 bower ls 命令，用于列出项目所使用的所有库。
 
-```
+```js
 Bower list
 Bower ls
 ```
@@ -172,7 +172,7 @@ Bower ls
 
 项目根目录下（也可以放在用户的主目录下）的.bowerrc 文件是 Bower 的配置文件，它大概像下面这样。
 
-```
+```js
 {
   "directory" : "components",
   "json"      : "bower.json",

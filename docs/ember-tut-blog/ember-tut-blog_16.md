@@ -15,7 +15,7 @@
 
 创建好目录结构之后我们添加一些代码到每个文件。运行项目之后你就会一目了然了……。 下面我按前面讲的路由执行顺序分别列出每个文件的内容。
 
-```
+```js
 //  app/routes/posts.js
 
 import Ember from 'ember';
@@ -30,7 +30,7 @@ export default Ember.Route.extend({
 }); 
 ```
 
-```
+```js
 import Ember from 'ember';
 
 export default Ember.Route.extend({
@@ -44,7 +44,7 @@ export default Ember.Route.extend({
 }); 
 ```
 
-```
+```js
 //  app/routes/posts/detail.js
 
 import Ember from 'ember';
@@ -60,7 +60,7 @@ export default Ember.Route.extend({
 }); 
 ```
 
-```
+```js
 //  app/routes/posts/detail/comments.js
 
 import Ember from 'ember';
@@ -73,7 +73,7 @@ export default Ember.Route.extend({
 }); 
 ```
 
-```
+```js
 //  app/routes/posts/detail/comments/comment.js
 
 import Ember from 'ember';
@@ -89,28 +89,28 @@ export default Ember.Route.extend({
 
 下面是模板各个文件的内容。其列出才顺序与路由的顺序一致。
 
-```
+```js
 <!--  //  app/templates/posts.hbs  -->
 
 <!-- 所有的子路由对应的模板都会渲染到 outlet 上 -->  
 {{model.routeName}} >> {{outlet}} 
 ```
 
-```
+```js
 <!-- // app/templates/posts/detail.hbs -->
 
 <!-- 所有的子路由对应的模板都会渲染到 outlet 上 -->  
 {{model.routeName}} >> {{outlet}} 
 ```
 
-```
+```js
 <!-- // app/templates/posts/detail/comments.hbs -->
 
 <!-- 所有的子路由对应的模板都会渲染到 outlet 上 -->  
 {{model.routeName}} >> {{outlet}} 
 ```
 
-```
+```js
 <!-- // app/templates/posts/detail/comments/comment.hbs -->
 
 <!-- 所有的子路由对应的模板都会渲染到 outlet 上 -->  
@@ -127,7 +127,7 @@ export default Ember.Route.extend({
 2.  页面的渲染则是从最后一个路由对应的模板开始，并沿着最近的父模板往回渲染。
     为了验证是否是这样的执行顺序，下面修改`detail.js`和 `comments.js`。在代码中加入一个模拟休眠的操作。
 
-```
+```js
 //  app/routes/posts/detail.js
 
 import Ember from 'ember';
@@ -149,7 +149,7 @@ export default Ember.Route.extend({
 }); 
 ```
 
-```
+```js
 //  app/routes/posts/detail/comments.js
 
 import Ember from 'ember';

@@ -62,7 +62,7 @@ D3 是一个 JavaScript 函数库，并不需要通常所说的“安装”。�
 
 **（2）直接包含网络的链接**
 
-```
+```js
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 ```
 

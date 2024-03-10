@@ -8,7 +8,7 @@
 
   项目安装仍然使用 Ember CLI，安装成功之后修改配置文件。
 
-```
+```js
 ember new ember22test  
 cd ember22test 
 ```
@@ -17,7 +17,7 @@ cd ember22test
 
   通过手动修改 ember 的版本号。修改之后的 bower.json 如下：
 
-```
+```js
 {
   "name": "ember20test",
   "dependencies": {
@@ -46,7 +46,7 @@ cd ember22test
 
   需要重新执行`npm`、`bower`命令下载最新的文件和依赖文件。
 
-```
+```js
 npm install  
 bower install 
 ```
@@ -55,7 +55,7 @@ bower install
 
   执行命令`ember server`待到项目启动完成，在浏览器执行`http://localhost:4200`。查看浏览器控制台打印的信息。
 
-```
+```js
 ember.debug.js:5938DEBUG: -------------------------------  
 ember.debug.js:5938DEBUG: Ember      : 2.2.0  
 ember.debug.js:5938DEBUG: Ember Data : 2.2.0  

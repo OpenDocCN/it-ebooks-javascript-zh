@@ -6,7 +6,7 @@
 
 JavaScript 语言的传统方法是通过构造函数，定义并生成新对象。下面是一个例子。
 
-```
+```js
 function Point(x,y){
   this.x = x;
   this.y = y;
@@ -22,7 +22,7 @@ Point.prototype.toString = function () {
 
 ES6 提供了更接近传统语言的写法，引入了 Class（类）这个概念，作为对象的模板。通过 class 关键字，可以定义类。基本上，ES6 的 class 可以看作只是一个语法糖，它的绝大部分功能，ES5 都可以做到，新的 class 写法只是让对象原型的写法更加清晰、更像面向对象编程的语法而已。上面的代码用 ES6 的“类”改写，就是下面这样。
 
-```
+```js
 //定义类
 class Point {
 
@@ -45,7 +45,7 @@ Point 类除了构造方法，还定义了一个 toString 方法。注意，定�
 
 ES6 的类，完全可以看作构造函数的另一种写法。
 
-```
+```js
 class Point{
   // ...
 }
@@ -58,7 +58,7 @@ typeof Point // "function"
 
 构造函数的 prototype 属性，在 ES6 的“类”上面继续存在。事实上，除了 constructor 方法以外，类的方法都定义在类的 prototype 属性上面。
 
-```
+```js
 class Point {
   constructor(){
     // ...
@@ -84,7 +84,7 @@ Point.prototype = {
 
 由于类的方法（除 constructor 以外）都定义在 prototype 对象上面，所以类的新方法可以添加在 prototype 对象上面。`Object.assign`方法可以很方便地一次向类添加多个方法。
 
-```
+```js
 class Point {
   constructor(){
     // ...
@@ -100,14 +100,14 @@ Object.assign(Point.prototype, {
 
 prototype 对象的 constructor 属性，直接指向“类”的本身，这与 ES5 的行为是一致的。
 
-```
+```js
 Point.prototype.constructor === Point // true
 
 ```
 
 另外，类的内部所有定义的方法，都是不可枚举的（enumerable）。
 
-```
+```js
 class Point {
   constructor(x, y) {
     // ...
@@ -127,7 +127,7 @@ Object.getOwnPropertyNames(Point.prototype)
 
 上面代码中，toString 方法是 Point 类内部定义的方法，它是不可枚举的。这一点与 ES5 的行为不一致。
 
-```
+```js
 var Point = function (x, y){
   // ...
 }
@@ -147,7 +147,7 @@ Object.getOwnPropertyNames(Point.prototype)
 
 类的属性名，可以采用表达式。
 
-```
+```js
 let methodName = "getArea";
 class Square{
   constructor(length) {
@@ -167,14 +167,14 @@ class Square{
 
 constructor 方法是类的默认方法，通过 new 命令生成对象实例时，自动调用该方法。一个类必须有 constructor 方法，如果没有显式定义，一个空的 constructor 方法会被默认添加。
 
-```
+```js
 constructor() {}
 
 ```
 
 constructor 方法默认返回实例对象（即 this），完全可以指定返回另外一个对象。
 
-```
+```js
 class Foo {
   constructor() {
     return Object.create(null);
@@ -192,7 +192,7 @@ new Foo() instanceof Foo
 
 生成实例对象的写法，与 ES5 完全一样，也是使用 new 命令。如果忘记加上 new，像函数那样调用 Class，将会报错。
 
-```
+```js
 // 报错
 var point = Point(2, 3);
 
@@ -203,7 +203,7 @@ var point = new Point(2, 3);
 
 与 ES5 一样，实例的属性除非显式定义在其本身（即定义在 this 对象上），否则都是定义在原型上（即定义在 class 上）。
 
-```
+```js
 //定义类
 class Point {
 
@@ -233,7 +233,7 @@ point.__proto__.hasOwnProperty('toString') // true
 
 与 ES5 一样，类的所有实例共享一个原型对象。
 
-```
+```js
 var p1 = new Point(2,3);
 var p2 = new Point(3,2);
 
@@ -246,7 +246,7 @@ p1.__proto__ === p2.__proto__
 
 这也意味着，可以通过实例的**proto**属性为 Class 添加方法。
 
-```
+```js
 var p1 = new Point(2,3);
 var p2 = new Point(3,2);
 
@@ -266,7 +266,7 @@ p3.printName() // "Oops"
 
 由于本质上，ES6 的 Class 只是 ES5 的构造函数的一层包装，所以函数的许多特性都被 Class 继承，包括 name 属性。
 
-```
+```js
 class Point {}
 Point.name // "Point"
 
@@ -278,7 +278,7 @@ name 属性总是返回紧跟在 class 关键字后面的类名。
 
 与函数一样，Class 也可以使用表达式的形式定义。
 
-```
+```js
 const MyClass = class Me {
   getClassName() {
     return Me.name;
@@ -289,7 +289,7 @@ const MyClass = class Me {
 
 上面代码使用表达式定义了一个类。需要注意的是，这个类的名字是 MyClass 而不是 Me，Me 只在 Class 的内部代码可用，指代当前类。
 
-```
+```js
 let inst = new MyClass();
 inst.getClassName() // Me
 Me.name // ReferenceError: Me is not defined
@@ -300,14 +300,14 @@ Me.name // ReferenceError: Me is not defined
 
 如果 Class 内部没用到的话，可以省略 Me，也就是可以写成下面的形式。
 
-```
+```js
 const MyClass = class { /* ... */ };
 
 ```
 
 采用 Class 表达式，可以写出立即执行的 Class。
 
-```
+```js
 let person = new class {
   constructor(name) {
     this.name = name;
@@ -328,7 +328,7 @@ person.sayName(); // "张三"
 
 Class 不存在变量提升（hoist），这一点与 ES5 完全不同。
 
-```
+```js
 new Foo(); // ReferenceError
 class Foo {}
 
@@ -336,7 +336,7 @@ class Foo {}
 
 上面代码中，Foo 类使用在前，定义在后，这样会报错，因为 ES6 不会把变量声明提升到代码头部。这种规定的原因与下文要提到的继承有关，必须保证子类在父类之后定义。
 
-```
+```js
 {
   let Foo = class {};
   class Bar extends Foo {
@@ -359,14 +359,14 @@ class Foo {}
 
 Class 之间可以通过 extends 关键字，实现继承，这比 ES5 的通过修改原型链实现继承，要清晰和方便很多。
 
-```
+```js
 class ColorPoint extends Point {}
 
 ```
 
 上面代码定义了一个 ColorPoint 类，该类通过 extends 关键字，继承了 Point 类的所有属性和方法。但是由于没有部署任何代码，所以这两个类完全一样，等于复制了一个 Point 类。下面，我们在 ColorPoint 内部加上代码。
 
-```
+```js
 class ColorPoint extends Point {
 
   constructor(x, y, color) {
@@ -386,7 +386,7 @@ class ColorPoint extends Point {
 
 子类必须在 constructor 方法中调用 super 方法，否则新建实例时会报错。这是因为子类没有自己的 this 对象，而是继承父类的 this 对象，然后对其进行加工。如果不调用 super 方法，子类就得不到 this 对象。
 
-```
+```js
 class Point { /* ... */ }
 
 class ColorPoint extends Point {
@@ -404,7 +404,7 @@ ES5 的继承，实质是先创造子类的实例对象 this，然后再将父�
 
 如果子类没有定义 constructor 方法，这个方法会被默认添加，代码如下。也就是说，不管有没有显式定义，任何一个子类都有 constructor 方法。
 
-```
+```js
 constructor(...args) {
   super(...args);
 }
@@ -413,7 +413,7 @@ constructor(...args) {
 
 另一个需要注意的地方是，在子类的构造函数中，只有调用 super 之后，才可以使用 this 关键字，否则会报错。这是因为子类实例的构建，是基于对父类实例加工，只有 super 方法才能返回父类实例。
 
-```
+```js
 class Point {
   constructor(x, y) {
     this.x = x;
@@ -435,7 +435,7 @@ class ColorPoint extends Point {
 
 下面是生成子类实例的代码。
 
-```
+```js
 let cp = new ColorPoint(25, 8, 'green');
 
 cp instanceof ColorPoint // true
@@ -453,7 +453,7 @@ cp instanceof Point // true
 
 （2）子类 prototype 属性的`__proto__`属性，表示方法的继承，总是指向父类的 prototype 属性。
 
-```
+```js
 class A {
 }
 
@@ -469,7 +469,7 @@ B.prototype.__proto__ === A.prototype // true
 
 这两条继承链，可以这样理解：作为一个对象，子类（B）的原型（`__proto__ 属性`）是父类（A）；作为一个构造函数，子类（B）的原型（prototype 属性）是父类的实例。
 
-```
+```js
 B.prototype = new A();
 // 等同于
 B.prototype.__proto__ = A.prototype;
@@ -478,7 +478,7 @@ B.prototype.__proto__ = A.prototype;
 
 此外，考虑三种特殊情况。第一种特殊情况，子类继承 Object 类。
 
-```
+```js
 class A extends Object {
 }
 
@@ -491,7 +491,7 @@ A.prototype.__proto__ === Object.prototype // true
 
 第二种特性情况，不存在任何继承。
 
-```
+```js
 class A {
 }
 
@@ -504,7 +504,7 @@ A.prototype.__proto__ === Object.prototype // true
 
 第三种特殊情况，子类继承 null。
 
-```
+```js
 class A extends null {
 }
 
@@ -515,7 +515,7 @@ A.prototype.__proto__ === null // true
 
 这种情况与第二种情况非常像。A 也是一个普通函数，所以直接继承`Funciton.prototype`。但是，A 调用后返回的对象不继承任何方法，所以它的`__proto__`指向`Function.prototype`，即实质上执行了下面的代码。
 
-```
+```js
 class C extends null {
   constructor() { return Object.create(null); }
 }
@@ -526,7 +526,7 @@ class C extends null {
 
 Object.getPrototypeOf 方法可以用来从子类上获取父类。
 
-```
+```js
 Object.getPrototypeOf(ColorPoint) === Point
 // true
 
@@ -536,7 +536,7 @@ Object.getPrototypeOf(ColorPoint) === Point
 
 父类实例和子类实例的**proto**属性，指向是不一样的。
 
-```
+```js
 var p1 = new Point(2, 3);
 var p2 = new ColorPoint(2, 3, 'red');
 
@@ -547,7 +547,7 @@ p2.__proto__.__proto__ === p1.__proto__ // true
 
 通过子类实例的**proto**属性，可以修改父类实例的行为。
 
-```
+```js
 p2.__proto__.__proto__.printName = function () {
   console.log('Ha');
 };
@@ -562,7 +562,7 @@ p1.printName() // "Ha"
 
 原生构造函数是指语言内置的构造函数，通常用来生成数据结构，比如`Array()`。以前，这些原生构造函数是无法继承的，即不能自己定义一个 Array 的子类。
 
-```
+```js
 function MyArray() {
   Array.apply(this, arguments);
 }
@@ -580,7 +580,7 @@ MyArray.prototype = Object.create(Array.prototype, {
 
 上面代码定义了一个继承 Array 的 MyArray 类。但是，这个类的行为与 Array 完全不一致。
 
-```
+```js
 var colors = new MyArray();
 colors[0] = "red";
 colors.length  // 0
@@ -594,7 +594,7 @@ colors[0]  // "red"
 
 ES6 允许继承原生构造函数定义子类，因为 ES6 是先新建父类的实例对象 this，然后再用子类的构造函数修饰 this，使得父类的所有行为都可以继承。下面是一个继承 Array 的例子。
 
-```
+```js
 class MyArray extends Array {
   constructor(...args) {
     super(...args);
@@ -614,7 +614,7 @@ arr[0] // undefined
 
 上面这个例子也说明，extends 关键字不仅可以用来继承类，还可以用来继承原生的构造函数。下面是一个自定义 Error 子类的例子。
 
-```
+```js
 class MyError extends Error {
 }
 
@@ -626,7 +626,7 @@ throw new MyError('Something happened!');
 
 与 ES5 一样，在 Class 内部可以使用 get 和 set 关键字，对某个属性设置存值函数和取值函数，拦截该属性的存取行为。
 
-```
+```js
 class MyClass {
   constructor() {
     // ...
@@ -653,7 +653,7 @@ inst.prop
 
 存值函数和取值函数是设置在属性的 descriptor 对象上的。
 
-```
+```js
 class CustomHTMLElement {
   constructor(element) {
     this.element = element;
@@ -679,7 +679,7 @@ var descriptor = Object.getOwnPropertyDescriptor(
 
 下面的例子针对所有属性，设置存值函数和取值函数。
 
-```
+```js
 class Jedi {
   constructor(options = {}) {
     // ...
@@ -702,7 +702,7 @@ class Jedi {
 
 如果某个方法之前加上星号（*），就表示该方法是一个 Generator 函数。
 
-```
+```js
 class Foo {
   constructor(...args) {
     this.args = args;
@@ -728,7 +728,7 @@ for (let x of new Foo('hello', 'world')) {
 
 类相当于实例的原型，所有在类中定义的方法，都会被实例继承。如果在一个方法前，加上 static 关键字，就表示该方法不会被实例继承，而是直接通过类来调用，这就称为“静态方法”。
 
-```
+```js
 class Foo {
   static classMethod() {
     return 'hello';
@@ -747,7 +747,7 @@ foo.classMethod()
 
 父类的静态方法，可以被子类继承。
 
-```
+```js
 class Foo {
   static classMethod() {
     return 'hello';
@@ -765,7 +765,7 @@ Bar.classMethod(); // 'hello'
 
 静态方法也是可以从 super 对象上调用的。
 
-```
+```js
 class Foo {
   static classMethod() {
     return 'hello';
@@ -786,7 +786,7 @@ Bar.classMethod();
 
 new 是从构造函数生成实例的命令。ES6 为 new 命令引入了一个`new.target`属性，（在构造函数中）返回 new 命令作用于的那个构造函数。如果构造函数不是通过 new 命令调用的，`new.target`会返回 undefined，因此这个属性可以用来确定构造函数是怎么调用的。
 
-```
+```js
 function Person(name) {
   if (new.target !== undefined) {
     this.name = name;
@@ -813,7 +813,7 @@ var notAPerson = Person.call(person, '张三');  // 报错
 
 Class 内部调用`new.target`，返回当前 Class。
 
-```
+```js
 class Rectangle {
   constructor(length, width) {
     console.log(new.target === Rectangle);
@@ -828,7 +828,7 @@ var obj = new Rectangle(3, 4); // 输出 true
 
 需要注意的是，子类继承父类时，`new.target`会返回子类。
 
-```
+```js
 class Rectangle {
   constructor(length, width) {
     console.log(new.target === Rectangle);
@@ -850,7 +850,7 @@ var obj = new Square(3); // 输出 false
 
 利用这个特点，可以写出不能独立使用、必须继承后才能使用的类。
 
-```
+```js
 class Shape {
   constructor() {
     if (new.target === Shape) {
@@ -883,7 +883,7 @@ var y = new Rectangle(3, 4);  // 正确
 
 修饰器对类的行为的改变，是代码编译时发生的，而不是在运行时。这意味着，修饰器能在编译阶段运行代码。
 
-```
+```js
 function testable(target) {
   target.isTestable = true;
 }
@@ -899,7 +899,7 @@ console.log(MyTestableClass.isTestable) // true
 
 修饰器函数可以接受三个参数，依次是目标函数、属性名和该属性的描述对象。后两个参数可省略。上面代码中，testable 函数的参数 target，就是所要修饰的对象。如果希望修饰器的行为，能够根据目标对象的不同而不同，就要在外面再封装一层函数。
 
-```
+```js
 function testable(isTestable) {
   return function(target) {
     target.isTestable = isTestable;
@@ -918,7 +918,7 @@ console.log(MyClass.isTestable) // false
 
 如果想要为类的实例添加方法，可以在修饰器函数中，为目标类的 prototype 属性添加方法。
 
-```
+```js
 function testable(target) {
   target.prototype.isTestable = true;
 }
@@ -936,7 +936,7 @@ console.log(obj.isTestable) // true
 
 下面是另外一个例子。
 
-```
+```js
 // mixins.js
 export function mixins(...list) {
   return function (target) {
@@ -964,7 +964,7 @@ obj.foo() // 'foo'
 
 修饰器可以用`Object.assign()`模拟。
 
-```
+```js
 const Foo = {
   foo() { console.log('foo') }
 }
@@ -982,7 +982,7 @@ obj.foo() // 'foo'
 
 修饰器不仅可以修饰类，还可以修饰类的属性。
 
-```
+```js
 class Person {
   @readonly
   name() { return `${this.first} ${this.last}` }
@@ -994,7 +994,7 @@ class Person {
 
 此时，修饰器函数一共可以接受三个参数，第一个参数是所要修饰的目标对象，第二个参数是所要修饰的属性名，第三个参数是该属性的描述对象。
 
-```
+```js
 readonly(Person.prototype, 'name', descriptor);
 
 function readonly(target, name, descriptor){
@@ -1015,7 +1015,7 @@ Object.defineProperty(Person.prototype, 'name', descriptor);
 
 上面代码说明，修饰器（readonly）会修改属性的描述对象（descriptor），然后被修改的描述对象再用来定义属性。下面是另一个例子。
 
-```
+```js
 class Person {
   @nonenumerable
   get kidCount() { return this.children.length; }
@@ -1030,7 +1030,7 @@ function nonenumerable(target, name, descriptor) {
 
 修饰器有注释的作用。
 
-```
+```js
 @testable
 class Person {
   @readonly
@@ -1052,7 +1052,7 @@ class Person {
 
 autobind 修饰器使得方法中的 this 对象，绑定原始对象。
 
-```
+```js
 import { autobind } from 'core-decorators';
 
 class Person {
@@ -1074,7 +1074,7 @@ getPerson() === person;
 
 readonly 修饰器是的属性或方法不可写。
 
-```
+```js
 import { readonly } from 'core-decorators';
 
 class Meal {
@@ -1092,7 +1092,7 @@ dinner.entree = 'salmon';
 
 override 修饰器检查子类的方法，是否正确覆盖了父类的同名方法，如果不正确会报错。
 
-```
+```js
 import { override } from 'core-decorators';
 
 class Parent {
@@ -1121,7 +1121,7 @@ class Child extends Parent {
 
 deprecate 或 deprecated 修饰器在控制台显示一条警告，表示该方法将废除。
 
-```
+```js
 import { deprecate } from 'core-decorators';
 
 class Person {
@@ -1155,7 +1155,7 @@ person.facepalmHarder();
 
 suppressWarnings 修饰器抑制 decorated 修饰器导致的`console.warn()`调用。但是，异步代码出发的调用除外。
 
-```
+```js
 import { suppressWarnings } from 'core-decorators';
 
 class Person {
@@ -1181,7 +1181,7 @@ person.facepalmWithoutWarning();
 
 请看下面的例子。
 
-```
+```js
 const Foo = {
   foo() { console.log('foo') }
 };
@@ -1199,7 +1199,7 @@ obj.foo() // 'foo'
 
 下面，我们部署一个通用脚本`mixins.js`，将 mixin 写成一个修饰器。
 
-```
+```js
 export function mixins(...list) {
   return function (target) {
     Object.assign(target.prototype, ...list);
@@ -1210,7 +1210,7 @@ export function mixins(...list) {
 
 然后，就可以使用上面这个修饰器，为类“混入”各种方法。
 
-```
+```js
 import { mixins } from './mixins'
 
 const Foo = {
@@ -1234,7 +1234,7 @@ Trait 也是一种修饰器，功能与 Mixin 类型，但是提供更多功能�
 
 下面采用[traits-decorator](https://github.com/CocktailJS/traits-decorator)这个第三方模块作为例子。这个模块提供的 traits 修饰器，不仅可以接受对象，还可以接受 ES6 类作为参数。
 
-```
+```js
 import {traits } from 'traits-decorator'
 
 class TFoo {
@@ -1258,7 +1258,7 @@ obj.bar() // bar
 
 Trait 不允许“混入”同名方法。
 
-```
+```js
 import {traits } from 'traits-decorator'
 
 class TFoo {
@@ -1283,7 +1283,7 @@ class MyClass { }
 
 一种解决方法是排除 TBar 的 foo 方法。
 
-```
+```js
 import { traits, excludes } from 'traits-decorator'
 
 class TFoo {
@@ -1308,7 +1308,7 @@ obj.bar() // bar
 
 另一种方法是为 TBar 的 foo 方法起一个别名。
 
-```
+```js
 import { traits, alias } from 'traits-decorator'
 
 class TFoo {
@@ -1334,7 +1334,7 @@ obj.bar() // bar
 
 alias 和 excludes 方法，可以结合起来使用。
 
-```
+```js
 @traits(TExample::excludes('foo','bar')::alias({baz:'exampleBaz'}))
 class MyClass {}
 
@@ -1344,7 +1344,7 @@ class MyClass {}
 
 as 方法则为上面的代码提供了另一种写法。
 
-```
+```js
 @traits(TExample::as({excludes:['foo', 'bar'], alias: {baz: 'exampleBaz'}}))
 class MyClass {}
 
@@ -1354,14 +1354,14 @@ class MyClass {}
 
 目前，Babel 转码器已经支持 Decorator，命令行的用法如下。
 
-```
+```js
 $ babel --optional es7.decorators
 
 ```
 
 脚本中打开的命令如下。
 
-```
+```js
 babel.transfrom("code", {optional: ["es7.decorators"]})
 
 ```

@@ -8,14 +8,14 @@ ES6 的 Class 只是面向对象编程的语法糖，升级了 ES5 的构造函�
 
 ES6 模块的设计思想，是尽量的静态化，使得编译时就能确定模块的依赖关系，以及输入和输出的变量。CommonJS 和 AMD 模块，都只能在运行时确定这些东西。比如，CommonJS 模块就是对象，输入时必须查找对象属性。
 
-```
+```js
 var { stat, exists, readFile } = require('fs');
 
 ```
 
 ES6 模块不是对象，而是通过 export 命令显式指定输出的代码，输入时也采用静态命令的形式。
 
-```
+```js
 import { stat, exists, readFile } from 'fs';
 
 ```
@@ -28,7 +28,7 @@ import { stat, exists, readFile } from 'fs';
 
 ES6 允许将独立的 JS 文件作为模块，也就是说，允许一个 JavaScript 脚本文件调用另一个脚本文件。该文件内部的所有变量，外部无法获取，必须使用 export 关键字输出变量。下面是一个 JS 文件，里面使用 export 命令输出变量。
 
-```
+```js
 // profile.js
 export var firstName = 'Michael';
 export var lastName = 'Jackson';
@@ -40,7 +40,7 @@ export var year = 1958;
 
 export 的写法，除了像上面这样，还有另外一种。
 
-```
+```js
 // profile.js
 var firstName = 'Michael';
 var lastName = 'Jackson';
@@ -54,7 +54,7 @@ export {firstName, lastName, year};
 
 export 命令除了输出变量，还可以输出函数或类（class）。
 
-```
+```js
 export function multiply (x, y) {
   return x * y;
 };
@@ -67,7 +67,7 @@ export function multiply (x, y) {
 
 使用 export 命令定义了模块的对外接口以后，其他 JS 文件就可以通过 import 命令加载这个模块（文件）。
 
-```
+```js
 // main.js
 
 import {firstName, lastName, year} from './profile';
@@ -82,14 +82,14 @@ function sfirsetHeader(element) {
 
 如果想为输入的变量重新取一个名字，import 语句中要使用 as 关键字，将输入的变量重命名。
 
-```
+```js
 import { lastName as surname } from './profile';
 
 ```
 
 ES6 支持多重加载，即所加载的模块中又加载其他模块。
 
-```
+```js
 import { Vehicle } from './Vehicle';
 
 class Car extends Vehicle {
@@ -106,7 +106,7 @@ export { Car }
 
 如果在一个模块之中，先输入后输出同一个模块，import 语句可以与 export 语句写在一起。
 
-```
+```js
 export { es6 as default } from './someModule';
 
 // 等同于
@@ -121,7 +121,7 @@ export default es6;
 
 下面是一个 circle.js 文件，它输出两个方法 area 和 circumference。
 
-```
+```js
 // circle.js
 
 export function area(radius) {
@@ -136,7 +136,7 @@ export function circumference(radius) {
 
 然后，main.js 文件输入 circlek.js 模块。
 
-```
+```js
 // main.js
 
 import { area, circumference } from 'circle';
@@ -148,7 +148,7 @@ console.log("圆周长：" + circumference(14));
 
 上面写法是逐一指定要输入的方法。另一种写法是整体输入。
 
-```
+```js
 import * as circle from 'circle';
 
 console.log("圆面积：" + circle.area(4));
@@ -160,7 +160,7 @@ console.log("圆周长：" + circle.circumference(14));
 
 module 命令可以取代 import 语句，达到整体输入模块的作用。
 
-```
+```js
 // main.js
 
 module circle from 'circle';
@@ -178,7 +178,7 @@ module 命令后面跟一个变量，表示输入的模块定义在该变量上�
 
 为了给用户提供方便，让他们不用阅读文档就能加载模块，就要用到`export default`命令，为模块指定默认输出。
 
-```
+```js
 // export-default.js
 export default function () {
   console.log('foo');
@@ -190,7 +190,7 @@ export default function () {
 
 其他模块加载该模块时，import 命令可以为该匿名函数指定任意名字。
 
-```
+```js
 // import-default.js
 import customName from './export-default';
 customName(); // 'foo'
@@ -201,7 +201,7 @@ customName(); // 'foo'
 
 export default 命令用在非匿名函数前，也是可以的。
 
-```
+```js
 // export-default.js
 export default function foo() {
   console.log('foo');
@@ -221,7 +221,7 @@ export default foo;
 
 下面比较一下默认输出和正常输出。
 
-```
+```js
 import crc32 from 'crc32';
 // 对应的输出
 export default function crc32(){}
@@ -238,7 +238,7 @@ export function crc32(){};
 
 本质上，`export default`就是输出一个叫做 default 的变量或方法，然后系统允许你为它取任意名字。所以，下面的写法是有效的。
 
-```
+```js
 // modules.js
 export default function (x, y) {
   return x * y;
@@ -250,28 +250,28 @@ import { default } from 'modules';
 
 有了`export default`命令，输入模块时就非常直观了，以输入 jQuery 模块为例。
 
-```
+```js
 import $ from 'jquery';
 
 ```
 
 如果想在一条 import 语句中，同时输入默认方法和其他变量，可以写成下面这样。
 
-```
+```js
 import customName, { otherMethod } from './export-default';
 
 ```
 
 如果要输出默认的值，只需将值跟在`export default`之后即可。
 
-```
+```js
 export default 42;
 
 ```
 
 `export default`也可以用来输出类。
 
-```
+```js
 // MyClass.js
 export default class { ... }
 
@@ -287,7 +287,7 @@ let o = new MyClass();
 
 假设有一个 circleplus 模块，继承了 circle 模块。
 
-```
+```js
 // circleplus.js
 
 export * from 'circle';
@@ -302,7 +302,7 @@ export default function(x) {
 
 这时，也可以将 circle 的属性或方法，改名后再输出。
 
-```
+```js
 // circleplus.js
 
 export { area as circleArea } from 'circle';
@@ -313,7 +313,7 @@ export { area as circleArea } from 'circle';
 
 加载上面模块的写法如下。
 
-```
+```js
 // main.js
 
 module math from "circleplus";
@@ -334,21 +334,21 @@ console.log(exp(math.pi));
 
 首先，安装这个转玛器。
 
-```
+```js
 $ npm install -g es6-module-transpiler
 
 ```
 
 然后，使用`compile-modules convert`命令，将 ES6 模块文件转码。
 
-```
+```js
 $ compile-modules convert file1.js file2.js
 
 ```
 
 o 参数可以指定转码后的文件名。
 
-```
+```js
 $ compile-modules convert -o out.js file1.js
 
 ```
@@ -359,14 +359,14 @@ $ compile-modules convert -o out.js file1.js
 
 使用时，先在网页内载入 system.js 文件。
 
-```
+```js
 <script src="system.js"></script>
 
 ```
 
 然后，使用`System.import`方法加载模块文件。
 
-```
+```js
 <script>
   System.import('./app');
 </script>
@@ -377,7 +377,7 @@ $ compile-modules convert -o out.js file1.js
 
 需要注意的是，`System.import`使用异步加载，返回一个 Promise 对象，可以针对这个对象编程。下面是一个模块文件。
 
-```
+```js
 // app/es6-file.js:
 
 export class q {
@@ -390,7 +390,7 @@ export class q {
 
 然后，在网页内加载这个模块文件。
 
-```
+```js
 <script>
 
 System.import('app/es6-file').then(function(m) {

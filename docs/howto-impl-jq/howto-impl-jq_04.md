@@ -8,7 +8,7 @@
 
 我们知道在 jQuery 中还有一种选择器写法
 
-```
+```js
 $(function() {
 
 }); 
@@ -18,7 +18,7 @@ $(function() {
 
 我们在 init 方法中要新增以下判断
 
-```
+```js
 if(!selector) { return this; }
 
 if (typeof selector == 'object') {
@@ -42,7 +42,7 @@ if (typeof selector == 'object') {
 
 PS:在这我判断的并没有非常的全面,仅仅具备了基础功能
 
-```
+```js
 Kodo.ready = function(fn) {
 
     doc.addEventListener('DOMContentLoaded',function() {

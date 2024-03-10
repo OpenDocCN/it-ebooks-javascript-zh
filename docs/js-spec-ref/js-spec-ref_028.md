@@ -15,7 +15,7 @@
 
 JavaScript 通过构造函数生成新对象，因此构造函数可以视为对象的模板。实例对象的属性和方法，可以定义在构造函数内部。
 
-```
+```js
 function Animal (name) {
   this.name = name;
   this.color = 'white';
@@ -37,7 +37,7 @@ cat1.color // 'white'
 
 除了这种方法，JavaScript 还提供了另一种定义实例对象的方法。我们知道，构造函数是一个函数，同时也是一个对象，也有自己的属性和方法，其中有一个 prototype 属性指向另一个对象，一般称为 prototype 对象。该对象非常特别，只要定义在它上面的属性和方法，能被所有实例对象共享。也就是说，构造函数生成实例对象时，自动为实例对象分配了一个 prototype 属性。
 
-```
+```js
 function Animal (name) {
   this.name = name;
 }
@@ -55,7 +55,7 @@ cat2.color // 'white'
 
 更特别的是，只要修改 prototype 对象，变动就立刻会体现在实例对象。
 
-```
+```js
 Animal.prototype.color = "yellow";
 
 cat1.color // 'yellow'
@@ -66,7 +66,7 @@ cat2.color // 'yellow'
 
 如果实例对象自身就有某个属性或方法，它就不会再去 prototype 对象寻找这个属性或方法。
 
-```
+```js
 cat1.color = 'black';
 
 cat2.color // 'yellow'
@@ -77,7 +77,7 @@ Animal.prototype.color // "yellow";
 
 总而言之，prototype 对象的作用，就是定义所有实例对象共享的属性和方法，所以它也被称为实例对象的原型，而实例对象可以视作从 prototype 对象衍生出来的。
 
-```
+```js
 Animal.prototype.walk = function () {
   console.log(this.name + ' is walking.');
 };
@@ -91,7 +91,7 @@ Animal.prototype.walk = function () {
 
 因此，一个对象的属性和方法，有可能是定义它自身上面，也有可能定义在它的原型对象上面（就像上面代码中的 walk 方法）。由于原型本身也是对象，又有自己的原型，所以形成了一条原型链（prototype chain）。比如，a 对象是 b 对象的原型，b 对象是 c 对象的原型，以此类推。因为追根溯源，最源头的对象都是从 Object 构造函数生成（使用 new Object()命令），所以如果一层层地上溯，所有对象的原型最终都可以上溯到 Object.prototype。那么，Object.prototype 有没有原型呢？回答可以是有，也可以是没有，因为 Object.prototype 的原型是没有任何属性和方法的 null。
 
-```
+```js
 Object.getPrototypeOf(Object.prototype)
 // null
 ```
@@ -102,7 +102,7 @@ Object.getPrototypeOf(Object.prototype)
 
 举例来说，如果让某个函数的 prototype 属性指向一个数组，就意味着该函数可以用作数组的构造函数，因为它生成的实例对象都可以通过 prototype 属性调用数组方法。
 
-```
+```js
 function MyArray (){}
 
 MyArray.prototype = new Array();
@@ -117,7 +117,7 @@ mine instanceof Array // true
 
 上面代码的 mine 是 MyArray 的实例对象，由于 MyArray 的 prototype 属性指向一个数组，使得 mine 可以调用数组方法（这些方法其实定义在数组的 prototype 对象上面）。至于最后那行 instanceof 表达式，我们知道 instanceof 运算符用来比较一个对象是否为某个构造函数的实例，最后一行表示 mine 为 Array 的实例。
 
-```
+```js
 mine instanceof Array
 
 // 等同于
@@ -133,7 +133,7 @@ mine instanceof Array
 
 prototype 对象有一个 constructor 属性，默认指向 prototype 对象所在的构造函数。
 
-```
+```js
 function P() {}
 
 P.prototype.constructor === P
@@ -142,7 +142,7 @@ P.prototype.constructor === P
 
 由于 constructor 属性定义在 prototype 对象上面，意味着可以被所有实例对象继承。
 
-```
+```js
 function P() {}
 
 var p = new P();
@@ -161,7 +161,7 @@ p.hasOwnProperty('constructor')
 
 constructor 属性的作用是分辨 prototype 对象到底定义在哪个构造函数上面。
 
-```
+```js
 function F(){};
 
 var f = new F();
@@ -176,7 +176,7 @@ f.constructor === RegExp // false
 
 Object.getPrototypeOf 方法返回一个对象的原型。
 
-```
+```js
 // 空对象的原型是 Object.prototype
 Object.getPrototypeOf({}) === Object.prototype
 // true
@@ -197,7 +197,7 @@ Object.getPrototypeOf(f) === F.prototype
 
 Object.create 方法用于生成新的对象，可以替代 new 命令。它接受一个原型对象作为参数，返回一个新对象，后者完全继承前者的属性。
 
-```
+```js
 var o1 = { p: 1 };
 var o2 = Object.create(o1);
 
@@ -208,7 +208,7 @@ o2.p // 1
 
 Object.create 方法基本等同于下面的代码，如果老式浏览器不支持 Object.create 方法，可以用下面代码自己部署。
 
-```
+```js
 if (typeof Object.create !== "function") {
   Object.create = function (o) {
     function F() {}
@@ -222,7 +222,7 @@ if (typeof Object.create !== "function") {
 
 下面三种方式生成的新对象是等价的。
 
-```
+```js
 var o1 = Object.create({})
 var o2 = Object.create(Object.prototype)
 var o3 = new Object();
@@ -230,7 +230,7 @@ var o3 = new Object();
 
 如果想要生成一个不继承任何属性（比如 toString 和 valueOf 方法）的对象，可以将 Object.create 的参数设为 null。
 
-```
+```js
 var o = Object.create(null);
 
 o.valueOf()
@@ -241,14 +241,14 @@ o.valueOf()
 
 使用 Object.create 方法的时候，必须提供对象原型，否则会报错。
 
-```
+```js
 Object.create()
 // TypeError: Object prototype may only be an Object or null
 ```
 
 Object.create 方法生成的新对象，动态继承了原型。在原型上添加或修改任何方法，会立刻反映在新对象之上。
 
-```
+```js
 var o1 = { p: 1 };
 var o2 = Object.create(o1);
 
@@ -261,7 +261,7 @@ o2.p
 
 除了对象的原型，Object.create 方法还可以接受第二个参数，表示描述属性的 attributes 对象，跟用在 Object.defineProperties 方法的格式是一样的。它所描述的对象属性，会添加到新对象。
 
-```
+```js
 var o = Object.create(Object.prototype, {
   p1: { value: 123, enumerable: true },
   p2: { value: "abc", enumerable: true }
@@ -277,7 +277,7 @@ o.p2 // "abc"
 
 isPrototypeOf 方法用来判断一个对象是否是另一个对象的原型。
 
-```
+```js
 var o1 = {};
 var o2 = Object.create(o1);
 var o3 = Object.create(o2);

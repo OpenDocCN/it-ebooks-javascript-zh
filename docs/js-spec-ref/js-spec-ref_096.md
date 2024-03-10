@@ -33,13 +33,13 @@ jQuery 如此受欢迎，以至于有被滥用的趋势。许多开发者不管�
 
 jQuery 的核心是通过各种选择器，选中 DOM 元素，可以用 querySelectorAll 方法模拟这个功能。
 
-```
+```js
 var $ = document.querySelectorAll.bind(document);
 ```
 
 这里需要注意的是，querySelectorAll 方法返回的是 NodeList 对象，它很像数组（有数字索引和 length 属性），但不是数组，不能使用 pop、push 等数组特有方法。如果有需要，可以考虑将 Nodelist 对象转为数组。
 
-```
+```js
 myList = Array.prototype.slice.call(myNodeList);
 ```
 
@@ -49,7 +49,7 @@ DOM 本身就具有很丰富的操作方法，可以取代 jQuery 提供的操�
 
 获取父元素。
 
-```
+```js
 // jQuery 写法
 $("#elementID").parent()
 
@@ -59,7 +59,7 @@ document.getElementById("elementID").parentNode
 
 获取下一个同级元素。
 
-```
+```js
 // jQuery 写法
 $("#elementID").next()
 
@@ -69,7 +69,7 @@ document.getElementById("elementID").nextSibling
 
 尾部追加 DOM 元素。
 
-```
+```js
 // jQuery 写法
 $(parent).append($(child));
 
@@ -79,7 +79,7 @@ parent.appendChild(child)
 
 头部插入 DOM 元素。
 
-```
+```js
 // jQuery 写法
 $(parent).prepend($(child));
 
@@ -89,7 +89,7 @@ parent.insertBefore(child, parent.childNodes[0])
 
 生成 DOM 元素。
 
-```
+```js
 // jQuery 写法
 $("<p>")
 
@@ -99,7 +99,7 @@ document.createElement("p")
 
 删除 DOM 元素。
 
-```
+```js
 // jQuery 写法
 $(child).remove()
 
@@ -109,7 +109,7 @@ child.parentNode.removeChild(child)
 
 清空子元素。
 
-```
+```js
 // jQuery 写法
 $("#elementID").empty()
 
@@ -120,7 +120,7 @@ while(element.firstChild) element.removeChild(element.firstChild);
 
 检查是否有子元素。
 
-```
+```js
 // jQuery 写法
 if (!$("#elementID").is(":empty")){}
 
@@ -130,7 +130,7 @@ if (document.getElementById("elementID").hasChildNodes()){}
 
 克隆元素。
 
-```
+```js
 // jQuery 写法
 $("#elementID").clone()
 
@@ -142,7 +142,7 @@ document.getElementById("elementID").cloned(true)
 
 jQuery 使用 on 方法，监听事件和绑定回调函数。
 
-```
+```js
 $('button').on('click', function(){
     ajax( ... );
 });
@@ -150,13 +150,13 @@ $('button').on('click', function(){
 
 完全可以自己定义 on 方法，将它指向 addEventListener 方法。
 
-```
+```js
 Element.prototype.on = Element.prototype.addEventListener;
 ```
 
 为了使用方便，可以在 NodeList 对象上也部署这个方法。
 
-```
+```js
 NodeList.prototype.on = function (event, fn) {
 
     []['forEach'].call(this, function (el) {
@@ -170,7 +170,7 @@ NodeList.prototype.on = function (event, fn) {
 
 取消事件绑定的 off 方法，也可以自己定义。
 
-```
+```js
 Element.prototype.off = Element.prototype.removeEventListener;
 ```
 
@@ -178,7 +178,7 @@ Element.prototype.off = Element.prototype.removeEventListener;
 
 jQuery 的 trigger 方法则需要单独部署，相对复杂一些。
 
-```
+```js
 Element.prototype.trigger = function (type, data) {
     var event = document.createEvent('HTMLEvents');
     event.initEvent(type, true, true);
@@ -192,7 +192,7 @@ Element.prototype.trigger = function (type, data) {
 
 在 NodeList 对象上也部署这个方法。
 
-```
+```js
 NodeList.prototype.trigger = function (event) {
 
     []['forEach'].call(this, function (el) {
@@ -209,7 +209,7 @@ NodeList.prototype.trigger = function (event) {
 
 DOM 加载完成，会触发 DOMContentLoaded 事件，等同于 jQuery 的$(document).ready 方法。
 
-```
+```js
 document.addEventListener("DOMContentLoaded", function() {
     // ...
 });
@@ -221,19 +221,19 @@ document.addEventListener("DOMContentLoaded", function() {
 
 jQuery 使用 attr 方法，读写网页元素的属性。
 
-```
+```js
 $("#picture").attr("src", "http://url/to/image")
 ```
 
 DOM 提供 getAttribute 和 setAttribute 方法读写元素属性。
 
-```
+```js
 imgElement.setAttribute("src", "http://url/to/image")
 ```
 
 DOM 还允许直接读取属性值，写法要简洁许多。
 
-```
+```js
 imgElement.src = "http://url/to/image";
 ```
 
@@ -243,13 +243,13 @@ imgElement.src = "http://url/to/image";
 
 jQuery 的 addClass 方法，用于为 DOM 元素添加一个 class。
 
-```
+```js
 $('body').addClass('hasJS');
 ```
 
 DOM 元素本身有一个可读写的 className 属性，可以用来操作 class。
 
-```
+```js
 document.body.className = 'hasJS';
 
 // or
@@ -259,7 +259,7 @@ document.body.className += ' hasJS';
 
 HTML 5 还提供一个 classList 对象，功能更强大（IE 9 不支持）。
 
-```
+```js
 document.body.classList.add('hasJS');
 
 document.body.classList.remove('hasJS');
@@ -273,13 +273,13 @@ document.body.classList.contains('hasJS');
 
 jQuery 的 css 方法，用来设置网页元素的样式。
 
-```
+```js
 $(node).css( "color", "red" );
 ```
 
 DOM 元素有一个 style 属性，可以直接操作。
 
-```
+```js
 element.style.color = "red”;;
 
 // or
@@ -291,13 +291,13 @@ element.style.cssText += 'color:red';
 
 jQuery 对象可以储存数据。
 
-```
+```js
 $("body").data("foo", 52);
 ```
 
 HTML 5 有一个 dataset 对象，也有类似的功能（IE 10 不支持），不过只能保存字符串。
 
-```
+```js
 element.dataset.user = JSON.stringify(user);
 
 element.dataset.score = score;
@@ -307,7 +307,7 @@ element.dataset.score = score;
 
 jQuery 的 ajax 方法，用于异步操作。
 
-```
+```js
 $.ajax({
     type: "POST",
     url: "some.php",
@@ -319,7 +319,7 @@ $.ajax({
 
 我们自定义一个 ajax 函数，简单模拟 jQuery 的 ajax 方法。
 
-```
+```js
 function ajax(url, opts){
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function(){
@@ -339,7 +339,7 @@ function ajax(url, opts){
 
 使用的时候，除了网址，还需要传入一个自己构造的 option 对象。
 
-```
+```js
 ajax('/foo', { 
     method: 'GET',
     success: function(response){
@@ -355,19 +355,19 @@ ajax('/foo', {
 
 jQuery 的 animate 方法，用于生成动画效果。
 
-```
+```js
 $foo.animate('slow', { x: '+=10px' })
 ```
 
 jQuery 的动画效果，很大部分基于 DOM。但是目前，CSS 3 的动画远比 DOM 强大，所以可以把动画效果写进 CSS，然后通过操作 DOM 元素的 class，来展示动画。
 
-```
+```js
 foo.classList.add('animate')
 ```
 
 如果需要对动画使用回调函数，CSS 3 也定义了相应的事件。
 
-```
+```js
 el.addEventListener("webkitTransitionEnd", transitionEnded);
 
 el.addEventListener("transitionend", transitionEnded);

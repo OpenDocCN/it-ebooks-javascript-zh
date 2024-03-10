@@ -2,7 +2,7 @@
 
 查询参数是在 URL 的问号（？）右边部分，通常是键值对形式出现。
 
-```
+```js
 http://example.com/articles?sort=ASC&page=2 
 ```
 
@@ -14,12 +14,12 @@ http://example.com/articles?sort=ASC&page=2
 
 使用[Ember CLI](http://ember-cli.com/user/guide)新建一个`controller`、`route`：
 
-```
+```js
 ember g controller article；  
 ember g route articles; 
 ```
 
-```
+```js
 //  app/controllers/articles.js
 
 import Ember from 'ember';
@@ -32,7 +32,7 @@ export default Ember.Controller.extend({
 
 绑定一个查询参数到 URL，并且参数的值为`null`。当你进入路由`articles`时，如果参数`category`的值发生变化会自动更新到`controller`中的`category`；反之亦然。你可以设置一个默认值，比如把`category`设置为`Java`。可以在模板上获取这个值。
 
-```
+```js
 <!--  app/templates/articles.hbs  -->  
 {{outlet}}
 category = {{category}} 
@@ -42,7 +42,7 @@ category = {{category}}
 
 下面代码演示了怎么使用查询参数：
 
-```
+```js
 //  app/controllers/articles.js
 
 import Ember from 'ember';
@@ -69,7 +69,7 @@ export default Ember.Controller.extend({
 
 在`route`初始化测试数据。
 
-```
+```js
 //  app/routes/article.js
 
 import Ember from 'ember';
@@ -89,7 +89,7 @@ export default Ember.Route.extend({
 
 下面看看怎么在模板显示数据，并且根据`category`显示不同数据。
 
-```
+```js
 <!--  app/templates/articles.hbs  -->
 
 <div class="col-md-4 col-xs-4">
@@ -127,7 +127,7 @@ export default Ember.Route.extend({
 
 `link-to`助手使用`query-params`子表达式直接指定查询参数，需要注意的是这个表达式需要放在括号内使用，切记别少了这个括号。
 
-```
+```js
 <!--  app/templates/articles.hbs  -->  
 ……
 <ul>  
@@ -150,7 +150,7 @@ export default Ember.Route.extend({
 
 修改前面已经创建好的路由`posts.js`。
 
-```
+```js
 //  app/routes/posts.js
 import Ember from 'ember';  
 export default Ember.Route.extend({
@@ -167,7 +167,7 @@ export default Ember.Route.extend({
 
 另外还有三种切换路由的方式。
 
-```
+```js
 //  可以传递一个 object 过去
 this.transitionTo('articles', object, { queryParams: { category: 'java' }});
 
@@ -187,7 +187,7 @@ this.transitionTo('/posts/1?sort=date&showDetails=true');
 
 但是有些情况是查询参数改变需要从服务器重新加载数据，这种情况就需要一个完整的路由切换了。为了能在查询参数改变的时候切换到一个完整的路由你需要在`controller`对应的路由中配置一个名为`queryParams`哈希对象。并且需要设置一个名为`refreshModel`的查询参数，这个参数的值为`true`。
 
-```
+```js
 queryParams: {  
     category: {
         refreshModel: true
@@ -204,7 +204,7 @@ model: function(params) {
 
 默认情况下，[Ember](http://emberjs.com/)使用`pushState`更新 URL 来响应`controller`类中查询参数属性的变化，但是如果你想使用`replaceState`来替换`pushState`你可以在`route`类中的`queryParams`哈希对象中设置`replace`为`true`。设置为`true`表示启用这个设置。
 
-```
+```js
 queryParams: {  
 category: {  
     replaceState:true
@@ -216,7 +216,7 @@ category: {
 
 默认情况下，在`controller`类中指定的查询属性`foo`会绑定到名为`foo`的查询参数上。比如：`?foo=123`。你也可以把查询属性映射到不同的查询参数上，语法如下：
 
-```
+```js
 //  app/controllers/articles.js
 import Ember from 'ember';  
 export default Ember.Controller.extend({  
@@ -229,7 +229,7 @@ export default Ember.Controller.extend({
 
 这段代码就是把查询属性`category`映射到查询参数`articles_category`上。 对于有多个查询参数的情况你需要使用数组指定。
 
-```
+```js
 //  app/controllers/articles.js
 import Ember from 'ember';  
 export default Ember.Controller.extend({  
@@ -244,7 +244,7 @@ export default Ember.Controller.extend({
 
 ### 7，默认值与反序列化
 
-```
+```js
 export default Ember.Controller.extend({  
     queryParams: 'page',
     page: 1
@@ -264,7 +264,7 @@ export default Ember.Controller.extend({
 
 此外，粘性的查询参数值会被加载的`route`存储或者回复。比如，包括了动态段`/:post_id`的路由`posts`，以及路由对应的`controller`包含了查询属性`filter`。如果你导航到`/badgers`并且根据`reookies`过滤，然后再导航到`/bears`并根据`best`过滤，然后再导航到`/potatose`并根据`lamest`过滤。如下面的链接：
 
-```
+```js
 <ul>  
     {{#link-to 'posts' 'badgers'}}Badgers{{/link-to}}<br>
     {{#link-to 'posts' 'bears'}}Bears{{/link-to}}<br>
@@ -274,7 +274,7 @@ export default Ember.Controller.extend({
 
 模板编译之后得到如下 HTML 代码：
 
-```
+```js
 <ul>  
     <a href="/badgers?filter=rookies">Badgers</a>
     <a href="/bears?filter=best">Bears</a>
@@ -289,7 +289,7 @@ export default Ember.Controller.extend({
 
 下面的代码片段演示了一个查询参数在`controller`中重置为`1`，同时作用于切换前`ActiclesRoute`的`model`。结果就是当返回到当前路由时查询值已经被重置为`1`。
 
-```
+```js
 //  app/routes/article.js
 
 import Ember from 'ember';
@@ -308,7 +308,7 @@ export default Ember.Route.extend({
 
 某些情况下，你不想是用查询参数值限定路由模式，而是让查询参数值改变的时候路由也跟着改变并且会重新加载数据。这时候你可用在对应的`controller`类中设置`queryParams`哈希对象，在这对象中配置一个参数`scope`为`controller`。如下：
 
-```
+```js
 queryParams: [{  
     showMagnifyingGlass: {
         scope: 'controller'

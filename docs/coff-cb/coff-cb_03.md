@@ -10,14 +10,14 @@
 
 使用“拆分-映射-拼接”模式：先把字符串拆分成单词，然后通过映射来大写单词第一个字母小写其他字母，最后再将转换后的单词拼接成字符串。
 
-```
+```js
 ("foo bar baz".split(' ').map (word) -> word[0].toUpperCase() + word[1..-1].toLowerCase()).join ' '
  # => 'Foo Bar Baz'
 ```
 
 或者使用列表推导（comprehension），也可以实现同样的结果：
 
-```
+```js
 (word[0].toUpperCase() + word[1..-1].toLowerCase() for word in "foo   bar   baz".split /\s+/).join ' '
  # => 'Foo Bar Baz'
 ```
@@ -28,7 +28,7 @@
 
 需要注意的是，“拆分-映射-拼接”模式存在两个问题。第一个问题，只有在文本形式统一的情况下才能有效拆分文本。如果来源字符串中有分隔符包含多个空白符，就需要考虑怎么过滤掉多余的空单词。一种解决方案是使用正则表达式来匹配空白符的串，而不是像前面那样只匹配一个空格：
 
-```
+```js
 ("foo    bar    baz".split(/\s+/).map (word) -> word[0].toUpperCase() + word[1..-1].toLowerCase()).join ' '
  # => 'Foo Bar Baz'
 ```
@@ -47,7 +47,7 @@
 
 分别使用 JavaScript 的 indexOf() 和 lastIndexOf() 方法查找字符串第一次和最后一次出现的位置。语法: string.indexOf searchstring, start
 
-```
+```js
 message = "This is a test string. This has a repeat or two. This might even have a third."
 message.indexOf "This", 0
  # => 0
@@ -75,7 +75,7 @@ message.lastIndexOf "This"
 
 可以根据一个随机数值生成一个 Base 36 编码的字符串。
 
-```
+```js
 uniqueId = (length=8) ->
   id = ""
   id += Math.random().toString(36).substr(2) while id.length < length
@@ -103,14 +103,14 @@ uniqueId(40)  # => xu2vo4xjn4g0t3xr74zmndshrqlivn291d584alj
 
 插值：
 
-```
+```js
 muppet = "Beeker"
 favorite = "My favorite muppet is #{muppet}!"
 
  # => "My favorite muppet is Beeker!"
 ```
 
-```
+```js
 square = (x) -> x * x
 message = "The square of 7 is #{square 7}."
 
@@ -123,7 +123,7 @@ CoffeeScript 的插值与 Ruby 类似，多数表达式都可以用在 #{ ... } 
 
 CoffeeScript 支持在插值结构中放入多个有副作用的表达式，但建议大家不要这样做。因为只有表达式的最后一个值会被插入。
 
-```
+```js
  # 可以这样做，但不要这样做。否则，你会疯掉。
 
 square = (x) -> x * x
@@ -143,7 +143,7 @@ message = "The square of 10 is #{muppet='Animal'; square 10}. Oh, and your favor
 
 使用 JavaScript 的 String 的 toLowerCase() 方法：
 
-```
+```js
 "ONE TWO THREE".toLowerCase()
  # => 'one two three'
 ```
@@ -156,7 +156,7 @@ toLowerCase() 是一个标准的 JavaScript 方法。不要忘了带圆括号。
 
 通过下面的快捷方式可以添加某种类似　Ruby 的语法块：
 
-```
+```js
 String::downcase = -> @toLowerCase()
 "ONE TWO THREE".downcase()
  # => 'one two three'
@@ -169,7 +169,7 @@ String::downcase = -> @toLowerCase()
 
 上面的代码会编译成如下 JavaScript 代码：
 
-```
+```js
 String.prototype.downcase = function() {
   return this.toLowerCase();
 };
@@ -188,7 +188,7 @@ String.prototype.downcase = function() {
 
 计算把一个字符串转换成另一个字符串所需的编辑距离或操作数。
 
-```
+```js
 levenshtein = (str1, str2) ->
 
     l1 = str1.length
@@ -230,7 +230,7 @@ levenshtein = (str1, str2) ->
 
 创建一个包含 n+1 个空元素的数组，然后用要重复的字符串作为连接字符将数组元素拼接到一起：
 
-```
+```js
  # 创建包含 10 个 foo 的字符串
 
 Array(11).join 'foo'
@@ -242,7 +242,7 @@ Array(11).join 'foo'
 
 你也可以在字符串的原型中为其创建方法。它十分简单：
 
-```
+```js
  # 为所有的字符串添加重复方法，这会重复返回 n 次字符串
 
 String::repeat = (n) -> Array(n+1).join(this)
@@ -262,7 +262,7 @@ JavaScript 缺少字符串重复函数，CoffeeScript 也没有提供。虽然�
 
 使用 JavaScript 字符串的 split() 方法：
 
-```
+```js
 "foo bar baz".split " "
  # => [ 'foo', 'bar', 'baz' ]
 ```
@@ -271,12 +271,12 @@ JavaScript 缺少字符串重复函数，CoffeeScript 也没有提供。虽然�
 
 String 的这个 split() 方法是标准的 JavaScript 方法。可以用来基于任何分隔符——包括正则表达式来拆分字符串。这个方法还可以接受第二个参数，用于指定返回的子字符串数目。
 
-```
+```js
 "foo-bar-baz".split "-"
  # => [ 'foo', 'bar', 'baz' ]
 ```
 
-```
+```js
 "foo bar \t baz".split /\s+/ # => [ 'foo', 'bar', 'baz' ]
 
 "the sun goes down and I sit on the old broken-down river pier".split " ", 2 # => [ 'the', 'sun' ]
@@ -294,21 +294,21 @@ String 的这个 split() 方法是标准的 JavaScript 方法。可以用来基�
 使用 JavaScript 的正则表达式来替换空白符。
 
 要清理字符串前后的空白符，可以使用以下代码：
-```
+```js
 
 " padded string ".replace /^\s+|\s+$/g, "" # => 'padded string'
 
 ```
 
 如果只想清理字符串前面的空白符，使用以下代码：
-```
+```js
 
 " padded string ".replace /^\s+/g, "" # => 'padded string '
 
 ```
 
 如果只想清理字符串后面的空白符，使用以下代码：
-```
+```js
 
 " padded string ".replace /\s+$/g, "" # => ' padded string'
 
@@ -317,7 +317,7 @@ String 的这个 split() 方法是标准的 JavaScript 方法。可以用来基�
 讨论
 
 Opera、Firefox 和 Chrome 中 String 的原型都有原生的 trim 方法，其他浏览器也可以添加一个。对于这个方法而言，还是尽可能使用内置方法，否则就创建一个 polyfill：
-```
+```js
 
 unless String::trim then String::trim = -> @replace /^\s+|\s+$/g, ""
 
@@ -328,7 +328,7 @@ unless String::trim then String::trim = -> @replace /^\s+|\s+$/g, ""
 语法块
 
 还可以添加一些类似 Ruby 中的语法块，定义如下快捷方法：
-```
+```js
 
 String::strip = -> if String::trim? then @trim() else @replace /^\s+|\s+$/g, "" String::lstrip = -> @replace /^\s+/g, "" String::rstrip = -> @replace /\s+$/g, ""
 
@@ -351,7 +351,7 @@ String::strip = -> if String::trim? then @trim() else @replace /^\s+|\s+$/g, "" 
 解决方案
 
 使用 JavaScript 的 String 的 toUpperCase() 方法：
-```
+```js
 
 "one two three".toUpperCase() # => 'ONE TWO THREE'
 
@@ -364,7 +364,7 @@ toUpperCase() 是一个标准的 JavaScript 方法。不要忘了带圆括号。
 语法块
 
 通过下面的快捷方式可以添加某种类似 Ruby 的语法块：
-```
+```js
 
 String::upcase = -> @toUpperCase() "one two three".upcase() # => 'ONE TWO THREE'
 
@@ -376,7 +376,7 @@ String::upcase = -> @toUpperCase() "one two three".upcase() # => 'ONE TWO THREE'
 * “at” 字符 @ 是引用 this 的快捷方式。
 
 上面的代码会编译成如下 JavaScript 代码：
-```
+```js
 
 String.prototype.upcase = function() { return this.toUpperCase(); }; "one two three".upcase(); ```
 

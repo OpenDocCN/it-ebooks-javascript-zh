@@ -19,7 +19,7 @@ win 系统搭建 Ember.js 开发环境主要有如下几个步骤：
 *   git 安装与 nodejs 一样，下载安装后打开一个新的 cmd 命令窗口，输入`git -v`，如果看到下面的信息说明安装成功。
 *   [git 网盘下载地址](http://pan.baidu.com/s/1eShq1kI)
 
-```
+```js
 Unknown option: -v  
 usage: git [--version] [--help] [-C <path>] [-c name=value]  
            [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]
@@ -36,7 +36,7 @@ usage: git [--version] [--help] [-C <path>] [-c name=value]
 *   执行命令 `npm install -g ember-cli@2.6` 安装 ember-cli。
 *   验证是否安装成功，打开 cmd 命令窗口输入`ember -v`。如果看到下面的打印信息说明安装成功。
 
-```
+```js
 C:\Users\Administrator>ember -v  
 ember-cli: 2.6.3  
 node: 4.4.4  
@@ -58,7 +58,7 @@ os: win32 x64
 
 创建项目使用 ember-cli 命令。
 
-```
+```js
 ember new new-app 
 ```
 
@@ -70,13 +70,13 @@ ember new new-app
 
 进入项目目录。
 
-```
+```js
 cd new-app 
 ```
 
 运行
 
-```
+```js
 ember server 
 ```
 

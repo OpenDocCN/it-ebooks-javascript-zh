@@ -8,7 +8,7 @@
 
 你可以调用`push()`方法一次性把多条数据保存到 Store 中。比如下面的代码：
 
-```
+```js
 //  app/routes/application.js
 
 import Ember from 'ember';

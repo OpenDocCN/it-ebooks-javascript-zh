@@ -18,7 +18,7 @@
 
 我们从一个示例开始：
 
-```
+```js
 function* quips(name) {
   yield "你好 " + name + "!";
   yield "希望你能喜欢这篇介绍 ES6 的译文";
@@ -42,7 +42,7 @@ function* quips(name) {
 
 当你调用 quips()生成器函数时发生了什么？
 
-```
+```js
 > var iter = quips("jorendorff");
   [object Generator]
 > iter.next()
@@ -79,7 +79,7 @@ function* quips(name) {
 
 实现一个接口不是一桩小事，我们一起实现一个迭代器。举个例子，我们创建一个简单的 range 迭代器，它可以简单地将两个数字之间的所有数相加。首先是传统 C 的 for(;;)循环：
 
-```
+```js
 // 应该弹出三次 "ding"
 for (var value of range(0, 3)) {
   alert("Ding! at floor #" + value);
@@ -88,7 +88,7 @@ for (var value of range(0, 3)) {
 
 使用 ES6 的类的解决方案（如果不清楚语法细节，无须担心，我们将在接下来的文章中为你讲解）：
 
-```
+```js
 class RangeIterator {
   constructor(start, stop) {
     this.value = start;
@@ -122,7 +122,7 @@ function range(start, stop) {
 
 你大概不会为了使迭代器更易于构建从而建议我们为 JS 语言引入一个离奇古怪又野蛮的新型控制流结构，但是既然我们有生成器，是否可以在这里应用它们呢？一起尝试一下：
 
-```
+```js
 function* range(start, stop) {
   for (var i = start; i < stop; i++)
     yield i;
@@ -141,7 +141,7 @@ l 使任意对象可迭代。编写生成器函数遍历这个对象，运行时
 
 l 简化数组构建函数。假设你有一个函数，每次调用的时候返回一个数组结果，就像这样：
 
-```
+```js
 // 拆分一维数组 icons
 // 根据长度 rowLength
 function splitIntoRows(icons, rowLength) {
@@ -155,7 +155,7 @@ function splitIntoRows(icons, rowLength) {
 
 使用生成器创建的代码相对较短：
 
-```
+```js
 function* splitIntoRows(icons, rowLength) {
   for (var i = 0; i < icons.length; i += rowLength) {
     yield icons.slice(i, i + rowLength);
@@ -171,7 +171,7 @@ function* splitIntoRows(icons, rowLength) {
 
 举个例子，假设你需要一个等效于 Array.prototype.filter 并且支持 DOM NodeLists 的方法，可以这样写：
 
-```
+```js
 function* filter(test, iterable) {
   for (var item of iterable) {
     if (test(item))
@@ -188,7 +188,7 @@ function* filter(test, iterable) {
 
 这是我在一段时间以前写的一些 JS 代码
 
-```
+```js
  };
         })
       });
@@ -201,7 +201,7 @@ function* filter(test, iterable) {
 
 后来我就这样写了：
 
-```
+```js
 }).on('close', function () {
   done(undefined, undefined);
 }).on('error', function (error) {
@@ -217,7 +217,7 @@ function* filter(test, iterable) {
 
 实验性的[Q.async()](https://github.com/kriskowal/q/tree/v1/examples/async-generators)尝试结合 promises 使用生成器产生异步代码的等效同步代码。举个例子：
 
-```
+```js
 // 制造一些噪音的同步代码。
 function makeNoise() {
   shake();

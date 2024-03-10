@@ -21,7 +21,7 @@ Node.js 默认单进程运行，对于多核 CPU 的计算机来说，这样做�
 
 cluster 模块允许设立一个主进程和若干个 worker 进程，由主进程监控和协调 worker 进程的运行。worker 之间采用进程建通信交换消息，cluster 模块内置一个负载均衡器，采用 Round-robin 算法协调各个 worker 进程之间的负载。运行时，所有新建立的链接都由主进程完成，然后主进程再把 TCP 连接分配给指定的 worker 进程。
 
-```
+```js
 var cluster = require('cluster');
 var os = require('os');
 
@@ -57,7 +57,7 @@ work.id 返回当前 worker 的独一无二的进程编号。这个编号也是 
 
 该方法用于在主进程中，向子进程发送信息。
 
-```
+```js
 if (cluster.isMaster) {
   var worker = cluster.fork();
   worker.send('hi there');
@@ -76,7 +76,7 @@ if (cluster.isMaster) {
 
 该对象只有主进程才有，包含了所有 worker 进程。每个成员的键值就是一个 worker 进程，键名就是该 worker 进程的 worker.id 属性。
 
-```
+```js
 function eachWorker(callback) {
   for (var id in cluster.workers) {
     callback(cluster.workers[id]);
@@ -91,7 +91,7 @@ eachWorker(function(worker) {
 
 当前 socket 的 data 事件，也可以用 id 属性识别 worker 进程。
 
-```
+```js
 socket.on('data', function(id) {
   var worker = cluster.workers[id];
 });
@@ -125,7 +125,7 @@ worker 进程调用 listen 方面以后，“listening”就传向该进程的�
 
 该事件的回调函数接受两个参数，一个是当前 worker 对象，另一个是地址对象，包含网址、端口、地址类型（IPv4、IPv6、Unix socket、UDP）等信息。这对于那些服务多个网址的 Node 应用程序非常有用。
 
-```
+```js
 cluster.on('listening', function(worker, address) {
   console.log("A worker is now connected to " + address.address + ":" + address.port);
 });
@@ -137,7 +137,7 @@ cluster.on('listening', function(worker, address) {
 
 下面是主进程的代码 master.js。
 
-```
+```js
 var cluster = require('cluster');
 
 console.log('started master with ' + process.pid);
@@ -162,7 +162,7 @@ process.on('SIGHUP', function () {
 
 下面是 worker 进程的代码 server.js。
 
-```
+```js
 var cluster = require('cluster');
 
 if (cluster.isMaster) {
@@ -185,7 +185,7 @@ http.createServer(app).listen(8080, function () {
 
 使用时代码如下。
 
-```
+```js
 $ node server.js
 started master with 10538
 http://localhost:8080
@@ -193,14 +193,14 @@ http://localhost:8080
 
 然后，向主进程连续发出两次 SIGHUP 信号。
 
-```
+```js
 $ kill -SIGHUP 10538
 $ kill -SIGHUP 10538
 ```
 
 主进程会连续两次新建一个 worker 进程，然后关闭所有其他 worker 进程，显示如下。
 
-```
+```js
 Reloading...
 http://localhost:8080
 Reloading...
@@ -209,7 +209,7 @@ http://localhost:8080
 
 最后，向主进程发出 SIGTERM 信号，关闭主进程。
 
-```
+```js
 $ kill 10538
 ```
 
@@ -217,7 +217,7 @@ $ kill 10538
 
 PM2 模块是 cluster 模块的一个包装层。它的作用是尽量将 cluster 模块抽象掉，让用户像使用单进程一样，部署多进程 Node 应用。
 
-```
+```js
 // app.js
 var http = require('http');
 
@@ -229,7 +229,7 @@ http.createServer(function(req, res) {
 
 上面代码是标准的 Node 架设 Web 服务器的方式，然后用 PM2 从命令行启动这段代码。
 
-```
+```js
 $ pm2 start app.js -i 4
 ```
 
@@ -237,26 +237,26 @@ $ pm2 start app.js -i 4
 
 如果一个 worker 进程由于某种原因挂掉了，会立刻重启该 worker 进程。
 
-```
+```js
 # 重启所有 worker 进程
 $ pm2 reload all
 ```
 
 每个 worker 进程都有一个 id，可以用下面的命令查看单个 worker 进程的详情。
 
-```
+```js
 $ pm2 show <worker id>
 ```
 
 正确情况下，PM2 采用 fork 模式新建 worker 进程，即主进程 fork 自身，产生一个 worker 进程。`pm2 reload`命令则会用 spawn 方式启动，即一个接一个启动 worker 进程，一个新的 worker 启动成功，再杀死一个旧的 worker 进程。采用这种方式，重新部署新版本时，服务器就不会中断服务。
 
-```
+```js
 $ pm2 reload <脚本文件名>
 ```
 
 关闭 worker 进程的时候，可以部署下面的代码，让 worker 进程监听 shutdown 消息。一旦收到这个消息，进行完毕收尾清理工作再关闭。
 
-```
+```js
 process.on('message', function(msg) {
   if (msg === 'shutdown') {
     close_all_connections();

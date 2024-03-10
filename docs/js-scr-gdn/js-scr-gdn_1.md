@@ -6,7 +6,7 @@
 
 JavaScript 中所有变量都可以当作对象使用，除了两个例外 `null` 和 `undefined`。
 
-```
+```js
 false.toString(); // 'false'
 [1, 2, 3].toString(); // '1,2,3'
 
@@ -17,13 +17,13 @@ Foo.bar; // 1
 
 一个常见的误解是数字的字面值（literal）不能当作对象使用。这是因为 JavaScript 解析器的一个错误， 它试图将*点操作符*解析为浮点数字面值的一部分。
 
-```
+```js
 2.toString(); // 出错：SyntaxError 
 ```
 
 有很多变通方法可以让数字的字面值看起来像对象。
 
-```
+```js
 2..toString(); // 第二个点号可以正常解析
 2 .toString(); // 注意点号前面的空格
 (2).toString(); // 2 先被计算 
@@ -35,7 +35,7 @@ JavaScript 的对象可以作为[*哈希表*](http://en.wikipedia.org/wiki/Hashm
 
 使用对象的字面语法 - `{}` - 可以创建一个简单对象。这个新创建的对象从 `Object.prototype` 继承下面，没有任何自定义属性。
 
-```
+```js
 var foo = {}; // 一个空对象
 
 // 一个新对象，拥有一个值为 12 的自定义属性'test'
@@ -46,7 +46,7 @@ var bar = {test: 12};
 
 有两种方式来访问对象的属性，点操作符或者中括号操作符。
 
-```
+```js
 var foo = {name: 'kitten'}
 foo.name; // kitten
 foo['name']; // kitten
@@ -69,7 +69,7 @@ foo['1234']; // works
 
 删除属性的唯一方法是使用 `delete` 操作符；设置属性为 `undefined` 或者 `null` 并不能真正的删除属性， 而**仅仅**是移除了属性和值的关联。
 
-```
+```js
 var obj = {
     bar: 1,
     foo: 2,
@@ -90,7 +90,7 @@ for(var i in obj) {
 
 ### 属性名的语法
 
-```
+```js
 var test = {
     'case': 'I am a keyword so I must be notated as a string',
     delete: 'I am a keyword too so me' // 出错：SyntaxError
@@ -113,7 +113,7 @@ JavaScript 不包含传统的类继承模型，而是使用 *prototype* 原型�
 
 **注意:** 简单的使用 `Bar.prototype = Foo.prototype` 将会导致两个对象共享**相同**的原型。 因此，改变任意一个对象的原型都会影响到另一个对象的原型，在大多数情况下这不是希望的结果。
 
-```
+```js
 function Foo() {
     this.value = 42;
 }
@@ -156,7 +156,7 @@ test [Bar 的实例]
 
 当原型属性用来创建原型链时，可以把**任何**类型的值赋给它（prototype）。 然而将原子类型赋给 prototype 的操作将会被忽略。
 
-```
+```js
 function Foo() {}
 Foo.prototype = 1; // 无效 
 ```
@@ -191,7 +191,7 @@ Foo.prototype = 1; // 无效
 
 `hasOwnProperty` 是 JavaScript 中唯一一个处理属性但是**不**查找原型链的函数。
 
-```
+```js
 // 修改 Object.prototype
 Object.prototype.bar = 1; 
 var foo = {goo: undefined};
@@ -209,7 +209,7 @@ foo.hasOwnProperty('goo'); // true
 
 JavaScript **不会**保护 `hasOwnProperty` 被非法占用，因此如果一个对象碰巧存在这个属性， 就需要使用*外部*的 `hasOwnProperty` 函数来获取正确的结果。
 
-```
+```js
 var foo = {
     hasOwnProperty: function() {
         return false;
@@ -233,7 +233,7 @@ foo.hasOwnProperty('bar'); // 总是返回 false
 
 **注意:** `for in` 循环**不会**遍历那些 `enumerable` 设置为 `false` 的属性；比如数组的 `length` 属性。
 
-```
+```js
 // 修改 Object.prototype
 Object.prototype.bar = 1;
 
@@ -249,7 +249,7 @@ for(var i in foo) {
 
 ### 使用 `hasOwnProperty` 过滤
 
-```
+```js
 // foo 变量是上例中的
 for(var i in foo) {
     if (foo.hasOwnProperty(i)) {

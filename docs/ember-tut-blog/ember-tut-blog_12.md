@@ -2,7 +2,7 @@
 
 采用与上一篇文章一样的方法，使用 `ember generate route handlebars-each` 命令创建了一个路由文件和一个对应的模板文件。 这一篇将为你介绍遍历标签，数组的遍历几乎在任何的常用的开发语言中都能看到，也是使用非常广泛的一个功能。下面我将为大家介绍`handlebars`的遍历标签，其使用方式与 EL 表达式几乎是一样的。我想你看一遍下来肯定也能明白了……废话少说，下面直接上演示代码吧！！
 
-```
+```js
 //  app/routes/handlebars.js
 import Ember from 'ember';  
 /**
@@ -23,7 +23,7 @@ export default Ember.Route.extend({
 
 如上述所示，在`route`类里构建了一个用于测试的对象数组，每个对象有 2 个属性（`name`，`age`）。 下面是显示数据的模板：
 
-```
+```js
 <!-- // app/templates/handlebars.hbs -->
 
 {{! 遍历在 route 里设置的对象数组 }}
@@ -44,7 +44,7 @@ export default Ember.Route.extend({
 
 有些情况我们可能需要获取数组的下标，比如有些时候可能会下标作为数据的序号。请看下面的演示：
 
-```
+```js
 <!-- // app/templates/handlebars.hbs -->
 
 {{! 遍历在 route 里设置的对象数组 }}
@@ -61,7 +61,7 @@ export default Ember.Route.extend({
 
 在 each 标签内还可以使用{{else}}，当数组为空的时候就会执行 else 代码块。
 
-```
+```js
 {{! 空数组处理，如果从 route 返回的 model 为空，则会执行 else 代码块的代码 }}
 {{#each model as |item|}}
     Hello, {{item.name}}

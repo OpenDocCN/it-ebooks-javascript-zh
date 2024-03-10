@@ -17,7 +17,7 @@
 
 *   使用`"files"`属性
 
-```
+```js
 {
     "compilerOptions": {
         "module": "commonjs",
@@ -47,7 +47,7 @@
 
 *   使用`"exclude"`属性
 
-```
+```js
 {
     "compilerOptions": {
         "module": "commonjs",
@@ -142,7 +142,7 @@
 
 ## 例子
 
-```
+```js
  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
@@ -205,19 +205,19 @@
 
 ### 安装
 
-```
+```js
 npm install tsify 
 ```
 
 ### 使用命令行交互
 
-```
+```js
 browserify main.ts -p [ tsify --noImplicitAny ] > bundle.js 
 ```
 
 ### 使用 API
 
-```
+```js
 var browserify = require("browserify");
 var tsify = require("tsify");
 
@@ -234,19 +234,19 @@ browserify()
 
 ### 安装
 
-```
+```js
 npm install duo-typescript 
 ```
 
 ### 使用命令行交互
 
-```
+```js
 duo --use duo-typescript entry.ts 
 ```
 
 ### 使用 API
 
-```
+```js
 var Duo = require('duo');
 var fs = require('fs')
 var path = require('path')
@@ -270,13 +270,13 @@ Duo(__dirname)
 
 ### 安装
 
-```
+```js
 npm install grunt-ts 
 ```
 
 ### 基本 Gruntfile.js
 
-```
+```js
 module.exports = function(grunt) {
     grunt.initConfig({
         ts: {
@@ -296,13 +296,13 @@ module.exports = function(grunt) {
 
 ### 安装
 
-```
+```js
 npm install gulp-typescript 
 ```
 
 ### 基本 gulpfile.js
 
-```
+```js
 var gulp = require("gulp");
 var ts = require("gulp-typescript");
 
@@ -322,7 +322,7 @@ gulp.task("default", function () {
 
 ### 安装
 
-```
+```js
 npm install -g jspm@beta 
 ```
 
@@ -334,13 +334,13 @@ npm install -g jspm@beta
 
 ### 安装
 
-```
+```js
 npm install ts-loader --save-dev 
 ```
 
 ### 基本 webpack.config.js
 
-```
+```js
 module.exports = {
     entry: "./src/index.tsx",
     output: {
@@ -369,7 +369,7 @@ module.exports = {
 
 更新工程文件，包含本地安装的`Microsoft.TypeScript.Default.props`（在顶端）和`Microsoft.TypeScript.targets`（在底部）文件：
 
-```
+```js
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Include default props at the bottom -->
@@ -413,7 +413,7 @@ TypeScript 编译器处理 nodejs 模块名时使用的是[Node.js 模块解析�
 
 如果存在，从`"typings"`字段里读取类型文件的路径。比如，在下面的`package.json`里，编译器会认为类型文件位于`node_modules/foo/lib/foo.d.ts`。
 
-```
+```js
 {
     "name": "foo",
     "author": "Vandelay Industries",
@@ -474,7 +474,7 @@ TypeScript 编译器处理 nodejs 模块名时使用的是[Node.js 模块解析�
 
 这些规则会产生与直觉相反的效果。比如：
 
-```
+```js
 class Foo {
   x = 3;
   print() {
@@ -499,7 +499,7 @@ p(); // Prints 'x is undefined'
 
 例子：
 
-```
+```js
 var x = new MyObject();
 x.printThing(); // SAFE, method is invoked where it is referenced
 
@@ -518,7 +518,7 @@ window.addEventListener('click', () => x.printThing(), 10); // SAFE, method is i
 
 代替 TypeScript 里默认的*原型*方法，你可以使用一个*实例箭头函数*来定义类成员：
 
-```
+```js
 class MyClass {
     private status = "blah";
 
@@ -541,7 +541,7 @@ $(document).ready(x.run); // SAFE, 'run' will always have correct 'this'
 
 在 TypeScrip 里（这里为了讲解添加了一些参数） :
 
-```
+```js
 var x = new SomeClass();
 someCallback((n, m) => x.doSomething(n, m)); 
 ```
@@ -555,7 +555,7 @@ someCallback((n, m) => x.doSomething(n, m));
 
 ### Function.bind
 
-```
+```js
 var x = new SomeClass();
 // SAFE: Functions created from function.bind are always preserve 'this'
 window.setTimeout(x.someMethod.bind(x), 100); 
@@ -746,7 +746,7 @@ window.setTimeout(x.someMethod.bind(x), 100);
 
 如果你想要输出时自动补全功能，你可以安装[YouCompleteMe](https://github.com/Valloric/YouCompleteMe)并添加以下代码到`.vimrc`里，以指定哪些符号能用来触发补全功能。YouCompleteMe 会调用它们各自 TypeScript 插件来进行语义查询。
 
-```
+```js
 if !exists("g:ycm_semantic_triggers")
   let g:ycm_semantic_triggers = {}
 endif
@@ -787,13 +787,13 @@ TypeScript for Visual Studio 2013 在[这里](https://www.microsoft.com/en-us/do
 
 最后我们还要将下面的选项添加到`tsconfig.json`文件的`"compilerOptions"`节点里，让编译器输出重定向到`wwwroot`文件夹：
 
-```
+```js
 "outDir": "../wwwroot/" 
 ```
 
 下面是配置好`tsconfig.json`后可能的样子
 
-```
+```js
 {
     "compilerOptions": {
         "noImplicitAny": false,
@@ -915,7 +915,7 @@ TypeScript for Visual Studio 2013 在[这里](https://www.microsoft.com/en-us/do
 
 虽然这个一个方便的标记法来说明一个注释“属于”一个`Node`。比如，在下面的例子里，可以明显看出`genie`函数拥有两个注释：
 
-```
+```js
 var x = 10; // This is x.
 
 /**
@@ -940,7 +940,7 @@ function genie([wish1, wish2, wish3]: [Wish, Wish, Wish]) {
 
 做为例子，假设有下面一部分源代码：
 
-```
+```js
 debugger;/*hello*/
     //bye
   /*hi*/    function 
@@ -948,7 +948,7 @@ debugger;/*hello*/
 
 `function`关键字的完整开始是从`/*hello*/`注释，但是`getLeadingCommentRanges`仅会返回后面 2 个注释：
 
-```
+```js
 d e b u g g e r ; / * h e l l o * / _ _ _ _ _ [CR] [NL] _ _ _ _ / / b y e [CR] [NL] _ _ / * h i * / _ _ _ _ f u n c t i o n
                   ↑                                     ↑       ↑                       ↑                   ↑
                   完整开始                              查找      第一个注释               第二个注释     令牌开始
@@ -1100,14 +1100,14 @@ d e b u g g e r ; / * h e l l o * / _ _ _ _ _ [CR] [NL] _ _ _ _ / / b y e [CR] [
 
 让我们新建一个目录。 将会命名为`proj`，但是你可以改成任何你喜欢的名字。
 
-```
+```js
 mkdir proj
 cd proj 
 ```
 
 我们会像下面的结构组织我们的工程：
 
-```
+```js
 proj/
    +- src/
    |    +- components/
@@ -1119,7 +1119,7 @@ TypeScript 文件会放在`src`文件夹里，通过 TypeScript 编译器编译�
 
 下面来创建基本结构：
 
-```
+```js
 mkdir src
 cd src
 mkdir components
@@ -1131,7 +1131,7 @@ mkdir dist
 
 现在把这个目录变成 npm 包。
 
-```
+```js
 npm init 
 ```
 
@@ -1141,7 +1141,7 @@ npm init
 
 首先确保 TypeScript，typings 和 webpack 已经全局安装了。
 
-```
+```js
 npm install -g typescript typings webpack 
 ```
 
@@ -1149,13 +1149,13 @@ Webpack 这个工具可以将你的所有代码和可选择地将依赖捆绑成
 
 现在我们添加 React 和 React-DOM 依赖到`package.json`文件里：
 
-```
+```js
 npm install --save react react-dom 
 ```
 
 接下来，我们要添加开发时依赖[ts-loader](https://www.npmjs.com/package/ts-loader)和[source-map-loader](https://www.npmjs.com/package/source-map-loader)。
 
-```
+```js
 npm install --save-dev ts-loader source-map-loader
 npm link typescript 
 ```
@@ -1166,7 +1166,7 @@ npm link typescript
 
 最后，我们使用`typings`工具来获取 React 的声明文件：
 
-```
+```js
 typings install --ambient --save react
 typings install --ambient --save react-dom 
 ```
@@ -1177,7 +1177,7 @@ typings install --ambient --save react-dom
 
 下面使用 React 写一段 TypeScript 代码。 首先，在`src/components`目录下创建一个名为`Hello.tsx`的文件，代码如下：
 
-```
+```js
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -1197,7 +1197,7 @@ ReactDOM.render(
 
 接下来，在`src`下创建`index.tsx`文件，源码如下：
 
-```
+```js
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
@@ -1213,7 +1213,7 @@ ReactDOM.render(
 
 我们还需要一个页面来显示`Hello`组件。 在根目录`proj`创建一个名为`index.html`的文件，如下：
 
-```
+```js
 <!DOCTYPE html>
 <html>
     <head>
@@ -1233,7 +1233,7 @@ ReactDOM.render(
 
 现在需要创建`tsconfig.json`文件，它包含输入文件的列表和编译选项。 在根目录下执行下在命令：
 
-```
+```js
 tsc --init ./typings/main.d.ts ./src/index.tsx --jsx react --outDir ./dist --sourceMap --noImplicitAny 
 ```
 
@@ -1243,7 +1243,7 @@ tsc --init ./typings/main.d.ts ./src/index.tsx --jsx react --outDir ./dist --sou
 
 新建一个`webpack.config.js`文件在工程根目录下。
 
-```
+```js
 module.exports = {
     entry: "./src/index.tsx",
     output: {
@@ -1278,7 +1278,7 @@ module.exports = {
 
 执行：
 
-```
+```js
 webpack 
 ```
 

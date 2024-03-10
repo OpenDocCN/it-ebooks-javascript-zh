@@ -2,7 +2,7 @@
 
 在前面的[Ember.js 入门指南之二十路由定义](http://blog.ddlisting.com/2016/03/25/ember-js-ru-men-zhi-nan-zhi-er-shi-lu-you-ding-yi/)提过`loading`、`error`子路由，它们是[Ember](http://emberjs.com/)默认创建的，并在`beforeModel`、`model`、`afterModel`这三个回调执行完毕之前会先渲染当前路由的`loading`和`error`模板。
 
-```
+```js
 Router.map(function() {  
   this.route('posts', function() {
       this.route('post', { path: '/:post_id'});
@@ -24,7 +24,7 @@ Router.map(function() {
 
 为了演示这效果在`app/templates`下创建一个`posts-loading`模板。如果程序正常，在渲染模板`posts`之前会先渲染这个模板。
 
-```
+```js
 <!-- app/templates/posts-loading.hbs -->
 
 <img src="assets/images/loading/loading.gif" /> 
@@ -32,7 +32,7 @@ Router.map(function() {
 
 然后修改路由`posts.js`，让`model`回调执行时间更长一些。
 
-```
+```js
 //  app/routes/posts.js
 
 import Ember from 'ember';
@@ -59,7 +59,7 @@ export default Ember.Route.extend({
 
 在`beforeModel`、`model`、`afterModel`回调没有立即返回之前，会先执行一个名为 loading 的事件。
 
-```
+```js
 //  app/routes/posts.js
 
 import Ember from 'ember';
@@ -95,7 +95,7 @@ export default Ember.Route.extend({
 
 命名方式与`loading`子状态也是类似的。现在定义一个名为`posts-error.hbs`的模板。
 
-```
+```js
 <!--  app/templates/posts-error.hbs -->
 
 <p style="color: red;">  
@@ -105,7 +105,7 @@ posts 回调解析出错。。。。
 
 然后在`model`回调中手动添加一个错误代码。
 
-```
+```js
 //  app/routes/posts.js
 
 import Ember from 'ember';
@@ -131,7 +131,7 @@ export default Ember.Route.extend({
 
 如果你想在`xxx-error.hbs`模板上看到是什么错误信息，你可以在模板上打印`model`的值。如下：
 
-```
+```js
 <!--  app/templates/posts-error.hbs -->
 
 <p style="color: red;">  
@@ -151,7 +151,7 @@ posts 回调解析出错。。。。
 
 `error`事件与第一点讲的 loading 事件也是相似的。使用方式与`loading`一样。个人觉得这个事件非常有用，我们可以在这个事件中根据`error`状态码的不同执行不同的逻辑，比如跳转到不同的路由上。
 
-```
+```js
 //  app/routes/posts.js
 
 import Ember from 'ember';

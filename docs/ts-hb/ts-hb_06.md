@@ -10,7 +10,7 @@
 
 通过下面的例子可以迅速回想起这两种 JavaScript 中的函数：
 
-```
+```js
 // Named function
 function add(x, y) {
     return x + y;
@@ -22,7 +22,7 @@ let myAdd = function(x, y) { return x + y; };
 
 在 JavaScript 里，函数可以使用函数体外部的变量。 当函数这么做时，我们说它‘捕获’了这些变量。 至于为什么可以这样做以及其中的利弊超出了本文的范围，但是深刻理解这个机制对学习 JavaScript 和 TypeScript 会很有帮助。
 
-```
+```js
 let z = 100;
 
 function addToZ(x, y) {
@@ -36,7 +36,7 @@ function addToZ(x, y) {
 
 让我们为上面那个函数添加类型：
 
-```
+```js
 function add(x: number, y: number): number {
     return x + y;
 }
@@ -50,14 +50,14 @@ let myAdd = function(x: number, y: number): number { return x+y; };
 
 现在我们已经为函数指定了类型，下面让我们写出函数的完整类型。
 
-```
+```js
 let myAdd: (x:number, y:number)=>number =
     function(x: number, y: number): number { return x+y; }; 
 ```
 
 函数类型包含两部分：参数类型和返回值类型。 当写出完整函数类型的时候，这两部分都是需要的。 我们以参数列表的形式写出参数类型，为每个参数指定一个名字和类型。 这个名字只是为了增加可读性。 我们也可以这么写：
 
-```
+```js
 let myAdd: (baseValue:number, increment:number) => number =
     function(x: number, y: number): number { return x + y; }; 
 ```
@@ -72,7 +72,7 @@ let myAdd: (baseValue:number, increment:number) => number =
 
 尝试这个例子的时候，你会发现如果你在赋值语句的一边指定了类型但是另一边没有类型的话，TypeScript 编译器会自动识别出类型：
 
-```
+```js
 // myAdd has the full function type
 let myAdd = function(x: number, y: number): number { return x + y; };
 
@@ -87,7 +87,7 @@ let myAdd: (baseValue:number, increment:number) => number =
 
 TypeScript 里的每个函数参数都是必须的。 这不是指不能传递`null`或`undefined`作为参数，而是说编译器检查用户是否为每个参数都传入了值。 编译器还会假设只有这些参数会被传递进函数。 简短地说，传递给一个函数的参数个数必须与函数期望的参数个数一致。
 
-```
+```js
 function buildName(firstName: string, lastName: string) {
     return firstName + " " + lastName;
 }
@@ -99,7 +99,7 @@ let result3 = buildName("Bob", "Adams");         // ah, just right
 
 JavaScript 里，每个参数都是可选的，可传可不传。 没传参的时候，它的值就是 undefined。 在 TypeScript 里我们可以在参数名旁使用`?`实现可选参数的功能。 比如，我们想让 last name 是可选的：
 
-```
+```js
 function buildName(firstName: string, lastName?: string) {
     if (lastName)
         return firstName + " " + lastName;
@@ -116,7 +116,7 @@ let result3 = buildName("Bob", "Adams");  // ah, just right
 
 在 TypeScript 里，我们也可以为参数提供一个默认值当用户没有传递这个参数或传递的值是`undefined`时。 它们叫做有默认初始化值的参数。 让我们修改上例，把 last name 的默认值设置为`"Smith"`。
 
-```
+```js
 function buildName(firstName: string, lastName = "Smith") {
     return firstName + " " + lastName;
 }
@@ -129,7 +129,7 @@ let result4 = buildName("Bob", "Adams");         // ah, just right
 
 在所有必须参数后面的带默认初始化的参数都是可选的，与可选参数一样，在调用函数的时候可以省略。 也就是说可选参数与末尾的默认参数共享参数类型。
 
-```
+```js
 function buildName(firstName: string, lastName?: string) {
     // ...
 } 
@@ -137,7 +137,7 @@ function buildName(firstName: string, lastName?: string) {
 
 和
 
-```
+```js
 function buildName(firstName: string, lastName = "Smith") {
     // ...
 } 
@@ -147,7 +147,7 @@ function buildName(firstName: string, lastName = "Smith") {
 
 与普通可选参数不同的是，带默认值的参数不需要放在必须参数的后面。 如果带默认值的参数出现在必须参数前面，用户必须明确的传入`undefined`值来获得默认值。 例如，我们重写最后一个例子，让`firstName`是带默认值的参数：
 
-```
+```js
 function buildName(firstName = "Will", lastName: string) {
     return firstName + " " + lastName;
 }
@@ -164,7 +164,7 @@ let result4 = buildName(undefined, "Adams");     // okay and returns "Will Adams
 
 在 TypeScript 里，你可以把所有参数收集到一个变量里：
 
-```
+```js
 function buildName(firstName: string, ...restOfName: string[]) {
   return firstName + " " + restOfName.join(" ");
 }
@@ -176,7 +176,7 @@ let employeeName = buildName("Joseph", "Samuel", "Lucas", "MacKinzie");
 
 这个省略号也会在带有剩余参数的函数类型定义上使用到：
 
-```
+```js
 function buildName(firstName: string, ...restOfName: string[]) {
   return firstName + " " + restOfName.join(" ");
 }
@@ -192,7 +192,7 @@ JavaScript 里，`this`的值在函数被调用的时候才会指定。 这是�
 
 下面看一个例子：
 
-```
+```js
 let deck = {
     suits: ["hearts", "spades", "clubs", "diamonds"],
     cards: Array(52),
@@ -218,7 +218,7 @@ alert("card: " + pickedCard.card + " of " + pickedCard.suit);
 
 我们把函数表达式变为使用 lambda 表达式（ () => {} ）。 这样就会在函数创建的时候就指定了‘this’值，而不是在函数调用的时候。
 
-```
+```js
 let deck = {
     suits: ["hearts", "spades", "clubs", "diamonds"],
     cards: Array(52),
@@ -245,7 +245,7 @@ alert("card: " + pickedCard.card + " of " + pickedCard.suit);
 
 JavaScript 本身是个动态语言。 JavaScript 里函数根据传入不同的参数而返回不同类型的数据是很常见的。
 
-```
+```js
 let suits = ["hearts", "spades", "clubs", "diamonds"];
 
 function pickCard(x): any {
@@ -274,7 +274,7 @@ alert("card: " + pickedCard2.card + " of " + pickedCard2.suit);
 
 方法是为同一个函数提供多个函数类型定义来进行函数重载。 编译器会根据这个列表去处理函数的调用。 下面我们来重载`pickCard`函数。
 
-```
+```js
 let suits = ["hearts", "spades", "clubs", "diamonds"];
 
 function pickCard(x: {suit: string; card: number; }[]): number;

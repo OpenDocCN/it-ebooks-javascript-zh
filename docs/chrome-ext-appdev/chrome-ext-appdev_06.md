@@ -19,7 +19,7 @@ CSS 是 Cascading Style Sheets 的缩写，翻译过来叫做层叠样式表，�
 
 我们来看看上图所示的页面在 Chrome 浏览器中的渲染结果。可以看到 HTML 元素并没有被指定样式，因为我们没有编写 CSS。但是 Chrome 已经自动为文本框添加了`margin`和`padding`样式，这在外观表现上，会在文本框周围有一圈间隙，这样其他 HTML 元素不会与它挨得太紧。这种设计显然是出于好意，但有时我们需要更加灵活个性化的样式，这就是为什么在前面的例子中都会出现下面的代码。
 
-```
+```js
 * {
     margin: 0;
     padding: 0;
@@ -30,7 +30,7 @@ CSS 的选择器在第一章第 4 节已经介绍过，在此就不再赘述。�
 
 CSS 是一种描述型语言，它更像是一种陈述，而不是逻辑运算。CSS 的语法形式如下所示：
 
-```
+```js
 选择器 {
     属性名: 属性值;
 } 
@@ -49,7 +49,7 @@ CSS 使用 box 模型处理元素的尺寸、边框和边距，下图展示了�
 
 元素的`margin`、`padding`、`height`和`width`的单位一般为`px`，即像素，也可以使用百分百的形式，如`50%`。如果使用的是百分百的形式，所相对的是此元素指定了绝对尺寸的父系元素。比如下面的例子：
 
-```
+```js
 <div id="outer" style="width: 500px">
     <div id="inner">
         <div id="content" style="width: 80%">Hello</div>
@@ -112,7 +112,7 @@ Browser Actions 将扩展图标置于 Chrome 浏览器工具栏中，地址栏�
 
 Browser Actions 可以在 Manifest 中设定一个默认的图标，比如：
 
-```
+```js
 "browser_action": {
     "default_icon": {
         "19": "images/icon19.png",
@@ -127,7 +127,7 @@ Browser Actions 可以在 Manifest 中设定一个默认的图标，比如：
 
 通过`setIcon`方法可以动态更改扩展的图标，`setIcon`的完整方法如下：
 
-```
+```js
 chrome.browserAction.setIcon(details, callback) 
 ```
 
@@ -147,7 +147,7 @@ chrome.browserAction.setIcon(details, callback)
 
 首先在 Manifest 中定义如下`browser_action`：
 
-```
+```js
 "browser_action": {
     "default_icon": {
         "19": "images/icon19_0.png",
@@ -159,7 +159,7 @@ chrome.browserAction.setIcon(details, callback)
 
 为了让图标动起来，需要一个 background 脚本在后台不停地换图标，这个脚本如下：
 
-```
+```js
 function chgIcon(index){
     if(index === undefined){
         index = 0;
@@ -219,7 +219,7 @@ Popup 页面是一个扩展与用户交互的窗口，这个窗口设计的好�
 
 在 Manifest 中，`browser_action`的`default_title`属性可以设置扩展的默认标题，比如如下的例子：
 
-```
+```js
 "browser_action": {
     "default_title": "Extension Title"
 } 
@@ -227,7 +227,7 @@ Popup 页面是一个扩展与用户交互的窗口，这个窗口设计的好�
 
 在这个扩展中，默认标题就是“Extension Title”。还可以用 JavaScript 来动态更改扩展的标题，方法如下：
 
-```
+```js
 chrome.browserAction.setTitle({title: 'This is a new title'}); 
 ```
 
@@ -246,7 +246,7 @@ Badge 目前只能够通过 JavaScript 设定显示的内容，同时 Chrome 还
 
 下面的代码显示了一个背景颜色为蓝色，内容为“Dog”的 badge：
 
-```
+```js
 chrome.browserAction.setBadgeBackgroundColor({color: '#0000FF'});
 chrome.browserAction.setBadgeText({text: 'Dog'}); 
 ```
@@ -255,7 +255,7 @@ chrome.browserAction.setBadgeText({text: 'Dog'});
 
 下面的例子使用 rgba 的定义方式，将背景设置为 50%透明度的绿色：
 
-```
+```js
 chrome.browserAction.setBadgeBackgroundColor({color: [0, 255, 0, 128]}); 
 ```
 
@@ -267,7 +267,7 @@ chrome.browserAction.setBadgeBackgroundColor({color: [0, 255, 0, 128]});
 
 要将扩展加入到右键菜单中，首先要在 Manifest 的`permissions`域中声明`contextMenus`权限。
 
-```
+```js
 "permissions": [
     "contextMenus"
 ] 
@@ -275,7 +275,7 @@ chrome.browserAction.setBadgeBackgroundColor({color: [0, 255, 0, 128]});
 
 同时还要在`icons`域声明 16 像素尺寸的图标，这样在右键菜单中才会显示出扩展的图标。
 
-```
+```js
 "icons": {
     "16": "icon16.png"
 } 
@@ -287,7 +287,7 @@ Chrome 提供了三种方法操作右键菜单，分别是`create`、`update`和
 
 右键菜单提供了 4 种类型，分别是普通菜单、复选菜单、单选菜单和分割线，其中普通菜单还可以有下级菜单。连续相邻的单选菜单会被自动认为是对同一设置的选项，同时单选菜单会自动在两端生成分割线。下面的代码生成了一系列的菜单：
 
-```
+```js
 chrome.contextMenus.create({
     type: 'normal',
     title: 'Menu A',
@@ -346,7 +346,7 @@ chrome.contextMenus.create({
 
 我们还可以定义自定义的右键菜单在何时显示，比如当用户选择文本时，或者在超级链接上单击右键时。下面的代码定义当用户在超级链接上点击右键时，在菜单中显示“My Menu”菜单：
 
-```
+```js
 chrome.contextMenus.create({
     type: 'normal',
     title: 'My Menu',
@@ -364,7 +364,7 @@ chrome.contextMenus.create({
 
 下面我们来创建一个通过右键菜单使用 Google 翻译当前用户所选文本的扩展。我们希望只有当用户选择了文本才显示这个菜单，所以要将`contexts`的值设为`selection`。
 
-```
+```js
 chrome.contextMenus.create({
     type: 'normal',
     title: '使用 Google 翻译……',
@@ -375,7 +375,7 @@ chrome.contextMenus.create({
 
 下面来编写调用的函数。Google 翻译可以通过 http://translate.google.com.hk/#auto/zh-CN/{翻译文本}调用，所以只需要获取用户所选择的文本，同时打开这个 URL 就可以了。
 
-```
+```js
 function translate(info, tab){
     var url = 'http://translate.google.com.hk/#auto/zh-CN/'+info.selectionText ;
     window.open(url, '_blank');
@@ -384,7 +384,7 @@ function translate(info, tab){
 
 现在我们把`create`函数补充完整，把调用函数添加进去：
 
-```
+```js
 chrome.contextMenus.create({
     type: 'normal',
     title: '使用 Google 翻译……',
@@ -401,7 +401,7 @@ chrome.contextMenus.create({
 
 但我们发现这样无法在菜单中动态显示用户所选择的内容，那么如何动态显示诸如*用 Google 翻译“XXX”*这样的菜单呢？首先要获取用户所选择的文本，可以通过下面的代码来实现：
 
-```
+```js
 window.onmouseup = function(){
     var selection = window.getSelection();
     if(selection.anchorOffset != selection.extentOffset){
@@ -430,7 +430,7 @@ Chrome 还提供了`onClicked`事件，虽然在`create`方法中可以指定点
 
 要使用桌面提醒功能，需要在 Manifest 中声明 notifications 权限。
 
-```
+```js
 "permissions": [
     "notifications"
 ] 
@@ -438,7 +438,7 @@ Chrome 还提供了`onClicked`事件，虽然在`create`方法中可以指定点
 
 创建桌面提醒非常容易，只需指定标题、内容和图片即可。下面的代码生成了标题为“Notification Demo”，内容为“Merry Christmas”，图片为“icon48.png”的桌面提醒窗口。
 
-```
+```js
 var notification = webkitNotifications.createNotification(
     'icon48.png',
     'Notification Demo',
@@ -448,13 +448,13 @@ var notification = webkitNotifications.createNotification(
 
 桌面系统窗口创建之后是不会立刻显示出来的，为了让其显示，还要调用`show 方法`：
 
-```
+```js
 notification.show(); 
 ```
 
 需要注意的是，对于要在桌面窗口中显示的图片，必须在 Manifest 的 web_accessible_resources 域中进行声明，否则会出现图片无法打开的情况：
 
-```
+```js
 "web_accessible_resources": [
     "icon48.png"
 ] 
@@ -462,7 +462,7 @@ notification.show();
 
 如果希望 images 文件夹下的所有 png 图片都可被显示，可以通过如下声明实现：
 
-```
+```js
 "web_accessible_resources": [
     "images/*.png"
 ] 
@@ -472,7 +472,7 @@ notification.show();
 
 除了用户主动关闭桌面提醒窗口外，还可以通过`cancel`方法自动关闭。下面的代码可以实现 5 秒后自动关闭窗口的效果。
 
-```
+```js
 setTimeout(function(){
     notification.cancel();
 },5000); 
@@ -490,13 +490,13 @@ Chrome 和其他浏览器相比一个最大的区别就是地址栏——其实�
 
 要使用 omnibox 需要在 Manifest 的`omnibox`域指定`keyword`：
 
-```
+```js
 "omnibox": { "keyword" : "hamster" } 
 ```
 
 同时最好指定一个 16 像素的图标，当用户键入关键字后，这个图标会显示在地址栏的前端。
 
-```
+```js
 "icons": {
     "16": "icon16.png"
 } 
@@ -515,7 +515,7 @@ Omnibox 只提供了一个方法，就是`setDefaultSuggestion`，这个方法�
 
 Omnibox 有四种事件：`onInputStarted`、`onInputChanged`、`onInputEntered`和`onInputCancelled`，分别用于监听用户开始输入、输入变化、执行指令和取消输入行为。其中执行指令是指用户敲击回车键或用鼠标点击建议结果。
 
-```
+```js
 onInputStarted(function(){console.log('Input started.')});
 onInputCancelled(function(){console.log('Input cancelled.')}); 
 ```
@@ -524,7 +524,7 @@ onInputCancelled(function(){console.log('Input cancelled.')});
 
 `onInputChanged`事件所承接的只有一个 function 类型的参数，这个 function 参数又有两个承接参数，第一个参数是字符串型，值为用户当前的输入值，第二个参数还是 function 型，用于返回建议结果，建议的结果为数组型数据，数组中的元素是建议结果对象。
 
-```
+```js
 chrome.omnibox.onInputChanged.addListener(function(text, suggest){
     suggest([{
         content: text,
@@ -535,7 +535,7 @@ chrome.omnibox.onInputChanged.addListener(function(text, suggest){
 
 `onInputEntered`事件同样只有一个 function 类型的承接参数，这个 function 有两个承接参数，第一个是用户输入的值，字符串型，第二个是对结果的建议打开方式，字符串型，但取值范围固定。
 
-```
+```js
 chrome.omnibox.onInputEntered.addListener(function(text, disposition){
     switch(disposition){
         case 'currentTab': //do something in the current tab
@@ -550,7 +550,7 @@ chrome.omnibox.onInputEntered.addListener(function(text, disposition){
 
 下面来制作一款实时查询美元价格的扩展。首先通过异步请求获取 Yahoo 上美元的价格，对这部分不熟悉的读者可以参考前面 2.2 节的内容。获取到数据后我们就要开始编写提供建议的函数了。
 
-```
+```js
 function updateAmount(amount, exchange){
     amount = Number(amount);
     if(isNaN(amount) || !amount){
@@ -592,7 +592,7 @@ chrome.omnibox.onInputChanged.addListener(updateAmount);
 
 大家可以对照前面所讲解的部分来看这段代码，代码中的每个部分都与前面的讲解有所对应。接下来编写用户执行指令时所运行的函数。
 
-```
+```js
 function gotoYahoo(text, disposition){
     window.open('http://finance.yahoo.com/q?s=USDCNY=X');
 }
@@ -610,7 +610,7 @@ chrome.omnibox.onInputEntered.addListener(gotoYahoo);
 
 Page Actions 与 Browser Actions 非常类似，除了 Page Actions 没有 badge 外，其他 Browser Actions 所有的方法 Page Actions 都有。另外的区别就是，Page Actions 并不像 Browser Actions 那样一直显示图标，而是可以在特定标签特定情况下显示或隐藏，所以它还具有独有的`show`和`hide`方法。
 
-```
+```js
 chrome.pageAction.show(integer tabId);
 chrome.pageAction.hide(integer tabId); 
 ```

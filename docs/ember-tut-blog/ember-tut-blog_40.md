@@ -4,7 +4,7 @@
 
 下面是准备工作。 重新创建一个[Ember](http://emberjs.com)项目，仍旧使用的是[Ember CLI](http://ember-cli.com/user-guide)命令创建。
 
-```
+```js
 ember new chapter5_controllers  
 cd chapter5_controllers  
 ember server 
@@ -32,7 +32,7 @@ ember server
 
 `model`定义如下：
 
-```
+```js
 //  app/models/blog-post.js
 
 import DS from 'ember-data';
@@ -47,7 +47,7 @@ export default DS.Model.extend({
 
 在`route`层增加测试数据，直接返回一个`model`对象。
 
-```
+```js
 //  app/routes/blog-post.js
 
 import Ember from 'ember';
@@ -68,7 +68,7 @@ export default Ember.Route.extend({
 
 显示信息的模板如下：
 
-```
+```js
 <!--  app/templates/blog-post.hbs  -->
 
 <h1>{{model.title}}</h1>  
@@ -95,7 +95,7 @@ export default Ember.Route.extend({
 
 下面为这个例子增加一个功能：用户可以点击标题触发显示或者隐藏`post`的内容。通过一个属性`isExpanded`控制，下面分别修改模板和控制器的代码。
 
-```
+```js
 //  app/controllers/blog-post.js
 
 import Ember from 'ember';
@@ -112,7 +112,7 @@ export default Ember.Controller.extend({
 
 在`controller`中增加一个属性`isExpanded`，如果你不在`controller`中定义这个属性也是可以的。对于这个`controller`代码的解释请看[Ember.js 入门指南之十五{{action}} 助手](http://blog.ddlisting.com/2016/03/22/ember-js-ru-men-zhi-nan-zhi-shi-wu-action/)。
 
-```
+```js
 <!--  app/templates/blog-post.hbs  -->
 
 <h1>{{model.title}}</h1>  

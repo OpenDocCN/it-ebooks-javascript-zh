@@ -6,7 +6,7 @@
 
 Translation 指的是一些奇特的数学名称，它的基本意思是“移动”某物。它同样适用于将一个句子从英文“移动”成为日语这一说法，但是此处我们谈论的是几何中的移动。通过使用以 [the first post](http://webglfundamentals.org/webgl/lessons/webgl-fundamentals.html) 结尾的代码，你可以仅仅通过修改 setRectangle 距离右边的的值来使矩形移动。如下是一个基于我们[初始示例](http://webglfundamentals.org/webgl/lessons/webgl-fundamentals.html)的代码：
 
-```
+```js
   // First lets make some variables 
   // to hold the translation of the rectangle
   var translation = [0, 0];
@@ -42,7 +42,7 @@ Translation 指的是一些奇特的数学名称，它的基本意思是“移�
 
 如下是我们将要使用的改变 setRectangle 值的代码：
 
-```
+```js
 // Fill the buffer with the values that define a letter 'F'.
 function setGeometry(gl, x, y) {
   var width = 100;
@@ -84,7 +84,7 @@ function setGeometry(gl, x, y) {
 
 如下是渲染器部分：
 
-```
+```js
 <script id="2d-vertex-shader" type="x-shader/x-vertex">
 attribute vec2 a_position;
 
@@ -102,7 +102,7 @@ void main() {
 
 接着我们将会稍微重构下代码。我们仅仅需要设置几何图形一次。
 
-```
+```js
 // Fill the buffer with the values that define a letter 'F'.
 function setGeometry(gl) {
   gl.bufferData(
@@ -137,7 +137,7 @@ function setGeometry(gl) {
 
 在实现我们想要的移动之前需要更新下 `u_translation` 变量的值。
 
-```
+```js
   ...
   var translationLocation = gl.getUniformLocation(
              program, "u_translation");
@@ -182,7 +182,7 @@ function setGeometry(gl) {
 
 如下是更新渲染器：
 
-```
+```js
 <script id="2d-vertex-shader" type="x-shader/x-vertex">
 attribute vec2 a_position;
 
@@ -202,7 +202,7 @@ void main() {
 
 接着修改 JavaScript 代码，这样我们就可以传递上面的两个参数：
 
-```
+```js
 ...
   var rotationLocation = gl.getUniformLocation(program, "u_rotation");
   ...
@@ -230,7 +230,7 @@ void main() {
 
 为什么上面的代码能够起作用？首先，让我们看下数学公式：
 
-```
+```js
 rotatedX = a_position.x * u_rotation.y + a_position.y * u_rotation.x;
 rotatedY = a_position.y * u_rotation.y - a_position.x * u_rotation.x;
 ```
@@ -243,7 +243,7 @@ rotatedY = a_position.y * u_rotation.y - a_position.x * u_rotation.x;
 
 在圆上那个位置的点的坐标为 0.50 和 0.87：
 
-```
+```js
 3.0 * 0.87 + 9.0 * 0.50 = 7.1
 9.0 * 0.87 - 3.0 * 0.50 = 6.3 
 ```
@@ -262,7 +262,7 @@ rotatedY = a_position.y * u_rotation.y - a_position.x * u_rotation.x;
 
 圆上面的位置的坐标是 0.87 和 0.50:
 
-```
+```js
  3.0 * 0.50 + 9.0 * 0.87 = 9.3
  9.0 * 0.50 - 3.0 * 0.87 = 1.9 
 ```
@@ -271,7 +271,7 @@ rotatedY = a_position.y * u_rotation.y - a_position.x * u_rotation.x;
 
 圆环上的那些点还有另外一个名称。他们被称作为 sine 和 cosine。因此，对任意给定的角度，我们就只需查询它所对应的 sine 和 cosine 值：
 
-```
+```js
 function printSineAndCosineForAnyAngle(angleInDegrees) {
   var angleInRadians = angleInDegrees * Math.PI / 180;
   var s = Math.sin(angleInRadians);
@@ -284,7 +284,7 @@ function printSineAndCosineForAnyAngle(angleInDegrees) {
 
 如果你把上面的代码整合在一起的话，你就可以将你的几何体按照你想要的任何角度进行旋转。仅仅只需要将你需要旋转的角度值传给 sine 和 cosine 就可以了。
 
-```
+```js
  ...
   var angleInRadians = angleInDegrees * Math.PI / 180;
   rotation[0] = Math.sin(angleInRadians);
@@ -299,7 +299,7 @@ function printSineAndCosineForAnyAngle(angleInDegrees) {
 
 图像伸缩和[转换](http://webglfundamentals.org/webgl/lessons/webgl-2d-translation.html)一样简单。我们只需对需要变换的点乘以我们想要的比例。如下是从[以前的代码](http://webglfundamentals.org/webgl/lessons/webgl-2d-rotation.html)改变而来的。
 
-```
+```js
 <script id="2d-vertex-shader" type="x-shader/x-vertex">
 attribute vec2 a_position;
 
@@ -323,7 +323,7 @@ void main() {
 
 接着当我们需要绘图时添加必要的 JavaScript 代码来设置伸缩比例。
 
-```
+```js
  ...
   var scaleLocation = gl.getUniformLocation(program, "u_scale");
   ...
@@ -406,7 +406,7 @@ void main() {
 
 或者更简洁的方式：
 
-```
+```js
 newX = x + tx;
 newY = y + ty; 
 ```
@@ -415,7 +415,7 @@ extra 变量我们并不用在意。这个处理和我们在平移中编写的�
 
 同样地，让我们看看旋转。正如在旋转那篇中指出当我们想要进行旋转的时候，我们只需要角度的 sine 和 cosine 值。
 
-```
+```js
 s = Math.sin(angleToRotateInRadians);
 c = Math.cos(angleToRotateInRadians); 
 ```
@@ -440,7 +440,7 @@ c = Math.cos(angleToRotateInRadians);
 
 同样可以简化计算：
 
-```
+```js
 newX = x * c + y * s;
 newY = x * -s + y * c; 
 ```
@@ -469,7 +469,7 @@ newY = x * -s + y * c;
 
 简化为：
 
-```
+```js
 newX = x * sx;
 newY = y * sy; 
 ```
@@ -482,7 +482,7 @@ newY = y * sy;
 
 为了让上面的做法更清楚，于是编写如下的函数构建一个用来平移，旋转和伸缩的矩阵：
 
-```
+```js
 function makeTranslation(tx, ty) {
   return [
     1, 0, 0,
@@ -512,7 +512,7 @@ function makeScale(sx, sy) {
 
 接下来，修改渲染器。以往的渲染器是如下的形式：
 
-```
+```js
 <script id="2d-vertex-shader" type="x-shader/x-vertex">
 attribute vec2 a_position;
 
@@ -537,7 +537,7 @@ scaledPosition.x * u_rotation.y + scaledPosition.y * u_rotation.x,
 
 新的渲染器将会变得更简单：
 
-```
+```js
 <script id="2d-vertex-shader" type="x-shader/x-vertex">
 attribute vec2 a_position;
 
@@ -552,7 +552,7 @@ void main() {
 
 如下是我们使用它的方式：
 
-```
+```js
 // Draw the scene.
   function drawScene() {
     // Clear the canvas.
@@ -581,7 +581,7 @@ void main() {
 
 此时，你仍然会问，之后了？这个看起来并没有方便多少。然而，此时如果你想改变执行的顺序，就不再需要编写一个新的渲染器了。我们仅仅只需要改变数序公式。
 
-```
+```js
   ...
     // Multiply the matrices.
     var matrix = matrixMultiply(translationMatrix, rotationMatrix);
@@ -595,7 +595,7 @@ void main() {
 
 能够按照这种方式执行矩阵操作是特别重要的，特别是对于层级动画的实现比如身体上手臂的，在一个星球上看月球同时在围绕着太阳旋转，或者数上的树枝等都是很重要的。举一个简单的层级动画例子，现在想要绘制 5 次 ‘F’，但是每次绘制是从上一个 ‘F’ 开始的。
 
-```
+```js
   // Draw the scene.
   function drawScene() {
     // Clear the canvas.
@@ -626,19 +626,19 @@ void main() {
 
 为了实现这个，我们要编写自己的函数 `makeIdentity`，这个函数返回单位矩阵。单位矩阵实际上表示的类似于 1.0 的矩阵，如果一个矩阵乘以单位矩阵，那么得到的还是原先那个矩阵。就如：
 
-```
+```js
 X*1 = X 
 ```
 
 同样：
 
-```
+```js
 matrixX*identity = matrixX 
 ```
 
 如下是构造单位矩阵的代码：
 
-```
+```js
 function makeIdentity() {
   return [
     1, 0, 0,
@@ -656,7 +656,7 @@ function makeIdentity() {
 
 但是现在，因为我们能够使用矩阵，那么就可以选择变化的顺序，可以在执行其他的变换之前先移动原点。
 
-```
+```js
  // make a matrix that will move the origin of the 'F' to its center.
     var moveOriginMatrix = makeTranslation(-50, -75);
     ...
@@ -675,7 +675,7 @@ function makeIdentity() {
 
 让我们学习更深入点。如果你回到本系列的第一篇文章 WebGL 基本原理，你也许还记得我们编写的渲染器的代码中将像素转换成投影空间，如下所示：
 
-```
+```js
   ...
   // convert the rectangle from pixels to 0.0 to 1.0
   vec2 zeroToOne = position / u_resolution;
@@ -691,7 +691,7 @@ function makeIdentity() {
 
 如果你现在反过来看下每一步，第一步，“将像素变换成 0.0 变成 1.0”，其实是一个伸缩操作。第二步同样是伸缩变换。接下来是平移变换，并且 Y 的伸缩因子是 -1。我们可以通过将该矩阵传给渲染器实现上面的所有操作。可以构造二维伸缩矩阵，其中一个伸缩因子设置为 1.0/分辨率，另外一个伸缩因子设置为 2.0，第三个使用 -1.0，-1.0 来进行移动，并且第四个设置伸缩因子 Y 为 -1，接着将他们乘在一起，然而，因为数学是很容易的，我们仅仅只需编写一个函数，能够直接将给定的分辨率转换成投影矩阵。
 
-```
+```js
 function make2DProjection(width, height) {
   // Note: This matrix flips the Y axis so that 0 is at the top.
   return [
@@ -704,7 +704,7 @@ function make2DProjection(width, height) {
 
 现在我们能进一步简化渲染器。如下是完整的顶点渲染器。
 
-```
+```js
 <script id="2d-vertex-shader" type="x-shader/x-vertex">
 attribute vec2 a_position;
 
@@ -719,7 +719,7 @@ void main() {
 
 在 JavaScript 中我们需要与投影矩阵相乘。
 
-```
+```js
   // Draw the scene.
   function drawScene() {
     ...

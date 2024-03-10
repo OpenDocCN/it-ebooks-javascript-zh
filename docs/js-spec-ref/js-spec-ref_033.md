@@ -43,7 +43,7 @@ document 节点有很多属性，用得比较多的是下面这些。
 
 对于 HTML 文档来说，document 对象一般有两个子节点。第一个子节点是 document.doctype，它是一个对象，包含了当前文档类型（Document Type Declaration，简写 DTD）信息。对于 HTML5 文档，该节点就代表。如果网页没有声明 DTD，该属性返回 null。
 
-```
+```js
 var doctype = document.doctype;
 
 doctype // "<!DOCTYPE html>"
@@ -62,7 +62,7 @@ document.documentElement 属性，表示当前文档的根节点（root）。它
 
 defaultView 属性，在浏览器中返回 document 对象所在的 window 对象，否则返回 null。
 
-```
+```js
 var win = document.defaultView;
 ```
 
@@ -74,7 +74,7 @@ body 属性返回当前文档的 body 或 frameset 节点，如果不存在这�
 
 head 属性返回当前文档的 head 节点。如果当前文档有多个 head，则返回第一个。
 
-```
+```js
 document.head === document.querySelector("head") 
 ```
 
@@ -94,7 +94,7 @@ documentURI 属性和 URL 属性都返回当前文档的网址。不同之处是
 
 domain 属性返回当前文档的域名。比如，某张网页的网址是 [`www.example.com/hello.html`](http://www.example.com/hello.html)，domain 属性就等于 [www.example.com](http://www.example.com/) 。如果无法获取域名，该属性返回 null。
 
-```
+```js
 var badDomain = "www.example.xxx";
 
 if (document.domain === badDomain)
@@ -109,14 +109,14 @@ if (document.domain === badDomain)
 
 lastModified 属性返回当前文档最后修改的时间戳，格式为字符串。
 
-```
+```js
 document.lastModified
 // Tuesday, July 10, 2001 10:19:42
 ```
 
 注意，lastModified 属性的值是字符串，所以不能用来直接比较，两个文档谁的日期更新，需要用 Date.parse 方法转成时间戳格式，才能进行比较。
 
-```
+```js
 if (Date.parse(doc1.lastModified) > Date.parse(doc2.lastModified)) {
   // ...
 }
@@ -126,7 +126,7 @@ if (Date.parse(doc1.lastModified) > Date.parse(doc2.lastModified)) {
 
 location 属性返回一个只读对象，提供了当前文档的 URL 信息。
 
-```
+```js
 // 假定当前网址为 http://user:passwd@www.example.com:4097/path/a.html?x=111#part1
 
 document.location.href // "http://user:passwd@www.example.com:4097/path/a.html?x=111#part1"
@@ -155,7 +155,7 @@ document.location.toString()
 
 虽然 location 属性返回的对象是只读的，但是可以将 URL 赋值给这个属性，网页就会自动跳转到指定网址。
 
-```
+```js
 document.location = 'http://www.example.com';
 // 等价于
 document.location.href = 'http://www.example.com';
@@ -171,7 +171,7 @@ referrer 属性返回一个字符串，表示前文档的访问来源，如果�
 
 title 属性返回当前文档的标题，该属性是可写的。
 
-```
+```js
 document.title = '新标题';
 ```
 
@@ -191,7 +191,7 @@ readyState 属性返回当前文档的状态，共有三种可能的值，加载
 
 designMode 属性控制当前 document 是否可编辑。通常会打开 iframe 的 designMode 属性，将其变为一个所见即所得的编辑器。
 
-```
+```js
 iframe_node.contentDocument.designMode = "on";
 ```
 
@@ -203,7 +203,7 @@ iframe_node.contentDocument.designMode = "on";
 
 implementation 属性返回一个对象，用来甄别当前环境部署了哪些 DOM 相关接口。implementation 属性的 hasFeature 方法，可以判断当前环境是否部署了特定版本的特定接口。
 
-```
+```js
 document.implementation.hasFeature( 'HTML, 2.0 )
 // true
 
@@ -233,7 +233,7 @@ embeds 属性返回网页中所有嵌入对象，即 embed 标签，返回的格
 
 forms 属性返回页面中所有表单。
 
-```
+```js
 var selectForm = document.forms[index];
 var selectFormElement = document.forms[index].elements[index];
 ```
@@ -244,7 +244,7 @@ var selectFormElement = document.forms[index].elements[index];
 
 images 属性返回页面所有图片元素（即 img 标签）。
 
-```
+```js
 var ilist = document.images;
 
 for(var i = 0; i < ilist.length; i++) {
@@ -264,7 +264,7 @@ links 属性返回当前文档所有的链接元素（即 a 标签，或者说�
 
 scripts 属性返回当前文档的所有脚本（即 script 标签）。
 
-```
+```js
 var scripts = document.scripts;
 if (scripts.length !== 0 ) {
   console.log("当前网页有脚本");
@@ -275,7 +275,7 @@ if (scripts.length !== 0 ) {
 
 styleSheets 属性返回一个类似数组的对象，包含了当前网页的所有样式表。该属性提供了样式表操作的接口。然后，每张样式表对象的 cssRules 属性，返回该样式表的所有 CSS 规则。这又方便了操作具体的 CSS 规则。
 
-```
+```js
 var allSheets = [].slice.call(document.styleSheets);
 ```
 
@@ -287,14 +287,14 @@ var allSheets = [].slice.call(document.styleSheets);
 
 cookie 属性返回当前网页的 cookie。
 
-```
+```js
 // 读取当前网页的所有 cookie
 allCookies = document.cookie;
 ```
 
 该属性是可写的，但是一次只能写入一个 cookie，也就是说写入并不是覆盖，而是添加。另外，cookie 的值必须对分号、逗号和空格进行转义。
 
-```
+```js
 // 写入一个新 cookie
 document.cookie = "test1=hello";
 // 再写入一个 cookie
@@ -306,7 +306,7 @@ document.cookie
 
 cookie 属性的读写操作含义不同，跟服务器与浏览器的通信格式有关。浏览器向服务器发送 cookie，是一次性所有 cookie 全部发送。
 
-```
+```js
 GET /sample_page.html HTTP/1.1
 Host: www.example.org
 Cookie: cookie_name1=cookie_value1; cookie_name2=cookie_value2
@@ -315,7 +315,7 @@ Accept: */*
 
 服务器告诉浏览器需要储存 cookie，则是分行指定。
 
-```
+```js
 HTTP/1.0 200 OK
 Content-type: text/html
 Set-Cookie: cookie_name1=cookie_value1
@@ -328,7 +328,7 @@ cookie 的值可以用 encodeURIComponent 方法进行处理，对逗号、分�
 
 除了 cookie 本身的内容，还有一些可选的属性也是可以写入的，它们都必须以分号开头。
 
-```
+```js
 Set-Cookie: value[; expires=date][; domain=domain][; path=path][; secure]
 ```
 
@@ -344,31 +344,31 @@ Set-Cookie: value[; expires=date][; domain=domain][; path=path][; secure]
 
 以上属性可以同时设置一个或多个，也没有次序的要求。如果服务器想改变一个早先设置的 cookie，必须同时满足四个条件：cookie 的名字、domain、path 和 secure。也就是说，如果原始的 cookie 是用如下的 Set-Cookie 头命令设置的。
 
-```
+```js
 Set-Cookie: key1=value1; domain=example.com; path=/blog
 ```
 
 改变上面这个 cookie 的值，就必须使用同样的 Set-Cookie 命令。
 
-```
+```js
 Set-Cookie: key1=value2; domain=example.com; path=/blog
 ```
 
 只要有一个属性不同，就会生成一个全新的 cookie，而不是替换掉原来那个 cookie。
 
-```
+```js
 Set-Cookie: key1=value2; domain=example.com; path=/
 ```
 
 上面的命令设置了一个全新的同名 cookie。下一次访问`example.com/blog`的时候，浏览器将向服务器发送两个同名的 cookie。
 
-```
+```js
 Cookie: key1=value1; key1=value2
 ```
 
 上面代码的两个 cookie 是同名的，匹配越精确的 cookie 排在越前面。
 
-```
+```js
 var str = 'someCookieName=true';
 str += '; expires=Fri, 31 Dec 9999 23:59:59 GMT';
 str += '; path=/';
@@ -392,7 +392,7 @@ document.cookie = str;
 
 由于 cookie 存在数量限制，有时为了规避限制，可以将 cookie 设置成下面的形式。
 
-```
+```js
 name=a=b&c=d&e=f&g=h
 ```
 
@@ -402,7 +402,7 @@ name=a=b&c=d&e=f&g=h
 
 设置 cookie 的时候，如果服务器加上了 HTTPOnly 属性，则这个 cookie 无法被 JavaScript 读取（即`document.cookie`不会返回这个 cookie 的值），只用于向服务器发送。
 
-```
+```js
 Set-Cookie: key=value; HttpOnly
 ```
 
@@ -420,7 +420,7 @@ document.close 方法用于关闭 open 方法所新建的文档。一旦关闭�
 
 document.write 方法用于向当前文档写入内容。只要当前文档还没有用 close 方法关闭，它所写入的内容就会追加在已有内容的后面。
 
-```
+```js
 // 页面显示“helloworld”
 document.open();
 document.write("hello");
@@ -430,7 +430,7 @@ document.close();
 
 如果页面已经渲染完成（DOMContentLoaded 事件发生之后），再调用 write 方法，它会先调用 open 方法，擦除当前文档所有内容，然后再写入。
 
-```
+```js
 document.addEventListener("DOMContentLoaded", function(event) {
   document.write('<p>Hello World!</p>');
 });
@@ -446,7 +446,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 如果在页面渲染过程中调用 write 方法，并不会调用 open 方法。（可以理解成，open 方法已调用，但 close 方法还未调用。）
 
-```
+```js
 <html>
 <body>
 hello
@@ -461,7 +461,7 @@ hello
 
 需要注意的是，虽然调用 close 方法之后，无法再用 write 方法写入内容，但这时当前页面的其他 DOM 节点还是会继续加载。
 
-```
+```js
 <html>
 <head>
 <title>write example</title>
@@ -483,7 +483,7 @@ world
 
 document.writeln 方法与 write 方法完全一致，除了会在输出内容的尾部添加换行符。
 
-```
+```js
 document.write(1);
 document.write(2);
 // 12
@@ -501,7 +501,7 @@ document.writeln(2);
 
 document.hasFocus 方法返回一个布尔值，表示当前文档之中是否有元素被激活或获得焦点。
 
-```
+```js
 focused = document.hasFocus();
 ```
 
@@ -515,7 +515,7 @@ focused = document.hasFocus();
 
 querySelector 方法返回匹配指定的 CSS 选择器的元素节点。如果有多个节点满足匹配条件，则返回第一个匹配的节点。如果没有发现匹配的节点，则返回 null。
 
-```
+```js
 var el1 = document.querySelector(".myclass");
 var el2 = document.querySelector('#myParent > [ng-click]');
 ```
@@ -526,7 +526,7 @@ querySelector 方法无法选中 CSS 伪元素。
 
 getElementById 方法返回匹配指定 ID 属性的元素节点。如果没有发现匹配的节点，则返回 null。
 
-```
+```js
 var elem = document.getElementById("para1");
 ```
 
@@ -534,7 +534,7 @@ var elem = document.getElementById("para1");
 
 getElementById 方法与 querySelector 方法都能获取元素节点，不同之处是 querySelector 方法的参数使用 CSS 选择器语法，getElementById 方法的参数是 HTML 标签元素的 id 属性。
 
-```
+```js
 document.getElementById('myElement')
 document.querySelector('#myElement')
 ```
@@ -545,13 +545,13 @@ document.querySelector('#myElement')
 
 querySelectorAll 方法返回匹配指定的 CSS 选择器的所有节点，返回的是 NodeList 类型的对象。NodeList 对象不是动态集合，所以元素节点的变化无法实时反映在返回结果中。
 
-```
+```js
 elementList = document.querySelectorAll(selectors);
 ```
 
 querySelectorAll 方法的参数，可以是逗号分隔的多个 CSS 选择器，返回所有匹配其中一个选择器的元素。
 
-```
+```js
 var matches = document.querySelectorAll("div.note, div.alert");
 ```
 
@@ -559,7 +559,7 @@ var matches = document.querySelectorAll("div.note, div.alert");
 
 querySelectorAll 方法支持复杂的 CSS 选择器。
 
-```
+```js
 // 选中 data-foo-bar 属性等于 someval 的元素
 document.querySelectorAll('[data-foo-bar="someval"]');
 
@@ -581,7 +581,7 @@ document.querySelectorAll('DIV, A, SCRIPT');
 
 getElementsByClassName 方法返回一个类似数组的对象（HTMLCollection 类型的对象），包括了所有 class 名字符合指定条件的元素（搜索范围包括本身），元素的变化实时反映在返回结果中。这个方法不仅可以在 document 对象上调用，也可以在任何元素节点上调用。
 
-```
+```js
 // document 对象上调用
 var elements = document.getElementsByClassName(names);
 // 非 document 对象上调用
@@ -590,7 +590,7 @@ var elements = rootElement.getElementsByClassName(names);
 
 getElementsByClassName 方法的参数，可以是多个空格分隔的 class 名字，返回同时具有这些节点的元素。
 
-```
+```js
 document.getElementsByClassName('red test');
 ```
 
@@ -600,7 +600,7 @@ document.getElementsByClassName('red test');
 
 getElementsByTagName 方法返回所有指定标签的元素（搜索范围包括本身）。返回值是一个 HTMLCollection 对象，也就是说，搜索结果是一个动态集合，任何元素的变化都会实时反映在返回的集合中。这个方法不仅可以在 document 对象上调用，也可以在任何元素节点上调用。
 
-```
+```js
 var paras = document.getElementsByTagName("p");
 ```
 
@@ -612,7 +612,7 @@ var paras = document.getElementsByTagName("p");
 
 getElementsByName 方法用于选择拥有 name 属性的 HTML 元素，比如 form、img、frame、embed 和 object，返回一个 NodeList 格式的对象，不会实时反映元素的变化。
 
-```
+```js
 // 假定有一个表单是<form name="x"></form>
 var forms = document.getElementsByName("x");
 forms[0].tagName // "FORM"
@@ -624,7 +624,7 @@ forms[0].tagName // "FORM"
 
 elementFromPoint 方法返回位于页面指定位置的元素。
 
-```
+```js
 var element = document.elementFromPoint(x, y);
 ```
 
@@ -638,7 +638,7 @@ var element = document.elementFromPoint(x, y);
 
 createElement 方法用来生成 HTML 元素节点。
 
-```
+```js
 var element = document.createElement(tagName);
 // 实例
 var newDiv = document.createElement("div");
@@ -650,7 +650,7 @@ createElement 方法的参数为元素的标签名，即元素节点的 tagName 
 
 createTextNode 方法用来生成文本节点，参数为所要生成的文本节点的内容。
 
-```
+```js
 var newDiv = document.createElement("div");
 var newContent = document.createTextNode("Hello");
 newDiv.appendChild(newContent);
@@ -662,13 +662,13 @@ newDiv.appendChild(newContent);
 
 createAttribute 方法生成一个新的属性对象节点，并返回它。
 
-```
+```js
 attribute = document.createAttribute(name);
 ```
 
 createAttribute 方法的参数 name，是属性的名称。
 
-```
+```js
 var node = document.getElementById("div1");
 var a = document.createAttribute("my_attrib");
 a.value = "newVal";
@@ -684,13 +684,13 @@ node.setAttribute("my_attrib", "newVal");
 
 createDocumentFragment 方法生成一个 DocumentFragment 对象。
 
-```
+```js
 var docFragment = document.createDocumentFragment();
 ```
 
 DocumentFragment 对象是一个存在于内存的 DOM 片段，但是不属于当前文档，常常用来生成较复杂的 DOM 结构，然后插入当前文档。这样做的好处在于，因为 DocumentFragment 不属于当前文档，对它的任何改动，都不会引发网页的重新渲染，比直接修改当前文档的 DOM 有更好的性能表现。
 
-```
+```js
 var docfrag = document.createDocumentFragment();
 
 [1, 2, 3, 4].forEach(function(e) {
@@ -706,13 +706,13 @@ document.body.appendChild(docfrag);
 
 createEvent 方法生成一个事件对象，该对象可以被 element.dispatchEvent 方法使用，触发指定事件。
 
-```
+```js
 var event = document.createEvent(type);
 ```
 
 createEvent 方法的参数是事件类型，比如 UIEvents、MouseEvents、MutationEvents、HTMLEvents。
 
-```
+```js
 var event = document.createEvent('Event');
 event.initEvent('build', true, true);
 document.addEventListener('build', function (e) {
@@ -729,7 +729,7 @@ document.dispatchEvent(event);
 
 createNodeIterator 方法返回一个 DOM 的子节点遍历器。
 
-```
+```js
 var nodeIterator = document.createNodeIterator(
   document.body,
   NodeFilter.SHOW_ELEMENT
@@ -740,7 +740,7 @@ var nodeIterator = document.createNodeIterator(
 
 所谓“遍历器”，在这里指可以用 nextNode 方法和 previousNode 方法依次遍历根节点的所有子节点。
 
-```
+```js
 var nodeIterator = document.createNodeIterator(document.body);
 var pars = [];
 var currentNode;
@@ -752,7 +752,7 @@ while (currentNode = nodeIterator.nextNode()) {
 
 上面代码使用遍历器的 nextNode 方法，将根节点的所有子节点，按照从头部到尾部的顺序，读入一个数组。nextNode 方法先返回遍历器的内部指针所在的节点，然后会将指针移向下一个节点。所有成员遍历完成后，返回 null。previousNode 方法则是先将指针移向上一个节点，然后返回该节点。
 
-```
+```js
 var nodeIterator = document.createNodeIterator(
   document.body,
   NodeFilter.SHOW_ELEMENT
@@ -774,7 +774,7 @@ createTreeWalker 方法返回一个 DOM 的子树遍历器。它与 createNodeIt
 
 createTreeWalker 方法的第一个参数，是所要遍历的根节点，第二个参数指定所要遍历的节点类型。
 
-```
+```js
 var treeWalker = document.createTreeWalker(
   document.body,
   NodeFilter.SHOW_ELEMENT
@@ -795,13 +795,13 @@ while(treeWalker.nextNode()) nodeList.push(treeWalker.currentNode);
 
 adoptNode 方法将某个节点，从其原来所在的文档移除，插入当前文档，并返回插入后的新节点。
 
-```
+```js
 node = document.adoptNode(externalNode);
 ```
 
 importNode 方法从外部文档拷贝指定节点，插入当前文档。
 
-```
+```js
 var node = document.importNode(externalNode, deep);
 ```
 
@@ -811,7 +811,7 @@ importNode 方法用于创造一个外部节点的拷贝，然后插入当前文
 
 另外一个需要注意的地方是，importNode 方法只是拷贝外部节点，这时该节点的父节点是 null。下一步还必须将这个节点插入当前文档的 DOM 树。
 
-```
+```js
 var iframe = document.getElementsByTagName("iframe")[0];
 var oldNode = iframe.contentWindow.document.getElementById("myNode");
 var newNode = document.importNode(oldNode, true);
@@ -824,7 +824,7 @@ document.getElementById("container").appendChild(newNode);
 
 以下三个方法与 Document 节点的事件相关。这些方法都继承自 EventTarget 接口，详细介绍参见《Event 对象》章节的《EventTarget》部分。
 
-```
+```js
 // 添加事件监听函数
 document.addEventListener('click', listener, false);
 

@@ -72,7 +72,7 @@ console 对象的浏览器实现，包含在浏览器自带的开发工具之中
 
 console.log 方法用于在 console 窗口输出信息。它可以接受多个参数，将它们的结果连接起来输出。
 
-```
+```js
 console.log("Hello World")
 // Hello World
 
@@ -82,7 +82,7 @@ console.log("a","b","c")
 
 console.log 方法会自动在每次输出的结尾，添加换行符。
 
-```
+```js
 console.log(1);
 console.log(2);
 console.log(3);
@@ -93,7 +93,7 @@ console.log(3);
 
 如果第一个参数是格式字符串（使用了格式占位符），console.log 方法将依次用后面的参数替换占位符，然后再进行输出。
 
-```
+```js
 console.log(" %s + %s = %s", 1, 1, 2)
 //  1 + 1 = 2
 ```
@@ -107,7 +107,7 @@ console.log(" %s + %s = %s", 1, 1, 2)
 *   %o 对象的链接
 *   %c CSS 格式字符串
 
-```
+```js
 var number = 11 * 9;
 var color = 'red';
 
@@ -119,7 +119,7 @@ console.log('%d %s balloons', number, color);
 
 使用%c 占位符时，对应的参数必须是 CSS 语句，用来对输出内容进行 CSS 渲染。
 
-```
+```js
 console.log('%cThis text is styled!',
   'color: #86CC00; background-color: blue; font-size: 20px; padding: 3px;'
 )
@@ -129,14 +129,14 @@ console.log('%cThis text is styled!',
 
 log 方法的两种参数格式，可以结合在一起使用。
 
-```
+```js
 console.log(" %s + %s ", 1, 1, "= 2")
 // 1 + 1  = 2
 ```
 
 如果参数是一个对象，console.log 会显示该对象的值。
 
-```
+```js
 console.log({foo: 'bar'})
 // Object {foo: "bar"}
 
@@ -150,7 +150,7 @@ console.info()和 console.debug()都是 console.log 方法的别名，用法完�
 
 console 对象的所有方法，都可以被覆盖。因此，可以按照自己的需要，定义 console.log 方法。
 
-```
+```js
 ["log", "info", "warn", "error"].forEach(function(method) {
     console[method] = console[method].bind(
         console,
@@ -168,7 +168,7 @@ console.log("出错了！");
 
 warn 方法和 error 方法也是输出信息，它们与 log 方法的不同之处在于，warn 方法输出信息时，在最前面加一个黄色三角，表示警告；error 方法输出信息时，在最前面加一个红色的叉，表示出错，同时会显示错误发生的堆栈。其他用法都一样。
 
-```
+```js
 console.error("Error: %s (%i)", "Server is not responding",500)
 // Error: Server is not responding (500)
 
@@ -182,7 +182,7 @@ console.warn('Warning! Too few nodes (%d)', document.childNodes.length)
 
 对于某些复合类型的数据，console.table 方法可以将其转为表格显示。
 
-```
+```js
 var languages = [
   { name: "JavaScript", fileExtension: ".js" },
   { name: "TypeScript", fileExtension: ".ts" },
@@ -202,7 +202,7 @@ console.table(languages);
 
 复合型数据转为表格显示的条件是，必须拥有主键。对于上面的数组来说，主键就是数字键。对于对象来说，主键就是它的最外层键。
 
-```
+```js
 var languages = {
     csharp: { name: "C#", paradigm: "object-oriented" },
     fsharp: { name: "F#", paradigm: "functional" }
@@ -222,7 +222,7 @@ console.table(languages);
 
 count 方法用于计数，输出它被调用了多少次。
 
-```
+```js
 function greet(user) {
   console.count();
   return "hi " + user;
@@ -245,7 +245,7 @@ greet('bob')
 
 该方法可以接受一个字符串作为参数，作为标签，对执行次数进行分类。
 
-```
+```js
 function greet(user) {
   console.count(user);
   return "hi " + user;
@@ -270,7 +270,7 @@ greet('bob')
 
 dir 方法用来对一个对象进行检查（inspect），并以易于阅读和打印的格式显示。
 
-```
+```js
 console.log({f1: 'foo', f2: 'bar'})
 // Object {f1: "foo", f2: "bar"}
 
@@ -285,7 +285,7 @@ console.dir({f1: 'foo', f2: 'bar'})
 
 该方法对于输出 DOM 对象非常有用，因为会显示 DOM 对象的所有属性。
 
-```
+```js
 console.dir(document.body)
 ```
 
@@ -293,7 +293,7 @@ console.dir(document.body)
 
 assert 方法接受两个参数，第一个参数是表达式，第二个参数是字符串。只有当第一个参数为 false，才会输出第二个参数，否则不会有任何结果。
 
-```
+```js
 // 实例
 console.assert(true === false, "判断条件不成立")
 // Assertion failed: 判断条件不成立
@@ -301,7 +301,7 @@ console.assert(true === false, "判断条件不成立")
 
 下面是另一个例子，判断子节点的个数是否大于等于 500。
 
-```
+```js
 console.assert(list.childNodes.length < 500, "节点个数大于等于 500")
 ```
 
@@ -309,7 +309,7 @@ console.assert(list.childNodes.length < 500, "节点个数大于等于 500")
 
 这两个方法用于计时，可以算出一个操作所花费的准确时间。
 
-```
+```js
 console.time("Array initialize");
 
 var array= new Array(1000000);
@@ -328,7 +328,7 @@ time 方法表示计时开始，timeEnd 方法表示计时结束。它们的参�
 
 console.timeline 和 console.timelineEnd 这两个方法用于定义一个新的时间线，可以在 Timeline 面板查看。这两个方法只有 Chrome 开发者工具支持。
 
-```
+```js
 console.timeline('Google Search');
 
 // Do some work
@@ -344,14 +344,14 @@ console.timeStamp 方法用在上面两个方法的中间，用于为时间线�
 
 console.profile 方法用来新建一个性能测试器（profile），它的参数是性能测试器的名字。
 
-```
+```js
 console.profile('p')
 // Profile 'p' started.
 ```
 
 console.profileEnd 方法用来结束正在运行的性能测试器。
 
-```
+```js
 console.profileEnd()
 // Profile 'p' finished.
 ```
@@ -362,7 +362,7 @@ console.profileEnd()
 
 console.group 和 console.groupend 这两个方法用于将显示的信息分组。它只在输出大量信息时有用，分在一组的信息，可以用鼠标折叠/展开。
 
-```
+```js
 console.group('Group One');
 console.group('Group Two');
 
@@ -374,7 +374,7 @@ console.groupEnd(); // Group One 结束
 
 console.groupCollapsed 方法与 console.group 方法很类似，唯一的区别是该组的内容，在第一次显示时是收起的（collapsed），而不是展开的。
 
-```
+```js
 console.groupCollapsed('Fetching Data');
 
 console.log('Request Sent');
@@ -389,7 +389,7 @@ console.groupEnd();
 
 console.trace 方法显示当前执行的代码在堆栈中的调用路径。
 
-```
+```js
 console.trace()
 // console.trace()
 //   (anonymous function)
@@ -408,7 +408,7 @@ console.clear 方法用于清除当前控制台的所有输出，将光标回置
 
 $_ 属性返回上一个表达式的值。
 
-```
+```js
 2+2
 // 4
 $_
@@ -423,7 +423,7 @@ $_
 
 $(selector)返回一个数组，包括特定的 CSS 选择器匹配的所有 DOM 元素。该方法实际上是 document.querySelectorAll 方法的别名。
 
-```
+```js
 var images = $('img');
 for (each in images) {
     console.log(images[each].src);
@@ -440,7 +440,7 @@ $$(selector)返回一个选中的 DOM 对象，等同于 document.querySelectorA
 
 $x(path)方法返回一个数组，包含匹配特定 XPath 表达式的所有 DOM 元素。
 
-```
+```js
 $x("//p[a]")
 ```
 
@@ -460,7 +460,7 @@ keys(object)方法返回一个数组，包含特定对象的所有键名。
 
 values(object)方法返回一个数组，包含特定对象的所有键值。
 
-```
+```js
 var o = {'p1':'a', 'p2':'b'};
 
 keys(o)
@@ -473,7 +473,7 @@ values(o)
 
 monitorEvents(object[, events])方法监听特定对象上发生的特定事件。当这种情况发生时，会返回一个 Event 对象，包含该事件的相关信息。unmonitorEvents 方法用于停止监听。
 
-```
+```js
 monitorEvents(window, "resize");
 
 monitorEvents(window, ["resize", "scroll"])
@@ -481,7 +481,7 @@ monitorEvents(window, ["resize", "scroll"])
 
 上面代码分别表示单个事件和多个事件的监听方法。
 
-```
+```js
 monitorEvents($0, "mouse");
 unmonitorEvents($0, "mousemove");
 ```
@@ -495,7 +495,7 @@ monitorEvents 允许监听同一大类的事件。所有事件可以分成四个
 *   touch："touchstart", "touchmove", "touchend", "touchcancel"
 *   control："resize", "scroll", "zoom", "focus", "blur", "select", "change", "submit", "reset"
 
-```
+```js
 monitorEvents($("#msg"), "key");
 ```
 
@@ -505,7 +505,7 @@ monitorEvents($("#msg"), "key");
 
 profile 方法用于启动一个特定名称的 CPU 性能测试，profileEnd 方法用于结束该性能测试。
 
-```
+```js
 profile("My profile")
 
 profileEnd("My profile")
@@ -526,7 +526,7 @@ debugger 语句必须与除错工具配合使用，如果没有除错工具，de
 
 在 chrome 浏览器中，当代码运行到 debugger 指定的行时，就会暂停运行，自动打开 console 界面。它的作用类似于设置断点。
 
-```
+```js
 for(var i = 0;i<5;i++){
     console.log(i);
     if (i===2) debugger;
@@ -595,25 +595,25 @@ Google Closure 使用 Java 语言开发，使用之前必须先安装 Java。然
 
 首先，查看使用帮助。
 
-```
+```js
 java -jar /path/to/closure/compiler.jar --help
 ```
 
 直接在脚本命令后面跟上要合并的脚本，就能完成合并。
 
-```
+```js
 java -jar /path/to/closure/compiler.jar *.js
 ```
 
 使用--js 参数，可以确保按照参数的先后次序合并文件。
 
-```
+```js
 java -jar /path/to/closure/compiler.jar --js script1.js --js script2.js --js script3.js
 ```
 
 但是，这样的运行结果是将合并后的文件全部输出到屏幕（标准输出），因此需要使用--js_output_file 参数，指定合并后的文件名。
 
-```
+```js
 java -jar /path/to/closure/compiler.jar --js script1.js --js script2.js --js script3.js --js_output_file scripts-compiled.js
 ```
 
@@ -625,7 +625,7 @@ java -jar /path/to/closure/compiler.jar --js script1.js --js script2.js --js scr
 
 最常见的测试性能的做法，就是同一操作重复 n 次，然后计算每次操作的平均时间。
 
-```
+```js
 var totalTime,
     start = new Date,
     iterations = 6;
@@ -645,7 +645,7 @@ totalTime = new Date - start;
 
 另一种思路是，测试单位时间内完成了多少次操作。
 
-```
+```js
 var hz,
     period,
     startTime = new Date,

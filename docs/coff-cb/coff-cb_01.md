@@ -10,7 +10,7 @@
 
 以下列方法输出函数：
 
-```
+```js
  # simpleMath.coffee
 
  # these methods are private
@@ -42,7 +42,7 @@ class SimpleMath.Calculator
 
 在 Node.js 中，我们可以使用 “require” 命令包含我们的模块。
 
-```
+```js
 $ node
 
 > var SimpleMath = require('./simpleMath');
@@ -57,7 +57,7 @@ undefined
 
 在网页中，我们可以通过将模块作为一个脚本嵌入其中。
 
-```
+```js
 <!DOCTYPE HTML>
 <html lang="en-US">
 <head>
@@ -96,7 +96,7 @@ undefined
 
 使用 CoffeeScript 的连缀比较语法。
 
-```
+```js
 maxDwarfism = 147
 minAcromegaly = 213
 
@@ -110,7 +110,7 @@ normalHeight = maxDwarfism < height < minAcromegaly
 
 这是从 Python 中借鉴过来的一个很棒的特性。利用这个特性，不必像下面这样写出完整的比较：
 
-```
+```js
     normalHeight = height > maxDwarfism && height < minAcromegaly
 ```
 
@@ -126,7 +126,7 @@ CoffeeScript 支持像写数学中的比较表达式一样连缀两个比较，�
 
 把 JavaScript 包装到撇号中：
 
-```
+```js
 `function greet(name) {
 return "Hello "+name;
 }`
@@ -141,7 +141,7 @@ greet "Coffee"
 
 这是在 CoffeeScript 代码中集成少量 JavaScript 而不必用 CoffeeScript 语法转换它们的最简单的方法。正如 [CoffeeScript Language Reference](http://jashkenas.github.com/coffee-script/#embedded) 中展示的，可以在一定范围内混合这两种语言的代码：
 
-```
+```js
 hello = `function (name) {
 return "Hello "+name
 }`
@@ -159,7 +159,7 @@ hello "Coffee"
 
 ### 解决方案
 
-```
+```js
  # for(i = 1; i<= 10; i++)
 
 x for x in [1..10]

@@ -6,7 +6,7 @@
 
 创建新的记录使用`createRecord()`方法。比如下面的代码新建了一个`aritcle`记录。修改模板，在模板上增加几个`input`输入框用于输入`article`信息。
 
-```
+```js
 <!--  app/templates/articles.hbs  -->
 
 <div class="container">  
@@ -41,7 +41,7 @@
 
 页面的字段分别对应这模型`article`的属性。点击“保存”后提交到`controller`处理。下面是获取数据保存数据的`controller`。
 
-```
+```js
 //   app/controllers/articles.js
 
 import Ember from 'ember';
@@ -94,13 +94,13 @@ export default Ember.Controller.extend({
 
 通过这里实例我想你应该懂得去使用`createRecord()`方法了！但是如果有两个模型是有关联关系保存的方法又是怎么样的呢？下面再新增一个模型。
 
-```
+```js
 ember g model users 
 ```
 
 然后在模型中增加关联。
 
-```
+```js
 //   app/models/article.js
 
 import DS from 'ember-data';
@@ -125,7 +125,7 @@ export default DS.Model.extend({
 
 修改模板`articles.hbs`在界面上增加录入作者信息字段。
 
-```
+```js
 ……省略其他代码
 <div>  
     title：{{input value=title}}<br>
@@ -141,7 +141,7 @@ export default DS.Model.extend({
 
 下面看看怎么在`controller`中设置这两个模型的关联关系。一共有两种方式设置，一种是直接在`createRecord()`方法中设置，另一种是在方法外设置。
 
-```
+```js
 //   app/controllers/articles.js
 
 import Ember from 'ember';
@@ -193,7 +193,7 @@ export default Ember.Controller.extend({
 
 直接以面向对象的方式获取既可。
 
-```
+```js
 {{#each model as |item|}}
     <li class="list-group-item">
         <!--设置路由，路由的层级与 router.js 里定义的要一致 -->
@@ -206,7 +206,7 @@ export default Ember.Controller.extend({
 
 注意看助手`{{ item.author.username }}`。很像 EL 表达式吧！！ 前面提到过有两个方式设置两个模型的关联关系。下面的代码是第二种方式：
 
-```
+```js
 //  其他代码省略……
 //  创建 article
 var article = this.store.createRecord('article', {  
@@ -225,7 +225,7 @@ article.set('author', user);
 
 运行，重新录入信息，得到的结果是一致的。甚至你可以直接在`createRecord`方法里调用方法来设置两个模型的关系。比如下面的代码段：
 
-```
+```js
 var store = this.store;  // 由于作用域问题，在 createRecord 方法内部不能使用 this.store  
 var article = this.store.createRecord('article', {  
     title: title,
@@ -244,7 +244,7 @@ article.set('author', store.findRecord('user', 1));
 
 更新相对于新增来说非常相似。请看下面的代码段： 首先在模板上增加更新的设置代码，修改子模板`articles/article.hbs`：
 
-```
+```js
 <!--  app/templates/articles/article.hbs  -->
 
 <h1>{{model.title}}</h1>  
@@ -263,11 +263,11 @@ body：<br> {{textarea value=model.body cols="80" rows="3"}}<br>
 
 增加一个`controller`，用户处理子模板提交的修改信息。
 
-```
+```js
 ember g controller articles/article 
 ```
 
-```
+```js
 //  app/controllers/articles/article.js
 
 import Ember from 'ember';
@@ -298,7 +298,7 @@ export default Ember.Controller.extend({
 
 由于`save`、`findRecord`方法返回值是一个`promises`对象，所以你还可以针对出错情况进行处理。比如下面的代码：
 
-```
+```js
 var user = this.store.createRecord('user', {  
     //  ……
 });
@@ -321,7 +321,7 @@ this.store.findRecord('article', params).then(function(art) {
 
 既然有了新增那么通常就会有删除。记录的删除与修改非常类似，也是首先查询出要删除的数据，然后执行删除。
 
-```
+```js
 //   app/controllers/articles.js
 
 import Ember from 'ember';
@@ -357,7 +357,7 @@ export default Ember.Controller.extend({
 
 修改显示数据的模板，增加删除按钮，并传递数据的`id`值到`controller`。
 
-```
+```js
 <!--  app/templates/articles.hbs  -->
 
 <div class="container">  

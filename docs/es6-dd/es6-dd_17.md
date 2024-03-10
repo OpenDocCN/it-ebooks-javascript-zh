@@ -24,7 +24,7 @@ ES6 除了新增特性外还有两类特殊的特性：其中一些特性早已�
 
     举个例子，如果`Canvas`的渲染上下文中缺少了你想要的特性，而你又认为这个特性足够重要，你可以借助以上特性自己实现一个：
 
-    ```
+    ```js
      var context = canvas.getContext("2d");
         var image = context.getImageData(0, 0, canvas.width, canvas.height);
         var pixels = image.data;  // 一个 Uint8ClampedArray 对象
@@ -42,7 +42,7 @@ ES6 除了新增特性外还有两类特殊的特性：其中一些特性早已�
 
     在 ES 1-5 中，下面这段代码从技术角度来看是非法的：
 
-    ```
+    ```js
      if (temperature > 100) {
           function chill() {
             return fan.switchOn().then(obtainLemonade);
@@ -61,7 +61,7 @@ ES6 除了新增特性外还有两类特殊的特性：其中一些特性早已�
 
     到目前为止，Firefox 和 Safari 中尚未实现这一新标准，如果需要请使用函数表达式来进行声明：
 
-    ```
+    ```js
      if (temperature > 100) {
           var chill = function () {
             return fan.switchOn().then(obtainLemonade);
@@ -74,7 +74,7 @@ ES6 除了新增特性外还有两类特殊的特性：其中一些特性早已�
 
 *   **函数名称。**长久以来，所有主流的 JS 引擎都会为命名函数添加一个`.name`属性，而这一做法并没有得到标准的支持。ES6 标准对这一行为进行了支持，由于在这之前通过函数表达式声明的函数被认为是未命名函数，新标准通过命名感知的方式为其也添加了`.name`属性。
 
-    ```
+    ```js
      > var lessThan = function (a, b) { return a < b; };
         > lessThan.name
             "lessThan"
@@ -90,7 +90,7 @@ ES6 除了新增特性外还有两类特殊的特性：其中一些特性早已�
 
     在文章《[深入浅出 ES6（五）：不定参数和默认参数](http://www.infoq.com/cn/articles/es6-in-depth-rest-parameters-and-defaults)》中，我们介绍了不定参数（Rest），通过这种方式声明的函数可以接受任意数量的参数，相对于之前传递随机而又略显笨拙的`arguments`对象而言，这显然是一种更为优雅的选择。
 
-    ```
+    ```js
      function log(...stuff) {  // stuff 是不定参数。
           var rendered = stuff.map(renderStuff); // 它实际上是一个数组
           $("#log").add($(rendered));
@@ -99,7 +99,7 @@ ES6 除了新增特性外还有两类特殊的特性：其中一些特性早已�
 
     其实还有另外一种匹配语法，可以用这种语法给函数传递任意数量的参数，可以让`fn.apply()`函数看起来更优雅：
 
-    ```
+    ```js
      // 记录数组中的所有值
         log(...myArray);
     ```
@@ -108,14 +108,14 @@ ES6 除了新增特性外还有两类特殊的特性：其中一些特性早已�
 
     与不定参数不同的是，你可以在同一个参数列表中多次使用展开操作符：
 
-    ```
+    ```js
      // kicks 在 trids 之前
         log("Kicks:", ...kicks, "Trids:", ...trids);
     ```
 
     展开运算符也可以让多维数组展开变得不再复杂：
 
-    ```
+    ```js
      > var smallArrays = [[], ["one"], ["two", "twos"]];
         > var oneBigArray = [].concat(...smallArrays);
         > oneBigArray
@@ -126,7 +126,7 @@ ES6 除了新增特性外还有两类特殊的特性：其中一些特性早已�
 
 *   **应用于构建数组的展开运算符。**在另外一篇文章《[深入浅出 ES6（六）：解构 Destructuring](http://www.infoq.com/cn/articles/es6-in-depth-destructuring)》中，我们还讨论了如何将解构改造为“不定（rest）”模式。你可以通过这种方法从数组中取出任意数量的元素。
 
-    ```
+    ```js
      > var [head, ...tail] = [1, 2, 3, 4];
         > head
             1
@@ -136,7 +136,7 @@ ES6 除了新增特性外还有两类特殊的特性：其中一些特性早已�
 
     你猜怎么着！这儿还有一种匹配语法可以将任意数量的元素整合到数组中：
 
-    ```
+    ```js
      > var reunited = [head, ...tail];
         > reunited
             [1, 2, 3, 4]
@@ -228,7 +228,7 @@ ES6 除了新增特性外还有两类特殊的特性：其中一些特性早已�
 
 *   **[定型对象](https://github.com/dslomov/typed-objects-es7)。**定型数组中包含着定型元素，定型对象与定型数组的概念类似，简单来说定型对象中的属性都拥有确定的类型。
 
-    ```
+    ```js
      // 创建一个新的结构类型，每一个 Point 都有两个字段
         // 分别命名为 x 和 y。
         var Point = new TypedObject.StructType({
@@ -249,7 +249,7 @@ ES6 除了新增特性外还有两类特殊的特性：其中一些特性早已�
 
 *   **[类和属性修饰符](https://github.com/wycats/javascript-decorators/blob/master/README.md)。**修饰符是你为属性、类或方法添加的标签。你可以通过这个示例初步了解一下：
 
-    ```
+    ```js
      import debug from "jsdebug";
 
         class Person {

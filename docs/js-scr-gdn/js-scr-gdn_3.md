@@ -14,7 +14,7 @@
 
 为了达到遍历数组的最佳性能，推荐使用经典的 `for` 循环。
 
-```
+```js
 var list = [1, 2, 3, 4, 5, ...... 100000000];
 for(var i = 0, l = list.length; i < l; i++) {
     console.log(list[i]);
@@ -31,7 +31,7 @@ for(var i = 0, l = list.length; i < l; i++) {
 
 `length` 属性的 *getter* 方式会简单的返回数组的长度，而 *setter* 方式会**截断**数组。
 
-```
+```js
 var foo = [1, 2, 3, 4, 5, 6];
 foo.length = 3;
 foo; // [1, 2, 3]
@@ -42,7 +42,7 @@ foo; // [1, 2, 3]
 
 **译者注：** 在 Firebug 中查看此时 `foo` 的值是： `[1, 2, 3, undefined, undefined, undefined]` 但是这个结果并不准确，如果你在 Chrome 的控制台查看 `foo` 的结果，你会发现是这样的： `[1, 2, 3]` 因为在 JavaScript 中 `undefined` 是一个变量，注意是变量不是关键字，因此上面两个结果的意义是完全不相同的。
 
-```
+```js
 // 译者注：为了验证，我们来执行下面代码，看序号 5 是否存在于 foo 中。
 5 in foo; // 不管在 Firebug 或者 Chrome 都返回 false
 foo[5] = undefined;
@@ -59,7 +59,7 @@ foo[5] = undefined;
 
 由于 `Array` 的构造函数在如何处理参数时有点模棱两可，因此总是推荐使用数组的字面语法 - `[]` - 来创建数组。
 
-```
+```js
 [1, 2, 3]; // 结果: [1, 2, 3]
 new Array(1, 2, 3); // 结果: [1, 2, 3]
 
@@ -78,7 +78,7 @@ new Array(3) // 结果: []，此数组长度为 3
 
 **译者注：**在 Firebug 中，你会看到 `[undefined, undefined, undefined]`，这其实是不对的。在上一节有详细的分析。
 
-```
+```js
 var arr = new Array(3);
 arr[1]; // undefined
 1 in arr; // false, 数组还没有生成 
@@ -86,7 +86,7 @@ arr[1]; // undefined
 
 这种优先于设置数组长度属性的做法只在少数几种情况下有用，比如需要循环字符串，可以避免 `for` 循环的麻烦。
 
-```
+```js
 new Array(count + 1).join(stringToRepeat); 
 ```
 

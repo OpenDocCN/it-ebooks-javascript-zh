@@ -27,7 +27,7 @@ JavaScript 程序的执行单位为行（line），也就是一行一行地执�
 
 语句（statement）是为了完成某种任务而进行的操作，比如下面就是一行赋值语句：
 
-```
+```js
 var a = 1 + 3;
 ```
 
@@ -39,13 +39,13 @@ var a = 1 + 3;
 
 语句以分号结尾，一个分号就表示一个语句结束。多个语句可以写在一行内。
 
-```
+```js
 var a = 1 + 3 ; var b = "abc";
 ```
 
 分号前面可以没有任何内容，JavaScript 引擎将其视为空语句。
 
-```
+```js
 ;;;
 ```
 
@@ -53,7 +53,7 @@ var a = 1 + 3 ; var b = "abc";
 
 表达式不需要分号结尾。一旦在表达式后面添加分号，则 JavaScript 引擎就将表达式视为语句，这样会产生一些没有任何意义的语句。
 
-```
+```js
 1 + 3;
 
 "abc";
@@ -65,7 +65,7 @@ var a = 1 + 3 ; var b = "abc";
 
 变量是对“值”的引用，使用变量等同于引用一个值。每一个变量都有一个变量名。
 
-```
+```js
 var a = 1;
 ```
 
@@ -73,7 +73,7 @@ var a = 1;
 
 变量的声明和赋值，是分开的两个步骤，上面的代码将它们合在了一起，实际的步骤是下面这样。
 
-```
+```js
 var a;
 
 a = 1;
@@ -81,7 +81,7 @@ a = 1;
 
 如果只是声明变量而没有赋值，则该变量的值为 undefined。
 
-```
+```js
 var a;
 a
 // undefined
@@ -93,7 +93,7 @@ JavaScript 允许省略 var，直接对未声明的变量赋值。也就是说�
 
 如果一个变量没有声明就直接使用，JavaScript 会报错，告诉你变量未定义。
 
-```
+```js
 x
 // ReferenceError: x is not defined
 ```
@@ -102,13 +102,13 @@ x
 
 可以在同一条 var 命令中声明多个变量。
 
-```
+```js
 var a,b;
 ```
 
 JavaScirpt 是一种动态类型语言，也就是说，变量的类型没有限制，可以赋予各种类型的值。
 
-```
+```js
 var a = 1;
 
 a = "hello";
@@ -120,14 +120,14 @@ a = "hello";
 
 JavaScript 引擎的工作方式是，先解析代码，获取所有被声明的变量，然后再一行一行地运行。这造成的结果，就是所有的变量的声明语句，都会被提升到代码的头部，这就叫做变量提升（hoisting）。
 
-```
+```js
 console.log(a);
 var a = 1;
 ```
 
 上面代码首先使用 console.log 方法，在控制台（console）显示变量 a 的值。这时变量 a 还没有声明和赋值，所以这是一种错误的做法，但是实际上不会报错。因为存在变量提升，真正运行的是下面的代码：
 
-```
+```js
 var a;
 console.log(a);
 a = 1;
@@ -137,7 +137,7 @@ a = 1;
 
 请注意，变量提升只对 var 命令声明的变量有效，如果一个变量不是用 var 命令声明的，就不会发生变量提升。
 
-```
+```js
 console.log(b);
 b = 1;
 ```
@@ -157,7 +157,7 @@ b = 1;
 
 下面这些都是合法的标识符。
 
-```
+```js
 arg0
 _tmp
 $elem
@@ -166,7 +166,7 @@ $elem
 
 下面这些则是不合法的标识符。
 
-```
+```js
 1a
 23
 ***
@@ -176,7 +176,7 @@ a+b
 
 中文是合法的标识符，可以用作变量名。
 
-```
+```js
 var 临时变量 = 1;
 ```
 
@@ -188,7 +188,7 @@ var 临时变量 = 1;
 
 源码中被 JavaScript 引擎忽略的部分就叫做注释，它的作用是对代码进行解释。Javascript 提供两种注释：一种是单行注释，用//起头；另一种是多行注释，放在/ *和* /之间。
 
-```
+```js
 // 这是单行注释
 
 /*
@@ -202,7 +202,7 @@ var 临时变量 = 1;
 
 此外，由于历史上 JavaScript 兼容 HTML 代码的注释，所以也被视为单行注释。
 
-```
+```js
 x = 1; <!-- x = 2;
 --> x = 3;
 ```
@@ -211,7 +211,7 @@ x = 1; <!-- x = 2;
 
 需要注意的是，-->只有在行首，才会被当成单行注释，否则就是一个运算符。
 
-```
+```js
 function countdown(n) {
   while (n --> 0) console.log(n);
 }
@@ -229,7 +229,7 @@ JavaScript 使用大括号，将多个相关的语句组合在一起，称为“
 
 与大多数编程语言不一样，JavaScript 的区块不构成单独的作用域（scope）。也就是说，区块中的变量与区块外的变量，属于同一个作用域。
 
-```
+```js
 { 
     var a = 1;
 }
@@ -247,14 +247,14 @@ JavaScript 提供 if 结构和 switch 结构，完成条件判断。
 
 if 结构先判断一个表达式的布尔值，然后根据布尔值的真伪，执行不同的语句。
 
-```
+```js
 if (expression) 
   statement
 ```
 
 上面是 if 结构的基本形式。需要注意的是，expression（表达式）必须放在圆括号中，表示对表达式求值。如果结果为 true，就执行紧跟在后面的 statement（语句）；如果结果为 false，则跳过 statement。
 
-```
+```js
 if (m === 3) 
   m += 1;
 ```
@@ -263,7 +263,7 @@ if (m === 3)
 
 这种写法要求 statement 只能有一个语句。如果想将多个语句放在 statement 之中，必须在 if 的条件判断之后，加上大括号。
 
-```
+```js
 if (m === 3) {
   m += 1; 
 }
@@ -275,7 +275,7 @@ if (m === 3) {
 
 if 代码块后面，还可以跟一个 else 代码块，表示括号中的表示式为 false 时，所要执行的代码。
 
-```
+```js
 if (m === 3) {
     // then
  } else {
@@ -287,7 +287,7 @@ if (m === 3) {
 
 对同一个变量进行多次判断时，多个 if...else 语句可以连写在一起。
 
-```
+```js
 if (m === 0) {
     // ...
 } else if (m === 1) {
@@ -301,7 +301,7 @@ if (m === 0) {
 
 else 代码块总是跟随离自己最近的那个 if 语句。
 
-```
+```js
 var m = 1;
 var n = 2;
 
@@ -312,7 +312,7 @@ else console.log('world');
 
 上面代码不会有任何输出，else 代码块也不会得到执行，因为它跟着的是最近的那个 if 语句，相当于下面这样。
 
-```
+```js
 if (m !== 1) {
     if (n === 2) {
         console.log('hello');  
@@ -324,7 +324,7 @@ if (m !== 1) {
 
 如果想让 else 代码块跟随最上面的那个 if 语句，就要改变大括号的位置。
 
-```
+```js
 if (m !== 1) {
     if (n === 2) {
         console.log('hello');  
@@ -339,7 +339,7 @@ if (m !== 1) {
 
 多个 if...else 连在一起使用的时候，可以转为使用更方便的 switch 结构。
 
-```
+```js
 switch (fruit) {
     case "banana":
         // ...
@@ -356,7 +356,7 @@ switch (fruit) {
 
 switch 语句部分和 case 语句部分，都可以使用表达式。
 
-```
+```js
 switch(1 + 3) {
     case 2 + 2:
         f();
@@ -372,7 +372,7 @@ switch(1 + 3) {
 
 switch 结构不利于代码重用，往往可以用对象形式重写。
 
-```
+```js
 var o = {
     banana: function (){ return },
     apple: function (){ return },
@@ -394,14 +394,14 @@ if (o[fruit]){
 
 While 语句包括一个循环条件，只要该条件为真，就不断循环。
 
-```
+```js
 while (expression)    
 statement
 ```
 
 while 语句的循环条件是一个表达式（express），必须放在圆括号中。语句（statement）部分默认只能写一条语句，如果需要包括多条语句，必须添加大括号。
 
-```
+```js
 while (expression){   
     statement
 }
@@ -409,7 +409,7 @@ while (expression){
 
 下面是 while 语句的一个例子。
 
-```
+```js
 var i = 0;
 
 while (i<100){
@@ -424,7 +424,7 @@ while (i<100){
 
 for 语句是循环命令的另一种形式。
 
-```
+```js
 for(initialize; test; increment)
 statement
 
@@ -443,7 +443,7 @@ for(initialize; test; increment){
 
 下面是一个循环打印数组每个元素的例子。
 
-```
+```js
 for (var i=0; i < arr.length; i++) {
     console.log(arr[i]);
 }
@@ -451,7 +451,7 @@ for (var i=0; i < arr.length; i++) {
 
 所有 for 循环，都可以改写成 while 循环。
 
-```
+```js
 var i = 0;
 
 while (i < arr.length) {
@@ -462,7 +462,7 @@ while (i < arr.length) {
 
 for 语句表达式的三个部分（initialize，test，increment），可以省略任何一个，也可以全部省略。
 
-```
+```js
 for (;;){
     console.log('Hello World');
 }
@@ -474,7 +474,7 @@ for (;;){
 
 do...while 循环与 while 循环类似，唯一的区别就是先运行一次循环体，然后判断循环条件。
 
-```
+```js
 do 
 statement
 while(expression);
@@ -494,7 +494,7 @@ break 语句和 continue 语句都具有跳转作用，可以让代码不按既�
 
 break 语句用于跳出代码块或循环。
 
-```
+```js
 var i = 0;
 
 while (i<100){
@@ -508,7 +508,7 @@ while (i<100){
 
 continue 语句用于立即终止本次循环，返回循环结构的头部，开始下一次循环。
 
-```
+```js
 var i = 0;
 
 while (i<100){
@@ -526,7 +526,7 @@ while (i<100){
 
 JavaScript 语言允许，语句的前面有标签（label）。标签通常与 break 语句和 continue 语句配合使用，跳出特定的循环。
 
-```
+```js
 top:
     for (var i=0;i<3;i++){
         for (var j=0;j<3;j++){
@@ -544,7 +544,7 @@ top:
 
 continue 语句也可以与标签配合使用。
 
-```
+```js
 top:
     for (var i=0;i<3;i++){
         for (var j=0;j<3;j++){
@@ -609,7 +609,7 @@ typeof 运算符可以返回一个值的数据类型，可能有以下结果。
 
 数值、字符串、布尔值分别返回 number、string、boolean。
 
-```
+```js
 typeof 123 // "number"
 typeof "123" // "string"
 typeof false // "boolean"
@@ -619,7 +619,7 @@ typeof false // "boolean"
 
 函数返回 function。
 
-```
+```js
 // 定义一个空函数
 function f(){}
 
@@ -631,14 +631,14 @@ typeof f
 
 undefined 返回 undefined。
 
-```
+```js
 typeof undefined
 // "undefined"
 ```
 
 利用这一点，typeof 可以用来检查一个没有声明的变量，而不报错。
 
-```
+```js
 v
 // ReferenceError: v is not defined
 
@@ -648,7 +648,7 @@ typeof v
 
 实际编程中，这个特点通常用在判断语句。
 
-```
+```js
 // 错误的写法
 if (v){
     // ...
@@ -665,7 +665,7 @@ if (typeof v === "undefined"){
 
 除此以外，都返回 object。
 
-```
+```js
 typeof window // "object"
 typeof {} // "object"
 typeof [] // "object"
@@ -676,7 +676,7 @@ typeof null // "object"
 
 既然 typeof 对数组（array）和对象（object）的显示结果都是 object，那么怎么区分它们呢？instanceof 运算符可以做到。
 
-```
+```js
 var o = {};
 var a = [];
 
@@ -692,7 +692,7 @@ instanceof 运算符的详细解释，请见《面向对象编程》一章。
 
 首先，null 与 undefined 都可以表示“无”，含义非常相似。将一个变量赋值为 undefined 或 null，老实说，几乎没区别。
 
-```
+```js
 var a = undefined;
 
 // 或者
@@ -704,7 +704,7 @@ var a = null;
 
 在 if 语句中，都会被自动转为 false，相等运算符甚至直接报告两者相等。
 
-```
+```js
 if (!undefined) 
     console.log('undefined is false');
 // undefined is false
@@ -725,7 +725,7 @@ undefined == null
 
 1995 年 JavaScript 诞生时，最初像 Java 一样，只设置了 null 作为表示"无"的值。根据 C 语言的传统，null 被设计成可以自动转为 0。
 
-```
+```js
 Number(null)
 // 0
 
@@ -741,7 +741,7 @@ Number(null)
 
 因此，Brendan Eich 又设计了一个 undefined。他是这样区分的：null 是一个表示"无"的对象，转为数值时为 0；undefined 是一个表示"无"的原始值，转为数值时为 NaN。
 
-```
+```js
 Number(undefined)
 // NaN
 
@@ -771,7 +771,7 @@ undefined 表示"缺少值"，就是此处应该有一个值，但是还未定�
 
 *   函数没有返回值时，默认返回 undefined。
 
-```
+```js
 var i;
 i // undefined
 
@@ -789,7 +789,7 @@ x // undefined
 
 null 的特殊之处在于，JavaScript 把它包含在对象类型（object）之中。
 
-```
+```js
 typeof null // "object"
 ```
 
@@ -823,7 +823,7 @@ JavaScript 的标识名区分大小写，所以 undefined 和 null 不同于 Und
 
 布尔值往往用于程序流程的控制，请看一个例子。
 
-```
+```js
 if (""){ console.log(true);}
 // 没有任何输出
 ```
@@ -832,7 +832,7 @@ if (""){ console.log(true);}
 
 需要特别注意的是，空数组（[]）和空对象（{}）对应的布尔值，都是 true。
 
-```
+```js
 if ([]){ console.log(true);}
 // true
 
@@ -850,7 +850,7 @@ if ({}){ console.log(true);}
 
 （1）for 和 while 循环
 
-```
+```js
 for(;;){} // 没有分号
 
 while(true){} // 没有分号
@@ -858,7 +858,7 @@ while(true){} // 没有分号
 
 需要注意的是 do...while 循环是有分号的。
 
-```
+```js
 do {
     a--;
 } while(a > 0); // 分号不能省略
@@ -866,7 +866,7 @@ do {
 
 （2）分支语句：if， switch， try
 
-```
+```js
 if (true) {} // 没有分号
 
 switch () {} // 没有分号
@@ -876,13 +876,13 @@ try {} catch {} // 没有分号
 
 （3）函数的声明语句
 
-```
+```js
 function f() {} // 没有分号
 ```
 
 但是函数表达式仍然要使用分号。
 
-```
+```js
 var f = function f() {};
 ```
 
@@ -892,7 +892,7 @@ var f = function f() {};
 
 除了本来就不写分号的情况，JavaScript 引擎还有一个特点，就是在应该写分号却没写的情况下，它会自动添加（Automatic Semicolon Insertion，简称 ASI）。
 
-```
+```js
 var a = b + c
 // 等同于
 var a = b + c;
@@ -900,7 +900,7 @@ var a = b + c;
 
 但是，这种自动添加不是绝对的。如果下一行的开始可以与本行的结尾连在一起解释，就不会自动添加分号。
 
-```
+```js
 var
 a
 =
@@ -920,7 +920,7 @@ var a = 3;
 
 上面代码举了两个例子，每行的尾部都没有分号，JavaScript 并不会自动添加分号，因为每行的结尾与下一行的开头可以放在一起解释。下面这个例子也不会自动添加分号。
 
-```
+```js
 3 * (2 * (4 + (3 - 5))) 
 + 
 (10 * (27 / 6))
@@ -932,7 +932,7 @@ var a = 3;
 
 这些例子还是比较容易看出来的，但是下面的例子就不那么容易发现了。它们都不会自动添加分号。
 
-```
+```js
 var a = b + c
 (d+e).toString();
 /* 结果报错，因为两行连在一起，
@@ -968,7 +968,7 @@ arg2)
 
 一般来说，在没有分号结尾的情况下，如果下一行起首的是(、 [ 、+、-、/这五个字符中的一个，分号不会被自动添加。只有下一行的开始与本行的结尾，无法放在一起解释，JavaScript 引擎才会自动添加分号。
 
-```
+```js
 if (a < 0) a = 0
 console.log(a)
 
@@ -981,7 +981,7 @@ console.log(a)
 
 另外，如果一行的起首是“自增”（++）或“自减”（--）运算符，则它们的前面会自动添加分号。
 
-```
+```js
 a = b = c = 1
 a
 ++
@@ -995,7 +995,7 @@ console.log(a, b, c)
 
 之所以会得到“1 2 0”的结果，原因是自增和自减运算符前，自动被加上了分号。上面的代码实际上等同于下面的形式：
 
-```
+```js
 a = b = c = 1;
 a;
 ++b;
@@ -1004,7 +1004,7 @@ a;
 
 如果 continue、break、return 和 throw 这四个语句后面，直接跟换行符，则会自动添加分号。这意味着，如果 return 语句返回的是一个对象的字面量，起首的大括号一定要写在同一行，否则得不到预期结果。
 
-```
+```js
 return
 { first: "Jane" };
 

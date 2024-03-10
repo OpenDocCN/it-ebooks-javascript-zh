@@ -27,7 +27,7 @@
 
 ## 构建项目
 
-```
+```js
 ember new secretcodez  
 cd secretcodez  
 ember s 
@@ -37,7 +37,7 @@ ember s
 
 ### 创建文件
 
-```
+```js
 ember g route secret  
 ember g route login  
 ember g route application
@@ -54,12 +54,12 @@ ember g adapter application
 
 ## secret 页面
 
-```
+```js
 {{! app/templates/secret.hbs }}
 {{secret-page model=model}} 
 ```
 
-```
+```js
 {{! app/tempalates/components/secret-page.hbs}}
 <h1>secret page</h1>
 
@@ -76,7 +76,7 @@ ember g adapter application
 
 为了测试创建一个简单的后端服务程序，使用的是 Node，然后写死一些测试数据。就没必要动牛刀，创建一个数据库了！
 
-```
+```js
 ember g server  
 npm install  
 npm install body-parser --save-dev 
@@ -86,7 +86,7 @@ npm install body-parser --save-dev
 
 打开`index.js`编辑后端请求监听。
 
-```
+```js
 // server/index.js
 
 const bodyParser = require('body-parser');
@@ -110,7 +110,7 @@ module.exports = function(app) {
 
 既然用到自己的后端服务那么对应的你就需要自定义适配器了。简单起见就创建`RESTAdapter`适配器吧。`JSONAPIAdapter`适配器相对麻烦点，需要格式化数据为[json api](http://jsonapi.org)。
 
-```
+```js
 // app/adapters/application.js
 
 // 注意：把 JSONAPIAdapter 改为 RESTAdapter
@@ -123,7 +123,7 @@ export default DS.RESTAdapter.extend({
 
 修改路由，获取后端数据。
 
-```
+```js
 // app/routes/secret.js
 
 export default Ember.Route.extend({  
@@ -144,7 +144,7 @@ export default Ember.Route.extend({
 
 #### 修改服务端，加入权限校验
 
-```
+```js
 // 拦截 /api/codes 请求
 app.get('/api/codes', function(req, res) {  
     //获取数据之前先校验请求者是否有权访问资源
@@ -168,7 +168,7 @@ app.get('/api/codes', function(req, res) {
 
 显然这样的校验是没啥意义的，那么如果你也想模拟 Oauth2 也生成一个唯一的`access token`，你可以请求之前首先获取一个`access token`。但是这个`access token`不是随便就能获取的，需要通过登录成功后才能获取到。下面加入模拟登录的程序。仍然是修改`server/index.js`。
 
-```
+```js
 // 登录
 app.post('/api/login', function(req, res) {  
     //判断用户名和密码是否正确，这里就直接判断字符串了，实际中通常是通过查询数据去判断登录的用户是否存在
@@ -187,12 +187,12 @@ app.post('/api/login', function(req, res) {
 
 #### 登录表单
 
-```
+```js
 {{! app/templates/login.hbs 登录}}
 {{login-page}} 
 ```
 
-```
+```js
 {{! app/templates/components/login-page.hbs 登录表单}}
 
 {{link-to '点击查看有权才能访问的资源' ’secret}}
@@ -214,7 +214,7 @@ app.post('/api/login', function(req, res) {
 
 在组件类中添加处理登录的 action。
 
-```
+```js
 // app/components/login-page.js
 
 import Ember from 'ember';
@@ -237,11 +237,11 @@ export default Ember.Component.extend({
 
 在这个类中使用了`service`类，并且调用此类中的`authenticate`方法。代码中的属性`authManager`就是一个`service`实例。下面定义`service`类。
 
-```
+```js
 ember g service auth-manager 
 ```
 
-```
+```js
 // app/serivces/auth-manager.js
 
 import Ember from 'ember';
@@ -275,7 +275,7 @@ export default Ember.Service.extend({
 
 一切都定义好了下面就是如何使用这个`service`属性了！修改适配器的代码，在请求头中加入`accessToken`。
 
-```
+```js
 // import JSONAPIAdapter from 'ember-data/adapters/json-api';
 import DS from 'ember-data';
 
@@ -295,7 +295,7 @@ export default DS.RESTAdapter.extend({
 
 到此代码基本写完了，为了处理服务端返回的错误直接在`application`路由中拦截`error`事件，在这个事件中处理错误的情况。 **说明**：所有的子路由的`error`事件都会自动冒泡到路由`application`的`error`事件中。
 
-```
+```js
 // app/routes/application.js
 import Ember from 'ember';
 
@@ -337,7 +337,7 @@ export default Ember.Route.extend({
 
 有登录就会有退出，退出相对简单，只要销毁了 service 类中的属性`accessToken`值即可。
 
-```
+```js
 {{! app/tempalates/components/secret-page.hbs}}
 <h1>secret page</h1>
 
@@ -354,7 +354,7 @@ export default Ember.Route.extend({
 <button type="button" {{action 'invalidate'}}>退出</button> 
 ```
 
-```
+```js
 // app/components/secret-page.js
 import Ember from 'ember';
 

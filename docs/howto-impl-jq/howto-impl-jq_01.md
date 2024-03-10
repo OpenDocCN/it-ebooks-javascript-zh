@@ -8,7 +8,7 @@
 
 首先我们需要创建一个闭包
 
-```
+```js
 (function(){
     //code..
 })(); 
@@ -18,7 +18,7 @@
 
 接着我们来看看我们第一版里的代码.
 
-```
+```js
 (function(window,document) {
     var w = window,
         doc = document;
@@ -48,7 +48,7 @@
 
 接着
 
-```
+```js
 var kodo = function(selector) {
     return new Kodo.prototype.init(selector);
 } 
@@ -56,7 +56,7 @@ var kodo = function(selector) {
 
 如果有看过 jQuery 源码的童鞋对这个真是在了解不过了.每次用 kodo 调用的时候,将直接 返回一个 kodo 的实例.达到无 new 调用的效果
 
-```
+```js
 Kodo.prototype = {
     constructor : Kodo,
     length : 0,
@@ -75,7 +75,7 @@ Kodo.prototype.init.prototype = Kodo.prototype;
 
 同时我们在原型上具有 splice 属性后,我们的对象就会变为了一个类数组对象,神奇吧!
 
-```
+```js
 Kodo.ajax = function() { //直接挂载方法  可 f.ajax 调用
     console.log(this);
 } 
@@ -83,7 +83,7 @@ Kodo.ajax = function() { //直接挂载方法  可 f.ajax 调用
 
 由于 javascript 中一切皆对象,所以我们能在我们的 Kodo 上直接用.XXX 来赋予新的属性和方法,这样的方法也被称之为静态方法.
 
-```
+```js
 window.f = Kodo; 
 ```
 

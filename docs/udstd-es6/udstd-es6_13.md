@@ -48,7 +48,7 @@ ES6 通过增加内置对象使得开发者能进一步接近 JS 引擎的能力
 
 在 ES6 之前， JS 的数组对象拥有特定的行为方式，无法被开发者在自定义对象中进行模拟。当你给数组元素赋值时，数组的 `length` 属性会受到影响，同时你也可以通过修改 `length` 属性来变更数组的元素。例如：
 
-```
+```js
 let colors = ["red", "green", "blue"];
 
 console.log(colors.length);         // 3
@@ -102,7 +102,7 @@ console.log(colors[1]);             // "green"
 
 当你使用 `Proxy` 构造器来创建一个代理时，需要传递两个参数：目标对象以及一个处理器（handler），后者是定义了一个或多个陷阱函数的对象。如果未提供陷阱函数，代理会对所有操作采取默认行为。为了创建一个仅进行传递的代理，你需要使用不包含任何陷阱函数的处理器：
 
-```
+```js
 let target = {};
 
 let proxy = new Proxy(target, {});
@@ -131,7 +131,7 @@ console.log(target.name);       // "target"
 
 你需要使用 `set` 陷阱函数来拦截传入的 `value` 值，以便对属性值进行验证。这里有个例子：
 
-```
+```js
 let target = {
     name: "target"
 };
@@ -177,7 +177,7 @@ proxy.anotherName = "proxy";
 
 JS 语言有趣但有时却令人困惑的特性之一，就是读取对象不存在的属性时并不会抛出错误，而会把 `undefined` 当作该属性的值，例如：
 
-```
+```js
 let target = {};
 
 console.log(target.name);       // undefined 
@@ -197,7 +197,7 @@ console.log(target.name);       // undefined
 
 你可以使用 `get` 陷阱函数与 `Reflect.get()` 方法在目标属性不存在时抛出错误，就像这样：
 
-```
+```js
 let proxy = new Proxy({}, {
         get(trapTarget, key, receiver) {
             if (!(key in receiver)) {
@@ -224,7 +224,7 @@ console.log(proxy.nme);             // 抛出错误
 
 `in` 运算符用于判断指定对象中是否存在某个属性，如果对象的属性名与指定的字符串或符号值相匹配，那么 `in` 运算符应当返回 `true` ，无论该属性是对象自身的属性还是其原型的属性。例如：
 
-```
+```js
 let target = {
     value: 42;
 }
@@ -242,7 +242,7 @@ console.log("toString" in target);  // true
 
 `Reflect.has()` 方法接受与之相同的参数，并向 `in` 运算符返回默认响应结果。使用 `has` 陷阱函数以及 `Reflect.has()` 方法，允许你修改部分属性在接受 `in` 检测时的行为，但保留其他属性的默认行为。例如，假设你只想要隐藏 `value` 属性，你可以这么做：
 
-```
+```js
 let target = {
     name: "target",
     value: 42
@@ -270,7 +270,7 @@ console.log("toString" in proxy);   // true
 
 `delete` 运算符能够从指定对象上删除一个属性，在删除成功时返回 `true` ，否则返回 `false` 。如果试图用 `delete` 运算符去删除一个不可配置的属性，在严格模式下将会抛出错误；而非严格模式下只是单纯返回 `false` 。这里有个例子：
 
-```
+```js
 let target = {
     name: "target",
     value: 42
@@ -301,7 +301,7 @@ console.log("name" in target);      // true
 
 `Reflect.deleteProperty()` 方法也接受这两个参数，并提供了 `deleteProperty` 陷阱函数的默认实现。你可以结合 `Reflect.deleteProperty()` 方法以及 `deleteProperty` 陷阱函数，来修改 `delete` 运算符的行为。例如，能确保 `value` 属性不被删除：
 
-```
+```js
 let target = {
     name: "target",
     value: 42
@@ -356,7 +356,7 @@ console.log("name" in proxy);       // false
 
 下面这个例子通过返回 `null` 隐藏了代理对象的原型，并且使得该原型不可被修改：
 
-```
+```js
 let target = {};
 let proxy = new Proxy(target, {
     getPrototypeOf(trapTarget) {
@@ -385,7 +385,7 @@ Object.setPrototypeOf(proxy, {});
 
 如果你想在这两个陷阱函数中使用默认的行为，那么只需调用 `Reflect` 对象上的相应方法。例如，下面的代码为 `getPrototypeOf` 方法与 `setPrototypeOf` 方法实现了默认的行为：
 
-```
+```js
 let target = {};
 let proxy = new Proxy(target, {
     getPrototypeOf(trapTarget) {
@@ -419,7 +419,7 @@ Object.setPrototypeOf(proxy, {});
 
 `Reflect.getPrototypeOf()` 方法在接收到的参数不是一个对象时会抛出错误，而 `Object.getPrototypeOf()` 则会在操作之前先将参数值转换为一个对象。如果你分别传入一个数值给这两个方法，会得到截然不同的结果：
 
-```
+```js
 let result1 = Object.getPrototypeOf(1);
 console.log(result1 === Number.prototype);  // true
 
@@ -433,7 +433,7 @@ Reflect.getPrototypeOf(1);
 
 在“原型代理的陷阱函数如何工作”那个小节的第一个例子中，当 `setPrototypeOf` 代理陷阱返回 `false` 时，它导致 `Object.setPrototypeOf()` 方法抛出了错误。此外， `Object.setPrototypeOf()` 方法会将传入的第一个参数作为自身的返回值，因此并不适合用来实现 `setPrototypeOf` 代理陷阱的默认行为。下面的代码演示了这些区别：
 
-```
+```js
 let target1 = {};
 let result1 = Object.setPrototypeOf(target1, {});
 console.log(result1 === target1);                   // true
@@ -458,7 +458,7 @@ ES5 通过 `Object.preventExtensions()` 与 `Object.isExtensible()` 方法给对
 
 为了弄懂对象可扩展性的陷阱函数如何运作，可研究如下代码，该代码实现了 `isExtensible` 与 `preventExtensions` 陷阱函数的默认行为。
 
-```
+```js
 let target = {};
 let proxy = new Proxy(target, {
     isExtensible(trapTarget) {
@@ -480,7 +480,7 @@ console.log(Object.isExtensible(proxy));        // false
 
 这个例子将 `Object.preventExtensions()` 与 `Object.isExtensible()` 方法直接从 `proxy` 对象传递到 `target` 对象。当然，你也可以自行修改这种行为。例如，如果不想让代理上的 `Object.preventExtensions()` 操作成功，你可以强制 `preventExtensions` 陷阱函数返回 `false` 。
 
-```
+```js
 let target = {};
 let proxy = new Proxy(target, {
     isExtensible(trapTarget) {
@@ -508,7 +508,7 @@ console.log(Object.isExtensible(proxy));        // true
 
 你可能已经注意到：在可扩展性方面， `Object` 对象与 `Reflect` 对象再次出现了重复的方法。不过它们之间的差异相对要小得多： `Object.isExtensible()` 方法与 `Reflect.isExtensible()` 方法几乎一样，只在接收到的参数不是一个对象时才有例外。此时 `Object.isExtensible()` 总是会返回 `false` ，而 `Reflect.isExtensible()` 则会抛出一个错误。这里有个示例：
 
-```
+```js
 let result1 = Object.isExtensible(2);
 console.log(result1);                       // false
 
@@ -520,7 +520,7 @@ let result2 = Reflect.isExtensible(2);
 
 `Object.preventExtensions()` 方法与 `Reflect.preventExtensions()` 方法也是非常相似的。 `Object.preventExtensions()` 方法总是将传递给它的参数值作为自身的返回值，即使该参数不是一个对象；而另一方面 `Reflect.preventExtensions()` 方法则会在参数不是对象时抛出错误。当参数确实是一个对象时， `Reflect.preventExtensions()` 会在操作成功时返回 `true` ，否则返回 `false` 。例如：
 
-```
+```js
 let result1 = Object.preventExtensions(2);
 console.log(result1);                               // 2
 
@@ -546,7 +546,7 @@ ES5 最重要的特征之一就是引入了 `Object.defineProperty()` 方法用�
 
 `defineProperty` 陷阱函数要求你在操作成功时返回 `true` ，否则返回 `false` 。 `getOwnPropertyDescriptor` 陷阱函数则只接受 `trapTarget` 与 `key` 这两个参数，并会返回对应的描述符。 `Reflect.defineProperty()` 与 `Reflect.getOwnPropertyDescriptor()` 方法作为上述陷阱函数的对应方法，接受与之相同的参数。这里有个例子，实现了每个陷阱函数的默认行为：
 
-```
+```js
 let proxy = new Proxy({}, {
     defineProperty(trapTarget, key, descriptor) {
         return Reflect.defineProperty(trapTarget, key, descriptor);
@@ -573,7 +573,7 @@ console.log(descriptor.value);      // "proxy"
 
 `defineProperty` 陷阱函数要求你返回一个布尔值用于表示操作是否已成功。当它返回 `true` 时， `Object.defineProperty()` 会正常执行；而如果它返回了 `false` ，则 `Object.defineProperty()` 会抛出错误。 你可以使用该功能来限制哪些属性可以被 `Object.defineProperty()` 方法定义。例如，如果想阻止定义符号类型的属性，你可以检查传入的键是否为字符串，若不是则返回 `false` ，就像这样：
 
-```
+```js
 let proxy = new Proxy({}, {
     defineProperty(trapTarget, key, descriptor) {
 
@@ -609,7 +609,7 @@ Object.defineProperty(proxy, nameSymbol, {
 
 任意对象都能作为 `Object.defineProperty()` 方法的第三个参数；然而传递给 `defineProperty` 陷阱函数的描述符对象参数，则只有 `enumerable` 、 `configurable` 、 `value` 、 `writable` 、 `get` 与 `set` 这些属性是被许可的。例如：
 
-```
+```js
 let proxy = new Proxy({}, {
     defineProperty(trapTarget, key, descriptor) {
         console.log(descriptor.value);              // "proxy"
@@ -629,7 +629,7 @@ Object.defineProperty(proxy, "name", {
 
 `getOwnPropertyDescriptor` 陷阱函数有一个微小差异，要求返回值必须是 `null` 、 `undefined` ，或者是一个对象。如果返回值是一个对象，则只允许该对象拥有 `enumerable` 、 `configurable` 、 `value` 、 `writable` 、 `get` 或 `set` 这些自有属性。如果你返回的对象包含了不被许可的自有属性，则程序会抛出错误，就像下面演示的这样：
 
-```
+```js
 let proxy = new Proxy({}, {
     getOwnPropertyDescriptor(trapTarget, key) {
         return {
@@ -652,7 +652,7 @@ ES6 再次出现了令人困惑的相似方法， `Object.defineProperty()` 和 
 
 `Object.defineProperty()` 方法与 `Reflect.defineProperty()` 方法几乎一模一样，只是返回值有区别。前者返回调用它时的第一个参数，而后者在操作成功时返回 `true` 、失败时返回 `false` 。例如：
 
-```
+```js
 let target = {};
 
 let result1 = Object.defineProperty(target, "name", { value: "target "});
@@ -670,7 +670,7 @@ console.log(result2);                   // true
 
 `Object.getOwnPropertyDescriptor()` 方法会在接收的第一个参数是一个基本类型值时，将该参数转换为一个对象。另一方面， `Reflect.getOwnPropertyDescriptor()` 方法则会在第一个参数是基本类型值的时候抛出错误。下面这个例子展示了二者的特性：
 
-```
+```js
 let descriptor1 = Object.getOwnPropertyDescriptor(2, "name");
 console.log(descriptor1);       // undefined
 
@@ -688,7 +688,7 @@ let descriptor2 = Reflect.getOwnPropertyDescriptor(2, "name");
 
 `ownKeys` 陷阱函数接受单个参数，即目标对象，同时必须返回一个数组或者一个类数组对象，不合要求的返回值会导致错误。你可以使用 `ownKeys` 陷阱函数去过滤特定的属性，以避免这些属性被 `Object.keys()` 方法、 `Object.getOwnPropertyNames()` 方法、 `Object.getOwnPropertySymbols()` 方法或 `Object.assign()` 方法使用。假设你不想在结果中包含任何以下划线打头的属性（在 JS 的编码惯例中，这代表该字段是私有的），那么可以使用 `ownKeys` 陷阱函数来将它们过滤掉，就像下面这样：
 
-```
+```js
 let proxy = new Proxy({}, {
     ownKeys(trapTarget) {
         return Reflect.ownKeys(trapTarget).filter(key => {
@@ -740,7 +740,7 @@ console.log(symbols[0]);        // "Symbol(name)"
 
 `apply` 与 `construct` 陷阱函数结合起来就完全控制了任意的代理目标对象函数的行为。为了模拟函数的默认行为，你可以这么做：
 
-```
+```js
 let target = function() { return 42 },
     proxy = new Proxy(target, {
         apply: function(trapTarget, thisArg, argumentList) {
@@ -767,7 +767,7 @@ console.log(instance instanceof target);    // true
 
 `apply` 与 `construct` 陷阱函数在函数的执行方式上开启了很多的可能性。例如，假设你想要保证所有参数都是某个特定类型的，可使用 `apply` 陷阱函数来进行验证:
 
-```
+```js
 // 将所有参数相加
 function sum(...values) {
     return values.reduce((previous, current) => previous + current, 0);
@@ -802,7 +802,7 @@ let result = new sumProxy();
 
 相反的，你也可以限制函数必须使用 `new` 运算符调用，同时确保它的参数都是数值：
 
-```
+```js
 function Numbers(...values) {
     this.values = values;
 }
@@ -837,7 +837,7 @@ NumbersProxy(1, 2, 3, 4);
 
 第三章曾介绍了 `new.target` 元属性，在使用 `new` 运算符调用函数时，这个属性就是对该函数的一个引用。这意味着你可以使用 `new.target` 来判断函数被调用时是否使用了 `new` ，就像这样：
 
-```
+```js
 function Numbers(...values) {
 
     if (typeof new.target === "undefined") {
@@ -858,7 +858,7 @@ Numbers(1, 2, 3, 4);
 
 假设 `Numbers` 函数是硬编码的，无法被修改，已知该代码依赖于 `new.target` ，而你想要在调用函数时避免这个检查。在“必须使用 `new` ”这一限制已经确定的情况下，你可以使用 `apply` 陷阱函数来规避它：
 
-```
+```js
 function Numbers(...values) {
 
     if (typeof new.target === "undefined") {
@@ -884,7 +884,7 @@ console.log(instance.values);               // [1,2,3,4]
 
 你可以进一步指定 `Reflect.construct()` 的第三个参数，用于给 `new.target` 赋值。当函数把 `new.target` 与已知值进行比较的时候，例如在创建一个抽象基础类的构造器的场合下（参阅第九章），这么做会很有帮助。在抽象基础类的构造器中， `new.target` 被要求不能是构造器自身，正如这个例子：
 
-```
+```js
 class AbstractNumbers {
 
     constructor(...values) {
@@ -907,7 +907,7 @@ new AbstractNumbers(1, 2, 3, 4);
 
 当 `new AbstractNumbers()` 被调用时， `new.target` 等于 `AbstractNumbers` ，从而抛出了错误；而调用 `new Numbers()` 能正常工作，因为此时 `new.target` 等于 `Numbers` 。你可以使用代理手动指定 `new.target` 从而绕过这个限制：
 
-```
+```js
 class AbstractNumbers {
 
     constructor(...values) {
@@ -935,7 +935,7 @@ console.log(instance.values);               // [1,2,3,4]
 
 第九章说明了构造器必须始终使用 `new` 来调用，原因是类构造器的内部方法 `[[Call]]` 被明确要求抛出错误。然而代理可以拦截对于 `[[Call]]` 方法的调用，意味着你可以借助代理有效创建一个可被调用的类构造器。例如，如果想让类构造器在缺少 `new` 的情况下能够工作，你可以使用 `apply` 陷阱函数来创建一个新实例。这里有个例子：
 
-```
+```js
 class Person {
     constructor(name) {
         this.name = name;
@@ -967,7 +967,7 @@ console.log(me instanceof PersonProxy); // true
 
 当 `revoke()` 函数被调用后，就不能再对该 `proxy` 对象进行更多操作，任何与该代理对象交互的意图都会触发代理的陷阱函数，从而抛出一个错误。例如：
 
-```
+```js
 let target = {
     name: "target"
 };
@@ -988,7 +988,7 @@ console.log(proxy.name);
 
 在本章开始时，我解释了为何在 ES6 之前开发者无法准确模拟 JS 数组的行为。而代理与反射接口则允许你创建这样一种对象：在属性被添加或删除时，它的行为与内置数组类型的行为相同。为了刷新你的记忆，这里有个例子展示了代理所要模拟的行为：
 
-```
+```js
 let colors = ["red", "green", "blue"];
 
 console.log(colors.length);         // 3
@@ -1021,7 +1021,7 @@ console.log(colors[1]);             // "green"
 
 这个操作可以用下述的 JS 代码来实现：
 
-```
+```js
 function toUint32(value) {
     return Math.floor(Math.abs(Number(value))) % Math.pow(2, 32);
 }
@@ -1038,7 +1038,7 @@ function isArrayIndex(key) {
 
 你可能已经注意到：数组上述两个特殊行为都依赖于对属性的赋值，这就意味着你只需要使用 `set` 代理陷阱来达成这两个行为。首先，下面的例子实现了第一个行为，即：当一个大于 `length - 1` 的数组索引被使用时， `length` 属性需要被增加。
 
-```
+```js
 function toUint32(value) {
     return Math.floor(Math.abs(Number(value))) % Math.pow(2, 32);
 }
@@ -1094,7 +1094,7 @@ console.log(colors[3]);             // "black"
 
 仅当数组索引值大于或等于 `length` 属性值时，所需模拟的第一个数组行为才会被使用。而相反的，在将 `length` 属性值设置得比之前更小的时候，才需要使用第二个行为并移除数组的元素。此时不仅需要修改 `length` 属性的值，还需要移除所有不应再保留的元素。例如，若数组的 `length` 属性从 4 被设置为 2 ，则位置 2 与位置 3 的项就需要被移除。你可以像处理第一个行为那样，在 `set` 代理陷阱中完成这个操作。下面再次使用了前一段代码，并增加了 `createMyArray` 方法：
 
-```
+```js
 function toUint32(value) {
     return Math.floor(Math.abs(Number(value))) % Math.pow(2, 32);
 }
@@ -1164,7 +1164,7 @@ console.log(colors[0]);             // "red"
 
 这里有一个从类构造器返回代理的简单范例：
 
-```
+```js
 class Thing {
     constructor() {
         return new Proxy(this, {});
@@ -1179,7 +1179,7 @@ console.log(myThing instanceof Thing);      // true
 
 知道了这些，使用代理来创建一个定制的数组类就相当简单了。它的实现代码与“在减少长度属性时移除元素”那个小节的代码非常接近，使用了相同的代理代码，但这次是在类的构造器中使用它。这里有个完整的范例：
 
-```
+```js
 function toUint32(value) {
     return Math.floor(Math.abs(Number(value))) % Math.pow(2, 32);
 }
@@ -1252,7 +1252,7 @@ console.log(colors[0]);             // "red"
 
 代理对象可以被作为原型使用，但这么做会比本章前面的例子更复杂一些。在把代理对象作为原型时，仅当操作的默认行为会按惯例追踪原型时，代理陷阱才会被调用，这就限制了代理对象作为原型时的能力。考虑这个例子：
 
-```
+```js
 let target = {};
 let newTarget = Object.create(new Proxy(target, {
 
@@ -1284,7 +1284,7 @@ console.log(newTarget.hasOwnProperty("name"));  // true
 
 得益于这个流程，若你设置了一个 `get` 代理陷阱，则只有在对象不存在指定名称的自有属性时，该陷阱函数才会在对象的原型上被调用。当所访问的属性无法保证存在时，你可以使用 `get` 陷阱函数来阻止预期外的行为。下例创建了一个对象，当你尝试去访问一个不存在的属性时，它会抛出错误：
 
-```
+```js
 let target = {};
 let thing = Object.create(new Proxy(target, {
     get(trapTarget, key, receiver) {
@@ -1312,7 +1312,7 @@ let unknown = thing.unknown;
 
 为了更好地了解 `set` 陷阱函数何时会在原型上被调用、而何时不会，可研究下面这个展示了默认行为的示例：
 
-```
+```js
 let target = {};
 let thing = Object.create(new Proxy(target, {
     set(trapTarget, key, value, receiver) {
@@ -1344,7 +1344,7 @@ console.log(thing.name);                        // "boo"
 
 `has` 陷阱函数只在原型链查找触及原型对象的时候才会被调用。当使用代理作为原型时，这只会在指定名称的自有属性不存在时发生。例如：
 
-```
+```js
 let target = {};
 let thing = Object.create(new Proxy(target, {
     has(trapTarget, key) {
@@ -1369,7 +1369,7 @@ console.log("name" in thing);                   // true
 
 类不能直接被修改为将代理用作自身的原型，因为它们的 `prototype` 属性是不可写入的。然而你可以使用一点变通手段，利用继承来创建一个把代理作为自身原型的类。首先你需要使用构造器函数创建一个 ES5 风格的类定义。你可以将原型改写为一个代理，这里有个例子：
 
-```
+```js
 function NoSuchProperty() {
     // empty
 }
@@ -1390,7 +1390,7 @@ let result = thing.name;
 
 下一步是创建一个继承 `NoSuchProperty` 的类。你可以简单使用第九章介绍过的 `extends` 语法，来将代理引入该类的原型链，就像这样：
 
-```
+```js
 function NoSuchProperty() {
     // empty
 }
@@ -1422,7 +1422,7 @@ let area2 = shape.length * shape.wdth;
 
 这证明了该代理存在于 `shape` 的原型链中，但这可能并不明显，因为该代理不是 `shape` 的直接原型。事实上，该代理需要用两步才能从 `shape` 的原型链上被找到。你可以修改前面的例子来更清晰地领会这一点：
 
-```
+```js
 function NoSuchProperty() {
     // empty
 }
@@ -1459,7 +1459,7 @@ console.log(secondLevelProto === proxy);            // true
 
 继承行为在原型链上增加了一步，明白这一点很重要，因为在 `proxy` 变量上调用 `get` 陷阱函数的操作也需要多进行一步。如果欲使用的属性存在于 `Shape.prototype` 上，那么这就会防止 `get` 代理陷阱被调用，正如此例：
 
-```
+```js
 function NoSuchProperty() {
     // empty
 }

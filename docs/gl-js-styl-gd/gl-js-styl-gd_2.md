@@ -41,7 +41,7 @@ JavaScript 不支持包和命名空间.
 
 在全局作用域上, 使用一个唯一的, 与工程/库相关的名字作为前缀标识. 比如, 你的工程是 “Project Sloth”, 那么命名空间前缀可取为 `sloth.*`.
 
-```
+```js
 var sloth = {};
 
 sloth.sleep = function() {
@@ -51,7 +51,7 @@ sloth.sleep = function() {
 
 许多 JavaScript 库, 包括[the Closure Library](http://code.google.com/closure/library/)and[Dojo toolkit](http://www.dojotoolkit.org/)为你提供了声明你自己的命名空间的函数. 比如:
 
-```
+```js
 goog.provide('sloth');
 
 sloth.sleep = function() {
@@ -69,7 +69,7 @@ sloth.sleep = function() {
 
 如果你使用了外部库, 他的所有对象都在 `foo.hats.*` 下, 那么你自己的代码不能在 `foo.hats.*`下命名, 因为很有可能其他团队也在其中命名.
 
-```
+```js
 foo.require('foo.hats');
 
 /**
@@ -85,7 +85,7 @@ foo.hats.BowlerHat = function() {
 
 在你的内部代码中, 应该通过他们的内部名字来调用内部 API , 这样保持一致性可让编译器更好的优化你的代码.
 
-```
+```js
 foo.provide('googleyhats.BowlerHat');
 
 foo.require('foo.hats');
@@ -105,7 +105,7 @@ goog.exportSymbol('foo.hats.BowlerHat', googleyhats.BowlerHat);
 
 主要是为了提高可读性. 局部空间中的变量别名只需要取原名字的最后部分.
 
-```
+```js
 /**
  * @constructor
  */
@@ -128,7 +128,7 @@ myapp.main = function() {
 
 不要对命名空间创建别名.
 
-```
+```js
 myapp.main = function() {
   var namespace = some.long.namespace;
   namespace.MyClass.staticHelper(new namespace.MyClass());
@@ -137,7 +137,7 @@ myapp.main = function() {
 
 除非是枚举类型, 不然不要访问别名变量的属性.
 
-```
+```js
 /** @enum {string} */
 some.long.namespace.Fruit = {
   APPLE: 'a',
@@ -155,7 +155,7 @@ myapp.main = function() {
 }; 
 ```
 
-```
+```js
 myapp.main = function() {
   var MyClass = some.long.namespace.MyClass;
   MyClass.staticHelper(null);
@@ -208,7 +208,7 @@ myapp.main = function() {
 
 分号会被隐式插入到代码中, 所以你务必在同一行上插入大括号. 例如:
 
-```
+```js
 if (something) {
   // ...
 } else {
@@ -220,14 +220,14 @@ if (something) {
 
 如果初始值不是很长, 就保持写在单行上:
 
-```
+```js
 var arr = [1, 2, 3];  // No space after [ or before ].
 var obj = {a: 1, b: 2, c: 3};  // No space after { or before }. 
 ```
 
 初始值占用多行时, 缩进 2 个空格.
 
-```
+```js
 // Object initializer.
 var inset = {
   top: 10,
@@ -258,7 +258,7 @@ goog.dom.createDom(goog.dom.TagName.DIV, {
 
 如:
 
-```
+```js
 CORRECT_Object.prototype = {
   a: 0,
   b: 1,
@@ -268,7 +268,7 @@ CORRECT_Object.prototype = {
 
 不要这样做:
 
-```
+```js
 WRONG_Object.prototype = {
   a          : 0,
   b          : 1,
@@ -282,7 +282,7 @@ WRONG_Object.prototype = {
 
 如果一行超过 80 字符, 每个参数独占一行, 并以 4 个空格缩进, 或者与括号对齐, 以提高可读性. 尽可能不要让每行超过 80 个字符. 比如下面这样:
 
-```
+```js
 // Four-space, wrap at 80\.  Works with very long function names, survives
 // renaming without reindenting, low on space.
 goog.foo.bar.doThingThatIsVeryDifficultToExplain = function(
@@ -322,7 +322,7 @@ function bar(veryDescriptiveArgumentNumberOne,
 
 如果参数中有匿名函数, 函数体从调用该函数的左边开始缩进 2 个空格, 而不是从 function 这个关键字开始. 这让匿名函数更加易读 (不要增加很多没必要的缩进让函数体显示在屏幕的右侧).
 
-```
+```js
 var names = items.map(function(item) {
                         return item.name;
                       });
@@ -340,7 +340,7 @@ prefix.something.reallyLongFunctionName('whatever', function(a1, a2) {
 
 事实上, 除了初始化数组和对象, 和传递匿名函数外, 所有被拆开的多行文本要么选择与之前的表达式左对齐, 要么以 4 个（而不是 2 个）空格作为一缩进层次.
 
-```
+```js
 someWonderfulHtml = '' +
                     getEvenMoreHtml(someReallyInterestingValues, moreValues,
                                     evenMoreParams, 'a duck', true, 72,
@@ -370,7 +370,7 @@ if (searchableCollection(allYourStuff).contains(theStuffYouWant) &&
 
 使用空行来划分一组逻辑上相关联的代码片段.
 
-```
+```js
 doSomethingTo(x);
 doSomethingElseTo(x);
 andThen(x);
@@ -384,7 +384,7 @@ andNowWith(z);
 
 操作符始终跟随着前行, 这样就不用顾虑分号的隐式插入问题. 如果一行实在放不下, 还是按照上述的缩进风格来换行.
 
-```
+```js
 var x = a ? b : c;  // All on one line if it will fit.
 
 // Indentation +4 is OK.
@@ -431,7 +431,7 @@ JSDoc 的两个标记 `@private` 和 `@protected` 用来指明类, 函数, 属�
 
 永远不要为 全局变量, 函数, 构造器加 `@protected` 标记.
 
-```
+```js
 // File 1.
 // AA_PrivateClass_ and AA_init_ are accessible because they are global
 // and in the same file.
@@ -459,7 +459,7 @@ AA_init_();
 
 (C++/Java 中的私有/保护是指作用域上的可访问性, 在可访问性上的限制. JS 中是在限制在作用域上. PS: 可见性是与作用域对应)
 
-```
+```js
 // File 1.
 
 /** @constructor */
@@ -544,7 +544,7 @@ JSDoc 的类型语言, 按照 JS2 规范, 也进行了适当改变, 但编译器
 
 #### `number`
 
-```
+```js
 1
 1.0
 -5
@@ -556,7 +556,7 @@ Math.PI
 
 [数值对象](http://bq69.com/blog/articles/script/868/google-javascript-style-guide.html#Wrapper_objects_for_primitive_types)
 
-```
+```js
 new Number(true) 
 ```
 
@@ -564,7 +564,7 @@ new Number(true)
 
 字符串值
 
-```
+```js
 'Hello'
 "World"
 String(42) 
@@ -574,7 +574,7 @@ String(42)
 
 [字符串对象](http://bq69.com/blog/articles/script/868/google-javascript-style-guide.html#Wrapper_objects_for_primitive_types)
 
-```
+```js
 new String('Hello')
 new String(42) 
 ```
@@ -583,7 +583,7 @@ new String(42)
 
 布尔值
 
-```
+```js
 true
 false
 Boolean(0) 
@@ -593,33 +593,33 @@ Boolean(0)
 
 [布尔对象](http://bq69.com/blog/articles/script/868/google-javascript-style-guide.html#Wrapper_objects_for_primitive_types)
 
-```
+```js
 new Boolean(true) 
 ```
 
 #### `RegExp`
 
-```
+```js
 new RegExp('hello')
 /world/g 
 ```
 
 #### `Date`
 
-```
+```js
 new Date
 new Date() 
 ```
 
 #### `null`
 
-```
+```js
 null 
 ```
 
 #### `undefined`
 
-```
+```js
 undefined 
 ```
 
@@ -627,7 +627,7 @@ undefined
 
 没有返回值
 
-```
+```js
 function f() {
   return;
 } 
@@ -637,33 +637,33 @@ function f() {
 
 类型不明确的数组
 
-```
+```js
 ['foo', 0.3, null]
 [] 
 ```
 
 #### `Array.<number>`
 
-```
+```js
 [11, 22, 33] 
 ```
 
 #### `Array.<Array.<string>>`
 
-```
+```js
 Array.<Array.<string>> 
 ```
 
 #### `Object`
 
-```
+```js
 {}
 {foo: 'abc', bar: 123, baz: null} 
 ```
 
 #### `Object.<string>`
 
-```
+```js
 {'foo': 'bar'} 
 ```
 
@@ -673,7 +673,7 @@ Array.<Array.<string>>
 
 注意, JavaScript 中, 键总是被转换成字符串, 所以 `obj['1'] == obj[1]`. 也所以, 键在 for…in 循环中是字符串类型. 但在编译器中会明确根据键的类型来查找对象.
 
-```
+```js
 var obj = {};
 obj[1] = 'bar'; 
 ```
@@ -682,7 +682,7 @@ obj[1] = 'bar';
 
 [函数对象](http://bq69.com/blog/articles/script/868/google-javascript-style-guide.html#Wrapper_objects_for_primitive_types)
 
-```
+```js
 function(x, y) {
   return x * y;
 } 
@@ -692,7 +692,7 @@ function(x, y) {
 
 函数值
 
-```
+```js
 function(x, y) {
   return x * y;
 } 
@@ -700,7 +700,7 @@ function(x, y) {
 
 #### `SomeClass`
 
-```
+```js
 /** @constructor */
 function SomeClass() {}
 
@@ -709,7 +709,7 @@ new SomeClass();
 
 #### `SomeInterface`
 
-```
+```js
 /** @interface */
 function SomeInterface() {}
 
@@ -718,7 +718,7 @@ SomeInterface.prototype.draw = function() {};
 
 #### `project.MyClass`
 
-```
+```js
 /** @constructor */
 project.MyClass = function () {}
 
@@ -729,7 +729,7 @@ new project.MyClass()
 
 枚举
 
-```
+```js
 /** @enum {string} */
 project.MyEnum = {
   BLUE: '#0000dd',
@@ -741,7 +741,7 @@ project.MyEnum = {
 
 DOM 中的元素
 
-```
+```js
 document.createElement('div') 
 ```
 
@@ -749,7 +749,7 @@ document.createElement('div')
 
 DOM 中的节点.
 
-```
+```js
 document.body.firstChild 
 ```
 
@@ -757,7 +757,7 @@ document.body.firstChild
 
 DOM 中, 特定类型的元素.
 
-```
+```js
 htmlDocument.getElementsByTagName('input')[0] 
 ```
 
@@ -769,7 +769,7 @@ JavaScript 是一种弱类型语言, 明白可选, 非空和未定义参数或�
 
 除了字符串, 整型, 布尔, undefined 和 null 外, 对象可以是任何类型.
 
-```
+```js
 /**
  * Some class, initialized with a value.
  * @param {Object} value Some value.
@@ -787,7 +787,7 @@ function MyClass(value) {
 
 告诉编译器 `myValue_` 属性为一对象或 null. 如果 `myValue_` 永远都不会为 null, 就应该如下声明:
 
-```
+```js
 /**
  * Some class, initialized with a non-null value.
  * @param {!Object} value Some value.
@@ -807,7 +807,7 @@ function MyClass(value) {
 
 函数的可选参数可能在运行时没有定义, 所以如果他们又被赋给类属性, 需要声明成:
 
-```
+```js
 /**
  * Some class, initialized with an optional value.
  * @param {Object=} opt_value Some value (optional).
@@ -829,7 +829,7 @@ function MyClass(opt_value) {
 
 最后, 属性的非空和可选并不矛盾, 属性既可是非空, 也可是可选的. 下面的四种声明各不相同:
 
-```
+```js
 /**
  * Takes four arguments, two of which are nullable, and two of which are
  * optional.
@@ -870,7 +870,7 @@ function strangeButTrue(nonNull, mayBeNull, opt_nonNull, opt_mayBeNull) {
 
 应该提供文件的大体内容, 它的作者, 依赖关系和兼容性信息. 如下:
 
-```
+```js
 // Copyright 2009 Google Inc. All Rights Reserved.
 
 /**
@@ -888,7 +888,7 @@ function strangeButTrue(nonNull, mayBeNull, opt_nonNull, opt_mayBeNull) {
 
 如果该类是对接口的实现, 应该使用 `@implements` 标记.
 
-```
+```js
 /**
  * Class making something fun and easy.
  * @param {string} arg1 An argument that makes this more interesting.
@@ -906,7 +906,7 @@ goog.inherits(project.MyClass, goog.Disposable);
 
 提供参数的说明. 使用完整的句子, 并用第三人称来书写方法说明.
 
-```
+```js
 /**
  * Converts text to some completely different text.
  * @param {string} arg1 An argument that makes this more interesting.
@@ -929,7 +929,7 @@ function PR_someMethod(obj) {
 
 对于一些简单的, 不带参数的 getters, 说明可以忽略.
 
-```
+```js
 /**
  * @return {Element} The element for the component.
  */
@@ -942,7 +942,7 @@ goog.ui.Component.prototype.getElement = function() {
 
 也需要对属性进行注释.
 
-```
+```js
 /**
  * Maximum number of things per pane.
  * @type {number}
@@ -954,7 +954,7 @@ project.MyClass.prototype.someProperty = 4;
 
 有时, 类型检查不能很准确地推断出表达式的类型, 所以应该给它添加类型标记注释来明确之, 并且必须在表达式和类型标签外面包裹括号.
 
-```
+```js
 /** @type {number} */ (x)
 (/** @type {number} */ x) 
 ```
@@ -963,7 +963,7 @@ project.MyClass.prototype.someProperty = 4;
 
 如果你在 `@param`, `@return`, `@supported`, `@this` 或 `@deprecated` 中断行, 需要像在代码中一样, 使用 4 个空格作为一个缩进层次.
 
-```
+```js
 /**
  * Illustrates line wrapping for long param/return descriptions.
  * @param {string} foo This is a param with a description too long to fit in
@@ -980,7 +980,7 @@ project.MyClass.prototype.method = function(foo) {
 
 虽然不建议, 但也可对说明文字进行适当的排版对齐. 不过, 这样带来一些负面影响, 就是当你每次修改变量名时, 都得重新排版说明文字以保持和变量名对齐.
 
-```
+```js
 /**
  * This is NOT the preferred indentation method.
  * @param {string} foo This is a param with a description too long to fit in
@@ -995,7 +995,7 @@ project.MyClass.prototype.method = function(foo) {
 
 ### 枚举
 
-```
+```js
 /**
  * Enum for tri-state values.
  * @enum {number}
@@ -1009,7 +1009,7 @@ project.TriState = {
 
 注意一下, 枚举也具有有效类型, 所以可以当成参数类型来用.
 
-```
+```js
 /**
  * Sets project state.
  * @param {project.TriState} state New project state.
@@ -1023,7 +1023,7 @@ project.setState = function(state) {
 
 有时类型会很复杂. 比如下面的函数, 接收 Element 参数:
 
-```
+```js
 /**
  * @param {string} tagName
  * @param {(string|Element|Text|Array.<Element>|Array.<Text>)} contents
@@ -1036,7 +1036,7 @@ goog.createElement = function(tagName, contents) {
 
 你可以使用 `@typedef` 标记来定义个常用的类型表达式.
 
-```
+```js
  /**
 * @param {string} tagName
 * @param {goog.ElementContent} contents
@@ -1053,13 +1053,13 @@ goog.createElement = function(tagName, contents) {
 
 模板 & 例子：
 
-```
+```js
 @param {Type} 变量名 描述 
 ```
 
 *如:*
 
-```
+```js
 /**
 * Queries a Baz for items.
 * @param {number} groupNum Subgroup id to query.
@@ -1079,13 +1079,13 @@ goog.Baz.prototype.query = function(groupNum, term) {
 
 模板 & 例子：
 
-```
+```js
 @return {Type} 描述 
 ```
 
 *如:*
 
-```
+```js
 /**
 * @return {string} The hex ID of the last item.
 */
@@ -1107,13 +1107,13 @@ return id;
 
 模板 & 例子：
 
-```
+```js
 @author username@google.com (first last) 
 ```
 
 *如:*
 
-```
+```js
 /**
 * @fileoverview Utilities for handling textareas.
 * @author kuth@google.com (Uthur Pendragon)
@@ -1128,13 +1128,13 @@ return id;
 
 模板 & 例子：
 
-```
+```js
 @see Link 
 ```
 
 *如:*
 
-```
+```js
 /**
 * Adds a single item, recklessly.
 * @see #addSafely
@@ -1151,13 +1151,13 @@ return id;
 
 模板 & 例子：
 
-```
+```js
 @fileoverview 描述 
 ```
 
 *如:*
 
-```
+```js
 /**
 * @fileoverview Utilities for doing things that require this very long
 * but not indented comment.
@@ -1173,13 +1173,13 @@ return id;
 
 模板 & 例子：
 
-```
+```js
 @constructor 
 ```
 
 *如:*
 
-```
+```js
 /**
 * A rectangle.
 * @constructor
@@ -1197,13 +1197,13 @@ function GM_Rect() {
 
 模板 & 例子：
 
-```
+```js
 @interface 
 ```
 
 *如:*
 
-```
+```js
 /**
 * A shape.
 * @interface
@@ -1228,14 +1228,14 @@ Polygon.prototype.getSides = function() {};
 
 模板 & 例子：
 
-```
+```js
 @type Type
 @type {Type} 
 ```
 
 *如:*
 
-```
+```js
 /**
 * The message hex ID.
 * @type {string}
@@ -1253,14 +1253,14 @@ var hexId = hexId;
 
 模板 & 例子：
 
-```
+```js
 @extends Type
 @extends {Type} 
 ```
 
 *如:*
 
-```
+```js
 /**
 * Immutable empty node list.
 * @constructor
@@ -1279,14 +1279,14 @@ goog.ds.EmptyNodeList = function() {
 
 模板 & 例子：
 
-```
+```js
 @implements Type
 @implements {Type} 
 ```
 
 *如:*
 
-```
+```js
 /**
 * A shape.
 * @interface
@@ -1312,14 +1312,14 @@ Square.prototype.draw = function() {
 
 模板 & 例子：
 
-```
+```js
 @lends objectName
 @lends {objectName} 
 ```
 
 *如:*
 
-```
+```js
 goog.object.extend(
 Button.prototype,
 /** @lends {Button.prototype} */ {
@@ -1341,13 +1341,13 @@ isButton: function() { return true; }
 
 模板 & 例子：
 
-```
+```js
 @private 
 ```
 
 *如:*
 
-```
+```js
 /**
 * Handlers that are listening to this logger.
 * @type Array.<Function>
@@ -1368,13 +1368,13 @@ this.handlers_ = [];
 
 模板 & 例子：
 
-```
+```js
 @protected 
 ```
 
 *如:*
 
-```
+```js
 /**
 * Sets the component's root element to the given element.  Considered
 * protected and final.
@@ -1396,14 +1396,14 @@ goog.ui.Component.prototype.setElementInternal = function(element) {
 
 模板 & 例子：
 
-```
+```js
 @this Type
 @this {Type} 
 ```
 
 *如:*
 
-```
+```js
 pinto.chat.RosterWidget.extern('getRosterElement',
 /**
 * Returns the roster widget element.
@@ -1423,13 +1423,13 @@ return this.getWrappedComponent_().getElement();
 
 模板 & 例子：
 
-```
+```js
 @supported 描述 
 ```
 
 *如:*
 
-```
+```js
 /**
 * @fileoverview Event Manager
 * Provides an abstracted interface to the
@@ -1446,13 +1446,13 @@ return this.getWrappedComponent_().getElement();
 
 模板 & 例子：
 
-```
+```js
 @enum {Type} 
 ```
 
 *如:*
 
-```
+```js
 /**
 * Enum for tri-state values.
 * @enum {number}
@@ -1472,13 +1472,13 @@ MAYBE: 0
 
 模板 & 例子：
 
-```
+```js
 @deprecated 描述 
 ```
 
 *如:*
 
-```
+```js
 /**
 * Determines whether a node is a field.
 * @return {boolean} True if the contents of
@@ -1499,13 +1499,13 @@ BN_EditUtil.isTopEditableField = function(node) {
 
 模板 & 例子：
 
-```
+```js
 @override 
 ```
 
 *如:*
 
-```
+```js
 /**
 * @return {string} Human-readable representation of project.SubClass.
 * @override
@@ -1523,13 +1523,13 @@ project.SubClass.prototype.toString() {
 
 模板 & 例子：
 
-```
+```js
 @inheritDoc 
 ```
 
 *如:*
 
-```
+```js
 /** @inheritDoc */
 project.SubClass.prototype.toString() {
 // ...
@@ -1544,13 +1544,13 @@ project.SubClass.prototype.toString() {
 
 模板 & 例子：
 
-```
+```js
 {@code …} 
 ```
 
 *如:*
 
-```
+```js
 /**
 * Moves to the next position in the selection.
 * Throws {@code goog.iter.StopIteration} when it
@@ -1570,7 +1570,7 @@ goog.dom.RangeIterator.prototype.next = function() {
 
 模板 & 例子：
 
-```
+```js
 @license 
 ```
 
@@ -1578,7 +1578,7 @@ goog.dom.RangeIterator.prototype.next = function() {
 
 *如:*
 
-```
+```js
 /**
 * @preserve Copyright 2009 SomeThirdParty.
 * Here is the full license text and copyright
@@ -1597,13 +1597,13 @@ goog.dom.RangeIterator.prototype.next = function() {
 
 模板 & 例子：
 
-```
+```js
 @noalias 
 ```
 
 *如:*
 
-```
+```js
 /** @noalias */
 function Range() {} 
 ```
@@ -1616,13 +1616,13 @@ function Range() {}
 
 模板 & 例子：
 
-```
+```js
 @define {Type} 描述 
 ```
 
 *如:*
 
-```
+```js
 /** @define {boolean} */
 var TR_FLAGS_ENABLE_DEBUG = true;
 
@@ -1634,7 +1634,7 @@ goog.userAgent.ASSUME_IE = false;
 
 在上面例子中, BUILD 文件中指定了
 
-```
+```js
 –define=’goog.userAgent.ASSUME_IE=true’ 
 ```
 
@@ -1646,13 +1646,13 @@ goog.userAgent.ASSUME_IE = false;
 
 模板 & 例子：
 
-```
+```js
 @export 
 ```
 
 *如:*
 
-```
+```js
 /** @export */
 foo.MyPublicClass.prototype.myPublicMethod = function() {
 // ...
@@ -1663,7 +1663,7 @@ foo.MyPublicClass.prototype.myPublicMethod = function() {
 
 上面的例子代码, 当编译器运行时指定 –generate_exports 标志, 会生成下面的代码:
 
-```
+```js
 goog.exportSymbol('foo.MyPublicClass.prototype.myPublicMethod',
 foo.MyPublicClass.prototype.myPublicMethod); 
 ```
@@ -1681,13 +1681,13 @@ foo.MyPublicClass.prototype.myPublicMethod);
 
 模板 & 例子：
 
-```
+```js
 @const 
 ```
 
 *如:*
 
-```
+```js
 /** @const */ var MY_BEER = 'stout';
 
 /**
@@ -1724,13 +1724,13 @@ mynamespace.MY_BEER = 'stout';
 
 模板 & 例子：
 
-```
+```js
 @nosideeffects 
 ```
 
 *如:*
 
-```
+```js
 /** @nosideeffects */
 function noSideEffectsFn1() {
 // ...
@@ -1755,13 +1755,13 @@ a.prototype.noSideEffectsFn3 = function() {
 
 模板 & 例子：
 
-```
+```js
 @typedef 
 ```
 
 *如:*
 
-```
+```js
 /** @typedef {(string|number)} */
 goog.NumberLike;
 
@@ -1779,13 +1779,13 @@ goog.readNumber = function(x) {
 
 模板 & 例子：
 
-```
+```js
 @externs 
 ```
 
 *如:*
 
-```
+```js
 /**
 * @fileoverview This is an externs file.
 * @externs
@@ -1833,7 +1833,7 @@ var document;
 
 这就是说 JSDoc 不会完全依照纯文本中书写的格式. 所以, 不要在 JSDoc 中, 使用空白字符来做格式化:
 
-```
+```js
 /**
  * Computes weight based on three factors:
  *   items sent
@@ -1844,13 +1844,13 @@ var document;
 
 上面的注释, 出来的结果是:
 
-```
+```js
 Computes weight based on three factors: items sent items received items received 
 ```
 
 应该这样写:
 
-```
+```js
 /**
  * Computes weight based on three factors:
  * <ul>
@@ -1863,7 +1863,7 @@ Computes weight based on three factors: items sent items received items received
 
 另外, 也不要包含任何 HTML 或类 HTML 标签, 除非你就想让它们解析成 HTML 标签.
 
-```
+```js
 /**
  * Changes <b> tags to  tags.
  */ 
@@ -1871,13 +1871,13 @@ Computes weight based on three factors: items sent items received items received
 
 出来的结果是:
 
-```
+```js
 Changes tags to tags. 
 ```
 
 另外, 也应该在源代码文件中让其他人更可读, 所以不要过于使用 HTML 标签:
 
-```
+```js
 /**
  * Changes &lt;b&gt; tags to &lt;span&gt; tags.
  */ 
@@ -1885,7 +1885,7 @@ Changes tags to tags.
 
 上面的代码中, 其他人就很难知道你想干嘛, 直接改成下面的样子就清楚多了:
 
-```
+```js
 /**
 * Changes 'b' tags to 'span' tags.
 */ 
@@ -1918,7 +1918,7 @@ True 和 False 布尔表达式
 
 下面段比较糟糕的代码:
 
-```
+```js
 while (x != null) { 
 ```
 
@@ -1926,7 +1926,7 @@ while (x != null) {
 
 如果你想检查字符串是否为 null 或空:
 
-```
+```js
 if (y != null && y != '') { 
 ```
 
@@ -1950,7 +1950,7 @@ if (y != null && y != '') {
 
 三元操作符用于替代下面的代码:
 
-```
+```js
 if (val != 0) {
   return foo();
 } else {
@@ -1962,7 +1962,7 @@ if (val != 0) {
 
 在生成 HTML 代码时也是很有用的:
 
-```
+```js
 var html = '<input type="checkbox"' +
     (isChecked ? ' checked' : '') +
     (isEnabled ? '' : ' disabled') +
@@ -1975,7 +1975,7 @@ var html = '<input type="checkbox"' +
 
 “||” 被称作为 ‘default’ 操作符, 因为可以这样:
 
-```
+```js
 /** @param {*=} opt_win */
 function foo(opt_win) {
   var win;
@@ -1990,7 +1990,7 @@ function foo(opt_win) {
 
 你可以使用它来简化上面的代码:
 
-```
+```js
 /** @param {*=} opt_win */
 function foo(opt_win) {
   var win = opt_win || window;
@@ -2000,7 +2000,7 @@ function foo(opt_win) {
 
 “&&” 也可简短代码.比如:
 
-```
+```js
 if (node) {
   if (node.kids) {
     if (node.kids[index]) {
@@ -2012,7 +2012,7 @@ if (node) {
 
 你可以像这样来使用:
 
-```
+```js
 if (node && node.kids && node.kids[index]) {
   foo(node.kids[index]);
 } 
@@ -2020,7 +2020,7 @@ if (node && node.kids && node.kids[index]) {
 
 或者:
 
-```
+```js
 var kid = node && node.kids && node.kids[index];
 if (kid) {
   foo(kid);
@@ -2029,7 +2029,7 @@ if (kid) {
 
 不过这样就有点儿过头了:
 
-```
+```js
 node && node.kids && node.kids[index] && foo(node.kids[index]); 
 ```
 
@@ -2037,7 +2037,7 @@ node && node.kids && node.kids[index] && foo(node.kids[index]);
 
 通常是这样使用的:
 
-```
+```js
 function listHtml(items) {
   var html = '';
   for (var i = 0; i < items.length; ++i) {
@@ -2053,7 +2053,7 @@ function listHtml(items) {
 
 但这样在 IE 下非常慢, 可以用下面的方式:
 
-```
+```js
 function listHtml(items) {
   var html = [];
   for (var i = 0; i < items.length; ++i) {
@@ -2071,7 +2071,7 @@ Node lists 是通过给节点迭代器加一个过滤器来实现的.
 
 这表示获取他的属性, 如 length 的时间复杂度为 O(n), 通过 length 来遍历整个列表需要 O(n²).
 
-```
+```js
 var paragraphs = document.getElementsByTagName('p');
 for (var i = 0; i < paragraphs.length; i++) {
   doSomething(paragraphs[i]);
@@ -2080,7 +2080,7 @@ for (var i = 0; i < paragraphs.length; i++) {
 
 这样做会更好:
 
-```
+```js
 var paragraphs = document.getElementsByTagName('p');
 for (var i = 0, paragraph; paragraph = paragraphs[i]; i++) {
   doSomething(paragraph);
@@ -2091,7 +2091,7 @@ for (var i = 0, paragraph; paragraph = paragraphs[i]; i++) {
 
 在上面的例子中, 也可以通过 firstChild 和 nextSibling 来遍历孩子节点.
 
-```
+```js
 var parentNode = document.getElementById('foo');
 for (var child = parentNode.firstChild; child; child = child.nextSibling) {
   doSomething(child);

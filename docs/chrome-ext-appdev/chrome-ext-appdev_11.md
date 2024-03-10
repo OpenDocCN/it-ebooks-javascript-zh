@@ -8,7 +8,7 @@ Chrome 应用操作媒体库与操作文件系统类似——其实媒体库也�
 
 要使用`mediaGalleries`接口需要在 Manifest 中声明`mediaGalleries`权限：
 
-```
+```js
 "permissions": {
     {"mediaGalleries": ["read", "allAutoDetected"]} 
 } 
@@ -24,7 +24,7 @@ Chrome 应用操作媒体库与操作文件系统类似——其实媒体库也�
 
 通过`getMediaFileSystems`方法可以获取到媒体库对应的`fileSystem`：
 
-```
+```js
 chrome.mediaGalleries.getMediaFileSystems({
     interactive: 'if_needed'
 }, function(fileSystemArray){
@@ -38,7 +38,7 @@ chrome.mediaGalleries.getMediaFileSystems({
 
 为了得到这些信息，通过文件系统的接口是不够的，为此 Chrome 提供了获取此类信息的方法，`getMediaFileSystemMetadata`：
 
-```
+```js
 mediaInfo = chrome.mediaGalleries.getMediaFileSystemMetadata(mediaFileSystem); 
 ```
 
@@ -46,7 +46,7 @@ mediaInfo = chrome.mediaGalleries.getMediaFileSystemMetadata(mediaFileSystem);
 
 也可以通过`getAllMediaFileSystemMetadata`方法获取到全部的媒体库信息，但是`getAllMediaFileSystemMetadata`方法与`getMediaFileSystemMetadata`方法不同的是它使用回调函数的方式传回结果：
 
-```
+```js
 chrome.mediaGalleries.getAllMediaFileSystemMetadata(function(mediaInfoArray){
     //do something with mediaInfoArray
 }); 
@@ -60,7 +60,7 @@ chrome.mediaGalleries.getAllMediaFileSystemMetadata(function(mediaInfoArray){
 
 首先创建 Manifest 文件：
 
-```
+```js
 {
     "app": {
         "background": {
@@ -82,7 +82,7 @@ chrome.mediaGalleries.getAllMediaFileSystemMetadata(function(mediaInfoArray){
 
 background.js 用来监控应用启动事件，当用户启动应用后创建一个窗口：
 
-```
+```js
 chrome.app.runtime.onLaunched.addListener(function() {
     chrome.app.window.create('main.html', {
         id: 'main',
@@ -96,7 +96,7 @@ chrome.app.runtime.onLaunched.addListener(function() {
 
 在 main.html 用于展示检测到的媒体库：
 
-```
+```js
 <html>
 <head>
 <style>
@@ -192,7 +192,7 @@ body {
 
 下面来编写 main.js：
 
-```
+```js
 function getMedia(){
     chrome.mediaGalleries.getMediaFileSystems({
         interactive: 'if_needed'
@@ -242,7 +242,7 @@ getMedia();
 
 `addUserSelectedFolder`方法使用回调函数传递用户选择结果：
 
-```
+```js
 chrome.mediaGalleries.addUserSelectedFolder(function(mediaFileSystems, selectedFileSystemName){
     //We'll do something with mediaFileSystems later
 }); 
@@ -252,7 +252,7 @@ chrome.mediaGalleries.addUserSelectedFolder(function(mediaFileSystems, selectedF
 
 使用`dropPermissionForMediaFileSystem`方法可以取消对指定媒体库的访问权¹：
 
-```
+```js
 chrome.mediaGalleries.dropPermissionForMediaFileSystem(galleryId, function(){
     //do something after give up access a media gallery
 }); 
@@ -262,13 +262,13 @@ chrome.mediaGalleries.dropPermissionForMediaFileSystem(galleryId, function(){
 
 下面为`Media Manager`加上添加移除媒体库按钮：
 
-```
+```js
 <div id="appTitle">Media Manager<span id="edit">&#x3466;</span></div> 
 ```
 
 在 CSS 中添加按钮样式：
 
-```
+```js
 #edit {
     display: inline-block;
     font-size: 12px;
@@ -282,7 +282,7 @@ chrome.mediaGalleries.dropPermissionForMediaFileSystem(galleryId, function(){
 
 在 JS 中添加按钮事件：
 
-```
+```js
 document.getElementById('edit').onclick = function(){
     document.getElementById('container').innerHTML = '';
     chrome.mediaGalleries.getMediaFileSystems({
@@ -302,7 +302,7 @@ document.getElementById('edit').onclick = function(){
 
 通过`startMediaScan`方法开始更新媒体库¹：
 
-```
+```js
 chrome.mediaGalleries.startMediaScan(); 
 ```
 
@@ -310,7 +310,7 @@ chrome.mediaGalleries.startMediaScan();
 
 `startMediaScan`没有然后返回值，也不会调用任何回调函数，因为更新的过程所花费的时间可能非常长，所以要使用`onScanProgress`来监听更新过程：
 
-```
+```js
 chrome.mediaGalleries.onScanProgress.addListener(function(details){
     //do something with details
 }); 
@@ -320,7 +320,7 @@ chrome.mediaGalleries.onScanProgress.addListener(function(details){
 
 在更新媒体库的过程中，通过`cancelMediaScan`方法可以随时取消更新：
 
-```
+```js
 chrome.mediaGalleries.cancelMediaScan(); 
 ```
 
@@ -328,7 +328,7 @@ chrome.mediaGalleries.cancelMediaScan();
 
 当`onScanProgress`监测到更新完成事件之后，可以通过`addScanResults`方法向用户展示一个选择添加最新检测到媒体库的窗口：
 
-```
+```js
 chrome.mediaGalleries.addScanResults(function(mediaFileSystems){
     //do something with mediaFileSystems
 }); 
@@ -338,7 +338,7 @@ chrome.mediaGalleries.addScanResults(function(mediaFileSystems){
 
 下面我们来将更新媒体库的功能加入到 Media Manager。首先在 HTML 中添加更新按钮、loading 元素和出错提示框：
 
-```
+```js
 <div id="error">更新失败</div>
 <div id="appTitle">Media Manager<span id="edit">&#x3466;</span><span id="scan">&#xf015c;</span>
 <div id="loading">
@@ -353,7 +353,7 @@ chrome.mediaGalleries.addScanResults(function(mediaFileSystems){
 
 之后在 CSS 中添加相应的样式：
 
-```
+```js
 #appTitle {
     height: 60px;
     line-height: 60px;
@@ -446,7 +446,7 @@ chrome.mediaGalleries.addScanResults(function(mediaFileSystems){
 
 最后在 JS 中加入相应事件：
 
-```
+```js
 var scanning = false;
 
 document.getElementById('scan').onclick = function(){
@@ -493,7 +493,7 @@ chrome.mediaGalleries.onScanProgress&&chrome.mediaGalleries.onScanProgress.addLi
 
 通过`getMetadata`方法可以读取出媒体文件相关信息¹：
 
-```
+```js
 chrome.mediaGalleries.getMetadata(mediaFile, {metadataType: 'all'}, function(metadata){
     //do something with metadata
 }); 
@@ -505,7 +505,7 @@ chrome.mediaGalleries.getMetadata(mediaFile, {metadataType: 'all'}, function(met
 
 `metadata`为一个包含媒体信息的对象，完整结构如下：
 
-```
+```js
 {
     mimeType: MIME 类型,
     height: 视频或图片的高度，单位为像素,

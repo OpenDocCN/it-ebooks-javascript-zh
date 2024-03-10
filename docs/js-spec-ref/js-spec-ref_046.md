@@ -18,7 +18,7 @@ sessionStorage 保存的数据用于浏览器的一次会话，当会话结束�
 
 通过检查 window 对象是否包含 sessionStorage 和 localStorage 属性，可以确定浏览器是否支持这两个对象。
 
-```
+```js
 function checkStorageSupport() {
 
   // sessionStorage
@@ -45,7 +45,7 @@ sessionStorage 和 localStorage 保存的数据，都以“键值对”的形式
 
 存入数据使用 setItem 方法。它接受两个参数，第一个是键名，第二个是保存的数据。
 
-```
+```js
 sessionStorage.setItem("key","value");
 
 localStorage.setItem("key","value");
@@ -53,7 +53,7 @@ localStorage.setItem("key","value");
 
 读取数据使用 getItem 方法。它只有一个参数，就是键名。
 
-```
+```js
 var valueSession = sessionStorage.getItem("key");
 
 var valueLocal = localStorage.getItem("key");
@@ -63,7 +63,7 @@ var valueLocal = localStorage.getItem("key");
 
 removeItem 方法用于清除某个键名对应的数据。
 
-```
+```js
 sessionStorage.removeItem('key');
 
 localStorage.removeItem('key');
@@ -71,7 +71,7 @@ localStorage.removeItem('key');
 
 clear 方法用于清除所有保存的数据。
 
-```
+```js
 sessionStorage.clear();
 
 localStorage.clear();
@@ -81,7 +81,7 @@ localStorage.clear();
 
 利用 length 属性和 key 方法，可以遍历所有的键。
 
-```
+```js
 for(var i = 0; i < localStorage.length; i++){
     console.log(localStorage.key(i));
 }
@@ -89,7 +89,7 @@ for(var i = 0; i < localStorage.length; i++){
 
 其中的 key 方法，根据位置（从 0 开始）获得键值。
 
-```
+```js
 localStorage.key(1);
 ```
 
@@ -97,13 +97,13 @@ localStorage.key(1);
 
 当储存的数据发生变化时，会触发 storage 事件。我们可以指定这个事件的回调函数。
 
-```
+```js
 window.addEventListener("storage",onStorageChange);
 ```
 
 回调函数接受一个 event 对象作为参数。这个 event 对象的 key 属性，保存发生变化的键名。
 
-```
+```js
 function onStorageChange(e) {
      console.log(e.key);    
 }

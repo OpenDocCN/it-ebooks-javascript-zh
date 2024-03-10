@@ -10,7 +10,7 @@
 
 创建项目并测试运行，首先执行如下四条命令，最后在浏览器执行：[`localhost:4200/`](http://localhost:4200/)。
 
-```
+```js
 ember new chapter4_components  
 cd chapter4_components  
 ember server 
@@ -24,7 +24,7 @@ ember server
 
 下面定义一个组件，`ember g component blog-post`。[Ember CLI](http://www.ember-cli.com/user-guide/)会自动为你创建组件对应的的模板，执行这条命令之后你可以在`app/components`和`app/templates/components`下看到创建的文件。
 
-```
+```js
 <!--  app/templates/components/blog-post.hbs  -->
 
 <article class="blog-post">  
@@ -36,7 +36,7 @@ ember server
 
 为了演示组件的使用需要做些准备工作： `ember g route index`
 
-```
+```js
 //  app/routes/index.js
 
 import Ember from 'ember';
@@ -54,7 +54,7 @@ export default Ember.Route.extend({
 }); 
 ```
 
-```
+```js
 <!-- app/templates/index.hbs  -->
 
 {{#each model as |item|}}
@@ -87,7 +87,7 @@ export default Ember.Route.extend({
 
 举个简单的例子，在第一点“自定义组件及使用”中讲过，组件默认会被渲染到`div`标签内，你可以在组件类中修改这个默认标签。
 
-```
+```js
 //  app/components/blog-post.js
 
 import Ember from 'ember';
@@ -109,7 +109,7 @@ export default Ember.Component.extend({
 
 那么要怎么使用呢？非常简单，只需要把组件名作为参数传递过去即可，比如：使用`{{component 'blog-post'}}`与`{{blog-post}}`结果是一致的。我们可以修改第一点“自定义组件及使用”实例中模板`index.hbs`的代码。
 
-```
+```js
 <!-- app/templates/index.hbs  -->
 
 {{#each model as |item|}}
@@ -125,12 +125,12 @@ export default Ember.Component.extend({
 
 按照惯例，先做好准备工作，使用 Ember CLI 命令创建 2 个不同的组件。
 
-```
+```js
 ember g component foo-component  
 ember g component bar-component 
 ```
 
-```
+```js
 <!-- app/templates/components/bar-component.hbs -->
 
 <h1>Hello from bar</h1>  
@@ -139,7 +139,7 @@ ember g component bar-component
 
 为何能用`post`获取数据，因为在使用组件的地方传递了参数。在模板`index.hbs`中可以看到。
 
-```
+```js
 <!-- app/templates/components/foo-component.hbs -->
 
 <h1>Hello from foo</h1>  
@@ -148,7 +148,7 @@ ember g component bar-component
 
 修改显示的数据，注意数据的最后增加一个属性`pn`，`pn`的值就是组件的名称。
 
-```
+```js
 //  app/routes/index.js
 
 import Ember from 'ember';
@@ -168,7 +168,7 @@ export default Ember.Route.extend({
 
 修改调用组件的模板`index.hbs`。
 
-```
+```js
 <!-- app/templates/index.hbs  -->
 
 {{#each model as |item|}}

@@ -10,7 +10,7 @@
 
 使用存在赋值运算符（?=）来把函数分配给类库的原型（使用 :: 简写），然后把它放于一个立即执行函数表达式中（do ->）使其含有所有变量。
 
-```
+```js
 do -> Array::filter ?= (callback) ->
   element for element in this when callback element
 
@@ -34,7 +34,7 @@ array.filter (x) -> x > 5
 
 接下来，我们用上述的方法编译了 CoffeeScript 并附加了说明：
 
-```
+```js
 // (function(){ ... })() 是一个 IIFE， 使用 `do ->` 来编译它。
 (function() {
 
@@ -70,7 +70,7 @@ array.filter (x) -> x > 5
 
 使用 :: 把你的新函数分配到对象或者类的原型中。
 
-```
+```js
 String::capitalize = () ->
   (this.split(/\s+/).map (word) -> word[0].toUpperCase() + word[1..-1].toLowerCase()).join ' '
 

@@ -14,7 +14,7 @@
 
 首先使用传统方法来实现这个函数：
 
-```
+```js
 function containsAll(haystack) {
   for (var i = 1; i < arguments.length; i++) {
     var needle = arguments[i];
@@ -28,7 +28,7 @@ function containsAll(haystack) {
 
 在这个实现中，我们用到了神奇的[arguments 对象](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments)，它是一个类数组对象，其中包含了传递给函数的所有参数。这段代码实现了我们的需求，但它的可读性却不是最理想的。函数的参数列表中只有一个参数 haystack，我们无法一眼就看出这个函数实际上接受了多个参数。另外，我们一定要注意，应该从 1 开始迭代，而不是从 0 开始，因为 arguments[0]相当于参数 haystack。如果我们想要在 haystack 前后添加另一个参数，我们一定要记得更新循环体。不定参数恰好可以解决可读性与参数索引的问题。下面是用 ES6 不定参数特性实现的 containsAll 函数：
 
-```
+```js
 function containsAll(haystack, ...needles) {
   for (var needle of needles) {
     if (haystack.indexOf(needle) === -1) {
@@ -49,7 +49,7 @@ function containsAll(haystack, ...needles) {
 
 下面是一个简单的示例（反撇号表示模板字符串，[上周已经讨论过](https://hacks.mozilla.org/2015/05/es6-in-depth-template-strings-2/)。）：
 
-```
+```js
 function animalSentence(animals2="tigers", animals3="bears") {
     return `Lions and ${animals2} and ${animals3}! Oh my!`;
 }
@@ -57,7 +57,7 @@ function animalSentence(animals2="tigers", animals3="bears") {
 
 默认参数的定义形式为[param1[ = defaultValue1 ][, ..., paramN[ = defaultValueN ]]]，对于每个参数而言，定义默认值时=后的部分是一个表达式，如果调用者没有传递相应参数，将使用该表达式的值作为参数默认值。相关示例如下：
 
-```
+```js
  animalSentence();                       // Lions and tigers and bears! Oh my!
 animalSentence("elephants");            // Lions and elephants and bears! Oh my!
 animalSentence("elephants", "whales");  // Lions and elephants and whales! Oh my!
@@ -67,7 +67,7 @@ animalSentence("elephants", "whales");  // Lions and elephants and whales! Oh my
 
 *   默认值表达式在函数调用时自左向右求值，这一点与 Python 不同。这也意味着，默认表达式可以使用该参数之前已经填充好的其它参数值。举个例子，我们优化一下刚刚那个动物语句函数：
 
-```
+```js
 function animalSentenceFancy(animals2="tigers",
     animals3=(animals2 == "bears") ? "sealions" : "bears")
 {
@@ -81,13 +81,13 @@ function animalSentenceFancy(animals2="tigers",
 
 *   没有默认值的参数隐式默认为 undefined，所以
 
-```
+```js
 function myFunc(a=42, b) {...}
 ```
 
 是合法的，并且等效于
 
-```
+```js
 function myFunc(a=42, b=undefined) {...}
 ```
 

@@ -26,7 +26,7 @@
 
 简单说，所谓 SSE，就是浏览器向服务器发送一个 HTTP 请求，然后服务器不断单向地向浏览器推送“信息”（message）。这种信息在格式上很简单，就是“信息”加上前缀“data: ”，然后以“\n\n”结尾。
 
-```
+```js
 $ curl http://example.com/dates
 data: 1394572346452
 
@@ -57,7 +57,7 @@ SSE 与 WebSocket 有相似功能，都是用来建立浏览器与服务器之�
 
 首先，使用下面的代码，检测浏览器是否支持 SSE。
 
-```
+```js
 if (!!window.EventSource) {
   // ...
 }
@@ -65,7 +65,7 @@ if (!!window.EventSource) {
 
 然后，部署 SSE 大概如下。
 
-```
+```js
 var source = new EventSource('/dates');
 
 source.onmessage = function(e){
@@ -81,7 +81,7 @@ source.addEventListener('message', function(e){})
 
 首先，浏览器向服务器发起连接，生成一个 EventSource 的实例对象。
 
-```
+```js
 var source = new EventSource(url);
 ```
 
@@ -89,7 +89,7 @@ var source = new EventSource(url);
 
 下面是一个建立连接的实例。
 
-```
+```js
 if (!!window.EventSource) {
   var source = new EventSource('http://127.0.0.1/sses/');
 }
@@ -97,7 +97,7 @@ if (!!window.EventSource) {
 
 新生成的 EventSource 实例对象，有一个 readyState 属性，表明连接所处的状态。
 
-```
+```js
 source.readyState
 ```
 
@@ -113,7 +113,7 @@ source.readyState
 
 连接一旦建立，就会触发 open 事件，可以定义相应的回调函数。
 
-```
+```js
 source.onopen = function(event) {
   // handle open event
 };
@@ -129,7 +129,7 @@ source.addEventListener("open", function(event) {
 
 收到数据就会触发 message 事件。
 
-```
+```js
 source.onmessage = function(event) {
   var data = event.data;
   var origin = event.origin;
@@ -159,7 +159,7 @@ source.addEventListener("message", function(event) {
 
 如果发生通信错误（比如连接中断），就会触发 error 事件。
 
-```
+```js
 source.onerror = function(event) {
   // handle error event
 };
@@ -175,7 +175,7 @@ source.addEventListener("error", function(event) {
 
 服务器可以与浏览器约定自定义事件。这种情况下，发送回来的数据不会触发 message 事件。
 
-```
+```js
 source.addEventListener("foo", function(event) {
   var data = event.data;
   var origin = event.origin;
@@ -190,7 +190,7 @@ source.addEventListener("foo", function(event) {
 
 close 方法用于关闭连接。
 
-```
+```js
 source.close();
 ```
 
@@ -200,7 +200,7 @@ source.close();
 
 服务器端发送的数据的 HTTP 头信息如下：
 
-```
+```js
 Content-Type: text/event-stream
 Cache-Control: no-cache
 Connection: keep-alive
@@ -208,7 +208,7 @@ Connection: keep-alive
 
 后面的行都是如下格式：
 
-```
+```js
 field: value\n
 ```
 
@@ -216,13 +216,13 @@ field 可以取四个值：“data”, “event”, “id”, or “retry”，�
 
 以冒号开头的行，表示注释。通常，服务器每隔一段时间就会向浏览器发送一个注释，保持连接不中断。
 
-```
+```js
 : This is a comment
 ```
 
 下面是一些例子。
 
-```
+```js
 : this is a test stream\n\n
 
 data: some text\n\n
@@ -235,13 +235,13 @@ data: with two lines \n\n
 
 数据内容用 data 表示，可以占用一行或多行。如果数据只有一行，则像下面这样，以“\n\n”结尾。
 
-```
+```js
 data:  message\n\n
 ```
 
 如果数据有多行，则最后一行用“\n\n”结尾，前面行都用“\n”结尾。
 
-```
+```js
 data: begin message\n
 data: continue message\n\n
 ```
@@ -250,7 +250,7 @@ data: continue message\n\n
 
 以发送 JSON 格式的数据为例。
 
-```
+```js
 data: {\n
 data: "foo": "bar",\n
 data: "baz", 555\n
@@ -261,7 +261,7 @@ data: }\n\n
 
 数据标识符用 id 表示，相当于每一条数据的编号。
 
-```
+```js
 id: msg1\n
 data: message\n\n
 ```
@@ -272,7 +272,7 @@ data: message\n\n
 
 event 头信息表示自定义的数据类型，或者说数据的名字。
 
-```
+```js
 event: foo\n
 data: a foo event\n\n
 
@@ -288,7 +288,7 @@ data: a bar event\n\n
 
 浏览器默认的是，如果服务器端三秒内没有发送任何信息，则开始重连。服务器端可以用 retry 头信息，指定通信的最大间隔时间。
 
-```
+```js
 retry: 10000\n
 ```
 
@@ -298,7 +298,7 @@ retry: 10000\n
 
 下面是 Node.js 的服务器发送事件的[代码实例](http://cjihrig.com/blog/server-sent-events-in-node-js/)。
 
-```
+```js
 var http = require("http");
 
 http.createServer(function (req, res) {
@@ -327,7 +327,7 @@ http.createServer(function (req, res) {
 
 PHP 代码实例。
 
-```
+```js
 <?php
 header('Content-Type: text/event-stream');
 header('Cache-Control: no-cache'); // 建议不要缓存 SSE 数据

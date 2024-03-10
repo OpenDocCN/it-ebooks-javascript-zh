@@ -10,7 +10,7 @@ plugin_first
 
 ### 1.4.1\. 代码
 
-```
+```js
 ;(function($) { 
 
     $.fn.tab = function(options) {
@@ -45,14 +45,14 @@ plugin_first
 
 ### 1.4.2\. 解释一下配置项
 
-```
+```js
 // 将 defaults 和 options 参数合并到{}
 var opts = $.extend({},$.fn.tab.defaults,options); 
 ```
 
 ### 1.4.3\. 缓存 this
 
-```
+```js
 // 将 defaults 和 options 参数合并到{}
 var obj = $(this); 
 ```
@@ -61,7 +61,7 @@ var obj = $(this);
 
 ### 1.4.5\. 调用方式
 
-```
+```js
 <script>
     $(function(){
         $('.tab').tab();
@@ -73,7 +73,7 @@ var obj = $(this);
 
 ### 1.4.6\. jQuery plugin template
 
-```
+```js
 ;(function($) { 
 
     $.fn.XXXXXX = function(options) {
@@ -100,28 +100,28 @@ var obj = $(this);
 
 1.  有默认项
 
-```
+```js
 ``` 
-```
+```js
 
 $.fn.XXXXXX.defaults
 
 ```
-``` 
+```js 
 ```
 
 1.  基于 selector
 
-```
+```js
 ``` 
-```
+```js
 
 return this.each(function() { var obj = $(this);
 
 ```
  ...
 });
-``` 
+```js 
 ```
 
 解读：

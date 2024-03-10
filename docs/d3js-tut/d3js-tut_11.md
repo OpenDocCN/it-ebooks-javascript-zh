@@ -10,7 +10,7 @@ Update、Enter、Exit 是 D3 中三个非常重要的概念，它处理的是当
 
 前几章里，反复出现了形如以下的代码。
 
-```
+```js
 svg.selectAll("rect")   //选择 svg 内所有的矩形
     .data(dataset)      //绑定数组
     .enter()            //指定选择集的 enter 部分
@@ -41,7 +41,7 @@ svg.selectAll("rect")   //选择 svg 内所有的矩形
 
 现在 body 中有三个 p 元素，要绑定一个长度大于 3 的数组到 p 的选择集上，然后分别处理 update 和 enter 两部分。
 
-```
+```js
 var dataset = [ 3 , 6 , 9 , 12 , 15 ];
 
 //选择 body 中的 p 元素
@@ -82,7 +82,7 @@ enter.append("p")
 
 现在 body 中有三个 p 元素，要绑定一个长度小于 3 的数组到 p 的选择集上，然后分别处理 update 和 exit 两部分。
 
-```
+```js
 var dataset = [ 3 ];
 
 //选择 body 中的 p 元素
