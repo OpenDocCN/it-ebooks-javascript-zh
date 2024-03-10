@@ -1,12 +1,8 @@
 # 对象
 
-# 对象
-
 Javascript 最原始的类型是`true`, `false`, 数字, 字符串, `null` and `undefined`。**其他每个值都是 `对象`.**
 
 Javascript 对象包含成对的`propertyName（属性名）`: `propertyValue（属性值）`。
-
-# 创建
 
 # 创建
 
@@ -28,8 +24,6 @@ There are two ways to create an `object` in JavaScript: 在 Javascript 中，有
     ```
 
     > ***注意:*** 这很像 Java
-
-# 属性
 
 # 属性
 
@@ -74,8 +68,6 @@ language['newProperty'] = 'changed value';
 
 # 可变性
 
-# 可变性
-
 对象与原始值不同之处在于**对象可以改变**，而原始值不可改变。
 
 ```js
@@ -86,8 +78,6 @@ var myObject = { key: "first value"};
     myObject.key = "another value";
  // myObject 指向的还是原来的对象 
 ```
-
-# 引用
 
 # 引用
 
@@ -108,8 +98,6 @@ var a = {}, b = {}, c = {};
 a = b = c = {};
  // a, b, 和 c 都引用同一个空对象 
 ```
-
-# 原型
 
 # 原型
 
@@ -164,8 +152,6 @@ var stringRepresentation = child.toString();
 
 # 销毁
 
-# 销毁
-
 `销毁` 被用来从一个对象中 **删除一个属性** 。 从一个对象中删除一个属性就是将改属性从原型中移出：
 
 ```js
@@ -178,8 +164,6 @@ delete child.age;
 var prototypeAge = child.age;
  // 26，因为该孩子没有自己的 age 属性。 
 ```
-
-# 枚举
 
 # 枚举
 
@@ -203,8 +187,6 @@ for (kind in fruit){
 sentence = sentence.substr(0,sentence.length-2)+'.';
  // I have 2 apples, 5 oranges, 1 pear. 
 ```
-
-# 全局化
 
 # 全局化
 

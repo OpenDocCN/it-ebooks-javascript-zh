@@ -1,7 +1,5 @@
 # 其它
 
-# 其它
-
 ## `setTimeout` 和 `setInterval`
 
 由于 JavaScript 是异步的，可以使用 `setTimeout` 和 `setInterval` 来计划执行函数。

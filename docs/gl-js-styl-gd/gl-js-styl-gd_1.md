@@ -1,7 +1,5 @@
 # JavaScript 语言规范
 
-# JavaScript 语言规范
-
 # 变量
 
 ## 变量

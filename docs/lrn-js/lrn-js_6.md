@@ -1,7 +1,5 @@
 # 循环
 
-# 循环
-
 循环是一种变量在其中不断改变的重复状。如果您希望一遍又一遍地运行相同的代码，并且每次的值都不同，那么使用循环是很方便的。
 
 与其用：
@@ -21,8 +19,6 @@ for (var i=0; i < cars.length; i++) {
     doThing(cars[i]);
 } 
 ```
-
-# For
 
 # For 循环
 
@@ -49,8 +45,6 @@ Exercise 使用 for 循环，创建一个 `message` 变量，使其值为整数 
 ```js
 var message = "";
 ```
-
-# While
 
 # While 循环
 
@@ -87,8 +81,6 @@ Exercise 使用 while 循环，创建一个 `message` 变量，保存连接的�
 ```js
 var message = "";
 ```
-
-# Do...While
 
 # Do...While 循环
 

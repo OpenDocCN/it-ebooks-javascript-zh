@@ -1,7 +1,5 @@
 # JavaScript 编码风格
 
-# JavaScript 编码风格
-
 # 命名
 
 ## 命名
