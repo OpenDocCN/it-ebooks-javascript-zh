@@ -1,3 +1,5 @@
+# 编程风格
+
 本章探讨如何将 ES6 的新语法，运用到编码实践之中，与传统的 JavaScript 语法结合在一起，写出合理的、易于阅读和维护的代码。多家公司和组织已经公开了它们的风格规范，具体可参阅[jscs.info](http://jscs.info/)，下面的内容主要参考了[Airbnb](http://jscs.info/)的 JavaScript 风格规范。
 
 ## 块级作用域
@@ -7,7 +9,7 @@
 ES6 提出了两个新的声明变量的命令：let 和 const。其中，let 完全可以取代 var，因为两者语义相同，而且 let 没有副作用。
 
 ```
-      "use strict";
+"use strict";
 
 if(true) {
   let x = 'hello';
@@ -24,7 +26,7 @@ for (let i = 0; i < 10; i++) {
 var 命令存在变量提升效用，let 命令没有这个问题。
 
 ```
-      "use strict";
+"use strict";
 
 if(true) {
   console.log(x); // ReferenceError
@@ -42,7 +44,7 @@ if(true) {
 在 let 和 const 之间，建议优先使用 const，尤其是在全局环境，不应该设置变量，只应设置常量。这符合函数式编程思想，有利于将来的分布式运算。
 
 ```
-      // bad
+// bad
 var a = 1, b = 2, c = 3;
 
 // good
@@ -70,7 +72,7 @@ V8 引擎只在严格模式之下，支持 let 和 const。结合前两点，这
 静态字符串一律使用单引号或反引号，不使用双引号。动态字符串使用反引号。
 
 ```
-      // bad
+// bad
 const a = "foobar";
 const b = 'foo' + a + 'bar';
 
@@ -89,7 +91,7 @@ const c = 'foobar';
 使用数组成员对变量赋值，优先使用解构赋值。
 
 ```
-      const arr = [1, 2, 3, 4];
+const arr = [1, 2, 3, 4];
 
 // bad
 const first = arr[0];
@@ -103,7 +105,7 @@ const [first, second] = arr;
 函数的参数如果是对象的成员，优先使用解构赋值。
 
 ```
-      // bad
+// bad
 function getFullName(user) {
   const firstName = user.firstName;
   const lastName = user.lastName;
@@ -123,7 +125,7 @@ function getFullName({ firstName, lastName }) {
 如果函数返回多个值，优先使用对象的解构赋值，而不是数组的解构赋值。这样便于以后添加返回值，以及更改返回值的顺序。
 
 ```
-      // bad
+// bad
 function processInput(input) {
   return [left, right, top, bottom];
 }
@@ -142,7 +144,7 @@ const { left, right } = processInput(input);
 单行定义的对象，最后一个成员不以逗号结尾。多行定义的对象，最后一个成员以逗号结尾。
 
 ```
-      // bad
+// bad
 const a = { k1: v1, k2: v2, };
 const b = {
   k1: v1,
@@ -161,7 +163,7 @@ const b = {
 对象尽量静态化，一旦定义，就不得随意添加新的属性。如果添加属性不可避免，要使用 Object.assign 方法。
 
 ```
-      // bad
+// bad
 const a = {};
 a.x = 3;
 
@@ -178,7 +180,7 @@ a.x = 3;
 如果对象的属性名是动态的，可以在创造对象的时候，使用属性表达式定义。
 
 ```
-      // bad
+// bad
 const obj = {
   id: 5,
   name: 'San Francisco',
@@ -199,7 +201,7 @@ const obj = {
 另外，对象的属性和方法，尽量采用简洁表达法，这样易于描述和书写。
 
 ```
-      var ref = 'some value';
+var ref = 'some value';
 
 // bad
 const atom = {
@@ -230,7 +232,7 @@ const atom = {
 使用扩展运算符（...）拷贝数组。
 
 ```
-      // bad
+// bad
 const len = items.length;
 const itemsCopy = [];
 let i;
@@ -247,7 +249,7 @@ const itemsCopy = [...items];
 使用 Array.from 方法，将类似数组的对象转为数组。
 
 ```
-      const foo = document.querySelectorAll('.foo');
+const foo = document.querySelectorAll('.foo');
 const nodes = Array.from(foo);
 
 ```
@@ -257,7 +259,7 @@ const nodes = Array.from(foo);
 立即执行函数可以写成箭头函数的形式。
 
 ```
-      (() => {
+(() => {
   console.log('Welcome to the Internet.');
 })();
 
@@ -266,7 +268,7 @@ const nodes = Array.from(foo);
 那些需要使用函数表达式的场合，尽量用箭头函数代替。因为这样更简洁，而且绑定了 this。
 
 ```
-      // bad
+// bad
 [1, 2, 3].map(function (x) {
   return x * x;
 });
@@ -281,7 +283,7 @@ const nodes = Array.from(foo);
 箭头函数取代 Function.prototype.bind，不应再用 self/_this/that 绑定 this。
 
 ```
-      // bad
+// bad
 const self = this;
 const boundMethod = function(...params) {
   return method.apply(self, params);
@@ -298,7 +300,7 @@ const boundMethod = (...params) => method.apply(this, params);
 所有配置项都应该集中在一个对象，放在最后一个参数，布尔值不可以直接作为参数。
 
 ```
-      // bad
+// bad
 function divide(a, b, option = false ) {
 }
 
@@ -311,7 +313,7 @@ function divide(a, b, { option = false } = {}) {
 不要在函数体内使用 arguments 变量，使用 rest 运算符（...）代替。因为 rest 运算符显式表明你想要获取参数，而且 arguments 是一个类似数组的对象，而 rest 运算符可以提供一个真正的数组。
 
 ```
-      // bad
+// bad
 function concatenateAll() {
   const args = Array.prototype.slice.call(arguments);
   return args.join('');
@@ -327,7 +329,7 @@ function concatenateAll(...args) {
 使用默认值语法设置函数参数的默认值。
 
 ```
-      // bad
+// bad
 function handleThings(opts) {
   opts = opts || {};
 }
@@ -344,7 +346,7 @@ function handleThings(opts = {}) {
 注意区分 Object 和 Map，只有模拟实体对象时，才使用 Object。如果只是需要 key:value 的数据结构，使用 Map。因为 Map 有内建的遍历机制。
 
 ```
-      let map = new Map(arr);
+let map = new Map(arr);
 
 for (let key of map.keys()) {
   console.log(key);
@@ -365,7 +367,7 @@ for (let item of map.entries()) {
 总是用 class，取代需要 prototype 操作。因为 class 的写法更简洁，更易于理解。
 
 ```
-      // bad
+// bad
 function Queue(contents = []) {
   this._queue = [...contents];
 }
@@ -392,7 +394,7 @@ class Queue {
 使用 extends 实现继承，因为这样更简单，不会有破坏 instanceof 运算的危险。
 
 ```
-      // bad
+// bad
 const inherits = require('inherits');
 function PeekableQueue(contents) {
   Queue.apply(this, contents);
@@ -416,7 +418,7 @@ class PeekableQueue extends Queue {
 首先，Module 语法是 JavaScript 模块的标准写法，坚持使用这种写法。使用 import 取代 require。
 
 ```
-      // bad
+// bad
 const moduleA = require('moduleA');
 const func1 = moduleA.func1;
 const func2 = moduleA.func2;
@@ -429,7 +431,7 @@ import { func1, func2 } from 'moduleA';
 使用 export 取代 module.exports。
 
 ```
-      // commonJS 的写法
+// commonJS 的写法
 var React = require('react');
 
 var Breadcrumbs = React.createClass({
@@ -456,7 +458,7 @@ export default Breadcrumbs
 不要在模块输入中使用通配符。因为这样可以确保你的模块之中，有一个默认输出（export default）。
 
 ```
-      // bad
+// bad
 import * as myObject './importModule';
 
 // good
@@ -467,7 +469,7 @@ import myObject from './importModule';
 如果模块默认输出一个函数，函数名的首字母应该小写。
 
 ```
-      function makeStyleGuide() {
+function makeStyleGuide() {
 }
 
 export default makeStyleGuide;
@@ -477,7 +479,7 @@ export default makeStyleGuide;
 如果模块默认输出一个对象，对象名的首字母应该大写。
 
 ```
-      const StyleGuide = {
+const StyleGuide = {
   es6: {
   }
 };

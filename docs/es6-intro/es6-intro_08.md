@@ -1,9 +1,11 @@
+# 对象的扩展
+
 ## 属性的简洁表示法
 
 ES6 允许直接写入变量和函数，作为对象的属性和方法。这样的书写更加简洁。
 
 ```
-      function f( x, y ) {
+function f( x, y ) {
   return { x, y };
 }
 
@@ -18,7 +20,7 @@ function f( x, y ) {
 上面是属性简写的例子，方法也可以简写。
 
 ```
-      var o = {
+var o = {
   method() {
     return "Hello!";
   }
@@ -37,7 +39,7 @@ var o = {
 下面是一个更实际的例子。
 
 ```
-      var Person = {
+var Person = {
 
   name: '张三',
 
@@ -54,7 +56,7 @@ var o = {
 这种写法用于函数的返回值，将会非常方便。
 
 ```
-      function getPoint() {
+function getPoint() {
   var x = 1;
   var y = 10;
 
@@ -71,7 +73,7 @@ getPoint()
 JavaScript 语言定义对象的属性，有两种方法。
 
 ```
-      // 方法一
+// 方法一
 obj.foo = true;
 
 // 方法二
@@ -84,7 +86,7 @@ obj['a'+'bc'] = 123;
 但是，如果使用字面量方式定义对象（使用大括号），在 ES5 中只能使用方法一（标识符）定义属性。
 
 ```
-      var obj = {
+var obj = {
   foo: true,
   abc: 123
 };
@@ -94,7 +96,7 @@ obj['a'+'bc'] = 123;
 ES6 允许字面量定义对象时，用方法二（表达式）作为对象的属性名，即把表达式放在方括号内。
 
 ```
-      let propKey = 'foo';
+let propKey = 'foo';
 
 let obj = {
    [propKey]: true,
@@ -106,7 +108,7 @@ let obj = {
 下面是另一个例子。
 
 ```
-      var lastWord = "last word";
+var lastWord = "last word";
 
 var a = {
     "first word": "hello",
@@ -122,7 +124,7 @@ a["last word"] // "world"
 表达式还可以用于定义方法名。
 
 ```
-      let obj = {
+let obj = {
   ['h'+'ello']() {
     return 'hi';
   }
@@ -137,7 +139,7 @@ console.log(obj.hello()); // hi
 函数的 name 属性，返回函数名。ES6 为对象方法也添加了 name 属性。
 
 ```
-      var person = {
+var person = {
   sayName: function() {
     console.log(this.name);
   },
@@ -154,7 +156,7 @@ person.firstName.name // "get firstName"
 上面代码中，方法的 name 属性返回函数名（即方法名）。如果使用了存值函数，则会在方法名前加上 get。如果是存值函数，方法名的前面会加上 set。
 
 ```
-      var doSomething = function() {
+var doSomething = function() {
   // ...
 };
 
@@ -167,7 +169,7 @@ console.log((new Function()).name);     // "anonymous"
 有两种特殊情况：bind 方法创造的函数，name 属性返回“bound”加上原函数的名字；Function 构造函数创造的函数，name 属性返回“anonymous”。
 
 ```
-      (new Function()).name // "anonymous"
+(new Function()).name // "anonymous"
 
 var doSomething = function() {
   // ...
@@ -181,7 +183,7 @@ doSomething.bind().name // "bound doSomething"
 Object.is()用来比较两个值是否严格相等。它与严格比较运算符（===）的行为基本一致，不同之处只有两个：一是+0 不等于-0，二是 NaN 等于自身。
 
 ```
-      +0 === -0 //true
++0 === -0 //true
 NaN === NaN // false
 
 Object.is(+0, -0) // false
@@ -192,7 +194,7 @@ Object.is(NaN, NaN) // true
 ES5 可以通过下面的代码，部署 Object.is()。
 
 ```
-      Object.defineProperty(Object, 'is', {
+Object.defineProperty(Object, 'is', {
   value: function(x, y) {
     if (x === y) {
       // 针对+0 不等于 -0 的情况
@@ -213,7 +215,7 @@ ES5 可以通过下面的代码，部署 Object.is()。
 Object.assign 方法用来将源对象（source）的所有可枚举属性，复制到目标对象（target）。它至少需要两个对象作为参数，第一个参数是目标对象，后面的参数都是源对象。只要有一个参数不是对象，就会抛出 TypeError 错误。
 
 ```
-      var target = { a: 1 };
+var target = { a: 1 };
 
 var source1 = { b: 2 };
 var source2 = { c: 3 };
@@ -226,7 +228,7 @@ target // {a:1, b:2, c:3}
 注意，如果目标对象与源对象有同名属性，或多个源对象有同名属性，则后面的属性会覆盖前面的属性。
 
 ```
-      var target = { a: 1, b: 1 };
+var target = { a: 1, b: 1 };
 
 var source1 = { b: 2, c: 2 };
 var source2 = { c: 3 };
@@ -241,7 +243,7 @@ assign 方法有很多用处。
 **（1）为对象添加属性**
 
 ```
-      class Point {
+class Point {
   constructor(x, y) {
     Object.assign(this, {x, y});
   }
@@ -254,7 +256,7 @@ assign 方法有很多用处。
 **（2）为对象添加方法**
 
 ```
-      Object.assign(SomeClass.prototype, {
+Object.assign(SomeClass.prototype, {
   someMethod(arg1, arg2) {
     ···
   },
@@ -278,7 +280,7 @@ SomeClass.prototype.anotherMethod = function () {
 **（3）克隆对象**
 
 ```
-      function clone(origin) {
+function clone(origin) {
   return Object.assign({}, origin);
 }
 
@@ -289,7 +291,7 @@ SomeClass.prototype.anotherMethod = function () {
 不过，采用这种方法克隆，只能克隆原始对象自身的值，不能克隆它继承的值。如果想要保持继承链，可以采用下面的代码。
 
 ```
-      function clone(origin) {
+function clone(origin) {
   let originProto = Object.getPrototypeOf(origin);
   return Object.assign(Object.create(originProto), origin);
 }
@@ -301,7 +303,7 @@ SomeClass.prototype.anotherMethod = function () {
 将多个对象合并到某个对象。
 
 ```
-      const merge =
+const merge =
   (target, ...sources) => Object.assign(target, ...sources);
 
 ```
@@ -309,7 +311,7 @@ SomeClass.prototype.anotherMethod = function () {
 如果希望合并后返回一个新对象，可以改写上面函数，对一个空对象合并。
 
 ```
-      const merge =
+const merge =
   (...sources) => Object.assign({}, ...sources);
 
 ```
@@ -317,7 +319,7 @@ SomeClass.prototype.anotherMethod = function () {
 **（5）为属性指定默认值**
 
 ```
-      const DEFAULTS = {
+const DEFAULTS = {
   logLevel: 0,
   outputFormat: 'html'
 };
@@ -337,7 +339,7 @@ function processContent(options) {
 **proto**属性，用来读取或设置当前对象的 prototype 对象。该属性一度被正式写入 ES6 草案，但后来又被移除。目前，所有浏览器（包括 IE11）都部署了这个属性。
 
 ```
-      // es6 的写法
+// es6 的写法
 
 var obj = {
   __proto__: someOtherObj,
@@ -358,7 +360,7 @@ obj.method = function() { ... }
 Object.setPrototypeOf 方法的作用与**proto**相同，用来设置一个对象的 prototype 对象。它是 ES6 正式推荐的设置原型对象的方法。
 
 ```
-      // 格式
+// 格式
 Object.setPrototypeOf(object, prototype)
 
 // 用法
@@ -369,7 +371,7 @@ var o = Object.setPrototypeOf({}, null);
 该方法等同于下面的函数。
 
 ```
-      function (obj, proto) {
+function (obj, proto) {
   obj.__proto__ = proto;
   return obj;
 }
@@ -381,7 +383,7 @@ var o = Object.setPrototypeOf({}, null);
 该方法与 setPrototypeOf 方法配套，用于读取一个对象的 prototype 对象。
 
 ```
-      Object.getPrototypeOf(obj)
+Object.getPrototypeOf(obj)
 
 ```
 
@@ -394,7 +396,7 @@ var o = Object.setPrototypeOf({}, null);
 ES6 引入了一种新的原始数据类型 Symbol，表示独一无二的 ID。它通过 Symbol 函数生成。这就是说，对象的属性名现在可以有两种类型，一种是原来就有的字符串，另一种就是新增的 Symbol 类型。凡是属性名属于 Symbol 类型，就都是独一无二的，可以保证不会与其他属性名产生冲突。
 
 ```
-      let s = Symbol();
+let s = Symbol();
 
 typeof s
 // "symbol"
@@ -408,7 +410,7 @@ typeof s
 Symbol 函数可以接受一个字符串作为参数，表示对 Symbol 实例的描述，主要是为了在控制台显示，或者转为字符串时，比较容易区分。
 
 ```
-      var s1 = Symbol('foo');
+var s1 = Symbol('foo');
 var s2 = Symbol('bar');
 
 s1 // Symbol(foo)
@@ -424,7 +426,7 @@ s2.toString() // "Symbol(bar)"
 注意，Symbol 函数的参数只是表示对当前 Symbol 类型的值的描述，因此相同参数的 Symbol 函数的返回值是不相等的。
 
 ```
-      // 没有参数的情况
+// 没有参数的情况
 var s1 = Symbol();
 var s2 = Symbol();
 
@@ -443,7 +445,7 @@ s1 === s2 // false
 Symbol 类型的值不能与其他类型的值进行运算，会报错。
 
 ```
-      var sym = Symbol('My symbol');
+var sym = Symbol('My symbol');
 
 "your symbol is " + sym
 // TypeError: can't convert symbol to string
@@ -455,7 +457,7 @@ Symbol 类型的值不能与其他类型的值进行运算，会报错。
 但是，Symbol 类型的值可以转为字符串。
 
 ```
-      var sym = Symbol('My symbol');
+var sym = Symbol('My symbol');
 
 String(sym) // 'Symbol(My symbol)'
 sym.toString() // 'Symbol(My symbol)'
@@ -467,7 +469,7 @@ sym.toString() // 'Symbol(My symbol)'
 由于每一个 Symbol 值都是不相等的，这意味着 Symbol 值可以作为标识符，用于对象的属性名，就能保证不会出现同名的属性。这对于一个对象由多个模块构成的情况非常有用，能防止某一个键被不小心改写或覆盖。
 
 ```
-      var mySymbol = Symbol();
+var mySymbol = Symbol();
 
 // 第一种写法
 var a = {};
@@ -492,7 +494,7 @@ a[mySymbol] // "Hello!"
 注意，Symbol 值作为对象属性名时，不能用点运算符。
 
 ```
-      var mySymbol = Symbol();
+var mySymbol = Symbol();
 var a = {};
 
 a.mySymbol = 'Hello!';
@@ -506,7 +508,7 @@ a['mySymbol'] // "Hello!"
 同理，在对象的内部，使用 Symbol 值定义属性时，Symbol 值必须放在方括号之中。
 
 ```
-      let s = Symbol();
+let s = Symbol();
 
 let obj = {
   [s]: function (arg) { ... }
@@ -521,7 +523,7 @@ objs;
 采用增强的对象写法，上面代码的 obj 对象可以写得更简洁一些。
 
 ```
-      let obj = {
+let obj = {
   s { ... }
 };
 
@@ -530,7 +532,7 @@ objs;
 Symbol 类型还可以用于定义一组常量，保证这组常量的值都是不相等的。
 
 ```
-      log.levels = {
+log.levels = {
     DEBUG: Symbol('debug'),
     INFO: Symbol('info'),
     WARN: Symbol('warn'),
@@ -549,7 +551,7 @@ Symbol 作为属性名，该属性不会出现在 for...in、for...of 循环中�
 Object.getOwnPropertySymbols 方法返回一个数组，成员是当前对象的所有用作属性名的 Symbol 值。
 
 ```
-      var obj = {};
+var obj = {};
 var a = Symbol('a');
 var b = Symbol.for('b');
 
@@ -566,7 +568,7 @@ objectSymbols
 下面是另一个例子，Object.getOwnPropertySymbols 方法与 for...in 循环、Object.getOwnPropertyNames 方法进行对比的例子。
 
 ```
-      var obj = {};
+var obj = {};
 
 var foo = Symbol("foo");
 
@@ -591,7 +593,7 @@ Object.getOwnPropertySymbols(obj)
 另一个新的 API，Reflect.ownKeys 方法可以返回所有类型的键名，包括常规键名和 Symbol 键名。
 
 ```
-      let obj = {
+let obj = {
   [Symbol('my_key')]: 1,
   enum: 2,
   nonEnum: 3
@@ -605,7 +607,7 @@ Reflect.ownKeys(obj)
 由于以 Symbol 值作为名称的属性，不会被常规方法遍历得到。我们可以利用这个特性，为对象定义一些非私有的、但又希望只用于内部的方法。
 
 ```
-      var size = Symbol('size');
+var size = Symbol('size');
 
 class Collection {
   constructor() {
@@ -641,7 +643,7 @@ Object.getOwnPropertySymbols(x) // [Symbol(size)]
 有时，我们希望重新使用同一个 Symbol 值，`Symbol.for`方法可以做到这一点。它接受一个字符串作为参数，然后搜索有没有以该参数作为名称的 Symbol 值。如果有，就返回这个 Symbol 值，否则就新建并返回一个以该字符串为名称的 Symbol 值。
 
 ```
-      var s1 = Symbol.for('foo');
+var s1 = Symbol.for('foo');
 var s2 = Symbol.for('foo');
 
 s1 === s2 // true
@@ -653,7 +655,7 @@ s1 === s2 // true
 `Symbol.for()`与`Symbol()`这两种写法，都会生成新的 Symbol。它们的区别是，前者会被登记在全局环境中供搜索，后者不会。`Symbol.for()`不会每次调用就返回一个新的 Symbol 类型的值，而是会先检查给定的 key 是否已经存在，如果不存在才会新建一个值。比如，如果你调用`Symbol.for("cat")`30 次，每次都会返回同一个 Symbol 值，但是调用`Symbol("cat")`30 次，会返回 30 个不同的 Symbol 值。
 
 ```
-      Symbol.for("bar") === Symbol.for("bar")
+Symbol.for("bar") === Symbol.for("bar")
 // true
 
 Symbol("bar") === Symbol("bar")
@@ -666,7 +668,7 @@ Symbol("bar") === Symbol("bar")
 Symbol.keyFor 方法返回一个已登记的 Symbol 类型值的 key。
 
 ```
-      var s1 = Symbol.for("foo");
+var s1 = Symbol.for("foo");
 Symbol.keyFor(s1) // "foo"
 
 var s2 = Symbol("foo");
@@ -679,7 +681,7 @@ Symbol.keyFor(s2) // undefined
 需要注意的是，`Symbol.for`为 Symbol 值登记的名字，是全局环境的，可以在不同的 iframe 或 service worker 中取到同一个值。
 
 ```
-      iframe = document.createElement('iframe');
+iframe = document.createElement('iframe');
 iframe.src = String(window.location);
 document.body.appendChild(iframe);
 
@@ -715,7 +717,7 @@ iframe.contentWindow.Symbol.for('foo') === Symbol.for('foo')
 对象的 Symbol.iterator 属性，指向该对象的默认遍历器方法，即该对象进行 for...of 循环时，会调用这个方法，返回该对象的默认遍历器，详细介绍参见《Iterator 和 for...of 循环》一章。
 
 ```
-      class Collection {
+class Collection {
   *[Symbol.iterator]() {
     let i = 0;
     while(this[i] !== undefined) {
@@ -747,7 +749,7 @@ for(let value of myCollection) {
 对象的 Symbol.toStringTag 属性，指向一个方法。在该对象上面调用`Object.prototype.toString`方法时，如果这个属性存在，它的返回值会出现在 toString 方法返回的字符串之中，表示对象的类型。也就是说，这个属性可以用来定制`[object Object]`或`[object Array]`中 object 后面的那个字符串。
 
 ```
-      class Collection {
+class Collection {
   get [Symbol.toStringTag]() {
     return 'xxx';
   }
@@ -762,7 +764,7 @@ Object.prototype.toString.call(x) // "[object xxx]"
 对象的 Symbol.unscopables 属性，指向一个对象。该对象指定了使用 with 关键字时，那些属性会被 with 环境排除。
 
 ```
-      Array.prototype[Symbol.unscopables]
+Array.prototype[Symbol.unscopables]
 // {
 //   copyWithin: true,
 //   entries: true,
@@ -780,7 +782,7 @@ Object.keys(Array.prototype[Symbol.unscopables])
 上面代码说明，数组有 6 个属性，会被 with 命令排除。
 
 ```
-      // 没有 unscopables 时
+// 没有 unscopables 时
 class MyClass {
   foo() { return 1; }
 }
@@ -816,7 +818,7 @@ Proxy 用于修改某些操作的默认行为，等同于在语言层面做出�
 Proxy 可以理解成，在目标对象之前架设一层“拦截”，外界对该对象的访问，都必须先通过这层拦截，因此提供了一种机制，可以对外界的访问进行过滤和改写。Proxy 这个词的原意是代理，用在这里表示由它来“代理”某些操作，可以译为“代理器”。
 
 ```
-      var obj = new Proxy({}, {
+var obj = new Proxy({}, {
   get: function (target, key, receiver) {
     console.log(`getting ${key}!`);
     return Reflect.get(target, key, receiver);
@@ -832,7 +834,7 @@ Proxy 可以理解成，在目标对象之前架设一层“拦截”，外界�
 上面代码对一个空对象架设了一层拦截，重定义了属性的读取（get）和设置（set）行为。这里暂时不解释具体的语法，只看运行结果。对设置了拦截行为的对象 obj，去读写它的属性，就会得到下面的结果。
 
 ```
-      obj.count = 1
+obj.count = 1
 //  setting count!
 ++obj.count
 //  getting count!
@@ -846,7 +848,7 @@ Proxy 可以理解成，在目标对象之前架设一层“拦截”，外界�
 ES6 原生提供 Proxy 构造函数，用来生成 Proxy 实例。
 
 ```
-      var proxy = new Proxy(target, handler)
+var proxy = new Proxy(target, handler)
 
 ```
 
@@ -855,7 +857,7 @@ Proxy 对象的所用用法，都是上面这种形式，不同的只是 handler
 下面是另一个拦截读取属性行为的例子。
 
 ```
-      var proxy = new Proxy({}, {
+var proxy = new Proxy({}, {
   get: function(target, property) {
     return 35;
   }
@@ -874,14 +876,14 @@ proxy.title // 35
 一个技巧是将 Proxy 对象，设置到`object.proxy`属性，从而可以在 object 对象上调用。
 
 ```
-      var object = { proxy: new Proxy(target, handler) }
+var object = { proxy: new Proxy(target, handler) }
 
 ```
 
 Proxy 实例也可以作为其他对象的原型对象。
 
 ```
-      var proxy = new Proxy({}, {
+var proxy = new Proxy({}, {
   get: function(target, property) {
     return 35;
   }
@@ -897,7 +899,7 @@ obj.time // 35
 同一个拦截器函数，可以设置拦截多个操作。
 
 ```
-      var handler = {
+var handler = {
   get: function(target, name) {
     if (name === 'prototype') return Object.prototype;
     return 'Hello, '+ name;
@@ -990,7 +992,7 @@ fproxy.foo; // 'Hello, foo'
 get 方法用于拦截某个属性的读取操作。上文已经有一个例子，下面是另一个拦截读取操作的例子。
 
 ```
-      var person = {
+var person = {
   name: "张三"
 };
 
@@ -1014,7 +1016,7 @@ proxy.age // 抛出一个错误
 利用 proxy，可以将读取属性的操作（get），转变为执行某个函数。
 
 ```
-      var pipe = (function () {
+var pipe = (function () {
   var pipe;
   return function (value) {
     pipe = [];
@@ -1048,7 +1050,7 @@ pipe(3) . double . pow . reverseInt . get
 set 方法用来拦截某个属性的赋值操作。假定 Person 对象有一个 age 属性，该属性应该是一个不大于 200 的整数，那么可以使用 Proxy 对象保证 age 的属性值符合要求。
 
 ```
-      let validator = {
+let validator = {
   set: function(obj, prop, value) {
     if (prop === 'age') {
       if (!Number.isInteger(value)) {
@@ -1081,7 +1083,7 @@ person.age = 300 // 报错
 apply 方法拦截函数的调用、call 和 apply 操作。
 
 ```
-      var target = function () { return 'I am the target'; };
+var target = function () { return 'I am the target'; };
 var handler = {
   apply: function (receiver, ...args) {
     return 'I am the proxy';
@@ -1102,7 +1104,7 @@ p() === 'I am the proxy';
 ownKeys 方法用来拦截 Object.keys()操作。
 
 ```
-      let target = {};
+let target = {};
 
 let handler = {
   ownKeys(target) {
@@ -1124,7 +1126,7 @@ Object.keys(proxy)
 Proxy.revocable 方法返回一个可取消的 Proxy 实例。
 
 ```
-      let target = {};
+let target = {};
 let handler = {};
 
 let {proxy, revoke} = Proxy.revocable(target, handler);
@@ -1154,7 +1156,7 @@ Reflect 对象与 Proxy 对象一样，也是 ES6 为了操作对象而提供的
 （4）Reflect 对象的方法与 Proxy 对象的方法一一对应，只要是 Proxy 对象的方法，就能在 Reflect 对象上找到对应的方法。这就让 Proxy 对象可以方便地调用对应的 Reflect 方法，完成默认行为，作为修改行为的基础。
 
 ```
-      Proxy(target, {
+Proxy(target, {
   set: function(target, name, value, receiver) {
     var success = Reflect.set(target,name, value, receiver);
     if (success) {
@@ -1171,7 +1173,7 @@ Reflect 对象与 Proxy 对象一样，也是 ES6 为了操作对象而提供的
 下面是 get 方法的例子。
 
 ```
-      var loggedObj = new Proxy(obj, {
+var loggedObj = new Proxy(obj, {
   get: function(target, name) {
     console.log("get", target, name);
     return Reflect.get(target, name);
@@ -1213,7 +1215,7 @@ Reflect 对象的方法清单如下。
 如果 name 属性部署了读取函数，则读取函数的 this 绑定 receiver。
 
 ```
-      var obj = {
+var obj = {
   get foo() { return this.bar(); },
   bar: function() { ... }
 }
@@ -1255,7 +1257,7 @@ Reflect.get(obj, "foo", wrapper);
 另外，需要注意的是，Reflect.set()、Reflect.defineProperty()、Reflect.freeze()、Reflect.seal()和 Reflect.preventExtensions()返回一个布尔值，表示操作是否成功。它们对应的 Object 方法，失败时都会抛出错误。
 
 ```
-      // 失败时抛出错误
+// 失败时抛出错误
 Object.defineProperty(obj, name, desc);
 // 失败时返回 false
 Reflect.defineProperty(obj, name, desc);
@@ -1269,7 +1271,7 @@ Reflect.defineProperty(obj, name, desc);
 Object.observe 方法用来监听对象（以及数组）的变化。一旦监听对象发生变化，就会触发回调函数。
 
 ```
-      var user = {};
+var user = {};
 Object.observe(user, function(changes){
   changes.forEach(function(change) {
     user.fullName = user.firstName+" "+user.lastName;
@@ -1287,7 +1289,7 @@ user.fullName // 'Michael Jackson'
 一般情况下，Object.observe 方法接受两个参数，第一个参数是监听的对象，第二个函数是一个回调函数。一旦监听对象发生变化（比如新增或删除一个属性），就会触发这个回调函数。很明显，利用这个方法可以做很多事情，比如自动更新 DOM。
 
 ```
-      var div = $("#foo");
+var div = $("#foo");
 
 Object.observe(user, function(changes){
   changes.forEach(function(change) {
@@ -1303,7 +1305,7 @@ Object.observe(user, function(changes){
 回调函数的 changes 参数是一个数组，代表对象发生的变化。下面是一个更完整的例子。
 
 ```
-      var o = {};
+var o = {};
 
 function observer(changes){
   changes.forEach(function(change) {
@@ -1321,7 +1323,7 @@ Object.observe(o, observer);
 参照上面代码，Object.observe 方法指定的回调函数，接受一个数组（changes）作为参数。该数组的成员与对象的变化一一对应，也就是说，对象发生多少个变化，该数组就有多少个成员。每个成员是一个对象（change），它的 name 属性表示发生变化源对象的属性名，oldValue 属性表示发生变化前的值，object 属性指向变动后的源对象，type 属性表示变化的种类。基本上，change 对象是下面的样子。
 
 ```
-      var change = {
+var change = {
   object: {...},
   type: 'update',
   name: 'p2',
@@ -1342,7 +1344,7 @@ Object.observe 方法目前共支持监听六种变化。
 Object.observe 方法还可以接受第三个参数，用来指定监听的事件种类。
 
 ```
-      Object.observe(o, observer, ['delete']);
+Object.observe(o, observer, ['delete']);
 
 ```
 
@@ -1351,7 +1353,7 @@ Object.observe 方法还可以接受第三个参数，用来指定监听的事�
 Object.unobserve 方法用来取消监听。
 
 ```
-      Object.unobserve(o, observer);
+Object.unobserve(o, observer);
 
 ```
 

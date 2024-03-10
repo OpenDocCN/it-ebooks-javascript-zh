@@ -1,3 +1,5 @@
+# 前言
+
 > 来源：[`es6.ruanyifeng.com/`](http://es6.ruanyifeng.com/)
 > 作者：阮一峰
 

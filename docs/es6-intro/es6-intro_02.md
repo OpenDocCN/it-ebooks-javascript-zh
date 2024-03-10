@@ -1,3 +1,5 @@
+# ECMAScript 6 简介
+
 ECMAScript 6（以下简称 ES6）是 JavaScript 语言的下一代标准，已经在 2015 年 6 月正式发布了。Mozilla 公司将在这个标准的基础上，推出 JavaScript 2.0。
 
 ES6 的目标，是使得 JavaScript 语言可以用来编写大型的复杂的应用程序，成为企业级开发语言。
@@ -47,7 +49,7 @@ Node.js 和 io.js（一个部署新功能更快的 Node 分支）是 JavaScript 
 安装 nvm 需要打开命令行窗口，运行下面的命令。
 
 ```
-      $ curl -o- https://raw.githubusercontent.com/creationix/nvm/<version number>/install.sh | bash
+$ curl -o- https://raw.githubusercontent.com/creationix/nvm/<version number>/install.sh | bash
 
 ```
 
@@ -56,14 +58,14 @@ Node.js 和 io.js（一个部署新功能更快的 Node 分支）是 JavaScript 
 该命令运行后，nvm 会默认安装在用户主目录的`.nvm`子目录。然后，激活 nvm。
 
 ```
-      $ source ~/.nvm/nvm.sh
+$ source ~/.nvm/nvm.sh
 
 ```
 
 激活以后，安装 Node 或 io.js 的最新版。
 
 ```
-      $ nvm install node
+$ nvm install node
 # 或
 $ nvm install iojs
 
@@ -72,7 +74,7 @@ $ nvm install iojs
 安装完成后，就可以在各种版本的 node 之间自由切换。
 
 ```
-      # 切换到 node
+# 切换到 node
 $ nvm use node
 
 # 切换到 iojs
@@ -83,7 +85,7 @@ $ nvm use iojs
 需要注意的是，Node.js 对 ES6 的支持，需要打开 harmony 参数，iojs 不需要。
 
 ```
-      $ node --harmony
+$ node --harmony
 # iojs 不需要打开 harmony 参数
 $ node
 
@@ -94,7 +96,7 @@ $ node
 使用下面的命令，可以查看 Node.js 所有已经实现的 ES6 特性。
 
 ```
-      $ node --v8-options | grep harmony
+$ node --v8-options | grep harmony
 
   --harmony_typeof
   --harmony_scoping
@@ -118,7 +120,7 @@ $ node
 我写了一个[ES-Checker](https://github.com/ruanyf/es-checker)模块，用来检查各种运行环境对 ES6 的支持情况。访问[ruanyf.github.io/es-checker](http://ruanyf.github.io/es-checker)，可以看到您的浏览器支持 ES6 的程度。运行下面的命令，可以查看本机支持 ES6 的程度。
 
 ```
-      $ npm install -g es-checker
+$ npm install -g es-checker
 $ es-checker
 
 ```
@@ -128,7 +130,7 @@ $ es-checker
 [Babel](https://babeljs.io/)是一个广泛使用的 ES6 转码器，可以 ES6 代码转为 ES5 代码，从而在浏览器或其他环境执行。这意味着，你可以用 ES6 的方式编写程序，又不用担心现有环境是否支持。下面是一个例子。
 
 ```
-      // 转码前
+// 转码前
 input.map(item => item + 1);
 
 // 转码后
@@ -143,14 +145,14 @@ input.map(function (item) {
 它的安装命令如下。
 
 ```
-      $ npm install --global babel
+$ npm install --global babel
 
 ```
 
 Babel 自带一个`babel-node`命令，提供支持 ES6 的 REPL 环境。它支持 Node 的 REPL 环境的所有功能，而且可以直接运行 ES6 代码。
 
 ```
-      $ babel-node
+$ babel-node
 >
 > console.log([1,2,3].map(x => x * x))
     [ 1, 4, 9 ]
@@ -161,7 +163,7 @@ Babel 自带一个`babel-node`命令，提供支持 ES6 的 REPL 环境。它支
 `babel-node`命令也可以直接运行 ES6 脚本。假定将上面的代码放入脚本文件`es6.js`。
 
 ```
-      $ babel-node es6.js
+$ babel-node es6.js
 [1, 4, 9]
 
 ```
@@ -169,7 +171,7 @@ Babel 自带一个`babel-node`命令，提供支持 ES6 的 REPL 环境。它支
 babel 命令可以将 ES6 代码转为 ES5 代码。
 
 ```
-      $ babel es6.js
+$ babel es6.js
 "use strict";
 
 console.log([1, 2, 3].map(function (x) {
@@ -181,7 +183,7 @@ console.log([1, 2, 3].map(function (x) {
 `-o`参数将转换后的代码，从标准输出导入文件。
 
 ```
-      $ babel es6.js -o es5.js
+$ babel es6.js -o es5.js
 # 或者
 $ babel es6.js --out-file es5.js
 
@@ -190,7 +192,7 @@ $ babel es6.js --out-file es5.js
 `-d`参数用于转换整个目录。
 
 ```
-      $ babel -d build-dir source-dir
+$ babel -d build-dir source-dir
 
 ```
 
@@ -199,14 +201,14 @@ $ babel es6.js --out-file es5.js
 如果希望生成 source map 文件，则要加上`-s`参数。
 
 ```
-      $ babel -d build-dir source-dir -s
+$ babel -d build-dir source-dir -s
 
 ```
 
 Babel 也可以用于浏览器。
 
 ```
-      <script src="node_modules/babel-core/browser.js"></script>
+<script src="node_modules/babel-core/browser.js"></script>
 <script type="text/babel">
 // Your ES6 code
 </script>
@@ -218,7 +220,7 @@ Babel 也可以用于浏览器。
 Babel 配合 Browserify 一起使用，可以生成浏览器能够直接加载的脚本。
 
 ```
-      $ browserify script.js -t babelify --outfile bundle.js
+$ browserify script.js -t babelify --outfile bundle.js
 
 ```
 
@@ -231,7 +233,7 @@ Google 公司的[Traceur](https://github.com/google/traceur-compiler)转码器�
 Traceur 允许将 ES6 代码直接插入网页。首先，必须在网页头部加载 Traceur 库文件。
 
 ```
-      <!-- 加载 Traceur 编译器 -->
+<!-- 加载 Traceur 编译器 -->
 <script src="http://google.github.io/traceur-compiler/bin/traceur.js"   type="text/javascript"></script>
 <!-- 将 Traceur 编译器用于网页 -->
 <script src="http://google.github.io/traceur-compiler/src/bootstrap.js"   type="text/javascript"></script>
@@ -245,7 +247,7 @@ traceur.options.experimental = true;
 接下来，就可以把 ES6 代码放入上面这些代码的下方。
 
 ```
-      <script type="module">
+<script type="module">
   class Calc {
     constructor(){
       console.log('Calc constructor');
@@ -268,7 +270,7 @@ traceur.options.experimental = true;
 如果 ES6 代码是一个外部文件，也可以用`script`标签插入网页。
 
 ```
-      <script type="module" src="calc.js" >
+<script type="module" src="calc.js" >
 </script>
 
 ```
@@ -280,7 +282,7 @@ Traceur 提供一个[在线编译器](http://google.github.io/traceur-compiler/d
 上面的例子转为 ES5 代码运行，就是下面这个样子。
 
 ```
-      <script src="http://google.github.io/traceur-compiler/bin/traceur.js"
+<script src="http://google.github.io/traceur-compiler/bin/traceur.js"
         type="text/javascript"></script>
 <script src="http://google.github.io/traceur-compiler/src/bootstrap.js"
         type="text/javascript"></script>
@@ -312,7 +314,7 @@ $traceurRuntime.ModuleStore.getAnonymousModule(function() {
 作为命令行工具使用时，Traceur 是一个 Node.js 的模块，首先需要用 npm 安装。
 
 ```
-      $ npm install -g traceur
+$ npm install -g traceur
 
 ```
 
@@ -321,7 +323,7 @@ $traceurRuntime.ModuleStore.getAnonymousModule(function() {
 traceur 直接运行 es6 脚本文件，会在标准输出显示运行结果，以前面的 calc.js 为例。
 
 ```
-      $ traceur calc.js
+$ traceur calc.js
 Calc constructor
 9
 
@@ -330,7 +332,7 @@ Calc constructor
 如果要将 ES6 脚本转为 ES5 保存，要采用下面的写法
 
 ```
-      $ traceur --script calc.es6.js --out calc.es5.js
+$ traceur --script calc.es6.js --out calc.es5.js
 
 ```
 
@@ -339,7 +341,7 @@ Calc constructor
 为了防止有些特性编译不成功，最好加上`--experimental`选项。
 
 ```
-      $ traceur --script calc.es6.js --out calc.es5.js --experimental
+$ traceur --script calc.es6.js --out calc.es5.js --experimental
 
 ```
 
@@ -350,7 +352,7 @@ Calc constructor
 Traceur 的 Node.js 用法如下（假定已安装 traceur 模块）。
 
 ```
-      var traceur = require('traceur');
+var traceur = require('traceur');
 var fs = require('fs');
 
 // 将 ES6 脚本转为字符串
